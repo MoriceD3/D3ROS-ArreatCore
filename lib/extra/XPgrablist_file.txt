@@ -1,0 +1,7 @@
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_
+GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent
+weapon1h[q:6][ilvl:60](dps:800 and CritDamage:20 and Sockets:1)
+Amulet_[q:6][ilvl:60](CritChance:6 and CritDamage:20)
+Ring_[q:6][ilvl:60]
+Gloves_[q:6][ilvl:60](CritChance:6 and CritDamage:20)
+Bracer_[q:6][ilvl:60](CritChance:5 and Allres:50)

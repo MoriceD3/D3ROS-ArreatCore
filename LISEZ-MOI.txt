@@ -1,0 +1,62 @@
+######################################################
+####   WARNING   ATTENTION ###########################
+######################################################
+
+Le programme vends les items selon les filtres !
+VIDEZ VOTRE INVENTAIRE vers le stash AVANT PREMIERE UTILISATION
+
+######################################################
+
+This can sell you inventory !
+EMPTY YOUR INVENTORY BEFORE FIRST USE
+
+######################################################
+######################################################
+
+
+
+
+#################################################################
+########################### ATTENTION ###########################
+############# Avant de commencer à utiliser le bot ##############
+#############  Vous devez lire ce qu'il va suivre  ##############
+#################################################################
+#################################################################
+
+Avant la première utilisation de ce programme, vous devez tout d'abord le configurer.
+Pour cela, il vous faudra suivre les instructions qui vont suivre.
+
+
+
+1) La configuration du bot.
+   >>>>>>>>>>>>>>>> à venir <<<<<<<<<<<<<<<<<<<<
+
+2) Maitenant connectez vous sur le personnage qui sera utiliser par le programme.
+   Choisissez la Difficulté et la Puissance des monstre.
+   Prenez la quête "Les Entrailles du Péché" à l'étape : Tuez Asmodan.
+   Crée la partie et aller au fond du Coeur d'Arreat juste avant d'entrer dans la salle.
+   Normalement, vous avez du voir "Point de Sauvegarde atteind".
+   Si ça été le cas, vous pouvez enfin quittez la partie.
+
+3) Veuillez configurer les raccourcis comme ceci :
+   Se déplacer : Souris 3 (Appuyez sur la molette)
+   Portail de retour en ville : T
+   Compétence de la barre d'action 1 à 4 : & à '
+   Potion : Q
+   Inventaire : I
+   Fermer toutes les fenêtres : Espace
+
+4) Voila vous avez fini de configurer le bot pour son utilisation.
+
+
+   Petit rappel : F2 permet de fermer le programme // F3 permet de mettre en pause le programme.
+   Bon jeu et bon botting.
+   Si vous avez le moindre soucis, veuillez poster un sujet dans la section appropriée
+   Avec comme titre : "[ERREUR] Description simple de votre problème".
+
+
+########################################################################################################
+########################################################################################################
+
+Si vous voulez quelques infos sur les noms d'items; monstres; zones etcs.
+Aller faire un petit tour dans le dossier Extra.

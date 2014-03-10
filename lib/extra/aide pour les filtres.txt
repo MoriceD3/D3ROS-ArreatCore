@@ -1,0 +1,52 @@
+PrimaryAttrib ;This will ablways be the highest primary stat, strenght, intelligence etc on an item.
+Int
+Str
+Vita
+Dex
+Armor ;armure total de l'item
+BlockChance ;Total Blockchance on shields eg; Stormshield with 34% would have a value of 100/34 = 0.34
+BlockChanceBonus ;Blockchance on shields eg; Stormshield with 9% would have a value of 100/9 = 0.09
+AverageDamage ; ex si ring 9 Max dmg, avg dmg renvoi 4.5 // ex 2 si ring  26-56 dmg -> renvoi 61 // ex 3, si ring 9 min renvoi 9
+leach ;Life steal %
+loh
+LifeOnKill
+gf
+mf
+ExpBonus ;c'est la quantité fixe, a ne pas confondre avec % exp Atrib_Experience_Bonus = [[0x053,"float"]
+ArmorBonus
+AtkSpeedBonus ;% bonus a la vitesse d'attaque ex 5% sur une skorn qui aurai ce bonus, valable aussi sur ring je pense
+WeaponDamageMoyen ;dégat de l'arme sans prise en compte de son attack speed
+WeaponAttacksPerSecond ;Attackspeed on a weapon eg; 1.5 (pour une skorn qui a 1 de base  5% as)
+DPS
+CritDamage ;Critical hit damage % bonus
+CritChance ;Critical hit chance % bonus
+MovSpeed
+GlobeBonus ;augmentation du bonus des globes Atrib_Health_Globe_Bonus_Health = [[0x059,"float"]
+regen ;vie par seconde
+LifePercent
+BonusVsElites ;Atrib_Damage_Percent_Bonus_Vs_Elites = [[0x2FF,"float"]
+ReducFromElites
+Radius
+lvlreq
+ControlReduction
+Allres
+ResArcane
+ResCold
+ResPhysical
+ResLightning
+ResFire
+ResPoison
+ResHoly
+MeleeRed ;% de degat réduit vs melee
+RangedRed ;% de degat réduit vs ranged
+Sockets ;Number of sockets on an item
+HatredRegen
+MaxDiscipline
+MaxArcanePower
+MaxMana
+MaxFury
+MaxSpirit
+ManaRegen
+SpiritRegen
+ArcaneOnCrit
+HealthPerSpirit

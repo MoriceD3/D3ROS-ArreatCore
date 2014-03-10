@@ -1,0 +1,124 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+      GMS stats
+    </title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1.1', {packages: ['corechart', 'controls']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+        var dashboard = new google.visualization.Dashboard(
+             document.getElementById('dashboard'));
+      
+         var control = new google.visualization.ControlWrapper({
+           'controlType': 'ChartRangeFilter',
+           'containerId': 'control',
+           'options': {
+             // Filter by the date axis.
+             'filterColumnIndex': 0,
+             'ui': {
+               'chartType': 'LineChart',
+               'chartOptions': {
+                 'chartArea': {'width': '90%'},
+                 'hAxis': {'baselineColor': 'none'}
+	
+               },
+               // Display a single series that shows the closing value of the stock.
+               // Thus, this view has two columns: the date (axis) and the stock value (line series).
+               'chartView': {
+                 'columns': [0, 1,2,3,4]
+	
+               },
+	
+               // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+               'minRangeSize': 86400000
+             }
+           },
+           // Initial range: 2012-02-09 to 2012-03-20.
+           'state': {'range': {'start': new Date(2013, 5, 10), 'end': new Date(2013, 8, 20)}}
+         });
+      
+         var chart = new google.visualization.ChartWrapper({
+           'chartType': 'LineChart',
+           'containerId': 'chart',
+           'options': {
+             // Use the same chart area width as the control for axis alignment.
+             'title': 'tEh sTaTz',
+			 'chartArea': {'height': '80%', 'width': '90%'},
+             'hAxis': {'slantedText': 'false'},
+			 'legend': {'position': 'bottom'},
+             'vAxis': {'viewWindow': {'min': 0, 'max': 1200}},
+			 			 'vAxis': {'gridlines': {color: '#999', count: 10}},
+
+
+           },
+           // Convert the first column from 'date' to 'string'.
+           'view': {
+             'columns': [
+               {
+                 'calc': function(dataTable, rowIndex) {
+                   return dataTable.getFormattedValue(rowIndex, 0);
+                 },
+                 'type': 'string'
+               }, 1, 2, 3, 4, 5]
+           }
+         });
+      
+         var data = new google.visualization.DataTable();
+         data.addColumn('date', 'Date');
+         data.addColumn('number', 'Avg run time');
+         data.addColumn('number', 'gold/h');
+         data.addColumn('number', 'XP/h');
+         data.addColumn('number', 'Death / h x 100');
+         data.addColumn('number', 'succes ratio');   
+         // Create random stock values, just like it works in reality.
+        // var open, close = 300;
+         //var low, high;
+        // for (var day = 1; day < 100; ++day) {
+           //var change = (Math.sin(day / 2.5 + Math.PI) + Math.sin(day / 3) - Math.cos(day * 0.7)) * 150;
+           //change = change >= 0 ? change + 10 : change - 10;
+           //open = close;
+           //close = Math.max(50, open + change);
+           //low = Math.min(open, close) - (Math.cos(day * 1.7) + 1) * 15;
+           //low = Math.max(0, low);
+          // high = 1000,30,40,3000
+       
+//GoGoAu3	
+
+
+
+data.addRow([new Date(2014,03,07,11,49),576.536279033333,107.747599343021,-512.334860340891,0,913.04347826087]);
+data.addRow([new Date(2014,03,08,05,07),482.789877244444,243.224237985721,1168.16856065615,0,1000]);
+data.addRow([new Date(2014,03,08,08,56),500.933870842308,226.150532300747,-534.136884429507,0,960]);
+data.addRow([new Date(2014,03,08,11,21),460.61582785,233.292460881292,752.166469978155,0,933.333333333333]);
+data.addRow([new Date(2014,03,08,20,27),485.64972198,263.112103676366,470.231555098892,6.66666666666667,1000]);
+data.addRow([new Date(2014,03,09,03,35),484.3687595125,232.820031815222,-182.272447935862,20.8333333333333,869.565217391304]);
+data.addRow([new Date(2014,03,09,14,54),372.47917443,263.549231041502,3503.04966820424,0,947.368421052632]);
+//GoGoAu3End
+        // }
+      
+         dashboard.bind(control, chart);
+         dashboard.draw(data);
+		 
+      }
+      
+
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+  </head>
+  <body>
+    <div id="dashboard">
+        <div id="chart" style='width: 950px; height: 500px;'></div>
+        <div id="control" style='width: 915px; height: 50px;'></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_
+weapon2h=twoHandedAxe_|Bow_|XBow_|twoHandedMace_|Polearm_|Staff_|twoHandedSword_|combatStaff_
+head=voodooMask_|spiritStone_|WizardHat_|Helm_
+lefthandcaster=Mojo_|orb_
+
+fclass75=(Dex:75 or Str:75 or Int:75)
+fclass100=(Dex:100 or Str:100 or Int:100)
+fclass150=(Dex:150 or Str:150 or Int:150)
+fclass190=(Dex:190 or Str:190 or Int:190)
+fres=Allres:60
+fdpsx=(AtkSpeedBonus:3 and CritChance:3 and CritDamage:20)
+fdps5=((AtkSpeedBonus:5 and CritChance:5) or (AtkSpeedBonus:5 and CritDamage:30) or (CritChance:5 and CritDamage:30))
+fdps3=((AtkSpeedBonus:3 and CritChance:3) or (AtkSpeedBonus:3 and CritDamage:20) or (CritChance:3 and CritDamage:20))
+flife8=(Vita:80 or LifePercent:8)
+flife12=(Vita:120 or LifePercent:12)
+fregen=(regen:250 or GlobeBonus:1500)
+fgold=(gf:20 and mf:20)
+frad=Radius:5
+fdam=AverageDamage:20
+fll=(loh:200 or leach:2)
+
+Emerald_08|Key|FollowerItem_|key
+
+head[ilvl:60][q:6]((fclass150 and CritChance:6 and Sockets:1) or (fclass100 and CritChance:4 and Sockets:1 and (fres or flife8 or fgold or frad or ArmorBonus:200)))
+shoulderPads_[ilvl:60][q:6](fclass150 and flife8 and fres and ((fregen and fgold) or (fregen and frad) or (fgold and frad)))
+Bracers_[ilvl:60][q:6]((fclass190 and CritChance:5) or (fclass150 and CritChance:4.5 and (Vita:80 or Resall:50)) or (fclass75 and CritChance:4 Vita:80 and fres and ((fregen and fgold) or (fregen and frad) or (fgold and frad))))
+Gloves_[ilvl:60][q:6]((fclass100 and fdps5) or (fclass100 and fres and (Vita:80 or ArmorBonus:200)) or (fclass100 and fres and ((fregen and fgold) or (fregen and frad) or (fgold and frad))))
+chestArmor_[ilvl:60][q:6]((fclass150 and (fres or flife8) and Sockets:3) or (fclass150 and fres and flife8 and Sockets:2) or (fclass150 and (fres or flife8) and ((fregen and fgold) or (fregen and frad) or (fgold and frad))))
+Belt_[ilvl:60][q:6](fclass100 and fres and (fgold or fregen or frad or flife8))
+pants_[ilvl:60][q:6](fclass150 and fres and Vita:80 and (fgold or fregen or frad or Sockets:2))
+Boots_[ilvl:60][q:6](fclass150 and fres and MovSpeed:12 and (fgold or fregen or frad or Vita:80))
+weapon1h[ilvl:60][q:6](dps:1200 or (dps:900 and fclass150 and Sockets:1 and (fll or AtkSpeedBonus:5 or CritDamage:30))
+weapon2h[ilvl:60][q:6](dps:1600 or (dps:1200 and fclass150 and Sockets:1 and (fll or AtkSpeedBonus:5 or CritDamage:30))
+Ring_[ilvl:60][q:6](fdpsx or (fdps5 and fclass100) or (fdps3 and fclass75 and (fdam or fres or Vita:80 or Sockets:1 or fregen or fgold or frad)))
+Amulet_[ilvl:60][q:6](fdpsx or (fdps5 and fclass150) or (fdps3 and fclass75 and (fdam or fres or flife12 or Sockets:1 or fregen or fgold or frad)))
+FollowerItem_Enchantress_[ilvl:60][q:6](Int:300 and Vita:100 and ((Dex:100 and Str:100) or fregen or fres or fll))
+FollowerItem_Scoundrel_[ilvl:60][q:6](Dex:300 and Vita:100 and ((Int:100 and Str:100) or fregen or fres or fll or CritDamage:40))
+FollowerItem_Templar_[ilvl:60][q:6](Str:300 and Vita:100 and ((Dex:100 and Int:100) or fregen or fres or BlockChanceBonus:10 or fll))
+lefthandcaster[ilvl:60][q:6](fclass190 and CritChance:9 and AverageDamage:200 and flife8)
+Quiver_[ilvl:60][q:6](AtkSpeedBonus:13 and CritChance:9 and Dex:300 and flife8)
+Shield_[ilvl:60][q:6](fclass190 and CritChance:9 and (flife12 or BlockChance:25) and fres)
