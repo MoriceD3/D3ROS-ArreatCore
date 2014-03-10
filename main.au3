@@ -38,7 +38,7 @@ Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_Lo
 		$_ofs_FileMonster_LevelInferno, $_defptr, $_defcount, $_deflink, $allSNOitems, $grablist, _
 		$Byte_Full_Inventory[2], $Byte_Full_Stash[2], $Byte_Boss_TpDeny[2]
 
-
+Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
 Global $Count_ACD = 0
 Global $GetACD
 Global $IgnoreItemList = ""

@@ -3155,10 +3155,12 @@ Func Grabit($name, $offset)
 
 
 			;If _inventoryfull() Then
-			If Detect_UI_error(0) Then
+			If Detect_UI_error(0) And $Tp_Repair_And_Back = 0 Then ; $Tp_Repair_And_Back = 0,car on ne veut pas y rentrer plus d'une fois "correction double tp inventaire plein"
+				$Tp_Repair_And_Back = 1
 				Unbuff()
 					TpRepairAndBack()
 				Buffinit()
+				$Tp_Repair_And_Back = 0
 			EndIf
 
 		EndIf
