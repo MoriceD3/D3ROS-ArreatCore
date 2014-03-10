@@ -1429,7 +1429,7 @@ EndFunc
 
 Func FilterBackpack()
 
-	$Uni_manuel = false
+	;;;$Uni_manuel = false ; pacht 1.08
 	Local $__ACDACTOR = triBackPack(IterateBackpack(0))
 	Local $iMax = UBound($__ACDACTOR)
 
@@ -1446,8 +1446,8 @@ Func FilterBackpack()
 
 		if trim(StringLower($Unidentified)) = "false" Then
 			Take_BookOfCain()
-		Else
-			$Uni_manuel = true
+		;;;Else
+			;;;$Uni_manuel = true ; pacht 1.08
 		EndIF
 
 		For $i = 0 To $iMax - 1 ;c'est ici que l'on parcour (tours a tours) l'ensemble des items contenut dans notres bag
@@ -1458,8 +1458,8 @@ Func FilterBackpack()
 
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
-			If $Uni_manuel = true Then
-				If $quality >= 6 And _MemoryRead($__ACDACTOR[$i][7] + 0x164, $d3, 'int') > 0 And ($itemDestination <> "Stash" Or trim(StringLower($Unidentified)) = "false") Then
+			;;;If $Uni_manuel = true Then ; pacht 1.08
+				;;;If $quality >= 6 And _MemoryRead($__ACDACTOR[$i][7] + 0x164, $d3, 'int') > 0 And ($itemDestination <> "Stash" Or trim(StringLower($Unidentified)) = "false") Then ; pacht 1.08
 				;Ici on verifie que la qualité est bien superieur a 6 et que l'item as besoin d'etre identifier, si l'item doit aller dans le stash ou si on definit Unidentified a false
 				;Il faudra modifier/ajouter quelque chose ici pour gerer les uni sur les oranges et modifier le nom de la variable Unidentified !
 
@@ -1476,14 +1476,15 @@ Func FilterBackpack()
 	;					Sleep(Random(1000, 1500))
 	;				EndIf
 
-				EndIf
-			EndIf
+				;;;EndIf
+			;;;EndIf
 
 			$return[$i][0] = $__ACDACTOR[$i][3] ;definit la collone de l'item
 			$return[$i][1] = $__ACDACTOR[$i][4] ;definit la ligne de l'item
 			$return[$i][3] = $quality
 
-			If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier)
+			;;;If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier); pacht 1.08 
+			If $itemDestination = "Stash_Filtre" Then ;Si c'est un item à filtrer
 				If checkFiltreFromtable($GrabListTab, $__ACDACTOR[$i][1], $CurrentIdAttrib) Then ;on lance le filtre sur l'item
 					_log('valide', 1)
 					_log(' - ', 1)
