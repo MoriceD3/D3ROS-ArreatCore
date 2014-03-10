@@ -6407,91 +6407,133 @@ EndFunc
 
 Func _TownPortalnew($mode=0)
 
-$compt=0
 
-	While Not _intown()
+	Local $compt = 0
 
-		_log("tour de boucle _intown")
+	While Not _intown() And _ingame() And Not _playerdead() ; "playerdead" quand on meurt, je les vue souvent vouloir tp
+
+		Local $try = 0
+		Local $TPtimer = 0
+		Local $compt_while = 0
+		Local $Attacktimer = 0
 
 		$compt += 1
-		$compt_while = 0
-		$timer = 0
-		$try = 0
 
-		if $mode<>0 AND $compt > $mode Then
-			_log("Too Much TP try !!!")
+		_Log("Tour de boucle IsInTown Mode : " & $mode & " -- tentative de TP " & $compt)
+
+		If $mode <> 0 And $compt > $mode Then
+			_Log("Too Much TP try !!!")
 			ExitLoop
-		EndIF
+		EndIf
 
-		_log("enclenche attack")
+		_Log("enclenche attack")
 		$grabskip = 1
-			Attack()
+		Attack()
 		$grabskip = 0
 
 		Sleep(100)
 
-		$CurrentLoc = getcurrentpos()
-		MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
-
-
 		If _playerdead() = False Then
 
-			sleep(250)
-				send("t")
-			sleep(250)
+			;CheckZoneBeforeTP();toujours en test pour les affix
+
+			_Log("on enclenche le TP")
+			Sleep(250)
+			Send("t")
+			Sleep(250)
 
 			If Detect_UI_error(2) AND NOT _intown() Then
-				_log('Detection Asmo room')
+				_Log('Detection Asmo room')
 				Return False
 			EndIf
 
 			$Current_area = GetLevelAreaId()
 
-			_log("enclenchement fastCheckui de la barre de loading")
+			If Detect_UI_error(0) = False And $GameFailed = 0 Then
+				_Log("enclenchement fastCheckui de la barre de loading")
 
-			while fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-				if $compt_while = 0 Then
-					_log("enclenchement du timer")
-					$timer = timerinit()
-				EndIF
+			    While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+				    If $compt_while = 0 Then
+					   _Log("enclenchement du timer")
+					   $TPtimer = TimerInit()
+					EndIf
+					$compt_while += 1
 
-				sleep(100)
-				$compt_while += 1
-			WEnd
+					checkforpotion()
 
-			_log("compare time to tp -> " & TimerDiff($timer) & "> 3700")
-			if TimerDiff($timer) > 3700 Then
-				while NOT _intown() AND $try < 6
-					_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
-					$try += 1
-					sleep(1000)
+					$Attacktimer = TimerInit()
+					Attack()
+					Sleep(100)
+					TimerDiff($Attacktimer)
+
+					If _playerdead() = True Or $GameFailed = 1 Then
+						ExitLoop
+					EndIf
+			    WEnd
+			Else ; si INVENTORY FULL ou GameFailed
+				_Log("enclenchement fastCheckui de la barre de loading, INVENTORY FULL Or GAMEFAILED")
+
+				While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+					If $compt_while = 0 Then
+					  _Log("enclenchement du timer")
+					  $TPtimer = Timerinit()
+				    EndIF
+				    $compt_while += 1
+
+				    $Attacktimer = TimerInit()
+				    Sleep(100)
+				    TimerDiff($Attacktimer)
 				WEnd
 			EndIf
 
-				Sleep(500)
+			If $compt_while = 0 Then ; si pas de detection de la barre de TP
+			    $CurrentLoc = getcurrentpos()
+				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
+				_Log("On se deplace, pas de detection de la barre de TP")
+			Else
+			    _Log("compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ") ; valeur test de 3600 a 4000
+			EndIf
+
+			If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
+				While Not _intown() And $try < 6
+					 _Log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
+					 $try += 1
+					 Sleep(1000)
+				WEnd
+			EndIf
+
+			Sleep(500)
 
 
-				if $Current_area <> GetLevelAreaId() Then
-					_log("Changement d'arreat, on quite la boucle")
-					ExitLoop
-				EndIf
+			If $Current_area <> GetLevelAreaId() Then
+				_Log("Changement d'arreat, on quite la boucle")
+				ExitLoop
+			EndIf
 
 		Else
-			_log("Vous etes morts lors d'une tentative de teleporte !!!")
+			_Log("Vous etes morts lors d'une tentative de teleporte !!!")
 			Return False
 		EndIf
 
-		sleep(100)
-		$PortBack = True
+		Sleep(100)
+		;;;$PortBack = True ;en test pour le PortBack
 	WEnd
 
-	_log("on a renvoyer true, quite bien la fonction")
-	While Not offsetlist()
-		Sleep(10)
+	Local $hTimer = TimerInit()
+	While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
+		Sleep(40)
 	WEnd
 
-	return true
-EndFunc
+	If TimerDiff($hTimer) >= 30000 Then
+		_Log('Fail to use offselList - TownPortalnew')
+		Return False
+	EndIf
+
+	_Log("On a renvoyer true, quite bien la fonction")
+
+	$PortBack = True
+	Return True
+EndFunc   ;==>_TownPortalnew
 
 
 Func GetMaxResource($idAttrib, $classe)
