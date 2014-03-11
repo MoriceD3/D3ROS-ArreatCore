@@ -2238,16 +2238,18 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			; ci desssous du dirty code pour eviter de cliquer n'importe ou hos de la fenetre du jeu
 			$Coords[0] = $Coords[0] - (Cos($angle) * $Radius)
 			$Coords[1] = $Coords[1] - (Sin($angle) * $Radius)
-			If $Coords[0] > 790 Then
-				$Coords[0] = 790
-			ElseIf $Coords[0] < 40 Then ;car on a pas l'envie de cliquer dans les icone du chat
-				$Coords[0] = 40
-			EndIf
-			If $Coords[1] > 540 Then ;car on a pas l'envie de cliquer dans la bare des skills
-				$Coords[1] = 540
-			ElseIf $Coords[1] < 10 Then
-				$Coords[1] = 10
-			EndIf
+			Switch $Coords[0] ;car on a pas l'envie de cliquer dans les icone du chat
+				  Case 791 To 800
+					 $Coords[0] = 790
+				  Case 0 To 39
+					 $Coords[0] = 40
+			EndSwitch
+			Switch $Coords[1] ;car on a pas l'envie de cliquer dans la bare des skills
+				  Case 541 To 600
+					 $Coords[1] = 540
+				  Case 0 To 9
+					 $Coords[1] = 10
+			EndSwitch
 			MouseMove($Coords[0], $Coords[1], 3)
 			$toggletry += 1
 			;_log("Tryin move :" & " x:" & $_x & " y:" & $_y & "coords: " & $Coords[0] & "-" & $Coords[1] & " angle: " & $angle & " Toggle try: " & $toggletry)
@@ -2275,8 +2277,8 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			;ConsoleWrite("Last check: " & $Distance & @CRLF)
 			;MouseMove($Coords[0], $Coords[1], 3)
 
-			$Coords_RndX = Random($Coords[0] - 20, $Coords[0] + 20)
-			$Coords_RndY = Random($Coords[1] - 20, $Coords[1] + 15)
+			$Coords_RndX = $Coords[0] + Random(-17,17)
+			$Coords_RndY = $Coords[1] + Random(-17,17)
 
 			If $Coords_RndX < 40 Then
 				$Coords_RndX = 40
@@ -3009,18 +3011,18 @@ Func Attack()
 			For $i = 0 To 9
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
-			If Is_Interact($item, $IgnoreList) Then
-				If Is_Shrine($item) Then
-					handle_Shrine($item)
-				ElseIf Is_Mob($item) or Is_Decor_Breakable($item) Then
-					;_log("ON LANCE HANDLE_MOB")
-					handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
-				ElseIf Is_Loot($item) Then
-					handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
-				ElseIf Is_Coffre($item) Then
-					handle_Coffre($item)
-				EndIf
-			EndIf
+			Select
+				  Case Is_Loot($item)
+					 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
+				  Case Is_Mob($item)
+					 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				  Case Is_Shrine($item)
+					 handle_Shrine($item)
+				  Case Is_Coffre($item)
+					 handle_Coffre($item)
+				  Case Is_Decor_Breakable($item)
+					 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+			EndSelect
 			Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList)
 			Dim $test_iterateallobjectslist = $buff_array
 
@@ -4323,7 +4325,7 @@ Func StatsDisplay()
                 $Xp_Moy_Run = 0
                 $Xp_Moy_Hrs = 0
                 $time_Xp = 0
-                _format_time($time_Xp)
+                $time_Xp = _format_time($time_Xp)
 
         Else
 
@@ -4354,14 +4356,12 @@ Func StatsDisplay()
                 ;calcul temps avant prochain niveau
                 $Xp_Moy_Sec = $Xp_Total * 1000 / $dif_timer_stat
                 $time_Xp = Int($ExperienceNextLevel / $Xp_Moy_Sec) * 1000
-                _format_time($time_Xp)
-                $time_Xp = $dif_timer_stat_formater
+                $time_Xp = _format_time($time_Xp)
 
         EndIf
         ;########
 
-        _format_time($dif_timer_stat)
-        $timer_stat_total = $dif_timer_stat_formater
+        $timer_stat_total = _format_time($dif_timer_stat)
 
         If $Totalruns = 1 Then
                 $timer_stat_run_moyen = 0
@@ -4372,8 +4372,7 @@ Func StatsDisplay()
                 ;Xpmoyen=0
         Else
                 $dif_timer_stat_moyen = $dif_timer_stat / ($Totalruns - 1)
-                _format_time($dif_timer_stat_moyen)
-                $timer_stat_run_moyen = $dif_timer_stat_formater
+                $timer_stat_run_moyen = _format_time($dif_timer_stat_moyen)
         EndIf
 
 
@@ -4449,28 +4448,21 @@ Func StatsDisplay()
 EndFunc   ;==>StatsDisplay
 
 ;;--------------------------------------------------------------------------------
-;;############# END ########### of Stats by YoPens
+; Function:             _format_time()
+; Description:          Format time by length
+;
+; Note(s): faster than YoPens : 100% if < 1mn, 150% if < 1h, 30% if more
 ;;--------------------------------------------------------------------------------
-Func _format_time($time_milisecond)
-	Local $seconde_arrondi
-	Local $minute
-	Local $seconde
-	Local $heure
-	If ($time_milisecond < 60000) Then
-		$dif_timer_stat_formater = Round(($time_milisecond / 1000), 2) & " secondes"
-	ElseIf (($time_milisecond >= 60000) And ($time_milisecond < 3600000)) Then
-		$seconde_arrondi = Int($time_milisecond / 1000)
-		$minute = Int($seconde_arrondi / 60)
-		$seconde = Round((($time_milisecond / 1000) - $minute * 60), 0)
-		$dif_timer_stat_formater = $minute & " min " & $seconde & " sec"
-	Else
-		$seconde_arrondi = Int($time_milisecond / 1000)
-		$heure = Int($seconde_arrondi / 3600)
-		$minute = Int((($seconde_arrondi - $heure * 3600) / 60))
-		$seconde = Round((($time_milisecond / 1000) - $heure * 3600 - $minute * 60), 0)
-		$dif_timer_stat_formater = $heure & "h " & $minute & "m " & $seconde & "s"
-	EndIf
-	Return $dif_timer_stat_formater
+Func _format_time($mS)
+        Switch $mS
+                Case 0 To 59999                 ; less than 1 mn
+                        Return Round(($mS / 1000), 2) & " s"
+                Case 60000 To 359999    ; 1 mn to 1 hour
+                        Return Int($mS / 60000) & " mn " & Round(($mS / 1000) - Int(Int($mS / 60000) * 60)) & " s"
+                Case Else                               ; more than 1 hour
+                        Return Int($mS / 3600000) & "h " & Int((Int($mS / 60000) - Int(Int($mS / 3600000) * 3600) / 60)) & "mn " & Round(($mS / 1000) - Int($mS / 3600000) * 3600 - Int(Int($mS / 60000) - Int(Int($mS / 3600000) * 3600) / 60) * 60) & "s"
+        EndSwitch
+        Return $mS
 EndFunc   ;==>_format_time
 
 ;;--------------------------------------------------------------------------------
