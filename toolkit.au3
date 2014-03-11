@@ -3422,6 +3422,8 @@ Func OpenWp(ByRef $item)
 EndFunc   ;==>OpenWp
 
 Func TakeWPV2($WPNumber=0)
+    Local $Curentarea = GetLevelAreaId()
+    Local $Newarea = GetLevelAreaId()
 
 	if $GameFailed = 1 Then return False
 	While Not offsetlist()
@@ -3484,7 +3486,15 @@ _log("clicking wp UI")
 			MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
 			;MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 
-			sleep(2000)
+			Local $areatry = 0
+			While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
+				$Newarea = GetLevelAreaId()
+				Sleep(500)
+				$areatry += 1
+			WEnd
+
+			Sleep(500)
+			
 			While Not offsetlist()
 				Sleep(10)
 			WEnd
