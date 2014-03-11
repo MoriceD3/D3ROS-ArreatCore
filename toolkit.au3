@@ -3623,6 +3623,14 @@ Func _resumegame()
 		Sleep($wait_aftertoomanytry)
 	EndIf
 
+	If $TryResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak = "true" Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
+		Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
+		_Log("Break Time after xx games -> Sleep " & (FormatTime($wait_BreakTimeafterxxgames)))
+		Sleep($wait_BreakTimeafterxxgames)
+		$BreakCounter = 0;on remet le compteur a 0
+		$BreakTimeCounter += 1;on compte les pause effectuer
+		;$tempsPauseGame += $wait_BreakTimeafterxxgames;  statistique a rajouter
+	EndIf  
 
 
 	;_randomclick(135, 285)
@@ -4431,7 +4439,8 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & "Durée moyenne d'un run : " & $timer_stat_run_moyen & @CRLF
         $DebugMessage = $DebugMessage & "success ratio : " & $successratio & @CRLF
         $DebugMessage = $DebugMessage & "Nombre de déconnections : " & $disconnectcount & @CRLF
-        $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
+        $DebugMessage = $DebugMessage & "Pauses Effectuées : " & $BreakTimeCounter & @CRLF
+		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "Statistique du Personnage : " & @CRLF
         $DebugMessage = $DebugMessage & "Gold Find (Hors Paragon & Compagnon) : " & $GF & " %" & @CRLF
         $DebugMessage = $DebugMessage & "Magic Find (Hors Paragon & Compagnon) : " & $MF & " %" & @CRLF

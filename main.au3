@@ -40,6 +40,9 @@ Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_Lo
 
 ; MoveTo
 Global Const $Smith = 1
+; global pour prendre des pause
+Global $BreakCounter = 0
+Global $BreakTimeCounter = 0
 
 Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
@@ -270,6 +273,7 @@ Func _botting()
 				$handle_banlistdef = ""
 				$Try_ResumeGame = 0
 				$Try_Logind3 = 0
+				$BreakCounter += 1;on ce met a compter les games avant la pause
 				$games += 1
 				$gamecounter += 1
 			EndIf

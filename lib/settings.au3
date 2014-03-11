@@ -31,6 +31,10 @@ Global $Unidentified = "false"
 ; recyclage
 Global $Recycle = "false"
 Global $QualityRecycle = 9
+; fonction pause x games
+Global $BreakTime = 360
+Global $Breakafterxxgames = Round(Random(4, 8))
+Global $TakeABreak = "false"
 
 Global $FilterItemGround = "false"
 Global $profilFile = "settings.ini"
@@ -200,6 +204,10 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "Recycle", $Recycle)
 	IniWrite($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
 	IniWrite($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
+	; fonction pause x games
+	IniWrite($profilFile, "Run info", "BreakTime", $BreakTime)
+	IniWrite($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
+	IniWrite($profilFile, "Run info", "TakeABreak", $TakeABreak)
 	IniWrite($profilFile,"Account info","ftpserver", $ftpserver)
 	IniWrite($profilFile,"Account info","ftpusername", $ftpusername)
 	IniWrite($profilFile,"Account info","ftppass", $ftppass)
@@ -333,6 +341,10 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 	$Recycle = IniRead($profilFile, "Run info", "Recycle", $Recycle)
 	$QualityRecycle = IniRead($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
 	$FilterItemGround = IniRead($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
+	; fonction pause x games
+	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
+	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
+	$TakeABreak = IniRead($profilFile, "Run info", "TakeABreak", $TakeABreak)
 
 ;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
 ;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)
