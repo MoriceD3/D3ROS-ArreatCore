@@ -28,7 +28,11 @@ Global $MonsterRefresh = "True"
 Global $ItemRefresh = "True"
 Global $MonsterPriority = "False"
 Global $Unidentified = "false"
+; recyclage
+Global $Recycle = "false"
+Global $QualityRecycle = 9
 
+Global $FilterItemGround = "false"
 Global $profilFile = "settings.ini"
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
@@ -190,7 +194,10 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "PotionStock", $PotionStock)
 	IniWrite($profilFile, "Run info", "TakeShrines", $TakeShrines)
 	IniWrite($profilFile, "Run info", "Unidentified", $Unidentified)
-
+	;recyclage
+	IniWrite($profilFile, "Run info", "Recycle", $Recycle)
+	IniWrite($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
+	IniWrite($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
 	IniWrite($profilFile,"Account info","ftpserver", $ftpserver)
 	IniWrite($profilFile,"Account info","ftpusername", $ftpusername)
 	IniWrite($profilFile,"Account info","ftppass", $ftppass)
@@ -318,6 +325,10 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 	$ItemRefresh = IniRead($profilFile, "Run info", "ItemRefresh", $ItemRefresh)
 	$MonsterPriority = IniRead($profilFile, "Run info", "MonsterPriority", $MonsterPriority)
 	$Unidentified = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
+	;recyclage
+	$Recycle = IniRead($profilFile, "Run info", "Recycle", $Recycle)
+	$QualityRecycle = IniRead($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
+	$FilterItemGround = IniRead($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
 
 ;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
 ;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)

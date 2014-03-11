@@ -438,7 +438,10 @@ Func _ingame()
 	$gamelookfor = "Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve"
 	Return fastcheckuiitemvisible($gamelookfor, 1, 1403)
 EndFunc   ;==>_ingame OK
-
+Func _checkSalvageopen()
+    $checkSalvageOpenlookfor = "Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button"
+	Return fastcheckuiitemvisible($checkSalvageOpenlookfor, 1, 629)
+EndFunc   ;==>_checkSalvageopen OK
 Func _checkWPopen()
     $checkWPopenlookfor = "Root.NormalLayer.WaypointMap_main.LayoutRoot"
     Return fastcheckuiitemvisible($checkWPopenlookfor, 1, 2033)
@@ -1501,6 +1504,14 @@ Func FilterBackpack()
 
 		Next
 
+		If StringLower($Recycle) = "true" Then
+			For $i = 0 To UBound($return) - 1
+				If $return[$i][2] = "Trash" And $return[$i][3] < $QualityRecycle Then ; si QualityRecycle = 9 on recycle jaune,bleu,blanc,-si 6 bleu,blanc , -si 3 blanc et on vend le reste
+					$return[$i][2] = "Recycle"
+				EndIf
+			Next
+		EndIf
+		
 		Send("{SPACE}") ; make sure we close everything
 
 
@@ -3233,11 +3244,16 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 			If checkIlvlFromtable($GrabListTab, $ACD, $_NAME) Then
 
 				If $_MODE = 0 Then
-					_log($_NAME & " ==> It's a rare in our list We have to check the stats")
+				   If StringLower($FilterItemGround) = "false" Then ; si true applique le filtre sur les item au sol,false on applique pas
+					  _Log($_NAME & " ==> It's a rare in our list ")
+					  Return "Stash"
+				   Else
+					  _log($_NAME & " ==> It's a rare in our list We have to check the stats")
 
-					if checkFiltreFromtable($GrabListTab, $_NAME, $CurrentIdAttrib) Then
-						return "Stash"
-					endif
+					  If checkFiltreFromtable($GrabListTab, $_NAME, $CurrentIdAttrib) Then
+						 Return "Stash"
+					  Endif
+				   EndIf
 
 				Else
 					_log($_NAME & " ==> It's a rare in our list for filterbackpack")
@@ -5554,43 +5570,118 @@ Func StashAndRepair()
 	Sleep(Random(100, 200))
 	Sleep(Random(500, 1000))
 
-	Repair()
+    ;recyclage
+	$ToRecycle = _ArrayFindAll($items, "Recycle", 0, 0, 0, 1, 2)
+	If $ToRecycle <> -1 Then ; si item a recyclé
 
+	   MoveTo($Smith)
 
+	   InteractByActorName("PT_Blacksmith_RepairShortcut")
+	   Sleep(700)
 
+	   Local $BlacksmithTry = 0
+	   While _checkSalvageopen() = False
+		  If $BlacksmithTry <= 4 Then
+			 _log('Fail to open Salvage')
+			 $BlacksmithTry += 1
 
-	;Trash
-	$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+			 InteractByActorName("PT_Blacksmith_RepairShortcut")
+			 Sleep(500)
+		  EndIf
 
-	If not @error Then
+		  If $BlacksmithTry > 4 Then
+			 Send("{PRINTSCREEN}")
+			 Sleep(200)
+			 _log('Failed to open Salvage after 4 try')
+			 WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+			 MsgBox(0, "Impossible d'ouvrir le Forgeron :", "SVP, veuillez reporter ce problème sur le forum. Erreur : v001 ")
+			 Terminate()
+			 ExitLoop
+		  EndIf
+	   WEnd
 
-		ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
+	   $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+	   If $ToTrash = -1 Then ; si pas items a aller vendre on répare au forgeron
+		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
+		  Sleep(100)
+		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
+		  Sleep(100)
+	   EndIf
 
-		CheckWindowD3Size()
+	   If Not @Error Then
 
-		For $i = 0 To UBound($ToTrash) - 1
-			InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
-			Sleep(Random(100, 500))
-			$ItemToSell = $ItemToSell + 1
-			MouseClick('Right')
-			Sleep(Random(100, 200))
-		Next
-		Sleep(Random(100, 200))
-		Send("{SPACE}")
-		Sleep(Random(100, 200))
+		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2")
+		  Sleep(100)
+		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button")
 
-		;****************************************************************
-		If NOT Verif_Attrib_GlobalStuff() Then
-			_log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
-			antiidle()
-		EndIf
-		;****************************************************************
-	EndIf
+		  CheckWindowD3Size()
 
-	Sleep(Random(100, 200))
-	Send("{SPACE}")
-	Sleep(Random(100, 200))
+		  For $i = 0 To UBound($ToRecycle) - 1
+			 InventoryMove($items[$ToRecycle[$i]][0], $items[$ToRecycle[$i]][1])
+			 Sleep(Random(100, 500))
+			 ;$ItemToRecycle += 1 ; a ajouter plus tard pour les statistiques de recyclage
+			 MouseClick('left')
+			 Sleep(Random(100, 200))
+		  Next
 
+		  Sleep(Random(100, 200))
+		  Send("{SPACE}")
+		  Sleep(Random(100, 200))
+
+		  ;***************************************************************
+		  If NOT Verif_Attrib_GlobalStuff() Then
+			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - Forgeron)!!!!!")
+			 antiidle()
+		  EndIf
+		  ;****************************************************************
+	   EndIf
+
+	   Sleep(Random(100, 200))
+	   Send("{SPACE}")
+	   Sleep(Random(100, 200))
+	   Sleep(Random(500, 1000))
+
+	   If $ToTrash <> -1 Then  ;si item a vendre
+		  MoveTo($Smith)
+	   EndIf
+
+    EndIf ; fin recyclage
+
+    $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+    If $ToTrash <> -1 Then ;si item a vendre
+
+	   Repair()
+
+	   If not @error Then
+
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
+
+		  CheckWindowD3Size()
+
+		  For $i = 0 To UBound($ToTrash) - 1
+			 InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
+			 Sleep(Random(100, 500))
+			 $ItemToSell = $ItemToSell + 1
+			 MouseClick('Right')
+			 Sleep(Random(100, 200))
+		  Next
+
+		  Sleep(Random(100, 200))
+		  Send("{SPACE}")
+		  Sleep(Random(100, 200))
+
+		  ;****************************************************************
+		  If NOT Verif_Attrib_GlobalStuff() Then
+			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
+			 antiidle()
+		  EndIf
+		  ;****************************************************************
+	   EndIf
+
+	   Sleep(Random(100, 200))
+	   Send("{SPACE}")
+	   Sleep(Random(100, 200))
+    EndIf
 EndFunc   ;==>StashAndRepair
 
 
@@ -6860,3 +6951,28 @@ Func GameState()
 	;5 // Menu
 	;return _memoryRead(_memoryRead($ObjManStorage ,$d3, "ptr") + 0x900, $d3, "ptr")
 Endfunc
+
+Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act avant d'interagir
+    GetAct()
+	
+	If _checkInventoryopen() = True Then
+		Send("i")
+		Sleep(150)
+	EndIf
+
+	Switch $BeforeInteract
+		 
+		 Case 1 ; Smith
+			Switch $Act
+			   Case 1
+					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129,1,25)
+			   Case 2
+					 ;do nothing act 2
+			   Case 3 To 4
+					 ;do nothing act 3 and 4
+			EndSwitch
+
+	EndSwitch
+
+	Sleep(100)
+EndFunc   ;==>MoveTo
