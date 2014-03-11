@@ -41,6 +41,7 @@ Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_Lo
 ; MoveTo
 Global Const $Smith = 1
 
+Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
 Global $Count_ACD = 0
 Global $GetACD

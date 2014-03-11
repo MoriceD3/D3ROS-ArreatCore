@@ -194,6 +194,7 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "PotionStock", $PotionStock)
 	IniWrite($profilFile, "Run info", "TakeShrines", $TakeShrines)
 	IniWrite($profilFile, "Run info", "Unidentified", $Unidentified)
+	IniWrite($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z
 	;recyclage
 	IniWrite($profilFile, "Run info", "Recycle", $Recycle)
 	IniWrite($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
@@ -294,6 +295,7 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 	$ftpfilename = IniRead($profilFile, "Account info", "ftpfilename", $ftpfilename)
 
 	;; Run info
+	$Hero_Axe_Z = IniRead($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
 	$monsterList = IniRead($profilFile, "Run info", "monsterList", $monsterList)
 	$SpecialmonsterList = IniRead($profilFile, "Run info", "SpecialmonsterList", $SpecialmonsterList)
 	$grabListFile = IniRead($profilFile, "Run info", "grabListFile", $grabListFile)
