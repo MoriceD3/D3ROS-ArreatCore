@@ -1458,8 +1458,13 @@ Func FilterBackpack()
 			$ACD = GetACDOffsetByACDGUID($__ACDACTOR[$i][0])
 			$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr")
 			$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level) ;on definit la quality de l'item traiter ici
-
-			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
+			If ($quality = 9) Then
+				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
+			ElseIf ($quality = 6) Then
+				$nbRares += 0 ; on definit les rares
+			EndIf
+			
+			itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
 			;;;If $Uni_manuel = true Then ; pacht 1.08
 				;;;If $quality >= 6 And _MemoryRead($__ACDACTOR[$i][7] + 0x164, $d3, 'int') > 0 And ($itemDestination <> "Stash" Or trim(StringLower($Unidentified)) = "false") Then ; pacht 1.08
@@ -1492,6 +1497,7 @@ Func FilterBackpack()
 					_log('valide', 1)
 					_log(' - ', 1)
 					$return[$i][2] = "Stash"
+					$nbRares += 1 ; on conte les rares qu'on met au coffre
 				Else
 					$return[$i][2] = "Trash"
 					_log('invalide', 1)
@@ -4296,7 +4302,11 @@ EndFunc   ;==>FormatNumber
 Func StatsDisplay()
 
         Local $index, $offset, $count, $item[4]
-        startIterateLocalActor($index, $offset, $count)
+        Local $GoldBySaleRatio = 0
+		Local $GoldByColectRatio = 0
+		Local $GoldByRepaireRatio = 0
+		
+		startIterateLocalActor($index, $offset, $count)
         While iterateLocalActorList($index, $offset, $count, $item)
                 If StringInStr($item[1], "GoldCoin-") Then
                         $GOLD = IterateActorAtribs($item[0], $Atrib_ItemStackQuantityLo)
@@ -4314,7 +4324,10 @@ Func StatsDisplay()
         Else
                 $GOLDInthepocket = $GOLD - $GOLDINI
                 $GOLDMOY = $GOLDInthepocket / ($Totalruns - 1)
-                $dif_timer_stat = TimerDiff($begin_timer_stat)
+                $GoldBySaleRatio = ($GoldBySale / $GOLDInthepocket * 100);ratio des ventes
+				$GoldByColectRatio = (($GOLDInthepocket - $GoldBySale + $GoldByRepaire) / $GOLDInthepocket * 100);ratio de l'or collecté ; git correction de la statistique réparation
+				$GoldByRepaireRatio = ($GoldByRepaire / $GOLDInthepocket * 100);ratio du coût des réparation
+				$dif_timer_stat = TimerDiff($begin_timer_stat)
                 $GOLDMOYbyH = $GOLDInthepocket * 3600000 / $dif_timer_stat
 
 
@@ -4395,14 +4408,21 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Sanctuaires Pris : " & $CheckTakeShrineTaken & @CRLF
 		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
 		$DebugMessage = $DebugMessage & "Success Runs : " & Round($successratio * 100) & "%   ( " & ($Totalruns - $success) & " Avortés )" & @CRLF
-		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF ; note ici
-		$DebugMessage = $DebugMessage & "Nombre de Reparation/Vente : " & $RepairORsell & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre d'objet stocke dans le Coffre : " & $ItemToStash & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre d'objet Vendu : " & $ItemToSell & @CRLF
-        $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
-        $DebugMessage = $DebugMessage & "GOLD Obtenu : " & formatNumber(Ceiling($GOLDInthepocket)) & @CRLF
-        $DebugMessage = $DebugMessage & "GOLD Moyen par run : " & formatNumber(Ceiling($GOLDMOY)) & @CRLF
-        $DebugMessage = $DebugMessage & "GOLD Moyen par heure : " & formatNumber(Ceiling($GOLDMOYbyH)) & @CRLF
+		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
+		$DebugMessage = $DebugMessage & "                                 INFOS COFFRE" & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre Objets Recycles : " & $ItemToRecycle & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre de Legs au Coffre : " & $nbLegs & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre de Rares au Coffre : " & $nbRares & @CRLF
+		$DebugMessage = $DebugMessage & "Objets Stockes Dans le Coffre : " & $ItemToStash & @CRLF
+		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
+		$DebugMessage = $DebugMessage & "                                 INFOS GOLD" & @CRLF
+		$DebugMessage = $DebugMessage & "Gold au Coffre : " & formatNumber(Ceiling($GOLD)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Total Obtenu  : " & formatNumber(Ceiling($GOLDInthepocket)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Moyen/Run : " & formatNumber(Ceiling($GOLDMOY)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & formatNumber(Ceiling($GOLDMOYbyH)) & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & formatNumber(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & formatNumber(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre de Réparations : " & $RepairORsell & " / - " & formatNumber(Ceiling($GoldByRepaire)) & "   (- " & Round($GoldByRepaireRatio) & "%)" & @CRLF
 
         ;stats XP
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
@@ -5622,10 +5642,17 @@ Func StashAndRepair()
 
 	   $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 	   If $ToTrash = -1 Then ; si pas items a aller vendre on répare au forgeron
+		  ;on mesure l'or avant la reparation
+		  Local $GoldBeforeRepaire = GetGold()
+		  
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
 		  Sleep(100)
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
 		  Sleep(100)
+		  
+		  ;on mesure l'or apres
+		  Local $GoldAfterRepaire = GetGold()
+		  $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
 	   EndIf
 
 	   If Not @Error Then
@@ -5639,7 +5666,7 @@ Func StashAndRepair()
 		  For $i = 0 To UBound($ToRecycle) - 1
 			 InventoryMove($items[$ToRecycle[$i]][0], $items[$ToRecycle[$i]][1])
 			 Sleep(Random(100, 500))
-			 ;$ItemToRecycle += 1 ; a ajouter plus tard pour les statistiques de recyclage
+			 $ItemToRecycle += 1
 			 MouseClick('left')
 			 Sleep(Random(100, 200))
 		  Next
@@ -5670,10 +5697,20 @@ Func StashAndRepair()
     $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
     If $ToTrash <> -1 Then ;si item a vendre
 
+	   ;on mesure l'or avant la reparation
+	   Local $GoldBeforeRepaire = GetGold()
+	   
 	   Repair()
 
+	   ;on mesure l'or apres
+	   Local $GoldAfterRepaire = GetGold()
+	   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+	   
 	   If not @error Then
 
+		  ;on mesure l'or avant la vente d'objets
+		  Local $GoldBeforeSell = GetGold()
+		  
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
 
 		  CheckWindowD3Size()
@@ -5690,6 +5727,9 @@ Func StashAndRepair()
 		  Send("{SPACE}")
 		  Sleep(Random(100, 200))
 
+		  ; on mesure l'or aprÃ¨s
+		  Local $GoldAfterSell = GetGold()
+		  $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
 		  ;****************************************************************
 		  If NOT Verif_Attrib_GlobalStuff() Then
 			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
@@ -7022,3 +7062,15 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 
 	Sleep(100)
 EndFunc   ;==>MoveTo
+ 
+Func getGold() ; Fonction qui mesure l'or
+        IterateLocalActor()
+        $foundobject = 0      
+        For  $i = 0 To UBound ( $__ACTOR ,1 )-1
+                If StringInStr($__ACTOR[$i][2],"GoldCoin-") Then
+                        return IterateActorAtribs( $__ACTOR[$i][1],$Atrib_ItemStackQuantityLo)
+                        ExitLoop
+                EndIf
+        Next
+        Return 0
+EndFunc

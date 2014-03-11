@@ -46,6 +46,11 @@ Global $BreakTimeCounter = 0
 ;statistique
 Global $CheckTakeShrineTaken = 0
 Global $CptElite = 0
+Global $ItemToRecycle = 0
+Global $nbLegs = 0
+Global $nbRares = 0
+Global $GoldByRepaire = 0
+Global $GoldBySale = 0
 
 Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
