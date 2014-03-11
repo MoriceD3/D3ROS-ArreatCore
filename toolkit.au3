@@ -6500,6 +6500,27 @@ Func GoToTown_Portal()
 
 EndFunc
 
+Func CheckZoneBeforeTP()
+
+	local $try = 0
+
+	Dim $Item_Affix_Verify = IterateFilterAffix()
+	If IsArray($Item_Affix_Verify) Then
+	   _Log("Affix detecter, on verifie si l'on est trop pres avant de TP")
+
+	   Local $CurrentLoc = getcurrentpos()
+	   while Not is_zone_safe($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $Item_Affix_Verify) and $try < 15 ; try < 15 si jamais on bloque dans la map
+		  $CurrentLoc = getcurrentpos()
+		  Dim $pos = UpdateObjectsPos($Item_Affix_Verify)
+		  maffmove($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $pos[0], $pos[1])
+		  Sleep(50)
+		  $try += 1
+	   WEnd
+    Else
+	   _Log("La zone est sure, on peut TP")
+    EndIf
+
+EndFunc ; ==> CheckZoneBeforeTP()
 
 Func _TownPortalnew($mode=0)
 
@@ -6531,7 +6552,7 @@ Func _TownPortalnew($mode=0)
 
 		If _playerdead() = False Then
 
-			;CheckZoneBeforeTP();toujours en test pour les affix
+			CheckZoneBeforeTP();toujours en test pour les affix
 
 			_Log("on enclenche le TP")
 			Sleep(250)
