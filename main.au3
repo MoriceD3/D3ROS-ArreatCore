@@ -43,6 +43,9 @@ Global Const $Smith = 1
 ; global pour prendre des pause
 Global $BreakCounter = 0
 Global $BreakTimeCounter = 0
+;statistique
+Global $CheckTakeShrineTaken = 0
+Global $CptElite = 0
 
 Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein

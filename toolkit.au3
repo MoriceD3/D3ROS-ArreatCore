@@ -3051,7 +3051,9 @@ Func KillMob($name, $offset, $Guid, $test_iterateallobjectslist2)
         $elite = DetectElite($Guid)
         ;loop the attack until the mob is dead
 
-        _log("Attacking : " & $name & "; Type : " & $elite);
+        If $elite Then $CptElite += 1;on compte les elite
+		
+		_log("Attacking : " & $name & "; Type : " & $elite);
 
 
 
@@ -4384,12 +4386,18 @@ Func StatsDisplay()
         EndIf
 
 
-
-        $DebugMessage = "Nombre de Runs : " & $Totalruns & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre de Mort : " & $Death & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre de resurrection: " & $Res_compt & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre de Réparation/Vente : " & $RepairORsell & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre d'objet stocké dans le Coffre : " & $ItemToStash & @CRLF
+	    GetAct()
+        $DebugMessage = "                                 INFOS RUN ACTE " & $Act & @CRLF
+		$DebugMessage = $DebugMessage & "Runs : " & $Totalruns & @CRLF
+        $DebugMessage = $DebugMessage & "Morts : " & $Death & @CRLF
+        $DebugMessage = $DebugMessage & "Resurrections : " & $Res_compt & @CRLF
+        $DebugMessage = $DebugMessage & "Deconnexions  : " & $disconnectcount & @CRLF
+		$DebugMessage = $DebugMessage & "Sanctuaires Pris : " & $CheckTakeShrineTaken & @CRLF
+		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
+		$DebugMessage = $DebugMessage & "Success Runs : " & Round($successratio * 100) & "%   ( " & ($Totalruns - $success) & " Avortés )" & @CRLF
+		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF ; note ici
+		$DebugMessage = $DebugMessage & "Nombre de Reparation/Vente : " & $RepairORsell & @CRLF
+        $DebugMessage = $DebugMessage & "Nombre d'objet stocke dans le Coffre : " & $ItemToStash & @CRLF
         $DebugMessage = $DebugMessage & "Nombre d'objet Vendu : " & $ItemToSell & @CRLF
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "GOLD Obtenu : " & formatNumber(Ceiling($GOLDInthepocket)) & @CRLF
@@ -4437,9 +4445,7 @@ Func StatsDisplay()
 
         $DebugMessage = $DebugMessage & "Durée Total : " & $timer_stat_total & @CRLF
         $DebugMessage = $DebugMessage & "Durée moyenne d'un run : " & $timer_stat_run_moyen & @CRLF
-        $DebugMessage = $DebugMessage & "success ratio : " & $successratio & @CRLF
-        $DebugMessage = $DebugMessage & "Nombre de déconnections : " & $disconnectcount & @CRLF
-        $DebugMessage = $DebugMessage & "Pauses Effectuées : " & $BreakTimeCounter & @CRLF
+        $DebugMessage = $DebugMessage & "Pauses Effectuees : " & $BreakTimeCounter & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "Statistique du Personnage : " & @CRLF
         $DebugMessage = $DebugMessage & "Gold Find (Hors Paragon & Compagnon) : " & $GF & " %" & @CRLF
@@ -4532,12 +4538,15 @@ Func shrine($name, $offset, $Guid)
                                 MouseMove($Coords[0], $Coords[1], 3)
                         EndIf
                 EndIf
-If TimerDiff($begin) > 6000 Then
+	    If TimerDiff($begin) > 6000 Then
             _log('Fake shrine')
             Return false
         EndIf
                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
         WEnd
+		
+		$CheckTakeShrineTaken += 1;on compte les CheckTakeShrine qu'on prend
+		
 	EndFunc   ;==>shrine
 
 
