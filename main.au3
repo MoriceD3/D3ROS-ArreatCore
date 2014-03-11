@@ -162,7 +162,7 @@ Func _dorun()
 
     If TimerDiff($hTimer) >= 30000 Then
             Return False
-    EndIf;Fin modif
+    EndIf
 
 	If $GameFailed = 0 Then
 		$success += 1
