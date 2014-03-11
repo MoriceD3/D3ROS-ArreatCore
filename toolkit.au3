@@ -3627,7 +3627,7 @@ Func _resumegame()
 
 	If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak = "true" Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
 		Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
-		_Log("Break Time after xx games -> Sleep " & (FormatTime($wait_BreakTimeafterxxgames)))
+		_Log("Break Time after xx games -> Sleep " & (_format_time($wait_BreakTimeafterxxgames)))
 		Sleep($wait_BreakTimeafterxxgames)
 		$BreakCounter = 0;on remet le compteur a 0
 		$BreakTimeCounter += 1;on compte les pause effectuer
