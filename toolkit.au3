@@ -6858,6 +6858,8 @@ Func IterateFilterAffix()
 			   Next
 
 			   if StringInStr($item[1],"molten_trail") then $item_affix_2D[$i][10] = $range_lave
+			   if (StringInStr($item[1],"woodWraith_explosion") or StringInStr($item[1],"WoodWraith_sporeCloud_emitter") ) then  $item_affix_2D[$i][10] = $range_ice   
+			   if StringInStr($item[1],"sandwasp_projectile") then $item_affix_2D[$i][10] = $range_arcane 
 			   if StringInStr($item[1],"Desecrator") then $item_affix_2D[$i][10] = $range_profa
 			   if (StringInStr($item[1],"bomb_buildup") or StringInStr($item[1],"Icecluster") or stringinstr($item[1],"Molten_deathExplosion") or stringinstr($item[1],"Molten_deathStart")) then  $item_affix_2D[$i][10] = $range_ice
 			   if (StringInStr($item[1],"demonmine_C") or StringInStr($item[1],"Crater_DemonClawBomb")) then $item_affix_2D[$i][10] = $range_mine
@@ -6887,6 +6889,9 @@ $BanAffixList="poison_humanoid|"&$BanAffixList
 	if $item[9]<50 then
                  if ((StringInStr($item[1],"bomb_buildup") and $pv<=$Life_explo/100 ) or _
 					(StringInStr($item[1],"demonmine_C") and $pv<=$Life_mine/100)  or _
+					(StringInStr($item[1],"woodWraith_explosion") and $pv<=$Life_spore/100)  or _
+					(StringInStr($item[1],"WoodWraith_sporeCloud_emitter") and $pv<=$Life_spore/100 )  or _
+					(StringInStr($item[1],"sandwasp_projectile") and $pv<=$Life_proj/100 )  or _
 					(StringInStr($item[1],"creepMobArm") and $pv<=$Life_arm/100 )  or _
 					(StringInStr($item[1],"Crater_DemonClawBomb") and $pv<=$Life_mine/100 )  or _
 					(stringinstr($item[1],"Molten_deathExplosion") and $pv<=$Life_explo/100 ) or _

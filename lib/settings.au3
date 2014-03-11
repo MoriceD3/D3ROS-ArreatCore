@@ -133,6 +133,7 @@ global $tab_aff2[15][2]=[ _
 	Global $life_arcane=100
 	Global $life_peste=100
 	Global $life_profa=100
+	Global $life_proj=100
 	Global $life_ice=100
 	Global $life_poison=100
 	Global $life_explo=100
@@ -269,7 +270,8 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
     iniwrite($profilFile,"Run info","Life_Profa",$Life_Profa)
     iniwrite($profilFile,"Run info","Life_Mine",$Life_Mine)
     iniwrite($profilFile,"Run info","Life_Spore",$Life_Spore)
-    iniwrite($profilFile,"Run info","Life_Arm",$Life_Arm)
+    iniwrite($profilFile,"Run info","Life_Proj",$Life_Proj)
+	iniwrite($profilFile,"Run info","Life_Arm",$Life_Arm)
     iniwrite($profilFile,"Run info","Life_Lave",$Life_Lave)
     iniwrite($profilFile,"Run info","Life_Ice",$Life_Ice)
     iniwrite($profilFile,"Run info","Life_Poison",$Life_Poison)
@@ -406,7 +408,8 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
     $Life_Explo=iniread($profilFile,"Run info","Life_Explo",$Life_Explo)
     $Life_Arm=iniread($profilFile,"Run info","Life_Arm",$Life_Arm)
     $Life_Lave=iniread($profilFile,"Run info","Life_Lave",$Life_Lave)
-    $Life_Poison=iniread($profilFile,"Run info","Life_Poison",$Life_Poison)
+    $Life_Proj=iniread($profilFile,"Run info","Life_Proj",$Life_Proj)
+	$Life_Poison=iniread($profilFile,"Run info","Life_Poison",$Life_Poison)
     $Life_Spore=iniread($profilFile,"Run info","Life_Spore",$Life_Spore)
     $Life_Mine=iniread($profilFile,"Run info","Life_Mine",$Life_Mine)
 
