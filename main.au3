@@ -155,9 +155,14 @@ LoadingSNOExtended()
 Func _dorun()
 	_log("======== new run ==========")
 
-	While Not offsetlist()
+	Local $hTimer = TimerInit()
+	While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
 		Sleep(40)
 	WEnd
+
+    If TimerDiff($hTimer) >= 30000 Then
+            Return False
+    EndIf;Fin modif
 
 	If $GameFailed = 0 Then
 		$success += 1
