@@ -1,7 +1,8 @@
+MonsterList=a3dun_battlefield_Demon_GroundTrap_GasChamber|Beast_B|Goblin|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|SoulRipper_
 AutoBuff=True
 TakeWP=4
+sleep=500
 reverse=true
-3476.408203125, 624.468688964844, -0.0233864635229111,1,25
 3399.53051757813, 592.883728027344, 4.13610076904297, 1, 25
 3366.55126953125, 532.103759765625, 4.13610172271729, 1, 25
 3375.353515625, 480.171478271484, 4.13610172271729, 1, 25
@@ -50,4 +51,3 @@ reverse=true
 3399.13647460938, 664.135131835938, 4.13610076904297, 1, 25
 3428.82641601563, 608.385925292969, 4.34261417388916, 1, 25
 3451.57177734375, 600.710083007813, 4.34298276901245, 1, 25
-3476.408203125, 624.468688964844, -0.0233864635229111,1,25

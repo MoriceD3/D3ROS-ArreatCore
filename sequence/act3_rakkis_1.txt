@@ -1,7 +1,9 @@
+monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|crate|barricade|_Barricade_
+AutoBuff=True
 usepath=false
 TakeWP=5
+sleep=500
 offsetlist()
-monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|crate|barricade|_Barricade_
 922.528686523438, 592.697509765625, 0.118266679346561,1,25
 931.995300292969, 602.1640625, 0.254415959119797,1,25
 939.283081054688, 613.801635742188, 0.254415959119797,1,25
@@ -45,4 +47,4 @@ monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Co
 1890.20544433594, 616.868957519531, 0.208787530660629,1,25
 1930.38610839844, 613.307434082031, 0.430787235498428,1,25
 _townportal()
-sleep=2000
+sleep=500

@@ -1,6 +1,8 @@
+MonsterList=Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni
 AutoBuff=True
 usepath=false
 TakeWP=7
+sleep=500
 956.261047363281, 1076.68298339844, -9.89999580383301,1,25
 958.616394042969, 1048.21423339844, -9.89999485015869,1,25
 975.466125488281, 1013.23297119141, -9.89999580383301,1,25
@@ -57,7 +59,5 @@ TakeWP=7
 979.969604492188, 1229.9599609375, -59.9000015258789,1,25
 948.391662597656, 1231.83764648438, -59.8999938964844,1,25
 922.425598144531, 1201.84216308594, -59.3585891723633,1,25
-sleep=400
 _townportal() 
-sleep=2000
-offsetlist()
+sleep=500

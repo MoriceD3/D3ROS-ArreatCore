@@ -1,14 +1,16 @@
-monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|crate|barricade
+monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|barricade|crate
+BanList=demonFlyer_A_swoop
 Autobuff=True
 usepath=false
 TakeWP=1
-sleep=2000
+Sleep=500
 offsetlist()
 4272.48974609375, 4242.1640625, -24.8999996185303,1,25
 4269.70361328125, 4199.32958984375, -24.8999977111816,1,25
 4264.494140625, 4181.29150390625, -24.8999671936035,1,25
+Sleep=1500
 InteractByActorName=g_Portal_ArchTall_Blue
-Sleep=5000
+Sleep=1500
 offsetlist()
 endsave()
 usepath=false
@@ -68,8 +70,8 @@ usepath=false
 3113.46215820313, 3483.55786132813, 0.100002199411392,1,25
 3146.92065429688, 3501.29150390625, 0.10000091791153,1,25
 3170.82202148438, 3500.34057617188, 0.100003816187382,1,25
-usepath=false
 endsave()
+usepath=false
 3184.05541992188, 3499.56762695313, 0.100003480911255,1,25
 3195.54516601563, 3486.72290039063, 0.100001908838749,1,25
 3208.43896484375, 3467.00073242188, 0.100001193583012,1,25
@@ -112,7 +114,5 @@ endsave()
 3811.015625, 3788.10375976563, -24.7177314758301,1,25
 3811.5048828125, 3735.81127929688, -24.7177314758301,1,25
 3809.623046875, 3692.78637695313, -24.7177257537842,1,25
-Sleep=300
 _townportal()
-sleep=2000
-offsetlist()
+sleep=500

@@ -1,7 +1,9 @@
-monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber
+monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|uber_|Uber|barricade|crate
+BanList=demonFlyer_A_swoop
 autobuff=true
 usepath=false
 TakeWP=1
+sleep=500
 offsetlist()
 4250.5595703125, 4246.2509765625, -24.6420497894287,1,25
 4248.80859375, 4229.97509765625, -24.5298194885254,1,25
@@ -82,6 +84,8 @@ usepath=false
 3306.35302734375, 3322.38427734375, 1.12952101230621,1,25
 3303.84643554688, 3326.37622070313, 0.471503645181656,1,25
 3288.61865234375, 3323.1123046875, 0.554669976234436,1,25
+endsave()
+usepath=false
 3276.2470703125, 3323.34985351563, 5.61407279968262,1,25
 3246.23828125, 3319.21484375, 25.3259315490723,1,25
 3207.32299804688, 3323.29223632813, 25.2574119567871,1,25
@@ -105,7 +109,5 @@ usepath=false
 3273.40576171875, 2777.27221679688, 0.267081916332245,1,25
 3266.06762695313, 2742.28051757813, 0.240837514400482,1,25
 3266.28881835938, 2715.12036132813, 1.79384434223175,1,25
-sleep=400
 _townportal()
-sleep(2000)
-offsetlist()
+sleep=500
