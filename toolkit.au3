@@ -3690,7 +3690,10 @@ Func _leavegame()
 			_log("Menu Open but btn leaveGame Doesnt Exit yet")
 		WEnd
 
+		While fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644) ;update 8.2d
 		ClickUI("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1644)
+		Sleep(Random(200, 300, 1))
+	    WEnd
 
 		Sleep(Random(500, 1000, 1))
 		_log("Leave Game Done")

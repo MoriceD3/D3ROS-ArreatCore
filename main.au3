@@ -328,6 +328,13 @@ Func _botting()
 
 		While _inmenu() = False And _onloginscreen() = False
 			Sleep(10)
+			If  _checkdisconnect() Then ; update 8.2d
+				Sleep(1000)
+				_randomclick(398, 349)
+				_randomclick(398, 349)
+			else
+			;continue
+			endif ; fin update 8.2d
 		WEnd
 
 	WEnd
@@ -479,11 +486,11 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 
 ;_log(fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139))
 ;ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_in_town", 496)
-_log("c'est partit !")
-While NOT fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644)
-			sleep(200)
-		WEnd
-_log("trouvé")
+;_log("c'est partit !")
+;While NOT fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644)
+			;sleep(200)
+		;WEnd
+;_log("trouvé")
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 

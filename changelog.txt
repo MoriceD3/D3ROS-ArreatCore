@@ -1,3 +1,10 @@
+Mise à jour 8.2d le 12/03/14
+
+Compatible patch 2.0.3
+Correction func leavegame à nouveau
+Autres corrections
+
+###########################################################################################################
 Mise à jour 8.2c le 09/03/14
 
 Correction func leavegame
