@@ -4302,7 +4302,8 @@ EndFunc   ;==>FormatNumber
 Func StatsDisplay()
 
         Local $index, $offset, $count, $item[4]
-        Local $GoldBySaleRatio = 0
+		Local $Xp_Moy_HrsPerte_Ratio = 0
+		Local $GoldBySaleRatio = 0
 		Local $LossGoldMoyH = 0
 		Local $GoldByColectRatio = 0
 		Local $GoldByRepaireRatio = 0
@@ -4381,8 +4382,11 @@ Func StatsDisplay()
 
                 $Xp_Total = $Xp_Total + $Xp_Run
                 $Xp_Moy_Run = $Xp_Total / ($Totalruns - 1)
-                $Xp_Moy_Hrs = $Xp_Total * 3600000 / $dif_timer_stat
-                $NiveauParagon = GetAttribute($_MyGuid, $Atrib_Alt_Level)
+                $Xp_Moy_Hrs = $Xp_Total * 3600000 / $dif_timer_stat;on calcule l'xp/heure en temps total
+                $Xp_Moy_Hrsgame = $Xp_Total * 3600000 / $dif_timer_stat_game;on calcule l'xp/heure en temps de jeu
+				$Xp_Moy_HrsPerte = ($Xp_Moy_Hrsgame - $Xp_Moy_Hrs);on calcule la perte due aux pauses
+				$Xp_Moy_HrsPerte_Ratio = ($Xp_Moy_HrsPerte / $Xp_Moy_Hrsgame * 100);ratio de la perte xp/heure due aux pauses
+				$NiveauParagon = GetAttribute($_MyGuid, $Atrib_Alt_Level)
                 $ExperienceNextLevel = GetAttribute($_MyGuid, $Atrib_Alt_Experience_Next_Lo)
 
                 ;calcul temps avant prochain niveau
@@ -4445,7 +4449,7 @@ Func StatsDisplay()
 		;stats XP
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF
-		
+		;$DebugMessage = $DebugMessage & "Bonus d'XP : " & $EBP & " %" & @CRLF ; a verifier
 		If ($Xp_Total < 1000000) Then ;afficher en "K"
                 $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total / 1000) & " K" & @CRLF
         EndIf
@@ -4466,8 +4470,14 @@ Func StatsDisplay()
         If ($Xp_Moy_Hrs > 999999) Then ;afficher en "M"
                 $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Int($Xp_Moy_Hrs / 1000) / 1000 & " M" & @CRLF
         EndIf
-        ;$DebugMessage = $DebugMessage & "temps avant prochain niveau : " $ExperienceNextLevel/ & " M" & @CRLF
-        $DebugMessage = $DebugMessage & "temps avant prochain niveau : " & $time_Xp & @CRLF
+        If ($Xp_Moy_HrsPerte < 1000000) Then ;affiché en "K"
+			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Int($Xp_Moy_HrsPerte / 1000) & " K (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
+		EndIf
+		If ($Xp_Moy_HrsPerte > 999999) Then ;affiché en "M"
+			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Int($Xp_Moy_HrsPerte / 1000) / 1000 & " M (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
+		EndIf
+		;$DebugMessage = $DebugMessage & "temps avant prochain niveau : " $ExperienceNextLevel/ & " M" & @CRLF
+        $DebugMessage = $DebugMessage & "Temps Avant Prochain LVL : " & $time_Xp & @CRLF
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         ;$DebugMessage = $DebugMessage & "XP Moyen par heure : " & $Xp_Moy_Hrs & @CRLF
         ;$DebugMessage = $DebugMessage & "XP avant prochain niveau : " & int($ExperienceNextLevel/1000)/1000 &" M" & @CRLF
@@ -4480,7 +4490,7 @@ Func StatsDisplay()
         ;$DebugMessage = $DebugMessage & "Xp_Run : " & int($Xp_Run/1000)/1000 &" M" &@CRLF
         ;$DebugMessage = $DebugMessage & "#################################"& @CRLF
         ;#########
-		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
+		$DebugMessage = $DebugMessage & "                                 INFOS PERSO " & @CRLF
         $DebugMessage = $DebugMessage & "Statistique du Personnage : " & @CRLF
         $DebugMessage = $DebugMessage & "Gold Find (Hors Paragon & Compagnon) : " & $GF & " %" & @CRLF
         $DebugMessage = $DebugMessage & "Magic Find (Hors Paragon & Compagnon) : " & $MF & " %" & @CRLF
