@@ -1464,7 +1464,7 @@ Func FilterBackpack()
 				$nbRares += 0 ; on definit les rares
 			EndIf
 			
-			itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
+			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
 			;;;If $Uni_manuel = true Then ; pacht 1.08
 				;;;If $quality >= 6 And _MemoryRead($__ACDACTOR[$i][7] + 0x164, $d3, 'int') > 0 And ($itemDestination <> "Stash" Or trim(StringLower($Unidentified)) = "false") Then ; pacht 1.08
@@ -7087,14 +7087,27 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	Sleep(100)
 EndFunc   ;==>MoveTo
  
-Func getGold() ; Fonction qui mesure l'or
-        IterateLocalActor()
-        $foundobject = 0      
-        For  $i = 0 To UBound ( $__ACTOR ,1 )-1
-                If StringInStr($__ACTOR[$i][2],"GoldCoin-") Then
-                        return IterateActorAtribs( $__ACTOR[$i][1],$Atrib_ItemStackQuantityLo)
-                        ExitLoop
-                EndIf
-        Next
-        Return 0
-EndFunc
+;~ Func getGold() ; Fonction qui mesure l'or
+;~         IterateLocalActor()
+;~         $foundobject = 0      
+;~         For  $i = 0 To UBound ( $__ACTOR ,1 )-1
+;~                 If StringInStr($__ACTOR[$i][2],"GoldCoin-") Then
+;~                         return IterateActorAtribs( $__ACTOR[$i][1],$Atrib_ItemStackQuantityLo)
+;~                         ExitLoop
+;~                 EndIf
+;~         Next
+;~         Return 0
+;~ EndFunc
+
+Func getGold()
+    Local $index, $offset, $count, $item[4]
+   
+    startIterateLocalActor($index, $offset, $count)
+    While iterateLocalActorList($index, $offset, $count, $item)
+	   If StringInStr($item[1], "GoldCoin-") Then
+		  Return IterateActorAtribs($item[0], $Atrib_ItemStackQuantityLo)
+		  ExitLoop
+	   EndIf
+    WEnd
+
+EndFunc	;==>getGold

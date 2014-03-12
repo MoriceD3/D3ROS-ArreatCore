@@ -55,6 +55,11 @@ Global $nbLegs = 0
 Global $nbRares = 0
 Global $GoldByRepaire = 0
 Global $GoldBySale = 0
+Global $GOLDMOYbyHgame = 0
+Global $Xp_Moy_HrsPerte = 0
+Global $Xp_Moy_Hrsgame = 0
+Global $dif_timer_stat_game = 0
+Global $dif_timer_stat_pause = 0
 
 Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
