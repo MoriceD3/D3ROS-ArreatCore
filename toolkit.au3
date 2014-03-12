@@ -3637,7 +3637,7 @@ Func _resumegame()
 		Sleep($wait_BreakTimeafterxxgames)
 		$BreakCounter = 0;on remet le compteur a 0
 		$BreakTimeCounter += 1;on compte les pause effectuer
-		;$tempsPauseGame += $wait_BreakTimeafterxxgames;  statistique a rajouter
+		$tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
 	EndIf  
 
 
@@ -4303,8 +4303,11 @@ Func StatsDisplay()
 
         Local $index, $offset, $count, $item[4]
         Local $GoldBySaleRatio = 0
+		Local $LossGoldMoyH = 0
 		Local $GoldByColectRatio = 0
 		Local $GoldByRepaireRatio = 0
+		Local $dif_timer_stat_game_Ratio = 0
+		Local $dif_timer_stat_pause_Ratio = 0
 		
 		startIterateLocalActor($index, $offset, $count)
         While iterateLocalActorList($index, $offset, $count, $item)
@@ -4327,8 +4330,14 @@ Func StatsDisplay()
                 $GoldBySaleRatio = ($GoldBySale / $GOLDInthepocket * 100);ratio des ventes
 				$GoldByColectRatio = (($GOLDInthepocket - $GoldBySale + $GoldByRepaire) / $GOLDInthepocket * 100);ratio de l'or collecté ; git correction de la statistique réparation
 				$GoldByRepaireRatio = ($GoldByRepaire / $GOLDInthepocket * 100);ratio du coût des réparation
-				$dif_timer_stat = TimerDiff($begin_timer_stat)
-                $GOLDMOYbyH = $GOLDInthepocket * 3600000 / $dif_timer_stat
+				$dif_timer_stat = TimerDiff($begin_timer_stat);temps total
+                $dif_timer_stat_pause = ($tempsPauseGame + $tempsPauserepas);calcule du temps de pause (game + repas)=total pause
+				$dif_timer_stat_game = ($dif_timer_stat - $dif_timer_stat_pause);calcule (temps totale - temps total pause)=Temps de jeu
+				$dif_timer_stat_game_Ratio = ($dif_timer_stat_game / $dif_timer_stat * 100);ratio temps total jeu
+				$dif_timer_stat_pause_Ratio = ($dif_timer_stat_pause / $dif_timer_stat * 100);ration temps de pause total
+				$GOLDMOYbyH = $GOLDInthepocket * 3600000 / $dif_timer_stat;calcule du gold à l'heure temps total
+				$GOLDMOYbyHgame = $GOLDInthepocket * 3600000 / $dif_timer_stat_game;calcule du gold à l'heure temp de jeu
+				$LossGoldMoyH = (($GOLDMOYbyHgame - $GOLDMOYbyH) / $GOLDMOYbyHgame * 100);ratio de la perte d'or due à la pause
 
 
         EndIf
@@ -4384,7 +4393,7 @@ Func StatsDisplay()
         EndIf
         ;########
 
-        $timer_stat_total = _format_time($dif_timer_stat)
+        $timer_stat_total = _format_time($dif_timer_stat); temps total
 
         If $Totalruns = 1 Then
                 $timer_stat_run_moyen = 0
@@ -4394,8 +4403,9 @@ Func StatsDisplay()
                 ;Xptotal=0
                 ;Xpmoyen=0
         Else
-                $dif_timer_stat_moyen = $dif_timer_stat / ($Totalruns - 1)
-                $timer_stat_run_moyen = _format_time($dif_timer_stat_moyen)
+                ;;;$dif_timer_stat_moyen = $dif_timer_stat / ($Totalruns - 1)
+                $dif_timer_stat_moyen = $dif_timer_stat_game / ($Totalruns - 1);on recalcule le temps moyen d'un run par rapport au temps de jeu
+				$timer_stat_run_moyen = _format_time($dif_timer_stat_moyen)
         EndIf
 
 
@@ -4420,14 +4430,23 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Gold Total Obtenu  : " & formatNumber(Ceiling($GOLDInthepocket)) & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Moyen/Run : " & formatNumber(Ceiling($GOLDMOY)) & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & formatNumber(Ceiling($GOLDMOYbyH)) & @CRLF
+		;$DebugMessage = $DebugMessage & "Gold Moyen/Heure Jeu : " & formatNumber(Ceiling($GOLDMOYbyHgame)) & @CRLF ;====> gold de temps de jeu
+		$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : " & FormatNumber(Ceiling($GOLDMOYbyH - $GOLDMOYbyHgame)) & "   (" & Round($LossGoldMoyH) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & formatNumber(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & formatNumber(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Nombre de Réparations : " & $RepairORsell & " / - " & formatNumber(Ceiling($GoldByRepaire)) & "   (- " & Round($GoldByRepaireRatio) & "%)" & @CRLF
-
-        ;stats XP
+		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
+        $DebugMessage = $DebugMessage & "                                 INFOS TEMPS " & @CRLF
+		;$DebugMessage = $DebugMessage & "Débuté à  :  " & @HOUR & ":" & @MIN & @CRLF
+		$DebugMessage = $DebugMessage & "Durée Moyenne/Run : " & $timer_stat_run_moyen & @CRLF
+		$DebugMessage = $DebugMessage & "Temps Total De Bot:   " & $timer_stat_total & @CRLF
+		$DebugMessage = $DebugMessage & "Temps Total En Jeu :   " & _format_time($dif_timer_stat_game) & " (" & Round($dif_timer_stat_game_Ratio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Pauses Effectuées : " & ($BreakTimeCounter + $PauseRepasCounter) & "  /  " & _format_time($dif_timer_stat_pause) & " (" & Round($dif_timer_stat_pause_Ratio) & "%)" & @CRLF
+		;stats XP
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
-
-        If ($Xp_Total < 1000000) Then ;afficher en "K"
+        $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF
+		
+		If ($Xp_Total < 1000000) Then ;afficher en "K"
                 $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total / 1000) & " K" & @CRLF
         EndIf
         If ($Xp_Total > 999999) Then ;afficher en "M"
@@ -4461,11 +4480,6 @@ Func StatsDisplay()
         ;$DebugMessage = $DebugMessage & "Xp_Run : " & int($Xp_Run/1000)/1000 &" M" &@CRLF
         ;$DebugMessage = $DebugMessage & "#################################"& @CRLF
         ;#########
-
-
-        $DebugMessage = $DebugMessage & "Durée Total : " & $timer_stat_total & @CRLF
-        $DebugMessage = $DebugMessage & "Durée moyenne d'un run : " & $timer_stat_run_moyen & @CRLF
-        $DebugMessage = $DebugMessage & "Pauses Effectuees : " & $BreakTimeCounter & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "Statistique du Personnage : " & @CRLF
         $DebugMessage = $DebugMessage & "Gold Find (Hors Paragon & Compagnon) : " & $GF & " %" & @CRLF

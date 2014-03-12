@@ -40,9 +40,13 @@ Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_Lo
 
 ; MoveTo
 Global Const $Smith = 1
+
 ; global pour prendre des pause
 Global $BreakCounter = 0
 Global $BreakTimeCounter = 0
+Global $PauseRepasCounter = 0
+Global $tempsPauseGame = 0
+Global $tempsPauserepas = 0
 ;statistique
 Global $CheckTakeShrineTaken = 0
 Global $CptElite = 0
