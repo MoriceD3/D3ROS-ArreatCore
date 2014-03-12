@@ -8,8 +8,8 @@ Global $_Const_MonsterRace[12] = ["Unknown", "Unknown(INDEX ME!)", "Fallen", "Go
 Global $_MonsterNameStringListID = 0x0000CB35 ;We use this to get local Names on monsters and NPC's
 Global $_GizmoNameStringListID = 0x0000CB23 ;We use this to get local Names on Gizmos
 
-Global $gameBalance = 0x1CD62F0 ;0x1cd7908 ;0x18E0198 ;0x18DF198 ;0x18A5550 ;0x0189E4D8 ;0x1884F98
-Global $OfsLevelAreaId = 0x1C34250
+Global $gameBalance = 0x1CD8320 ;0x1CD62F0 ;0x1cd7908 ;0x18E0198 ;0x18DF198 ;0x18A5550 ;0x0189E4D8 ;0x1884F98
+Global $OfsLevelAreaId = 0x1C36260 ;0x1C34250
 
 
 Global $Atrib_Axe_Bad_Data[2] = [0x00000000, "float"]
