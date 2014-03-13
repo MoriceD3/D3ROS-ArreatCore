@@ -6169,23 +6169,41 @@ Func SafePortBack()
 
 	EndSwitch
 
-	InteractByActorName('hearthPortal')
-	$Newarea = GetLevelAreaId()
+	Local $HearthPortalTry = 0
+	Local $NewAreaOk = 0
 
-	Local $areatry = 0
-	While $Newarea = $Curentarea And $areatry <= 10
+	While $NewAreaOk = 0 And $HearthPortalTry <= 2 ; on tente 3 fois de prendre le portal
+		_Log("try n°" & $HearthPortalTry + 1 & " hearthPortal")
+		InteractByActorName('hearthPortal')
 		$Newarea = GetLevelAreaId()
-		Sleep(500)
-		$areatry = $areatry + 1
+
+		Local $areatry = 0
+		While $Newarea = $Curentarea And $areatry <= 10
+			$Newarea = GetLevelAreaId()
+			Sleep(500)
+			$areatry += 1
+		WEnd
+
+		If $Newarea <> $Curentarea Then 
+			$NewAreaOk = 1
+		Else
+			$HearthPortalTry += 1
+		EndIf
 	WEnd
 
 	If $Newarea <> $Curentarea Then
 		_log('succesfully teleported back : ' & $Curentarea & ":" & $Newarea)
-		While Not offsetlist()
+		Local $hTimer = TimerInit()
+		While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
 			Sleep(10)
 		WEnd
+		
+		If TimerDiff($hTimer) >= 30000 Then
+			_Log('Fail to use OffsetList - SafePortBack')
+		EndIf
 	Else
 		_log('We failed to teleport back')
+		$GameFailed = 1
 	EndIf
 EndFunc   ;==>SafePortBack
 
