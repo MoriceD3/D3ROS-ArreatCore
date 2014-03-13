@@ -7105,7 +7105,8 @@ EndFunc   ;==>MoveTo
 Func getGold()
     Local $index, $offset, $count, $item[4]
    
-    startIterateLocalActor($index, $offset, $count)
+    Sleep(500)
+	startIterateLocalActor($index, $offset, $count)
     While iterateLocalActorList($index, $offset, $count, $item)
 	   If StringInStr($item[1], "GoldCoin-") Then
 		  Return IterateActorAtribs($item[0], $Atrib_ItemStackQuantityLo)
