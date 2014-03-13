@@ -449,11 +449,16 @@ Func sequence()
 					MonsterList($line)
 					$line = ""
 					$definition = 1
+				ElseIf StringInStr($line, "specialml=", 2) Then; SpecialMonsterList detected
+					$line = StringReplace($line, "specialml=", "", 0, 2)
+					_log("Enclenchement d'un SpecialMonsterList line : " & $i + 1)
+					SpecialML($line)
+					$line = ""
+					$definition = 1
 				ElseIf StringInStr($line, "banlist=", 2) Then; BanList detected
 					$line = StringReplace($line, "banlist=", "", 0, 2)
 					_log("Enclenchement d'un Banlist() line : " & $i + 1)
 					BanList($line)
-
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
@@ -695,6 +700,13 @@ Func attackRange($String)
         _log("Modification de la valeur attackRange : " & $a_range)
     EndIf
 EndFunc ;==>valeur attackRange
+
+Func SpecialML($String)
+        If Not $String = "" Then
+                $SpecialmonsterList = $String
+                _log("Ajout d'une nouvelle SpecialMonsterlist : " & $SpecialmonsterList)
+        EndIf
+EndFunc   ;==>SpecialMonsterList
 
 
 ;***************** CMD ************
