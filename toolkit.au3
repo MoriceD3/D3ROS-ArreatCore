@@ -3849,6 +3849,16 @@ Func Terminate()
 	EndIf
 EndFunc   ;==>Terminate
 
+Func StashAndRepairTerminate()
+   
+   GoToTown()
+   StashAndRepair()
+   _leavegame()
+   Sleep(6000)
+   Terminate()
+   
+EndFunc  ;==>StashAndRepairTerminate
+
 Func extendedstats()
 	If $Totalruns >= 15 Then
 
