@@ -1,3 +1,12 @@
+Mise à jour 8.2e le 13/03/14
+
+Correction d'un bug lorsque le stash était full
+Amélioration leavegame
+Probable réduction du nombre de crash
+Amélioration diverses
+
+
+###########################################################################################################
 Mise à jour 8.2d le 12/03/14
 
 Compatible patch 2.0.3

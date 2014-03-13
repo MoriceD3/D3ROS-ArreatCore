@@ -60,6 +60,11 @@ Global $Xp_Moy_HrsPerte = 0
 Global $Xp_Moy_Hrsgame = 0
 Global $dif_timer_stat_game = 0
 Global $dif_timer_stat_pause = 0
+;pacht 8.2e
+Global $AverageDps
+Global $NbMobsKilled
+$AverageDps=0 ; DPS constates
+$NbMobsKilled=1 ; Nombre de Mobs croisés
 
 Global $Hero_Axe_Z = 10
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
@@ -271,7 +276,7 @@ Func _botting()
 				$disconnectcount += 1
 				_log("Disconnected dc4")
 				Sleep(1000)
-				_randomclick(398, 349)
+				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
 				Sleep(1000)
 				While Not (_onloginscreen() Or _inmenu())
 					Sleep(Random(10000, 15000))
@@ -314,8 +319,9 @@ Func _botting()
 				_log("Disconnected dc2")
 				$disconnectcount += 1
 				Sleep(1000)
-				_randomclick(398, 349)
-				_randomclick(398, 349)
+				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
+				sleep(50)
+				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
 			EndIf
 
 			If _playerdead() Then
@@ -330,8 +336,9 @@ Func _botting()
 			Sleep(10)
 			If  _checkdisconnect() Then ; update 8.2d
 				Sleep(1000)
-				_randomclick(398, 349)
-				_randomclick(398, 349)
+				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
+				sleep(50)
+				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
 			else
 			;continue
 			endif ; fin update 8.2d
@@ -494,7 +501,22 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
+Func ClickInventory($c, $l)
+	$result = GetOfsFastUI("Root.NormalLayer.inventory_dialog_mainPage.timer slot 0 x0 y0", 1509)
+	Dim $Point = GetPositionUI($result)
+	Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
 
+	$FirstCaseX = $Point2[0] + $Point2[2] / 2
+	$FirstCaseY = $Point2[1] + $Point2[3] / 2
+
+	$SizeCaseX =  $Point2[2]
+	$SizeCaseY =  $Point2[3]
+
+	$XCoordinate = $FirstCaseX + $c * $SizeCaseX
+	$YCoordinate = $FirstCaseY + $l * $SizeCaseY
+
+	MouseClick("right", $XCoordinate, $YCoordinate)
+EndFunc
 
 
 ;###########################################################################
