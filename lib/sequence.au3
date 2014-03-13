@@ -229,6 +229,27 @@ Func ArrayInit(ByRef $array_sequence)
 	Return $array_sequence
 EndFunc   ;==>ArrayInit
 
+Func attackRange($String)
+    If Not $String = "" Then
+        $a_range =Round($String)
+        _log("Modification de la valeur attackRange : " & $a_range)
+    EndIf
+EndFunc ;==>valeur attackRange
+
+Func SpecialML($String)
+	If Not $String = "" Then
+		$SpecialmonsterList = $String
+		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $SpecialmonsterList)
+	EndIf
+EndFunc   ;==>SpecialMonsterList
+
+Func SetHeroAxeZ($String)
+  If Not $String = "" Then
+    $Hero_Axe_Z =Number($String)
+    _log("Modification de la valeur Z du heros : " & $Hero_Axe_Z)
+  EndIf
+EndFunc;==>setHerosAxeZ
+
 Func Trim($String)
 	Return StringReplace($String, " ", "", 0, 2)
 EndFunc   ;==>Trim
@@ -457,7 +478,7 @@ Func sequence()
 					$definition = 1
 				ElseIf StringInStr($line, "setherosaxez=", 2) Then; Définition l'axe Z détecté
 					$line = StringReplace($line, "setherosaxez=", "", 0, 2)
-					_Log("Detection de la modification de l'axe Z du heros" & $i + 1)
+					_Log("Detection de la modification de l'axe Z du heros line : " & $i + 1)
 					SetHeroAxeZ($line)
 					$line = ""
 					$definition = 1
@@ -699,28 +720,6 @@ Func sequence()
 
 
 EndFunc   ;==>sequence
-
-Func attackRange($String)
-    If Not $String = "" Then
-        $a_range =Round($String)
-        _log("Modification de la valeur attackRange : " & $a_range)
-    EndIf
-EndFunc ;==>valeur attackRange
-
-Func SpecialML($String)
-	If Not $String = "" Then
-		$SpecialmonsterList = $String
-		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $SpecialmonsterList)
-	EndIf
-EndFunc   ;==>SpecialMonsterList
-
-Func SetHeroAxeZ($String)
-  If Not $String = "" Then
-    $Hero_Axe_Z =Number($String)
-    _log("Modification de la valeur Z du heros : " & $Hero_Axe_Z)
-  EndIf
-EndFunc;==>setHerosAxeZ
-
 
 ;***************** CMD ************
 ;
