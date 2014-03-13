@@ -462,6 +462,12 @@ Func sequence()
 					_log("Enclenchemen d'un MaxGameLengt() Line : " & $i + 1)
 					$line = ""
 					$definition = 1
+				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
+					$line = StringReplace($line, "attackrange=", "", 0, 2)
+					_log("Detection de la modification de l'attackRange line : " & $i + 1)
+					attackRange($line)
+					$line = ""
+					$definition = 1
 				ElseIf StringInStr($line, "autobuff=", 2) Then
 					$line = StringReplace($line, "autobuff=", "", 0, 2)
 					If $line = "true" Then
@@ -683,7 +689,12 @@ Func sequence()
 
 EndFunc   ;==>sequence
 
-
+Func attackRange($String)
+    If Not $String = "" Then
+        $a_range =Round($String)
+        _log("Modification de la valeur attackRange : " & $a_range)
+    EndIf
+EndFunc ;==>valeur attackRange
 
 
 ;***************** CMD ************
