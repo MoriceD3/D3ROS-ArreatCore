@@ -60,6 +60,8 @@ Global $Xp_Moy_HrsPerte = 0
 Global $Xp_Moy_Hrsgame = 0
 Global $dif_timer_stat_game = 0
 Global $dif_timer_stat_pause = 0
+;debug
+Global $debugBot = 0
 ;pacht 8.2e
 Global $AverageDps
 Global $NbMobsKilled

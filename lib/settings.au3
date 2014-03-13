@@ -286,6 +286,7 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
     iniwrite($profilFile,"Run info","Life_Explo",$Life_Explo)
 
 	iniWrite($profilFile,"Run info","Gest_affixe_ByClass", $Gest_affixe_ByClass)
+	IniWrite($profilFile, "Run info", "debug", $debugBot)
 	;IniWrite($profilFile,"Run info","Act", $Act)
 	IniWrite($profilFile, "Run info", "Devmode", $Devmode)
 EndFunc   ;==>writeConfigs
@@ -429,6 +430,7 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 
 	$InventoryCheck = IniRead($profilFile, "Run info", "InventoryCheck", $InventoryCheck)
 
+	$debugBot = IniRead($profilFile, "Run info", "debug", 0)
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
 	$Devmode = IniRead($profilFile, "Run info", "Devmode", $Devmode)
 
