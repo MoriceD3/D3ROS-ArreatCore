@@ -449,17 +449,34 @@ Func sequence()
 					MonsterList($line)
 					$line = ""
 					$definition = 1
+				ElseIf StringInStr($line, "specialml=", 2) Then; SpecialMonsterList detected
+					$line = StringReplace($line, "specialml=", "", 0, 2)
+					_log("Enclenchement d'un SpecialMonsterList line : " & $i + 1)
+					SpecialML($line)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "setherosaxez=", 2) Then; Définition l'axe Z détecté
+					$line = StringReplace($line, "setherosaxez=", "", 0, 2)
+					_Log("Detection de la modification de l'axe Z du heros" & $i + 1)
+					SetHeroAxeZ($line)
+					$line = ""
+					$definition = 1
 				ElseIf StringInStr($line, "banlist=", 2) Then; BanList detected
 					$line = StringReplace($line, "banlist=", "", 0, 2)
 					_log("Enclenchement d'un Banlist() line : " & $i + 1)
 					BanList($line)
-
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
 					$line = StringReplace($line, "maxgamelength=", "", 0, 2)
 					MaxGameLength($line)
 					_log("Enclenchemen d'un MaxGameLengt() Line : " & $i + 1)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
+					$line = StringReplace($line, "attackrange=", "", 0, 2)
+					_log("Detection de la modification de l'attackRange line : " & $i + 1)
+					attackRange($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "autobuff=", 2) Then
@@ -683,7 +700,26 @@ Func sequence()
 
 EndFunc   ;==>sequence
 
+Func attackRange($String)
+    If Not $String = "" Then
+        $a_range =Round($String)
+        _log("Modification de la valeur attackRange : " & $a_range)
+    EndIf
+EndFunc ;==>valeur attackRange
 
+Func SpecialML($String)
+	If Not $String = "" Then
+		$SpecialmonsterList = $String
+		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $SpecialmonsterList)
+	EndIf
+EndFunc   ;==>SpecialMonsterList
+
+Func SetHeroAxeZ($String)
+  If Not $String = "" Then
+    $Hero_Axe_Z =Number($String)
+    _log("Modification de la valeur Z du heros : " & $Hero_Axe_Z)
+  EndIf
+EndFunc;==>setHerosAxeZ
 
 
 ;***************** CMD ************
