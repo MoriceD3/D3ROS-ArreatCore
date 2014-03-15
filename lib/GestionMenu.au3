@@ -47,7 +47,8 @@ Func SelectGameType($SelectGameType, $auto)
 	If $TypedeBot <> 2 Then
 		;Selection -> CHANGER DE QUETE
 		Sleep(Random(300, 400, 1))
-		_randomclick(125, 320) ; tap paramètre de la partie
+		_Log("Game Settings")
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu") ;_randomclick(125, 320) ; tap paramètre de la partie
 		Sleep(Random(700, 800, 1)) 
 		
 		;Selection de la difficulte et de la puissance des monstres
@@ -55,7 +56,8 @@ Func SelectGameType($SelectGameType, $auto)
 			SelectDifficultyMonsterPower()
 		EndIf
 		
-		_randomclick(395, 371) ; tap changer
+		_Log("Choose a New Quest")
+		ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton");_randomclick(395, 371) ; tap changer
 		Sleep(Random(700, 800, 1))
 
 		;Selection de la quête
@@ -190,18 +192,18 @@ Func SelectGameType($SelectGameType, $auto)
 
 		;Bp choisir la quete
 		Sleep(Random(300, 400, 1))
-		_randomclick(336, 430)
+		ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton");_randomclick(336, 430) Tap OK 'Choose a new quest'
 		Sleep(Random(300, 400, 1))
 		
 		; Bp validation de la quête
 		If IsQuestChangeUiOpened() Then ; note a vérifier pour la fenètre
 			_log("Détection de changement quête")
 			Sleep(Random(300, 400, 1))
-			_randomclick(336, 349)
+			Send("{ENTER}");_randomclick(336, 349)
 		EndIf
 		
 		Sleep(Random(600, 800, 1))
-		_randomclick(293, 482) ; tap sauvegarder et fermer
+		ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose");_randomclick(293, 482) ; tap sauvegarder et fermer
 		Sleep(Random(600, 800, 1))
 	EndIf
 EndFunc   ;==>SelectGameType
@@ -422,8 +424,9 @@ EndFunc   ;==>SelectHero
 Func SelectDifficultyMonsterPower()
 
 	;Selection de la difficulté
-	MouseMove(Random(590, 620), Random(245, 247), Random(12, 14, 1)) ; tap changer difficulté
-	MouseClick("left")
+	;MouseMove(Random(590, 620), Random(245, 247), Random(12, 14, 1)) ; tap changer difficulté
+	_Log("Change Difficulty")
+	ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton")
 	Sleep(Random(600, 800, 1))
 
 	Switch $difficulte
@@ -478,3 +481,19 @@ Func SelectDifficultyMonsterPower()
 	Sleep(Random(900, 1000, 1))
 	
 EndFunc   ;==>SelectDifficultyMonsterPower
+ 
+;---------------------------------------------------------------------
+Func IsQuestChangeUiOpened()
+    $QuestChangelookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
+    Return fastcheckuiitemvisible($QuestChangelookfor, 1, 2022)
+EndFunc   ;==>IsQuestChangeUiOpened OK
+ 
+Func IsGameSettingsOpened()
+    $GameSettingslookfor = "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton"
+    Return fastcheckuiitemvisible($GameSettingslookfor, 1, 954)
+EndFunc   ;==>IsGameSettingsOpened
+ 
+Func IsQuestOpened()
+    $Questlookfor = "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton"
+    Return fastcheckuiitemvisible($Questlookfor, 1, 663)
+EndFunc   ;==>IIsQuestOpened

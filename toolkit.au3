@@ -413,10 +413,7 @@ Func _inmenu()
 	$lobbylookfor = "Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton"
 	Return fastcheckuiitemvisible($lobbylookfor, 1, 1929)
 EndFunc   ;==>_inmenu OK
-Func IsQuestChangeUiOpened()
-    $QuestChangelookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
-    Return fastcheckuiitemvisible($QuestChangelookfor, 1, 2022)
-EndFunc   ;==>IsQuestChangeUiOpened OK
+
 Func _checkdisconnect()
     $disclookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
     Return fastcheckuiitemvisible($disclookfor, 1, 2022)
