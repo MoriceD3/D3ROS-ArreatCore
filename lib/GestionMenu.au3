@@ -431,20 +431,24 @@ Func SelectDifficultyMonsterPower()
 
 	Switch $difficulte
 		Case 1 ;Normal
-			MouseMove(Random(250, 300, 1), Random(170, 400, 1), Random(12, 14, 1))
+			ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_0")
+			;MouseMove(Random(250, 300, 1), Random(170, 400, 1), Random(12, 14, 1))
 		Case 2 ;Difficile
-			MouseMove(Random(350, 400, 1), Random(170, 400, 1), Random(12, 14, 1))
+			ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_1")
+			;MouseMove(Random(350, 400, 1), Random(170, 400, 1), Random(12, 14, 1))
 		Case 3 ;Expert
-			MouseMove(Random(450, 500, 1), Random(170, 400, 1), Random(12, 14, 1))
+			ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_2")
+			;MouseMove(Random(450, 500, 1), Random(170, 400, 1), Random(12, 14, 1))
 		Case 4 ;Calvaire
-			MouseMove(Random(550, 600, 1), Random(170, 400, 1), Random(12, 14, 1))
+			ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_3")
+			;MouseMove(Random(550, 600, 1), Random(170, 400, 1), Random(12, 14, 1))
 		Case 5 ;Tourment
-			MouseMove(Random(650, 700, 1), Random(170, 400, 1), Random(12, 14, 1))	
+			ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_4")
+			;MouseMove(Random(650, 700, 1), Random(170, 400, 1), Random(12, 14, 1))	
 	EndSwitch
+	;Sleep(Random(600, 800, 1))
+	;MouseClick("left")
 	Sleep(Random(600, 800, 1))
-	MouseClick("left")
-	Sleep(Random(600, 800, 1))
-
 
 	;Selection de la barre du menu des difficulté de Tourment et son Initialisation
 	If $difficulte = 5 Then
@@ -476,8 +480,8 @@ Func SelectDifficultyMonsterPower()
 	   Sleep(Random(600, 800, 1))
 	EndIf
 	
-	MouseMove(Random(350, 450), Random(475, 485), Random(20, 22, 1)) ; tap Ok difficulté
-	MouseClick("left")
+	;MouseMove(Random(350, 450), Random(475, 485), Random(20, 22, 1)) ; tap Ok difficulté
+	ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"); tap OK Difficulty
 	Sleep(Random(900, 1000, 1))
 	
 EndFunc   ;==>SelectDifficultyMonsterPower
@@ -496,4 +500,9 @@ EndFunc   ;==>IsGameSettingsOpened
 Func IsQuestOpened()
     $Questlookfor = "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton"
     Return fastcheckuiitemvisible($Questlookfor, 1, 663)
-EndFunc   ;==>IIsQuestOpened
+EndFunc   ;==>IsQuestOpened
+
+Func IsGameDifficultyOpened()
+    $GameDifficultylookfor = "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"
+    Return fastcheckuiitemvisible($GameDifficultylookfor, 1, 253)
+EndFunc   ;==>IsGameDifficultyOpened
