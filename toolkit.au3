@@ -775,15 +775,19 @@ Func GetAct()
 			Switch $Act
 				Case 1
 					Global $RepairVendor = "UniqueVendor_miner_InTown"
+					Global $PotionVendor = "UniqueVendor_Collector_InTown"
 
 				Case 2
 					Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
+					Global $PotionVendor = "UniqueVendor_Peddler_InTown"
 
 				Case 3
 					Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
+					Global $PotionVendor = "UniqueVendor_Collector_InTown"
 
 				Case 4
 					Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
+					Global $PotionVendor = "UniqueVendor_Collector_InTown"
 
 			EndSwitch
 			_log("Our Current Act is : " & $Act & " ---> So our vendor is : " & $RepairVendor)
@@ -5879,6 +5883,7 @@ Func StashAndRepair()
 	   ;on mesure l'or avant la reparation
 	   Local $GoldBeforeRepaire = GetGold()
 	   
+	   BuyPotion()
 	   Repair()
 
 	   ;on mesure l'or apres
@@ -7258,7 +7263,14 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 			   Case 3 To 4
 					 ;do nothing act 3 and 4
 			EndSwitch
-
+		 Case 2 ; Potion_Vendor
+			Switch $Act
+				  Case 1
+						MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561,1,25)
+				  Case 2 to 4
+						;do nothing act 2, 3 and 4
+			EndSwitch
+	
 	EndSwitch
 
 	Sleep(100)
@@ -7289,3 +7301,64 @@ Func getGold()
     WEnd
 
 EndFunc	;==>getGold
+
+Func BuyPotion()	
+	
+	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
+	Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
+	
+	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
+	   If $potinstock <= ($PotionStock + 10) Then ; git corection parce que pas asser utiliser
+		  
+		  MoveTo($Potion_Vendor) ; on se positionne
+		  
+		  InteractByActorName($PotionVendor)
+		  Sleep(700)
+		  
+		  Local $vendortry = 0
+		  While _checkVendoropen() = False ; si la fenêtre n'y est pas
+			   If $vendortry <= 4 Then ; on essaye 5 fois
+				  _Log('Fail to open vendor')
+				  $vendortry += 1
+				  InteractByActorName($PotionVendor)
+			   Else
+				  _Log('Failed to open Vendor after 4 try')
+				  MoveTo($Potion_Vendor) ; on se repositionne
+				  $GameFailed = 1
+				  Return False  ; si pas fenêtre on sort de la fonction
+			   EndIf
+		  WEnd
+		  
+		  _Log('Achat de ' & $NbPotionBuy & ' potions')
+		  
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2") ; potion tap
+		  Sleep(200)
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0"); potion Button
+		  Sleep(200)
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0"); potion Button
+		  Sleep(200)
+		  Send("{SHIFTDOWN}") ; pour acheter en paquet 5
+		  Sleep(100)
+		  
+		  Local $Click = 0
+		  While $Click <> $ClickPotion ; tant qu'on n'a pas atteint le nombre de clic
+			   MouseClick('right')
+			   Sleep(Random(150, 200))
+			   $Click += 1
+		  WEnd
+		  
+		  Sleep(200)
+		  Send("{SHIFTUP}")
+		  Sleep(100)
+		  Send("{SPACE}"); ferme l'inventaire
+		  Sleep(500)
+		  
+		  MoveTo($Potion_Vendor) ; on se repositionne
+	   Else
+		  _Log('Vous avez asser potion')
+	   EndIf
+    Else
+	   _Log('Fonction BuyPotion déactivée')
+    EndIf
+
+EndFunc    ;==>BuyPotion

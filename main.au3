@@ -62,7 +62,8 @@ Global Const $WRITE_ME_TAKE_WP			= 10
 Global Const $WRITE_ME_TAKE_BREAK_MENU	= 11
 
 ; MoveTo
-Global Const $Smith = 1
+Global Const $Smith 		= 1
+Global Const $Potion_Vendor = 2
 
 ; global pour prendre des pause
 Global $BreakCounter = 0
