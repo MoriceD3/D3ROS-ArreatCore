@@ -1,0 +1,10 @@
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_
+head=voodooMask_|spiritStone_|WizardHat_|Helm_
+
+GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_Smith_Drop|Crafting_Tier_04B|Crafting_Tier_04C|Crafting_Tier_04A|CraftingReagent_Legendary_|Emerald_08|Ruby_08|Diamond_08|Topaz_08|Amethyst_08
+
+Amulet_[q:6]
+Ring_[q:6]
+Head[q:6](sockets:1)
+weapon1h[q:6](sockets:1) 
+

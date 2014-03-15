@@ -38,6 +38,29 @@ Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_Lo
 		$_ofs_FileMonster_LevelInferno, $_defptr, $_defcount, $_deflink, $allSNOitems, $grablist, _
 		$Byte_Full_Inventory[2], $Byte_Full_Stash[2], $Byte_Boss_TpDeny[2]
 
+; Variable global pour Automatisation des séquences
+Global  $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3,$Act1_Hero_Axe_Z,$Act2_Hero_Axe_Z
+Global	$Act3_Hero_Axe_Z,$Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog,$numLigneFichier
+Global	$NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
+Global	$ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Global	$ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea,$SequenceFileAct3PtSauve,$SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373
+
+;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
+Global	$Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
+
+; GestionChat
+Global Const $WRITE_ME_RESART_GAME		= 1
+Global Const $WRITE_ME_WELCOME			= 2
+Global Const $WRITE_ME_HAVE_LEGENDARY	= 3
+Global Const $WRITE_ME_QUITE			= 4
+Global Const $WRITE_ME_INVENTORY_FULL	= 5
+Global Const $WRITE_ME_BACK_REPAIR		= 6
+Global Const $WRITE_ME_TP				= 7
+Global Const $WRITE_ME_SALE				= 8
+Global Const $WRITE_ME_DEATH			= 9
+Global Const $WRITE_ME_TAKE_WP			= 10
+Global Const $WRITE_ME_TAKE_BREAK_MENU	= 11
+
 ; MoveTo
 Global Const $Smith = 1
 
@@ -138,6 +161,7 @@ $GF = 0
 $MF = 0
 $PR = 0
 $MS = 0
+$EBP = 0
 $GameFailed = 0
 $grabtimeout = 0
 $killtimeout = 0
@@ -162,9 +186,12 @@ CheckWindowD3()
 #include "lib\settings.au3"
 #include "lib\skills.au3"
 #include "toolkit.au3"
+;Automatisation des séquences
+#include "lib\GestionMenu.au3"
 ;#include "GDI_scene.au3"
 #include <WinAPI.au3>
-
+; TChat
+#include "lib\GestionChat.au3"
 ;;================================================================================
 ;; Set Some Hotkey
 ;;================================================================================
@@ -178,7 +205,7 @@ AdlibRegister("Die2Fast", 1200000)
 offsetlist()
 
 LoadingSNOExtended()
-
+InitSettings()
 Func _dorun()
 	_log("======== new run ==========")
 
@@ -225,8 +252,8 @@ Func _dorun()
 		Detect_Str_full_inventory()
 	EndIf
 
-
-
+	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_WELCOME) ; TChat
+	
 	GetAct()
 	Global $shrinebanlist = ""
 	EmergencyStopCheck()
@@ -266,7 +293,21 @@ Func _botting()
 			Sleep(Random(60000, 120000))
 		EndIf
 
+		; Si Choix_Act_Run <> 0 le bot passe en mode automatique
+		If $Choix_Act_Run <> 0 And _onloginscreen() = False Then
+			If _ingame() = true and $TypedeBot < 2 Then;si en jeu lors du lancement auto
+				WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+				MsgBox(0, "ERREUR", "Vous devez être dans le menu pour lancer une run en auto ! ")
+				Terminate()
+			EndIf
+			SelectQuest()
+		EndIf
+		
 		If _inmenu() And _onloginscreen() = False Then
+			If ($PartieSolo = 'false') And $Totalruns > 1 Then
+			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
+				WriteMe($WRITE_ME_RESART_GAME) ; TChat
+			EndIf
 			RandSleep()
 			$DeathCountToggle = True
 			_resumegame()
@@ -354,7 +395,7 @@ Func MarkPos()
 	ConsoleWrite($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25" & @CRLF);
 EndFunc   ;==>MarkPos
 
-HotKeySet("{ù}", "MarkPos")
+HotKeySet("{F12}", "MarkPos")
 
 Func MonsterListing()
 	$Object = IterateObjectList(0)
@@ -369,7 +410,7 @@ Func MonsterListing()
 	Next
 EndFunc   ;==>MonsterListing
 
-HotKeySet("{µ}", "MonsterListing")
+HotKeySet("{F11}", "MonsterListing")
 
 Func Testing_IterateObjetcsList()
 

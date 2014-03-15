@@ -413,7 +413,10 @@ Func _inmenu()
 	$lobbylookfor = "Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton"
 	Return fastcheckuiitemvisible($lobbylookfor, 1, 1929)
 EndFunc   ;==>_inmenu OK
-
+Func IsQuestChangeUiOpened()
+    $QuestChangelookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
+    Return fastcheckuiitemvisible($QuestChangelookfor, 1, 2022)
+EndFunc   ;==>IsQuestChangeUiOpened OK
 Func _checkdisconnect()
     $disclookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
     Return fastcheckuiitemvisible($disclookfor, 1, 2022)
@@ -1459,6 +1462,7 @@ Func FilterBackpack()
 			$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr")
 			$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level) ;on definit la quality de l'item traiter ici
 			If ($quality = 9) Then
+				If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality = 6) Then
 				$nbRares += 0 ; on definit les rares
@@ -3778,6 +3782,7 @@ EndFunc   ;==>_logind3
 ;;--------------------------------------------------------------------------------
 Func _leavegame()
 	If _ingame() Then
+		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_QUITE) ; TChat
 		_log("Leave Game")
 		Send("{SPACE}") ; to make sure everything is closed
 		sleep(100)
@@ -4458,7 +4463,8 @@ Func StatsDisplay()
                 $MF = Ceiling(GetAttribute($_MyGuid, $Atrib_Magic_Find) * 100)
                 $PR = GetAttribute($_MyGuid, $Atrib_Gold_PickUp_Radius)
                 $MS = (GetAttribute($_MyGuid, $Atrib_Movement_Scalar_Capped_Total) - 1) * 100
-        Else
+				$EBP = Ceiling(GetAttribute($_MyGuid, $Atrib_Experience_Bonus_Percent) * 100)
+		Else
                 $GOLDInthepocket = $GOLD - $GOLDINI
                 $GOLDMOY = $GOLDInthepocket / ($Totalruns - 1)
                 $GoldBySaleRatio = ($GoldBySale / $GOLDInthepocket * 100);ratio des ventes
@@ -4624,15 +4630,34 @@ Func StatsDisplay()
         ;$DebugMessage = $DebugMessage & "#################################"& @CRLF
         ;#########
 		$DebugMessage = $DebugMessage & "                                 INFOS PERSO " & @CRLF
-        $DebugMessage = $DebugMessage & "DPS Constatés : " & formatNumber(Ceiling($AverageDps / 1000)) & " K " & @CRLF;pacth 8.2e
-        $DebugMessage = $DebugMessage & "Gold Find (Hors Paragon & Compagnon) : " & $GF & " %" & @CRLF
-        $DebugMessage = $DebugMessage & "Magic Find (Hors Paragon & Compagnon) : " & $MF & " %" & @CRLF
-        $DebugMessage = $DebugMessage & "PickUp Radius : " & $PR & @CRLF
-        $DebugMessage = $DebugMessage & "Movement Speed : " & $MS & " %" & @CRLF
+        $DebugMessage = $DebugMessage & $nameCharacter & " [ " & $NiveauParagon & " ] " & @CRLF
+        $DebugMessage = $DebugMessage & "PickUp Radius  : " & $PR & @CRLF
+		$DebugMessage = $DebugMessage & "Movement Speed : " & Round($MS) & " %" & @CRLF
+		$DebugMessage = $DebugMessage & "DPS Constatés : " & formatNumber(Ceiling($AverageDps / 1000)) & " K " & @CRLF;pacth 8.2e
+		$DebugMessage = $DebugMessage & "Gold Find Equipement : " & $GF & " %" & @CRLF
+        $DebugMessage = $DebugMessage & "Magic Find Equipement : " & $MF & " %" & @CRLF
+		$DebugMessage = $DebugMessage & "Bonus d'XP Equipement : " & $EBP & " %" & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 	    $DebugMessage = $DebugMessage & "Heure début run: " & @HOUR & ":" & @MIN & @CRLF
+		Switch $Choix_Act_Run
+			Case -1
+				  $file = FileOpen($fileLog, 0)
+				  $line = FileReadLine($file, 1)
+				  $DebugMessage = $DebugMessage & $line & @CRLF
+				  $line = FileReadLine($file, $numLigneFichier)
+				  $DebugMessage = $DebugMessage & $line & @CRLF
+				  FileClose($file)
+			Case 0
+				  $DebugMessage = $DebugMessage & "Mode normal" & @CRLF
+			Case 1
+				  $DebugMessage = $DebugMessage & "Acte 1 en automatique" & @CRLF
+			Case 2
+				  $DebugMessage = $DebugMessage & "Acte 2 en automatique" & @CRLF
+			Case 3
+				  $DebugMessage = $DebugMessage & "Acte 3 en automatique" & @CRLF
+		EndSwitch
 
-        $MESSAGE = $DebugMessage
+		$MESSAGE = $DebugMessage
         ToolTip($MESSAGE, $DebugX, $DebugY)
 
         $Totalruns = $Totalruns + 1 ;compte le nombre de run
@@ -5627,7 +5652,8 @@ Func TpRepairAndBack()
 
 	$PortBack = False
 
-
+    If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
+			 
 	While Not _intown()
 		if Not _TownPortalnew() Then
 			$GameFailed=1
@@ -5642,6 +5668,8 @@ Func TpRepairAndBack()
 	StashAndRepair()
 
 	If $PortBack Then
+		
+		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
 		SafePortBack()
 
 		While Not offsetlist()
@@ -5669,6 +5697,8 @@ Func StashAndRepair()
 	$item_to_stash = 0
 	$SkippedMove = 0
 
+	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_SALE) ; TChat
+	
 	While _checkInventoryopen() = False
 		Send("i")
 		Sleep(Random(200, 300))
@@ -6052,12 +6082,12 @@ Func LoadingSNOExtended()
 EndFunc   ;==>LoadingSNOExtended
 
 
-Func Init_grablistFile()
+Func Init_grablistFile($grabListPath = "grablist/")
 	Dim $txttoarray[1]
 	;local $load_file = ""
 	Local $compt_line = 0
 
-	Local $file = FileOpen($grabListFile, 0)
+	Local $file = FileOpen($grabListPath &  $grabListFile, 0)
 	If $file = -1 Then
 		MsgBox(0, "Error", "Unable to open file : " & $grabListFile)
 		Exit
@@ -6752,7 +6782,8 @@ EndFunc ; ==> CheckZoneBeforeTP()
 
 Func _TownPortalnew($mode=0)
 
-
+    If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_TP) ; TChat
+	
 	Local $compt = 0
 
 	While Not _intown() And _ingame() And Not _playerdead() ; "playerdead" quand on meurt, je les vue souvent vouloir tp
@@ -6787,7 +6818,7 @@ Func _TownPortalnew($mode=0)
 			Send("t")
 			Sleep(250)
 
-			If Detect_UI_error(2) AND NOT _intown() Then
+			If $Choix_Act_Run < 100 And Detect_UI_error(2) AND NOT _intown() Then
 				_Log('Detection Asmo room')
 				Return False
 			EndIf

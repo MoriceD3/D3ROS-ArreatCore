@@ -35,9 +35,12 @@ Global $QualityRecycle = 9
 Global $BreakTime = 360
 Global $Breakafterxxgames = Round(Random(4, 8))
 Global $TakeABreak = "false"
+;Global $PauseRepas = "false"
+
+Global $PartieSolo = "true"
 
 Global $FilterItemGround = "false"
-Global $profilFile = "settings.ini"
+Global $profilFile = "settings/settings.ini"
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
@@ -67,6 +70,13 @@ Global $LifeForPotion = 50
 Global $takepot = True
 Global $PotionStock = 100
 Global $TakeShrines = "false"
+
+; BuyPotion
+;Global $NbPotionBuy = 0
+
+; PauseToSurviveHC
+;Global $HCSecurity = "false"
+;Global $MinHCLife = 0
 
 Global $MaximumHatred = 125
 Global $MaximumDiscipline = 25
@@ -152,17 +162,30 @@ global $tab_aff2[15][2]=[ _
     dim $ignore_affix[1][2]
 
 	Global $Gest_affixe_ByClass = "false"
-global $key_cana=""
-global $cana_statut=""
-If Not FileExists($profilFile) Then
-	writeConfigs()
-EndIf
+    Global $key_cana=""
+    Global $cana_statut=""
+;~ If Not FileExists($profilFile) Then
+;~ 	writeConfigs()
+;~ EndIf
 
-loadConfigs()
-Init_grablistFile()
-Init_GrabListTab()
+;loadConfigs()
+;Init_grablistFile()
+;Init_GrabListTab()
 
-Func writeConfigs($profilFile = "settings.ini", $creation = 0)
+Func InitSettings($configFile = "settings/settings.ini", $grabListPath = "grablist/")
+	; ------------------------------------
+	If Not FileExists($profilFile) Then
+		writeConfigs($configFile, 1)
+	EndIf
+
+	loadConfigs($configFile)
+	Init_grablistFile($grabListPath)
+	Init_GrabListTab()
+	; ------------------------------------
+
+Endfunc
+
+Func writeConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "SequenceFile", $File_Sequence)
 	IniWrite($profilFile, "Run info", "UsePath", $UsePath)
 	IniWrite($profilFile, "Run info", "ResActivated", $ResActivated)
@@ -208,6 +231,7 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "BreakTime", $BreakTime)
 	IniWrite($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
 	IniWrite($profilFile, "Run info", "TakeABreak", $TakeABreak)
+	
 	IniWrite($profilFile,"Account info","ftpserver", $ftpserver)
 	IniWrite($profilFile,"Account info","ftpusername", $ftpusername)
 	IniWrite($profilFile,"Account info","ftppass", $ftppass)
@@ -286,12 +310,20 @@ Func writeConfigs($profilFile = "settings.ini", $creation = 0)
     iniwrite($profilFile,"Run info","Life_Explo",$Life_Explo)
 
 	iniWrite($profilFile,"Run info","Gest_affixe_ByClass", $Gest_affixe_ByClass)
+	
+	; BuyPotion
+	;IniWrite($profilFile, "Run info", "NbPotionBuy", $NbPotionBuy)
+	
+	; PauseToSurviveHC
+	;niWrite($profilFile, "Run info", "HCSecurity", $HCSecurity)
+	;IniWrite($profilFile, "Run info", "MinHCLife", $MinHCLife)
+	
 	IniWrite($profilFile, "Run info", "debug", $debugBot)
 	;IniWrite($profilFile,"Run info","Act", $Act)
 	IniWrite($profilFile, "Run info", "Devmode", $Devmode)
 EndFunc   ;==>writeConfigs
 
-Func loadConfigs($profilFile = "settings.ini", $creation = 0)
+Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	;; windows informations
 	;$winName			= IniRead($profilFile,"windows info","winName","Diablo III")
@@ -299,44 +331,102 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 
 	;; Account info
 	$d3pass = IniRead($profilFile, "Account info", "pass", 0)
-
 	$ftpserver = IniRead($profilFile, "Account info", "ftpserver", $ftpserver)
 	$ftpusername = IniRead($profilFile, "Account info", "ftpusername", $ftpusername)
 	$ftppass = IniRead($profilFile, "Account info", "ftppass", $ftppass)
 	$ftpfilename = IniRead($profilFile, "Account info", "ftpfilename", $ftpfilename)
 
 	;; Run info
-	$Hero_Axe_Z = IniRead($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
+	
+	;; Ajout config run
+	$Choix_Act_Run = IniRead($profilFile, "Run info", "Choix_Act_Run", $Choix_Act_Run)
+
+	Switch $Choix_Act_Run
+		Case 0
+			$Hero_Axe_Z = IniRead($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
+			$File_Sequence = IniRead($profilFile, "Run info", "SequenceFile", $File_Sequence)
+
+		Case 1
+			$Act1_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act1_Hero_Axe_Z", $Act1_Hero_Axe_Z)
+			$SequenceFileAct1 = IniRead($profilFile, "Run info", "SequenceFileAct1", $SequenceFileAct1)
+
+		Case 2
+			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
+			$SequenceFileAct2 = IniRead($profilFile, "Run info", "SequenceFileAct2", $SequenceFileAct2)
+
+		Case 3
+			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
+			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
+			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
+
+		Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
+			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
+			$SequenceFileAct333 = IniRead($profilFile, "Run info", "SequenceFileAct333", $SequenceFileAct333)
+
+		Case 362 ; Act 3 quête 6 sous quête 2 --> Tuez le briseur de siège
+			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
+			$SequenceFileAct362 = IniRead($profilFile, "Run info", "SequenceFileAct362", $SequenceFileAct362)
+
+		Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
+			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
+			$SequenceFileAct373 = IniRead($profilFile, "Run info", "SequenceFileAct373", $SequenceFileAct373)
+
+		Case -1
+			$SequenceFileAct1 = IniRead($profilFile, "Run info", "SequenceFileAct1", $SequenceFileAct1)
+			$SequenceFileAct2 = IniRead($profilFile, "Run info", "SequenceFileAct2", $SequenceFileAct2)
+			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
+			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
+			$Act1_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act1_Hero_Axe_Z", $Act1_Hero_Axe_Z)
+			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
+			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
+			$Sequence_Aleatoire = IniRead($profilFile, "Run info", "Sequence_Aleatoire", $Sequence_Aleatoire)
+			$NbreRunChangSeqAlea = IniRead($profilFile, "Run info", "NbreRunChangSeqAlea", $NbreRunChangSeqAlea)
+			$Nombre_de_Run = IniRead($profilFile, "Run info", "Nombre_de_Run", $Nombre_de_Run)
+			$NombreMiniAct1 = IniRead($profilFile, "Run info", "NombreMiniAct1", $NombreMiniAct1)
+			$NombreMiniAct2 = IniRead($profilFile, "Run info", "NombreMiniAct2", $NombreMiniAct2)
+			$NombreMiniAct3 = IniRead($profilFile, "Run info", "NombreMiniAct3", $NombreMiniAct3)
+			$NombreMaxiAct1 = IniRead($profilFile, "Run info", "NombreMaxiAct1", $NombreMaxiAct1)
+			$NombreMaxiAct2 = IniRead($profilFile, "Run info", "NombreMaxiAct2", $NombreMaxiAct2)
+			$NombreMaxiAct3 = IniRead($profilFile, "Run info", "NombreMaxiAct3", $NombreMaxiAct3)
+	EndSwitch
+	;; Fin d'ajout config run
+	
 	$monsterList = IniRead($profilFile, "Run info", "monsterList", $monsterList)
 	$SpecialmonsterList = IniRead($profilFile, "Run info", "SpecialmonsterList", $SpecialmonsterList)
-	$grabListFile = IniRead($profilFile, "Run info", "grabListFile", $grabListFile)
+	
+	;Selection de la difficulte et du pm des monstres
+	$difficulte = IniRead($profilFile, "Run info", "difficulte", $difficulte)
+	$PuisMonstre = IniRead($profilFile, "Run info", "PuisMonstre", $PuisMonstre)
+
+	;Selection du type de graliste pour le mode arma
+	$TypeDeGrabList = IniRead($profilFile, "Run info", "TypeDeGrabList", $TypeDeGrabList)
+
+	;Selection de la GrabListe suivant la difficulté
+	Switch $difficulte
+		Case 1
+			$grabListFile = IniRead($profilFile, "Run info", "grablistNormal", $grabListFile)
+
+		Case 2
+			$grabListFile = IniRead($profilFile, "Run info", "grablistDifficile", $grabListFile)
+
+		Case 3
+			$grabListFile = IniRead($profilFile, "Run info", "grablistExpert", $grabListFile)
+		
+		Case 4
+			$grabListFile = IniRead($profilFile, "Run info", "grablistCalvaire", $grabListFile)	
+		
+		Case 5
+			Switch $TypeDeGrabList
+				Case 1
+					$grabListFile = IniRead($profilFile, "Run info", "grabListTourment", $grabListFile)
+				Case 2
+					$grabListFile = IniRead($profilFile, "Run info", "grabListTourmentXP", $grabListFile)
+				Case 3
+					$grabListFile = IniRead($profilFile, "Run info", "grabListTourmentRecycle", $grabListFile)
+			EndSwitch
+	EndSwitch
+	
 	$QualityLevel = IniRead($profilFile, "Run info", "QualiteItem", $QualityLevel)
-	$a_range = IniRead($profilFile, "Run info", "attackRange", $a_range)
-	$g_range = IniRead($profilFile, "Run info", "grabRange", $g_range)
-	$a_time = IniRead($profilFile, "Run info", "attacktimeout", $a_time)
-	$g_time = IniRead($profilFile, "Run info", "grabtimeout", $g_time)
-	$repairafterxxgames = IniRead($profilFile, "Run info", "repairafterxxgames", $repairafterxxgames)
-	$maxgamelength = IniRead($profilFile, "Run info", "maxgamelength", $maxgamelength)
-	$Potions = IniRead($profilFile, "Run info", "Potions", $Potions)
-	$PreBuff1 = IniRead($profilFile, "Run info", "PreBuff1", $PreBuff1)
-	$ToucheBuff1 = IniRead($profilFile, "Run info", "ToucheBuff1", $ToucheBuff1)
-	$delaiBuff1 = IniRead($profilFile, "Run info", "delaiBuff1", $delaiBuff1)
-	$PreBuff2 = IniRead($profilFile, "Run info", "PreBuff2", $PreBuff2)
-	$ToucheBuff2 = IniRead($profilFile, "Run info", "ToucheBuff2", $ToucheBuff2)
-	$delaiBuff2 = IniRead($profilFile, "Run info", "delaiBuff2", $delaiBuff2)
-	$PreBuff3 = IniRead($profilFile, "Run info", "PreBuff3", $PreBuff3)
-	$ToucheBuff3 = IniRead($profilFile, "Run info", "ToucheBuff3", $ToucheBuff3)
-	$delaiBuff3 = IniRead($profilFile, "Run info", "delaiBuff3", $delaiBuff3)
-	$PreBuff4 = IniRead($profilFile, "Run info", "PreBuff4", $PreBuff4)
-	$ToucheBuff4 = IniRead($profilFile, "Run info", "ToucheBuff4", $ToucheBuff4)
-	$delaiBuff4 = IniRead($profilFile, "Run info", "delaiBuff4", $delaiBuff4)
-	$LifeForPotion = IniRead($profilFile, "Run info", "LifeForPotion", $LifeForPotion)
-	$PotionStock = IniRead($profilFile, "Run info", "PotionStock", $PotionStock)
-	$TakeShrines = IniRead($profilFile, "Run info", "TakeShrines", $TakeShrines)
-	$MonsterTri = IniRead($profilFile, "Run info", "MonsterTri", $MonsterTri)
-	$MonsterRefresh = IniRead($profilFile, "Run info", "MonsterRefresh", $MonsterRefresh)
-	$ItemRefresh = IniRead($profilFile, "Run info", "ItemRefresh", $ItemRefresh)
-	$MonsterPriority = IniRead($profilFile, "Run info", "MonsterPriority", $MonsterPriority)
 	$Unidentified = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
 	;recyclage
 	$Recycle = IniRead($profilFile, "Run info", "Recycle", $Recycle)
@@ -346,6 +436,161 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
 	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
 	$TakeABreak = IniRead($profilFile, "Run info", "TakeABreak", $TakeABreak)
+	;$PauseRepas = IniRead($profilFile, "Run info", "PauseRepas", $PauseRepas)
+	
+	;Fonction Iniatialisation du Skill suivant le Héros
+	$Heros = IniRead($profilFile, "Run info", "Heros", $Heros)
+
+	Switch $Heros
+		Case 1
+			InitSkillHeros("settings/settingsHero1.ini")
+		Case 2
+			InitSkillHeros("settings/settingsHero2.ini")
+		Case 3
+			InitSkillHeros("settings/settingsHero3.ini")
+		Case 4
+			InitSkillHeros("settings/settingsHero4.ini")
+		Case 5
+			InitSkillHeros("settings/settingsHero5.ini")
+		Case 6
+			InitSkillHeros("settings/settingsHero6.ini")
+		Case 7
+			InitSkillHeros("settings/settingsHero7.ini")
+		Case 8
+			InitSkillHeros("settings/settingsHero8.ini")
+		Case 9
+			InitSkillHeros("settings/settingsHero9.ini")
+		Case 10
+			InitSkillHeros("settings/settingsHero10.ini")
+	EndSwitch
+   
+	;choix du type de bot
+	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
+	$PartieSolo = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
+	
+	$debugBot = IniRead($profilFile, "Run info", "debug", 0)
+	;$Act = IniRead($profilFile,"Run info","Act", $Act)
+	$Devmode = IniRead($profilFile, "Run info", "Devmode", $Devmode)
+
+EndFunc   ;==>LoadConfigs
+
+Func InitSkillHeros($skillHeros)
+	;$grabListFile = IniRead($profilFile, "Run info", "grabListFile", $grabListFile)
+	
+	$Potions = IniRead($skillHeros, "Run info", "Potions", $Potions)
+
+	; pre-buff
+	$Key1 = IniRead($skillHeros, "Run info", "Key1", $Key1)
+	$Key2 = IniRead($skillHeros, "Run info", "Key2", $Key2)
+	$Key3 = IniRead($skillHeros, "Run info", "Key3", $Key3)
+	$Key4 = IniRead($skillHeros, "Run info", "Key4", $Key4)
+
+	$PreBuff1 = IniRead($skillHeros, "Run info", "PreBuff1", $PreBuff1)
+	$ToucheBuff1 = IniRead($skillHeros, "Run info", "ToucheBuff1", $ToucheBuff1)
+	$delaiBuff1 = IniRead($skillHeros, "Run info", "delaiBuff1", $delaiBuff1)
+
+	$PreBuff2 = IniRead($skillHeros, "Run info", "PreBuff2", $PreBuff2)
+	$ToucheBuff2 = IniRead($skillHeros, "Run info", "ToucheBuff2", $ToucheBuff2)
+	$delaiBuff2 = IniRead($skillHeros, "Run info", "delaiBuff2", $delaiBuff2)
+
+	$PreBuff3 = IniRead($skillHeros, "Run info", "PreBuff3", $PreBuff3)
+	$ToucheBuff3 = IniRead($skillHeros, "Run info", "ToucheBuff3", $ToucheBuff3)
+	$delaiBuff3 = IniRead($skillHeros, "Run info", "delaiBuff3", $delaiBuff3)
+
+	$PreBuff4 = IniRead($skillHeros, "Run info", "PreBuff4", $PreBuff4)
+	$ToucheBuff4 = IniRead($skillHeros, "Run info", "ToucheBuff4", $ToucheBuff4)
+	$delaiBuff4 = IniRead($skillHeros, "Run info", "delaiBuff4", $delaiBuff4)
+	
+	
+	;; Spells
+	$Skill_conf1[0] = IniRead($skillHeros, "Run info", "SpellOnLeft", $Skill_conf1[0])
+	$Skill_conf1[1] = IniRead($skillHeros, "Run info", "SpellDelayLeft", $Skill_conf1[1])
+	$Skill_conf1[2] = IniRead($skillHeros, "Run info", "SpellTypeLeft", $Skill_conf1[2])
+	$Skill_conf1[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeedsLeft", $Skill_conf1[3])
+	$Skill_conf1[4] = IniRead($skillHeros, "Run info", "SpellLifeLeft", $Skill_conf1[4])
+	$Skill_conf1[5] = IniRead($skillHeros, "Run info", "SpellDistanceLeft", $Skill_conf1[5])
+
+
+	$Skill_conf2[0] = IniRead($skillHeros, "Run info", "SpellOnRight", $Skill_conf2[0])
+	$Skill_conf2[1] = IniRead($skillHeros, "Run info", "SpellDelayRight", $Skill_conf2[1])
+	$Skill_conf2[2] = IniRead($skillHeros, "Run info", "SpellTypeRight", $Skill_conf2[2])
+	$Skill_conf2[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeedsRight", $Skill_conf2[3])
+	$Skill_conf2[4] = IniRead($skillHeros, "Run info", "SpellLifeRight", $Skill_conf2[4])
+	$Skill_conf2[5] = IniRead($skillHeros, "Run info", "SpellDistanceRight", $Skill_conf2[5])
+
+
+	$Skill_conf3[0] = IniRead($skillHeros, "Run info", "SpellOn1", $Skill_conf3[0])
+	$Skill_conf3[1] = IniRead($skillHeros, "Run info", "SpellDelay1", $Skill_conf3[1])
+	$Skill_conf3[2] = IniRead($skillHeros, "Run info", "SpellType1", $Skill_conf3[2])
+	$Skill_conf3[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds1", $Skill_conf3[3])
+	$Skill_conf3[4] = IniRead($skillHeros, "Run info", "SpellLife1", $Skill_conf3[4])
+	$Skill_conf3[5] = IniRead($skillHeros, "Run info", "SpellDistance1", $Skill_conf3[5])
+
+
+	$Skill_conf4[0] = IniRead($skillHeros, "Run info", "SpellOn2", $Skill_conf4[0])
+	$Skill_conf4[1] = IniRead($skillHeros, "Run info", "SpellDelay2", $Skill_conf4[1])
+	$Skill_conf4[2] = IniRead($skillHeros, "Run info", "SpellType2", $Skill_conf4[2])
+	$Skill_conf4[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds2", $Skill_conf4[3])
+	$Skill_conf4[4] = IniRead($skillHeros, "Run info", "SpellLife2", $Skill_conf4[4])
+	$Skill_conf4[5] = IniRead($skillHeros, "Run info", "SpellDistance2", $Skill_conf4[5])
+
+
+	$Skill_conf5[0] = IniRead($skillHeros, "Run info", "SpellOn3", $Skill_conf5[0])
+	$Skill_conf5[1] = IniRead($skillHeros, "Run info", "SpellDelay3", $Skill_conf5[1])
+	$Skill_conf5[2] = IniRead($skillHeros, "Run info", "SpellType3", $Skill_conf5[2])
+	$Skill_conf5[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds3", $Skill_conf5[3])
+	$Skill_conf5[4] = IniRead($skillHeros, "Run info", "SpellLife3", $Skill_conf5[4])
+	$Skill_conf5[5] = IniRead($skillHeros, "Run info", "SpellDistance3", $Skill_conf5[5])
+
+
+	$Skill_conf6[0] = IniRead($skillHeros, "Run info", "SpellOn4", $Skill_conf6[0])
+	$Skill_conf6[1] = IniRead($skillHeros, "Run info", "SpellDelay4", $Skill_conf6[1])
+	$Skill_conf6[2] = IniRead($skillHeros, "Run info", "SpellType4", $Skill_conf6[2])
+	$Skill_conf6[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds4", $Skill_conf6[3])
+	$Skill_conf6[4] = IniRead($skillHeros, "Run info", "SpellLife4", $Skill_conf6[4])
+	$Skill_conf6[5] = IniRead($skillHeros, "Run info", "SpellDistance4", $Skill_conf6[5])
+	
+	
+	; Routines
+	$LifeForPotion = IniRead($skillHeros, "Run info", "LifeForPotion", $LifeForPotion)
+	$PotionStock = IniRead($skillHeros, "Run info", "PotionStock", $PotionStock)
+	
+	; BuyPotion
+	;$NbPotionBuy = IniRead($skillHeros, "Run info", "NbPotionBuy", $NbPotionBuy)
+	
+	$TakeShrines = IniRead($skillHeros, "Run info", "TakeShrines", $TakeShrines)
+
+	$repairafterxxgames = IniRead($skillHeros, "Run info", "repairafterxxgames", $repairafterxxgames)
+	
+	$maxgamelength = IniRead($skillHeros, "Run info", "maxgamelength", $maxgamelength)
+	$a_range = IniRead($skillHeros, "Run info", "attackRange", $a_range)
+	$g_range = IniRead($skillHeros, "Run info", "grabRange", $g_range)
+	
+	$MonsterTri = IniRead($skillHeros, "Run info", "MonsterTri", $MonsterTri)
+	$MonsterRefresh = IniRead($skillHeros, "Run info", "MonsterRefresh", $MonsterRefresh)
+	$ItemRefresh = IniRead($skillHeros, "Run info", "ItemRefresh", $ItemRefresh)
+	$MonsterPriority = IniRead($skillHeros, "Run info", "MonsterPriority", $MonsterPriority)
+	$InventoryCheck = IniRead($skillHeros, "Run info", "InventoryCheck", $InventoryCheck)
+	
+	$a_time = IniRead($skillHeros, "Run info", "attacktimeout", $a_time)
+	$g_time = IniRead($skillHeros, "Run info", "grabtimeout", $g_time)
+	
+	$gestion_affixe = IniRead($skillHeros, "Run info", "gestion_affixe", $gestion_affixe)
+	$gestion_affixe_loot = IniRead($skillHeros, "Run info", "gestion_affixe_loot", $gestion_affixe_loot)
+	$BanAffixList = IniRead($skillHeros, "Run info", "BanAffixList", $BanAffixList)
+	$Gest_affixe_ByClass = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)		   
+	
+	$life_arcane = IniRead($skillHeros, "Run info", "Life_Arcane", $life_arcane)
+	$life_peste = IniRead($skillHeros, "Run info", "Life_Peste", $life_peste)
+	$life_profa = IniRead($skillHeros, "Run info", "Life_Profa", $life_profa)
+	$life_proj = IniRead($skillHeros, "Run info", "Life_Proj", $life_proj)
+	$life_ice = IniRead($skillHeros, "Run info", "Life_Ice", $life_ice)
+	$life_poison = IniRead($skillHeros, "Run info", "Life_Poison", $life_poison)
+	$life_explo = IniRead($skillHeros, "Run info", "Life_Explo", $life_explo)
+	$life_lave = IniRead($skillHeros, "Run info", "Life_Lave", $life_lave)
+	$life_mine = IniRead($skillHeros, "Run info", "Life_Mine", $life_mine)
+	$life_arm = IniRead($skillHeros, "Run info", "Life_Arm", $life_arm)
+	$life_spore = IniRead($skillHeros, "Run info", "Life_Spore", $life_spore)
 
 ;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
 ;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)
@@ -354,86 +599,14 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 ;~ 	$MaximumArcane = IniRead($profilFile, "Run info", "MaximumArcane", $MaximumArcane)
 ;~ 	$MaximumMana = IniRead($profilFile, "Run info", "MaximumMana", $MaximumMana)
 
-	$UsePath = StringLower(IniRead($profilFile, "Run info", "UsePath", $UsePath))
-	$ResActivated = StringLower(IniRead($profilFile, "Run info", "ResActivated", $ResActivated))
-	$ResLife = IniRead($profilFile, "Run info", "ResLife", $ResLife)
-	$File_Sequence = IniRead($profilFile, "Run info", "SequenceFile", $File_Sequence)
-
-	$Skill_conf1[0] = IniRead($profilFile, "Run info", "SpellOnLeft", $Skill_conf1[0])
-	$Skill_conf1[1] = IniRead($profilFile, "Run info", "SpellDelayLeft", $Skill_conf1[1])
-	$Skill_conf1[2] = IniRead($profilFile, "Run info", "SpellTypeLeft", $Skill_conf1[2])
-	$Skill_conf1[3] = IniRead($profilFile, "Run info", "SpellEnergyNeedsLeft", $Skill_conf1[3])
-	$Skill_conf1[4] = IniRead($profilFile, "Run info", "SpellLifeLeft", $Skill_conf1[4])
-	$Skill_conf1[5] = IniRead($profilFile, "Run info", "SpellDistanceLeft", $Skill_conf1[5])
-
-
-	$Skill_conf2[0] = IniRead($profilFile, "Run info", "SpellOnRight", $Skill_conf2[0])
-	$Skill_conf2[1] = IniRead($profilFile, "Run info", "SpellDelayRight", $Skill_conf2[1])
-	$Skill_conf2[2] = IniRead($profilFile, "Run info", "SpellTypeRight", $Skill_conf2[2])
-	$Skill_conf2[3] = IniRead($profilFile, "Run info", "SpellEnergyNeedsRight", $Skill_conf2[3])
-	$Skill_conf2[4] = IniRead($profilFile, "Run info", "SpellLifeRight", $Skill_conf2[4])
-	$Skill_conf2[5] = IniRead($profilFile, "Run info", "SpellDistanceRight", $Skill_conf2[5])
-
-
-	$Skill_conf3[0] = IniRead($profilFile, "Run info", "SpellOn1", $Skill_conf3[0])
-	$Skill_conf3[1] = IniRead($profilFile, "Run info", "SpellDelay1", $Skill_conf3[1])
-	$Skill_conf3[2] = IniRead($profilFile, "Run info", "SpellType1", $Skill_conf3[2])
-	$Skill_conf3[3] = IniRead($profilFile, "Run info", "SpellEnergyNeeds1", $Skill_conf3[3])
-	$Skill_conf3[4] = IniRead($profilFile, "Run info", "SpellLife1", $Skill_conf3[4])
-	$Skill_conf3[5] = IniRead($profilFile, "Run info", "SpellDistance1", $Skill_conf3[5])
-
-
-	$Skill_conf4[0] = IniRead($profilFile, "Run info", "SpellOn2", $Skill_conf4[0])
-	$Skill_conf4[1] = IniRead($profilFile, "Run info", "SpellDelay2", $Skill_conf4[1])
-	$Skill_conf4[2] = IniRead($profilFile, "Run info", "SpellType2", $Skill_conf4[2])
-	$Skill_conf4[3] = IniRead($profilFile, "Run info", "SpellEnergyNeeds2", $Skill_conf4[3])
-	$Skill_conf4[4] = IniRead($profilFile, "Run info", "SpellLife2", $Skill_conf4[4])
-	$Skill_conf4[5] = IniRead($profilFile, "Run info", "SpellDistance2", $Skill_conf4[5])
-
-
-	$Skill_conf5[0] = IniRead($profilFile, "Run info", "SpellOn3", $Skill_conf5[0])
-	$Skill_conf5[1] = IniRead($profilFile, "Run info", "SpellDelay3", $Skill_conf5[1])
-	$Skill_conf5[2] = IniRead($profilFile, "Run info", "SpellType3", $Skill_conf5[2])
-	$Skill_conf5[3] = IniRead($profilFile, "Run info", "SpellEnergyNeeds3", $Skill_conf5[3])
-	$Skill_conf5[4] = IniRead($profilFile, "Run info", "SpellLife3", $Skill_conf5[4])
-	$Skill_conf5[5] = IniRead($profilFile, "Run info", "SpellDistance3", $Skill_conf5[5])
-
-
-	$Skill_conf6[0] = IniRead($profilFile, "Run info", "SpellOn4", $Skill_conf6[0])
-	$Skill_conf6[1] = IniRead($profilFile, "Run info", "SpellDelay4", $Skill_conf6[1])
-	$Skill_conf6[2] = IniRead($profilFile, "Run info", "SpellType4", $Skill_conf6[2])
-	$Skill_conf6[3] = IniRead($profilFile, "Run info", "SpellEnergyNeeds4", $Skill_conf6[3])
-	$Skill_conf6[4] = IniRead($profilFile, "Run info", "SpellLife4", $Skill_conf6[4])
-	$Skill_conf6[5] = IniRead($profilFile, "Run info", "SpellDistance4", $Skill_conf6[5])
-
-	$Key1 = IniRead($profilFile, "Run info", "Key1", $Key1)
-	$Key2 = IniRead($profilFile, "Run info", "Key2", $Key2)
-	$Key3 = IniRead($profilFile, "Run info", "Key3", $Key3)
-	$Key4 = IniRead($profilFile, "Run info", "Key4", $Key4)
-
-	$BanAffixList=iniread($profilFile,"Run info","BanAffixList",$BanAffixList)
-    $gestion_affixe=iniread($profilFile,"Run info","gestion_affixe",$gestion_affixe)
-    $gestion_affixe_loot=iniread($profilFile,"Run info","gestion_affixe_loot",$gestion_affixe_loot)
-    $Life_Arcane=iniread($profilFile,"Run info","Life_Arcane",$Life_Arcane)
-    $Life_Peste=iniread($profilFile,"Run info","Life_Peste",$Life_Peste)
-    $Life_Profa=iniread($profilFile,"Run info","Life_Profa",$Life_Profa)
-    $Life_Ice=iniread($profilFile,"Run info","Life_Ice",$Life_Ice)
-    $Life_Explo=iniread($profilFile,"Run info","Life_Explo",$Life_Explo)
-    $Life_Arm=iniread($profilFile,"Run info","Life_Arm",$Life_Arm)
-    $Life_Lave=iniread($profilFile,"Run info","Life_Lave",$Life_Lave)
-    $Life_Proj=iniread($profilFile,"Run info","Life_Proj",$Life_Proj)
-	$Life_Poison=iniread($profilFile,"Run info","Life_Poison",$Life_Poison)
-    $Life_Spore=iniread($profilFile,"Run info","Life_Spore",$Life_Spore)
-    $Life_Mine=iniread($profilFile,"Run info","Life_Mine",$Life_Mine)
-
-	$Gest_affixe_ByClass=iniread($profilFile,"Run info","Gest_affixe_ByClass",$Gest_affixe_ByClass)
-
-	$InventoryCheck = IniRead($profilFile, "Run info", "InventoryCheck", $InventoryCheck)
-
-	$debugBot = IniRead($profilFile, "Run info", "debug", 0)
-	;$Act = IniRead($profilFile,"Run info","Act", $Act)
-	$Devmode = IniRead($profilFile, "Run info", "Devmode", $Devmode)
-
+	$UsePath = StringLower(IniRead($skillHeros, "Run info", "UsePath", $UsePath))
+	$ResActivated = StringLower(IniRead($skillHeros, "Run info", "ResActivated", $ResActivated))
+	$ResLife = IniRead($skillHeros, "Run info", "ResLife", $ResLife)
+	
+	;PauseToSurviveHC
+	;$HCSecurity = IniRead($skillHeros, "Run info", "HCSecurity", $HCSecurity)
+	;$MinHCLife = IniRead($skillHeros, "Run info", "MinHCLife", $MinHCLife)
+	
 	#cs
 	If $RightClickSpellEnergy <> "" And $RightClickSpellEnergy <> "discipline" And $RightClickSpellEnergy <> "hatred" And $RightClickSpellEnergy <> "spirit" And $RightClickSpellEnergy <> "arcane" And $RightClickSpellEnergy <> "mana" And $RightClickSpellEnergy <> "fury" Then
 		MsgBox(0, "Erreur non de variable", "La variable '$RightClickSpellEnergy' initialisé dans le setting.ini est mal écrite")
@@ -456,5 +629,4 @@ Func loadConfigs($profilFile = "settings.ini", $creation = 0)
 		Terminate()
 	EndIf
 	#ce
-EndFunc   ;==>loadConfigs
-
+EndFunc   ;==>InitSkillHeros

@@ -1,0 +1,26 @@
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_
+head=voodooMask_|spiritStone_|WizardHat_|Helm_
+
+fweapon=DPS:850 and WeaponAttacksPerSecond:1.20 and Sockets:1 and (leach:2 or loh:100 or CritDamage:40)
+famu=((CritDamage:40 and (CritChance:5 or AtkSpeedBonus:5)) or (CritChance:5 and AtkSpeedBonus:5))
+fring=((CritDamage:25 and (CritChance:3 or AtkSpeedBonus:5)) or (CritChance:3 and AtkSpeedBonus:5))
+fgloves=((AtkSpeedBonus:5 and (CritChance:5 or CritDamage:25)) and Vita:50 and (Str:150 or Int:150 or Dex:150)
+fbracers=CritChance:4 and Vita:50 and Allres:50 and (Str:150 or Int:150 or Dex:150)
+fFollowerItem_Enchantress=Int:100 and mf:10
+fpants=Sockets:2 and Allres:6 and Vita:80 and (Str:150 or Int:150 or Dex:150)
+fchestArmor=Sockets:3 and Resall:60 and (Str:150 or Int:150 or Dex:150) and Vita:50
+fhead=Sockets:1 and (Str:100 or Int:100 or Dex:100)
+fboots=MovSpeed:12 and Resall:40 and (Str:100 or Int:100 or Dex:100)
+
+GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_Smith_Drop|Crafting_Tier_04B|Crafting_Tier_04C|Crafting_Tier_04A|CraftingReagent_Legendary_|Emerald_08|Ruby_08|Diamond_08|Topaz_08|Amethyst_08
+
+Amulet_[q:6]
+Ring_[q:6]
+weapon1h[q:6](fweapon)
+Gloves_[q:6](fgloves)
+Bracers_[q:6](fbracers)
+FollowerItem_Enchantress_[q:6](fFollowerItem_Enchantress)
+pants_[q:6](fpants)
+chestArmor_[q:6](fchestArmor)
+head[q:6](fhead)
+Boots_[q:6](fboots)

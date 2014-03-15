@@ -1,0 +1,52 @@
+                                 INFOS RUN ACTE 1
+PM 10
+Runs : 1
+Morts : 0
+Résurrections : 0
+Déconnexions  : 0
+Sanctuaires Pris : 0
+Elites Rencontrés : 0
+Success Runs : 100%   ( 0 Avortés )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 INFOS COFFRE
+Nombre Objets Recyclés : 0
+Nombre de Legs au Coffre : 0
+Nombre de Rares ID au Coffre : 0
+Nombre de Rares Unid au Coffre : 0
+Objets Stockés Dans le Coffre : 0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 INFOS GOLD
+Gold au Coffre : 421 027 781
+Gold Total Obtenu  : 0
+Gold Moyen/Run : 0
+Gold Moyen/Heure : 0
+Perte Moyenne/Heure : 0   (0%)
+Nombre d'Objets Vendus :  0  /  0   (0%)
+Gold Obtenu par Collecte  :    0   (0%)
+Nombre de Réparations : 0 / - 0   (- 0%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 INFOS TEMPS 
+Durée Moyenne/Run : 0
+Temps Total De Bot:   0 s
+Temps Total En Jeu :   0 s (0%)
+Pauses Effectuées : 0  /  0 s (0%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 INFOS XP
+Bonus d'XP : 33 %
+XP Obtenue : 0 K
+XP Moyenne/Run : 0 K
+XP Moyenne/Heure : 0 K
+Perte Moyenne/Heure : -0 K (0%)
+Temps Avant Prochain LVL : 0 s
+Temps Avant Parangon 100 : 0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 INFOS PERSO 
+Barbarian  60 [ 35 ] 
+PickUp Radius  : 14
+Movement Speed : 12 %
+Gold Find Total      : 355 %
+      Equipement : 0 %
+Magic Find Total     : 355 %
+      Equipement : 0 %
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Acte 3 en automatique

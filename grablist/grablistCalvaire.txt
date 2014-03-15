@@ -1,0 +1,16 @@
+fweapon=dps:900 and WeaponAttacksPerSecond:1.20 and (Sockets:1 or Sockets:2)
+famu=CritChance:6 and CritDamage:20 or (AtkSpeedBonus:6 and CritChance:6)
+fring=CritChance:5 or CritDamage:10 or (AtkSpeedBonus:6 and CritChance:4)
+fgloves=CritChance:9 and CritDamage:20
+fbracers=CritChance:6
+fhelm=CritChance:5 and Dex:200 and Sockets:1
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_
+
+GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_Smith_Drop|Crafting_Tier_04B|Crafting_Tier_04C|Crafting_Tier_04A|CraftingReagent_Legendary_|Emerald_08|Ruby_08|Diamond_08|Topaz_08|Amethyst_08|key
+
+weapon1h[q:6][ilvl:60](fweapon)
+Amulet_[q:6][ilvl:60](famu)
+Ring_[q:6][ilvl:60](fring)
+Gloves_[q:6][ilvl:60](fgloves)
+Bracers_[q:6][ilvl:60](fbracers)
+Helm_[q:6][ilvl:60](fhelm)
