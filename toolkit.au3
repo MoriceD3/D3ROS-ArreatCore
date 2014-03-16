@@ -1468,7 +1468,7 @@ Func FilterBackpack()
 			ElseIf ($quality = 6) Then
 				$nbRares += 0 ; on definit les rares
 			EndIf
-			
+
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
 			;;;If $Uni_manuel = true Then ; pacht 1.08
@@ -1496,7 +1496,7 @@ Func FilterBackpack()
 			$return[$i][1] = $__ACDACTOR[$i][4] ;definit la ligne de l'item
 			$return[$i][3] = $quality
 
-			;;;If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier); pacht 1.08 
+			;;;If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier); pacht 1.08
 			If $itemDestination = "Stash_Filtre" Then ;Si c'est un item à filtrer
 				If checkFiltreFromtable($GrabListTab, $__ACDACTOR[$i][1], $CurrentIdAttrib) Then ;on lance le filtre sur l'item
 					_log('valide', 1)
@@ -1522,7 +1522,7 @@ Func FilterBackpack()
 				EndIf
 			Next
 		EndIf
-		
+
 		Send("{SPACE}") ; make sure we close everything
 
 
@@ -3064,7 +3064,7 @@ Func KillMob($name, $offset, $Guid, $test_iterateallobjectslist2)
         ;loop the attack until the mob is dead
 
         If $elite Then $CptElite += 1;on compte les elite
-		
+
 		_log("Attacking : " & $name & "; Type : " & $elite);
 
 
@@ -3130,7 +3130,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
         $elite = DetectElite($Guid)
         ;loop the attack until the mob is dead
-		
+
 		If $elite Then $CptElite += 1;on compte les elite
 
         _log("Attacking : " & $Name & "; Type : " & $elite);
@@ -3365,7 +3365,7 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 EndFunc   ;==>CheckItem
 
 Func InventoryMove($col = 0, $row = 0);pacht 8.2e
-   
+
 	;$Coords = UiRatio(530 + ($col * 27), 338 + ($row * 27))
 	;MouseMove($Coords[0], $Coords[1], 2)
 	;MouseClick("right", $XCoordinate, $YCoordinate)
@@ -3385,8 +3385,8 @@ Func InventoryMove($col = 0, $row = 0);pacht 8.2e
 	$YCoordinate = $FirstCaseY + $row * $SizeCaseY
 
 	MouseMove($XCoordinate, $YCoordinate, 2)
-	
-	
+
+
 EndFunc   ;==>InventoryMove
 
 ;;--------------------------------------------------------------------------------
@@ -3602,8 +3602,8 @@ Func TakeWPV2($WPNumber=0)
 			;MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
 
 			ClickUI($NameUI)
-			
-			
+
+
 
 			Local $areatry = 0
 			While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
@@ -3613,7 +3613,7 @@ Func TakeWPV2($WPNumber=0)
 			WEnd
 
 			Sleep(500)
-			
+
 			While Not offsetlist()
 				Sleep(10)
 			WEnd
@@ -3747,7 +3747,7 @@ Func _resumegame()
 		$BreakCounter = 0;on remet le compteur a 0
 		$BreakTimeCounter += 1;on compte les pause effectuer
 		$tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
-	EndIf  
+	EndIf
 
 
 	;_randomclick(135, 285)
@@ -3963,13 +3963,13 @@ Func Terminate()
 EndFunc   ;==>Terminate
 
 Func StashAndRepairTerminate()
-   
+
    GoToTown()
    StashAndRepair()
    _leavegame()
    Sleep(6000)
    Terminate()
-   
+
 EndFunc  ;==>StashAndRepairTerminate
 
 Func extendedstats()
@@ -4017,7 +4017,7 @@ EndFunc   ;==>_log
 #ce
 Func _log($text, $forceDebug = 0)
 	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text
- 
+
 	If $forceDebug == 1 or $debugBot == 1 Then
 		$file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
 		If $file = -1 Then
@@ -4027,7 +4027,7 @@ Func _log($text, $forceDebug = 0)
 		EndIf
 		FileClose($file)
 	EndIf
- 
+
 	ConsoleWrite(@MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
 EndFunc   ;==>_log
 
@@ -4451,7 +4451,7 @@ Func StatsDisplay()
 		Local $GoldByRepaireRatio = 0
 		Local $dif_timer_stat_game_Ratio = 0
 		Local $dif_timer_stat_pause_Ratio = 0
-		
+
 		startIterateLocalActor($index, $offset, $count)
         While iterateLocalActorList($index, $offset, $count, $item)
                 If StringInStr($item[1], "GoldCoin-") Then
@@ -4564,6 +4564,7 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & "Deconnexions  : " & $disconnectcount & @CRLF
 		$DebugMessage = $DebugMessage & "Sanctuaires Pris : " & $CheckTakeShrineTaken & @CRLF
 		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
+		$DebugMessage = $DebugMessage & "Coffres Ouverts : " & $CoffreTaken & @CRLF
 		$DebugMessage = $DebugMessage & "Success Runs : " & Round($successratio * 100) & "%   ( " & ($Totalruns - $success) & " Avortés )" & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 		$DebugMessage = $DebugMessage & "                                 INFOS COFFRE" & @CRLF
@@ -4750,9 +4751,9 @@ Func shrine($name, $offset, $Guid)
         EndIf
                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
         WEnd
-		
+
 		$CheckTakeShrineTaken += 1;on compte les CheckTakeShrine qu'on prend
-		
+
 	EndFunc   ;==>shrine
 
 
@@ -4780,7 +4781,10 @@ If TimerDiff($begin) > 80000 Then
             Return false
         EndIf
                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-        WEnd
+		WEnd
+
+			$CoffreTaken += 1;on compte les coffres qu'on ouvre
+
 EndFunc   ;==>shrine
 
 
@@ -5657,7 +5661,7 @@ Func TpRepairAndBack()
 	$PortBack = False
 
     If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
-			 
+
 	While Not _intown()
 		if Not _TownPortalnew() Then
 			$GameFailed=1
@@ -5672,7 +5676,7 @@ Func TpRepairAndBack()
 	StashAndRepair()
 
 	If $PortBack Then
-		
+
 		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
 		SafePortBack()
 
@@ -5702,7 +5706,7 @@ Func StashAndRepair()
 	$SkippedMove = 0
 
 	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_SALE) ; TChat
-	
+
 	While _checkInventoryopen() = False
 		Send("i")
 		Sleep(Random(200, 300))
@@ -5830,12 +5834,12 @@ Func StashAndRepair()
 	   If $ToTrash = -1 Then ; si pas items a aller vendre on répare au forgeron
 		  ;on mesure l'or avant la reparation
 		  Local $GoldBeforeRepaire = GetGold()
-		  
+
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
 		  Sleep(100)
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
 		  Sleep(100)
-		  
+
 		  ;on mesure l'or apres
 		  Local $GoldAfterRepaire = GetGold()
 		  $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
@@ -5885,19 +5889,19 @@ Func StashAndRepair()
 
 	   ;on mesure l'or avant la reparation
 	   Local $GoldBeforeRepaire = GetGold()
-	   
+
 	   BuyPotion()
 	   Repair()
 
 	   ;on mesure l'or apres
 	   Local $GoldAfterRepaire = GetGold()
 	   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
-	   
+
 	   If not @error Then
 
 		  ;on mesure l'or avant la vente d'objets
 		  Local $GoldBeforeSell = GetGold()
-		  
+
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
 
 		  CheckWindowD3Size()
@@ -6334,7 +6338,7 @@ Func SafePortBack()
 			$areatry += 1
 		WEnd
 
-		If $Newarea <> $Curentarea Then 
+		If $Newarea <> $Curentarea Then
 			$NewAreaOk = 1
 		Else
 			$HearthPortalTry += 1
@@ -6347,7 +6351,7 @@ Func SafePortBack()
 		While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
 			Sleep(10)
 		WEnd
-		
+
 		If TimerDiff($hTimer) >= 30000 Then
 			_Log('Fail to use OffsetList - SafePortBack')
 		EndIf
@@ -6788,7 +6792,7 @@ EndFunc ; ==> CheckZoneBeforeTP()
 Func _TownPortalnew($mode=0)
 
     If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_TP) ; TChat
-	
+
 	Local $compt = 0
 
 	While Not _intown() And _ingame() And Not _playerdead() ; "playerdead" quand on meurt, je les vue souvent vouloir tp
@@ -7143,8 +7147,8 @@ Func IterateFilterAffix()
 			   Next
 
 			   if StringInStr($item[1],"molten_trail") then $item_affix_2D[$i][10] = $range_lave
-			   if (StringInStr($item[1],"woodWraith_explosion") or StringInStr($item[1],"WoodWraith_sporeCloud_emitter") ) then  $item_affix_2D[$i][10] = $range_ice   
-			   if StringInStr($item[1],"sandwasp_projectile") then $item_affix_2D[$i][10] = $range_arcane 
+			   if (StringInStr($item[1],"woodWraith_explosion") or StringInStr($item[1],"WoodWraith_sporeCloud_emitter") ) then  $item_affix_2D[$i][10] = $range_ice
+			   if StringInStr($item[1],"sandwasp_projectile") then $item_affix_2D[$i][10] = $range_arcane
 			   if StringInStr($item[1],"Desecrator") then $item_affix_2D[$i][10] = $range_profa
 			   if (StringInStr($item[1],"bomb_buildup") or StringInStr($item[1],"Icecluster") or stringinstr($item[1],"Molten_deathExplosion") or stringinstr($item[1],"Molten_deathStart")) then  $item_affix_2D[$i][10] = $range_ice
 			   if (StringInStr($item[1],"demonmine_C") or StringInStr($item[1],"Crater_DemonClawBomb")) then $item_affix_2D[$i][10] = $range_mine
@@ -7249,14 +7253,14 @@ Endfunc
 
 Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act avant d'interagir
     GetAct()
-	
+
 	If _checkInventoryopen() = True Then
 		Send("i")
 		Sleep(150)
 	EndIf
 
 	Switch $BeforeInteract
-		 
+
 		 Case 1 ; Smith
 			Switch $Act
 			   Case 1
@@ -7273,15 +7277,15 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 				  Case 2 to 4
 						;do nothing act 2, 3 and 4
 			EndSwitch
-	
+
 	EndSwitch
 
 	Sleep(100)
 EndFunc   ;==>MoveTo
- 
+
 ;~ Func getGold() ; Fonction qui mesure l'or
 ;~         IterateLocalActor()
-;~         $foundobject = 0      
+;~         $foundobject = 0
 ;~         For  $i = 0 To UBound ( $__ACTOR ,1 )-1
 ;~                 If StringInStr($__ACTOR[$i][2],"GoldCoin-") Then
 ;~                         return IterateActorAtribs( $__ACTOR[$i][1],$Atrib_ItemStackQuantityLo)
@@ -7293,7 +7297,7 @@ EndFunc   ;==>MoveTo
 
 Func getGold()
     Local $index, $offset, $count, $item[4]
-   
+
     Sleep(500)
 	startIterateLocalActor($index, $offset, $count)
     While iterateLocalActorList($index, $offset, $count, $item)
@@ -7305,19 +7309,19 @@ Func getGold()
 
 EndFunc	;==>getGold
 
-Func BuyPotion()	
-	
+Func BuyPotion()
+
 	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
 	Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
-	
+
 	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
 	   If $potinstock <= ($PotionStock + 10) Then ; git corection parce que pas asser utiliser
-		  
+
 		  MoveTo($Potion_Vendor) ; on se positionne
-		  
+
 		  InteractByActorName($PotionVendor)
 		  Sleep(700)
-		  
+
 		  Local $vendortry = 0
 		  While _checkVendoropen() = False ; si la fenêtre n'y est pas
 			   If $vendortry <= 4 Then ; on essaye 5 fois
@@ -7331,9 +7335,9 @@ Func BuyPotion()
 				  Return False  ; si pas fenêtre on sort de la fonction
 			   EndIf
 		  WEnd
-		  
+
 		  _Log('Achat de ' & $NbPotionBuy & ' potions')
-		  
+
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2") ; potion tap
 		  Sleep(200)
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0"); potion Button
@@ -7342,20 +7346,20 @@ Func BuyPotion()
 		  Sleep(200)
 		  Send("{SHIFTDOWN}") ; pour acheter en paquet 5
 		  Sleep(100)
-		  
+
 		  Local $Click = 0
 		  While $Click <> $ClickPotion ; tant qu'on n'a pas atteint le nombre de clic
 			   MouseClick('right')
 			   Sleep(Random(150, 200))
 			   $Click += 1
 		  WEnd
-		  
+
 		  Sleep(200)
 		  Send("{SHIFTUP}")
 		  Sleep(100)
 		  Send("{SPACE}"); ferme l'inventaire
 		  Sleep(500)
-		  
+
 		  MoveTo($Potion_Vendor) ; on se repositionne
 	   Else
 		  _Log('Vous avez asser potion')
