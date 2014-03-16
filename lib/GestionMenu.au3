@@ -42,7 +42,7 @@ Func SelectGameType($SelectGameType, $auto)
 		SelectHero()
 	EndIf
 
-	Sleep(Random(2500, 3000, 1))
+	Sleep(Random(1500, 2000, 1))
 
 	If $TypedeBot <> 2 Then
 		;Selection -> CHANGER DE QUETE
@@ -330,8 +330,9 @@ EndFunc   ;==>SelectQuest
 Func SelectHero()
 
 	; bonton Changer de heros
-	MouseMove(Random(350, 430), Random(515, 520), Random(12, 14, 1))
-	MouseClick("left")
+	;MouseMove(Random(350, 430), Random(515, 520), Random(12, 14, 1))
+	_Log("Switch Hero")
+	ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Slot1.LayoutRoot.SwitchHero")
 	Sleep(Random(600, 800, 1))
 
 	;positionnement dans la liste des heros
@@ -414,11 +415,9 @@ Func SelectHero()
 	Sleep(Random(600, 800, 1))
 
 	;Deplacement sur le bp choisir
-	MouseMove(Random(330, 450, 1), Random(512, 515, 1), Random(12, 14, 1))
-	Sleep(Random(600, 800, 1))
-	;Clic sur le bouton choisir temps mini de chargement du hero 4000ms
-	MouseClick("left")
-	Sleep(Random(2500, 3000, 1))
+	;MouseMove(Random(330, 450, 1), Random(512, 515, 1), Random(12, 14, 1))
+	ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton")
+	Sleep(Random(2000, 2500, 1)) ; temps mini de chargement du hero 2000ms
 EndFunc   ;==>SelectHero
 
 Func SelectDifficultyMonsterPower()
@@ -506,3 +505,8 @@ Func IsGameDifficultyOpened()
     $GameDifficultylookfor = "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"
     Return fastcheckuiitemvisible($GameDifficultylookfor, 1, 253)
 EndFunc   ;==>IsGameDifficultyOpened
+
+Func IsMenuHeroSelectOpened()
+    $MenuHeroSelectlookfor = "Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton"
+    Return fastcheckuiitemvisible($MenuHeroSelectlookfor, 1, 1022)
+EndFunc   ;==>IsMenuHeroSelectOpened
