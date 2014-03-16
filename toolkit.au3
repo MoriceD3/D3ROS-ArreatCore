@@ -3795,14 +3795,17 @@ Func _leavegame()
 		WEnd
 		;_randomclick(134, 264)
 
-		While NOT fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644)
-			sleep(50)
+		While NOT fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644);tant que boton exit nest pas la
+			Send("{ESCAPE}")
+			Sleep(500)
 			_log("Menu Open but btn leaveGame Doesnt Exit yet")
 		WEnd
 
-		While fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644);update 8.2e
+		Local $TryLeave = 0
+		While fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644) And $TryLeave < 5 ;après 4 fois on laisse la main au reste du code,car il y a forcément déco
 			ClickUI("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1644)
 			Sleep(Random(600, 1200, 1))
+			$TryLeave += 1
 		WEnd
 
 		Sleep(Random(500, 1000, 1))
