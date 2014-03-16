@@ -2819,6 +2819,42 @@ Func Is_Coffre($item)
 	EndIF
 EndFunc
 
+Func Is_Health($item)
+ 	If (StringInStr($item[1], "HealthWell") or StringInStr($item[1],"HealthGlobe")) and $item[9] < 35 Then
+ 		Return True
+ 	Else
+ 		Return False
+ 	EndIf
+EndFunc   ;==>Is_Health
+
+Func Is_Power($item)
+	If StringInStr($item[1], "PowerGlobe") and $item[9] < 35 Then
+		Return True
+	Else
+		Return False
+	EndIf
+EndFunc   ;==>Is_Power
+
+Func handle_Power(ByRef $item)
+	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+		If Power($item[1], $item[8], $item[0]) = False Then
+			$shrinebanlist = $shrinebanlist & "|" & $item[8]
+		EndIf
+	EndIf
+EndFunc   ;==>handle_Power
+
+Func handle_Health(ByRef $item)
+	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+		If Health($item[1], $item[8], $item[0]) = False Then
+			$shrinebanlist = $shrinebanlist & "|" & $item[8]
+		EndIf
+	EndIf
+EndFunc   ;==>handle_Health
+
 Func handle_Coffre(ByRef $item)
 		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
@@ -3033,6 +3069,10 @@ Func Attack()
 					 handle_Coffre($item)
 				  Case Is_Decor_Breakable($item)
 					 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				  Case Is_Health($item)
+					 handle_Health($item)
+ 				  Case Is_Power($item)
+ 					 handle_Power($item)
 			EndSelect
 			Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList)
 			Dim $test_iterateallobjectslist = $buff_array
@@ -4788,6 +4828,69 @@ If TimerDiff($begin) > 80000 Then
 EndFunc   ;==>shrine
 
 
+Func Health($name, $offset, $Guid)
+
+         $life = GetLifep()
+         Local $timeForHealth = TimerInit()
+         While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+
+                 Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+                 If $distance >= 8 Then
+                         If $life < ($LifeForHealth / 100) Then
+                                 If TimerDiff($timeForHealth) > 2000 Then
+                                         _log('health is banned because time out')
+                                 Return False
+                         Else
+                                 $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+                                 MouseMove($Coords[0], $Coords[1], 3)
+                                 EndIf
+                         ElseIf $life = 1 Then
+                                 _log('Health globe ignore (already full life)')
+                                 Return True
+                         Endif
+                 ElseIf $distance < 3 Then
+                         _log('Health globe taken (distance=' & $distance & ')')
+                         Return True
+                 EndIf
+
+                 If TimerDiff($timeForHealth) > 3000 Then
+                         _log('Fake health')
+                         Return False
+                 EndIf
+
+                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+         WEnd
+
+ EndFunc   ;==>health
+
+ Func Power($name, $offset, $Guid)
+
+         Local $timeForPower = TimerInit()
+         While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+
+                 Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+                 If $distance >= 8 Then
+                           If TimerDiff($timeForPower) > 2000 Then
+                                  _log('Power globe is banned because time out')
+                                  Return False
+                           Else
+                                  $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+                                  MouseMove($Coords[0], $Coords[1], 3)
+                           EndIf
+                 ElseIf $distance < 3 Then
+                    _log('Power globe taken (distance=' & $distance & ')')
+                    Return True
+                 EndIf
+
+                 If TimerDiff($timeForPower) > 3000 Then
+                    _log('Fake power globe')
+                    Return False
+                 EndIf
+
+                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+         WEnd
+
+ EndFunc   ;==>power
 
 ;;--------------------------------------------------------------------------------
 ; Function:                     Die2Fast()
