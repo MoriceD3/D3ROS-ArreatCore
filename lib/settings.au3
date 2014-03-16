@@ -556,7 +556,7 @@ Func InitSkillHeros($skillHeros)
 	; Routines
 	$LifeForPotion = IniRead($skillHeros, "Run info", "LifeForPotion", $LifeForPotion)
 	$PotionStock = IniRead($skillHeros, "Run info", "PotionStock", $PotionStock)
-	$LifeForHealth = IniRead($profilFile, "Run info", "LifeForHealth", $LifeForHealth)
+	$LifeForHealth = IniRead($skillHeros, "Run info", "LifeForHealth", $LifeForHealth)
 
 	; BuyPotion
 	;$NbPotionBuy = IniRead($skillHeros, "Run info", "NbPotionBuy", $NbPotionBuy)
