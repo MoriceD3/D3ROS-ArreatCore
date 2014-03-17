@@ -5,8 +5,8 @@
 
 Func SetConfigPartieSolo();reconfiguration du settings.ini
    	_Log("Partie en équipe, configuration du settings.ini")
-	$TakeABreak = "false"
-	$PauseRepas = "false"
+	$TakeABreak = False
+	$PauseRepas = False
 	$ResLife = 100
 EndFunc   ;==>SetConfigPartieSolo
 

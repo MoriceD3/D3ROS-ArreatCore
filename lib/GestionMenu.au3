@@ -242,7 +242,7 @@ Func SelectQuest()
 			$act = 0
 			$NombreRun_Encour = 0
 			;Chainage aléatoire ou non des actes
-			If $Sequence_Aleatoire = "True" Then
+			If $Sequence_Aleatoire Then
 				;$ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 				Local $ligne = Random(0, 5, 1)
 				For $colonne = 0 To 2 Step 1
