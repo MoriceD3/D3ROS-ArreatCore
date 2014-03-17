@@ -128,7 +128,6 @@ Global $GameOverTime = False
 Global $DebugMessage
 Global $fichierlog = "log-" & @YEAR & "_" & @MDAY & "_" & @MON & "_" & @HOUR & "h" & @MIN & ".txt"
 Global $fichierstat = "stat_" & @YEAR & "_" & @MON & "_" & @MDAY & "-" & @HOUR & "h" & @MIN & ".txt"
-Global $dif_timer_stat_formater = 0
 Global $dif_timer_stat_moyen = 0
 Global $Current_Hero_Z = 0
 Local $posd3 = WinGetPos("Diablo III")
@@ -183,6 +182,7 @@ CheckWindowD3()
 ;;--------------------------------------------------------------------------------
 ;;      Include some files
 ;;--------------------------------------------------------------------------------
+#include "lib\Utils.au3"
 #include "lib\sequence.au3"
 #include "lib\settings.au3"
 #include "lib\skills.au3"
@@ -542,6 +542,51 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 			;sleep(200)
 		;WEnd
 ;_log("trouvé")
+
+$profiler = startProfiling()
+For $i = 0 To 59999
+	_format_time($i)
+Next
+endProfiling($profiler,"_format_time : S")
+
+$profiler = startProfiling()
+For $i = 0 To 59999
+	formatTime($i)
+Next
+endProfiling($profiler,"formatTime : S" )
+
+consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
+consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
+
+$profiler = startProfiling()
+For $i = 60000 To 359999
+	_format_time($i-12)
+Next
+endProfiling($profiler,"_format_time : M")
+
+$profiler = startProfiling()
+For $i = 60000 To 359999
+	formatTime($i)
+Next
+endProfiling($profiler,"formatTime : M")
+
+consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
+consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
+
+$profiler = startProfiling()
+For $i = 250000000 To 250300000
+	_format_time($i)
+Next
+endProfiling($profiler,"_format_time : H")
+
+$profiler = startProfiling()
+For $i = 250000000 To 250300000
+	formatTime($i)
+Next
+endProfiling($profiler,"formatTime : H")
+
+consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
+consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
