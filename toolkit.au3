@@ -1104,13 +1104,13 @@ _log("Lost area : " & $warnarea,1);
 
 
 If _checkInventoryopen() = False Then
-        Send("i")
+        Send($KeyInventory)
         Sleep(150)
 Endif
 
 Send("{PRINTSCREEN}")
 sleep(150)
-Send("{SPACE}")
+Send($KeyCloseWindows)
 
 ToolTip("Detection de stuff modifié !" & @CRLF & "Zone : " & $warnarea & @CRLF &  "Position : "  & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2] & @CRLF & "Un screenshot a été pris, il se situe dans document/diablo 3" , 15, 15)
 
@@ -1444,8 +1444,8 @@ Func FilterBackpack()
 
 		Local $return[$iMax][4]
 
-		Send("{SPACE}") ; make sure we close everything
-		Send("i") ; open the inventory
+		Send($KeyCloseWindows) ; make sure we close everything
+		Send($KeyInventory) ; open the inventory
 		Sleep(100)
 
 		CheckWindowD3Size()
@@ -1523,7 +1523,7 @@ Func FilterBackpack()
 			Next
 		EndIf
 
-		Send("{SPACE}") ; make sure we close everything
+		Send($KeyCloseWindows) ; make sure we close everything
 
 
 
@@ -3437,7 +3437,7 @@ Func checkForPotion()
 	$life = GetLifep()
 	$diff = TimerDiff($timeforpotion)
 	If $life < $LifeForPotion / 100 And $diff > 1500 Then
-		Send("q")
+		Send($KeyPotions)
 		$timeforpotion = TimerInit()
 	EndIf
 
@@ -3554,7 +3554,7 @@ EndFunc   ;==>checkFiltreFromtable
 ;;--------------------------------------------------------------------------------
 Func SkipDialog($_Count)
 	For $i = 1 To $_Count
-		Send("{SPACE}")
+		Send($KeyCloseWindows)
 		Sleep(100)
 	Next
 EndFunc   ;==>SkipDialog
@@ -3825,7 +3825,7 @@ Func _leavegame()
 	If _ingame() Then
 		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_QUITE) ; TChat
 		_log("Leave Game")
-		Send("{SPACE}") ; to make sure everything is closed
+		Send($KeyCloseWindows) ; to make sure everything is closed
 		sleep(100)
 		Send("{ESCAPE}")
 		Sleep(Random(200, 300, 1))
@@ -5824,7 +5824,7 @@ Func StashAndRepair()
 	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_SALE) ; TChat
 
 	While _checkInventoryopen() = False
-		Send("i")
+		Send($KeyInventory)
 		Sleep(Random(200, 300))
 	WEnd
 
@@ -5839,7 +5839,7 @@ Func StashAndRepair()
 	$ToStash = _ArrayFindAll($items, "Stash", 0, 0, 0, 1, 2)
 
 	If $ToStash <> -1 Then
-		Send("{SPACE}")
+		Send($KeyCloseWindows)
 		Sleep(500)
 		InteractByActorName('Player_Shared_Stash')
 		Sleep(700)
@@ -5898,7 +5898,7 @@ Func StashAndRepair()
 
 
 		Sleep(Random(50, 100))
-		Send("{SPACE}")
+		Send($KeyCloseWindows)
 		Sleep(Random(100, 150))
 
 		;****************************************************************
@@ -5912,7 +5912,7 @@ Func StashAndRepair()
 
 
 	Sleep(Random(100, 200))
-	Send("{SPACE}")
+	Send($KeyCloseWindows)
 	Sleep(Random(100, 200))
 	Sleep(Random(500, 1000))
 
@@ -5978,7 +5978,7 @@ Func StashAndRepair()
 		  Next
 
 		  Sleep(Random(100, 200))
-		  Send("{SPACE}")
+		  Send($KeyCloseWindows)
 		  Sleep(Random(100, 200))
 
 		  ;***************************************************************
@@ -5990,7 +5990,7 @@ Func StashAndRepair()
 	   EndIf
 
 	   Sleep(Random(100, 200))
-	   Send("{SPACE}")
+	   Send($KeyCloseWindows)
 	   Sleep(Random(100, 200))
 	   Sleep(Random(500, 1000))
 
@@ -6031,7 +6031,7 @@ Func StashAndRepair()
 		  Next
 
 		  Sleep(Random(100, 200))
-		  Send("{SPACE}")
+		  Send($KeyCloseWindows)
 		  Sleep(Random(100, 200))
 
 		  ; on mesure l'or aprÃ¨s
@@ -6046,7 +6046,7 @@ Func StashAndRepair()
 	   EndIf
 
 	   Sleep(Random(100, 200))
-	   Send("{SPACE}")
+	   Send($KeyCloseWindows)
 	   Sleep(Random(100, 200))
     EndIf
 EndFunc   ;==>StashAndRepair
@@ -6940,7 +6940,7 @@ Func _TownPortalnew($mode=0)
 
 			_Log("on enclenche le TP")
 			Sleep(250)
-			Send("t")
+			Send($KeyPortal)
 			Sleep(250)
 
 			If $Choix_Act_Run < 100 And Detect_UI_error(2) AND NOT _intown() Then
@@ -7323,9 +7323,9 @@ $BanAffixList="poison_humanoid|"&$BanAffixList
 
  Func Take_BookOfCain()
 
-	Send("{SPACE}")
+	Send($KeyCloseWindows)
 	sleep(200)
-	Send("{SPACE}")
+	Send($KeyCloseWindows)
 	sleep(50)
 
 	Switch $Act
@@ -7371,7 +7371,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
     GetAct()
 
 	If _checkInventoryopen() = True Then
-		Send("i")
+		Send($KeyInventory)
 		Sleep(150)
 	EndIf
 
@@ -7473,7 +7473,7 @@ Func BuyPotion()
 		  Sleep(200)
 		  Send("{SHIFTUP}")
 		  Sleep(100)
-		  Send("{SPACE}"); ferme l'inventaire
+		  Send($KeyCloseWindows); ferme l'inventaire
 		  Sleep(500)
 
 		  MoveTo($Potion_Vendor) ; on se repositionne

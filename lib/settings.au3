@@ -71,6 +71,10 @@ Global $LifeForHealth = 50
 Global $takepot = True
 Global $PotionStock = 100
 Global $TakeShrines = "false"
+Global $KeyCloseWindows = "{SPACE}"
+Global $KeyInventory = "i"
+Global $KeyPotions = "q"
+Global $KeyPortal = "t"
 
 ; PauseToSurviveHC
 Global $HCSecurity = "false"
@@ -228,7 +232,7 @@ Func writeConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "PotionStock", $PotionStock)
 	IniWrite($profilFile, "Run info", "TakeShrines", $TakeShrines)
 	IniWrite($profilFile, "Run info", "Unidentified", $Unidentified)
-	IniWrite($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z
+	IniWrite($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
 	;recyclage
 	IniWrite($profilFile, "Run info", "Recycle", $Recycle)
 	IniWrite($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
@@ -341,6 +345,13 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$ftpusername = IniRead($profilFile, "Account info", "ftpusername", $ftpusername)
 	$ftppass = IniRead($profilFile, "Account info", "ftppass", $ftppass)
 	$ftpfilename = IniRead($profilFile, "Account info", "ftpfilename", $ftpfilename)
+
+	;; Key Info
+
+	$KeyCloseWindows = IniRead($profilFile, "Key info", "CloseWindows", $KeyCloseWindows)
+	$KeyInventory = IniRead($profilFile, "Key info", "Inventory", $KeyInventory)
+	$KeyPotions = IniRead($profilFile, "Key info", "Potions", $KeyPotions)
+	$KeyPortal = IniRead($profilFile, "Key info", "Portal", $KeyPortal)
 
 	;; Run info
 
