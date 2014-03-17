@@ -4643,30 +4643,30 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF
 		;$DebugMessage = $DebugMessage & "Bonus d'XP : " & $EBP & " %" & @CRLF ; a verifier
 		If ($Xp_Total < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total)/1000) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total)/1000 & " K" & @CRLF
         EndIf
         If ($Xp_Total > 999999) and ($Xp_Total < 1000000000) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total/1000)/1000) & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total/1000)/1000 & " M" & @CRLF
 		EndIf
-		If ($Xp_Total > 999999999) Then ;afficher en "B"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number((Int($Xp_Total/1000)/1000)/1000) & " B" & @CRLF
+		If ($Xp_Total > 999999999) Then ;afficher sous forme "x xxx M"
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total/1000)/1000) & " M" & @CRLF
 		EndIf
 
         If ($Xp_Moy_Run < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Format_Number(Int($Xp_Moy_Run/1000)) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Int($Xp_Moy_Run/1000) & " K" & @CRLF
         EndIf
         If ($Xp_Moy_Run > 999999) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Format_Number(Int($Xp_Moy_Run/1000)/1000) & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Int($Xp_Moy_Run/1000)/1000 & " M" & @CRLF
         EndIf
 
         If ($Xp_Moy_Hrs < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Format_Number(Int($Xp_Moy_Hrs/1000)) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Int($Xp_Moy_Hrs/1000) & " K" & @CRLF
         EndIf
         If ($Xp_Moy_Hrs > 999999) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Format_Number(Int($Xp_Moy_Hrs/1000)/1000) & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Int($Xp_Moy_Hrs/1000)/1000 & " M" & @CRLF
         EndIf
         If ($Xp_Moy_HrsPerte < 1000000) Then ;affiché en "K"
-			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Format_Number(Int($Xp_Moy_HrsPerte/1000)) & " K (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
+			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Int($Xp_Moy_HrsPerte/1000) & " K (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
 		EndIf
 		If ($Xp_Moy_HrsPerte > 999999) Then ;affiché en "M"
 			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Format_Number(Int($Xp_Moy_HrsPerte/1000)/1000) & " M (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
