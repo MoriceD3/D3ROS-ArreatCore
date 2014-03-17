@@ -2812,7 +2812,7 @@ Func Is_Interact($item, $IgnoreList)
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre($item)
-	if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty", $item[1]) AND $item[9] < 50 Then
+	if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest", $item[1]) AND $item[9] < 50 Then
 		return True
 	Else
 		return False
@@ -4480,6 +4480,13 @@ Func FormatNumber($StringToFormat)
 	Return $StringFormatted
 EndFunc   ;==>FormatNumber
 
+Func Format_Number($str)
+	$str = _StringReverse($str) ; renversement de la chaîne pour la traîtée à l'envers
+	$str = StringRegExpReplace($str, "(\d{3})", "$1 ") ; on cherche tous les regroupement de n chiffres pour les remplacer par eux même suivi d'un espace
+	$str = _StringReverse($str) ; on remets la chaîne à l'endroit
+	$str = StringStripWS($str, 1) ; efface éventuellement l'espace en trop à l'avant , lorsque le nombre est composé d'un nombre multiple de n chiffres
+	Return $str
+EndFunc;==>Format_Number
 
 Func StatsDisplay()
 
@@ -4541,6 +4548,7 @@ Func StatsDisplay()
                 $Xp_Moy_Run = 0
                 $Xp_Moy_Hrs = 0
                 $time_Xp = 0
+				$CoffreTaken = 0
                 $time_Xp = _format_time($time_Xp)
 
         Else
@@ -4614,15 +4622,15 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Objets Stockes Dans le Coffre : " & $ItemToStash & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 		$DebugMessage = $DebugMessage & "                                 INFOS GOLD" & @CRLF
-		$DebugMessage = $DebugMessage & "Gold au Coffre : " & formatNumber(Ceiling($GOLD)) & @CRLF
-		$DebugMessage = $DebugMessage & "Gold Total Obtenu  : " & formatNumber(Ceiling($GOLDInthepocket)) & @CRLF
-		$DebugMessage = $DebugMessage & "Gold Moyen/Run : " & formatNumber(Ceiling($GOLDMOY)) & @CRLF
-		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & formatNumber(Ceiling($GOLDMOYbyH)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold au Coffre : " & Format_Number(Ceiling($GOLD)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Total Obtenu  : " & Format_Number(Ceiling($GOLDInthepocket)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Moyen/Run : " & Format_Number(Ceiling($GOLDMOY)) & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & Format_Number(Ceiling($GOLDMOYbyH)) & @CRLF
 		;$DebugMessage = $DebugMessage & "Gold Moyen/Heure Jeu : " & formatNumber(Ceiling($GOLDMOYbyHgame)) & @CRLF ;====> gold de temps de jeu
-		$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : " & formatNumber(Ceiling($GOLDMOYbyH - $GOLDMOYbyHgame)) & "   (" & Round($LossGoldMoyH) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & formatNumber(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & formatNumber(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Nombre de Réparations : " & $RepairORsell & " / - " & formatNumber(Ceiling($GoldByRepaire)) & "   (- " & Round($GoldByRepaireRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : " & Format_Number(Ceiling($GOLDMOYbyH - $GOLDMOYbyHgame)) & "   (" & Round($LossGoldMoyH) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & Format_Number(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & Format_Number(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre de Réparations : " & $RepairORsell & " / - " & Format_Number(Ceiling($GoldByRepaire)) & "   (- " & Round($GoldByRepaireRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "                                 INFOS TEMPS " & @CRLF
 		;$DebugMessage = $DebugMessage & "Débuté à  :  " & @HOUR & ":" & @MIN & @CRLF
@@ -4635,30 +4643,33 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF
 		;$DebugMessage = $DebugMessage & "Bonus d'XP : " & $EBP & " %" & @CRLF ; a verifier
 		If ($Xp_Total < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total / 1000) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total)/1000) & " K" & @CRLF
         EndIf
-        If ($Xp_Total > 999999) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total / 1000) / 1000 & " M" & @CRLF
-        EndIf
+        If ($Xp_Total > 999999) and ($Xp_Total < 1000000000) Then ;afficher en "M"
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total/1000)/1000) & " M" & @CRLF
+		EndIf
+		If ($Xp_Total > 999999999) Then ;afficher en "B"
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number((Int($Xp_Total/1000)/1000)/1000) & " B" & @CRLF
+		EndIf
 
         If ($Xp_Moy_Run < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Int($Xp_Moy_Run / 1000) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Format_Number(Int($Xp_Moy_Run/1000)) & " K" & @CRLF
         EndIf
         If ($Xp_Moy_Run > 999999) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Int($Xp_Moy_Run / 1000) / 1000 & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par run : " & Format_Number(Int($Xp_Moy_Run/1000)/1000) & " M" & @CRLF
         EndIf
 
         If ($Xp_Moy_Hrs < 1000000) Then ;afficher en "K"
-                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Int($Xp_Moy_Hrs / 1000) & " K" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Format_Number(Int($Xp_Moy_Hrs/1000)) & " K" & @CRLF
         EndIf
         If ($Xp_Moy_Hrs > 999999) Then ;afficher en "M"
-                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Int($Xp_Moy_Hrs / 1000) / 1000 & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Moyen par heure : " & Format_Number(Int($Xp_Moy_Hrs/1000)/1000) & " M" & @CRLF
         EndIf
         If ($Xp_Moy_HrsPerte < 1000000) Then ;affiché en "K"
-			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Int($Xp_Moy_HrsPerte / 1000) & " K (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
+			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Format_Number(Int($Xp_Moy_HrsPerte/1000)) & " K (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
 		EndIf
 		If ($Xp_Moy_HrsPerte > 999999) Then ;affiché en "M"
-			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Int($Xp_Moy_HrsPerte / 1000) / 1000 & " M (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
+			$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : -" & Format_Number(Int($Xp_Moy_HrsPerte/1000)/1000) & " M (" & Round($Xp_Moy_HrsPerte_Ratio) & "%)" & @CRLF
 		EndIf
 		;$DebugMessage = $DebugMessage & "temps avant prochain niveau : " $ExperienceNextLevel/ & " M" & @CRLF
         $DebugMessage = $DebugMessage & "Temps Avant Prochain LVL : " & $time_Xp & @CRLF
@@ -4678,7 +4689,7 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & $nameCharacter & " [ " & $NiveauParagon & " ] " & @CRLF
         $DebugMessage = $DebugMessage & "PickUp Radius  : " & $PR & @CRLF
 		$DebugMessage = $DebugMessage & "Movement Speed : " & Round($MS) & " %" & @CRLF
-		$DebugMessage = $DebugMessage & "DPS Constatés : " & formatNumber(Ceiling($AverageDps / 1000)) & " K " & @CRLF;pacth 8.2e
+		$DebugMessage = $DebugMessage & "DPS Constatés : " & Format_Number(Ceiling($AverageDps/1000)) & " K " & @CRLF;pacth 8.2e
 		$DebugMessage = $DebugMessage & "Gold Find Equipement : " & $GF & " %" & @CRLF
         $DebugMessage = $DebugMessage & "Magic Find Equipement : " & $MF & " %" & @CRLF
 		$DebugMessage = $DebugMessage & "Bonus d'XP Equipement : " & $EBP & " %" & @CRLF
@@ -5105,6 +5116,8 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 	; $action_spell = 2 -> grab
 
 	checkForPotion()
+
+	;PauseToSurviveHC() ; pause HCSecurity
 
 	For $i = 0 To 5
 
@@ -7472,3 +7485,17 @@ Func BuyPotion()
     EndIf
 
 EndFunc    ;==>BuyPotion
+
+Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque la vie de votre personnage descend en dessous d'un seuil fixé
+
+	If StringStripWS(StringLower($HCSecurity),8)= "true" And GetLifeLeftPercent() <= $MinHCLife/100 Then
+		Send("{ESCAPE}")
+		While 1
+			Send("{ESCAPE}")
+			Sleep(100 + random(0, 50))
+			Send("{ESCAPE}")
+			Sleep(600000 + Random(-60000, 60000))
+		Wend
+	EndIf
+
+EndFunc    ;==>PauseToSurviveHC

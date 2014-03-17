@@ -72,6 +72,10 @@ Global $takepot = True
 Global $PotionStock = 100
 Global $TakeShrines = "false"
 
+; PauseToSurviveHC
+Global $HCSecurity = "false"
+Global $MinHCLife = 0
+
 ; BuyPotion
 Global $NbPotionBuy = 0
 
@@ -317,8 +321,8 @@ Func writeConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "NbPotionBuy", $NbPotionBuy)
 
 	; PauseToSurviveHC
-	;niWrite($profilFile, "Run info", "HCSecurity", $HCSecurity)
-	;IniWrite($profilFile, "Run info", "MinHCLife", $MinHCLife)
+	IniWrite($profilFile, "Run info", "HCSecurity", $HCSecurity)
+	IniWrite($profilFile, "Run info", "MinHCLife", $MinHCLife)
 
 	IniWrite($profilFile, "Run info", "debug", $debugBot)
 	;IniWrite($profilFile,"Run info","Act", $Act)
@@ -607,8 +611,8 @@ Func InitSkillHeros($skillHeros)
 	$ResLife = IniRead($skillHeros, "Run info", "ResLife", $ResLife)
 
 	;PauseToSurviveHC
-	;$HCSecurity = IniRead($skillHeros, "Run info", "HCSecurity", $HCSecurity)
-	;$MinHCLife = IniRead($skillHeros, "Run info", "MinHCLife", $MinHCLife)
+	$HCSecurity = IniRead($skillHeros, "Run info", "HCSecurity", $HCSecurity)
+	$MinHCLife = IniRead($skillHeros, "Run info", "MinHCLife", $MinHCLife)
 
 	#cs
 	If $RightClickSpellEnergy <> "" And $RightClickSpellEnergy <> "discipline" And $RightClickSpellEnergy <> "hatred" And $RightClickSpellEnergy <> "spirit" And $RightClickSpellEnergy <> "arcane" And $RightClickSpellEnergy <> "mana" And $RightClickSpellEnergy <> "fury" Then
