@@ -1,4 +1,5 @@
 #include-once
+#include <File.au3>
 #cs ----------------------------------------------------------------------------
 
 	Extension permettant de gerer le menu

@@ -172,7 +172,7 @@ Func _dorun()
 		$maxhp = GetAttribute($_MyGuid, $Atrib_Hitpoints_Max_Total) ; dirty placement
 		_log("Max HP : " & $maxhp)
 		GetMaxResource($_MyGuid, $namecharacter)
-		Send("t")
+		Send($KeyPortal)
 		sleep(500)
 		Detect_Str_full_inventory()
 	EndIf
@@ -622,19 +622,19 @@ WEnd
 ;;--------------------------------------------------------------------------------
 Func CheckHotkeys()
 	Sleep(2000)
-	Send("i")
+	Send($KeyInventory)
 	Sleep(500)
 	If _checkInventoryopen() = False Then
 		WinSetOnTop("Diablo III", "", 0)
-		MsgBox(0, "Mauvais Hotkey", "La touche pour ouvrir l'inventaire doit être i" & @CRLF)
+		MsgBox(0, "Mauvais Hotkey", "La touche pour ouvrir l'inventaire doit être : " & $KeyInventory & @CRLF)
 		Terminate()
 	EndIf
 	Sleep(185)
-	Send("{SPACE}") ; make sure we close everything
+	Send($KeyCloseWindows) ; make sure we close everything
 	Sleep(170)
 	If _checkInventoryopen() = True Then
 		WinSetOnTop("Diablo III", "", 0)
-		MsgBox(0, "Mauvais Hotkey", "La touche pour fermer les fenêtres doit être ESPACE" & @CRLF)
+		MsgBox(0, "Mauvais Hotkey", "La touche pour fermer les fenêtres doit être : " & $KeyCloseWindows & @CRLF)
 		Terminate()
 	EndIf
 	ConsoleWrite("Check des touches OK" & @CRLF)
