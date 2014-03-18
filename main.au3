@@ -29,7 +29,7 @@ Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
 
 
 Global $GameOverTime, $GameFailed, $ClickToMoveToggle, $d3, $Step, $a_range, $ResActivated, _
-		$nb_die_t, $rdn_die_t, $ResLife, $Res_compt, $UsePath, $BanmonsterList, $File_Sequence, $TakeShrines
+		$nb_die_t, $rdn_die_t, $ResLife, $Res_compt, $UsePath, $BanmonsterList, $File_Sequence, $TakeShrines, $CoffreTaken
 
 Global $Byte_NoItem_Identify, $Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_LocalActor_StrucSize, $_ActorAtrib_Count, _
 		$_ActorAtrib_4, $ofs_ActorAtrib_StrucSize, $GrabListTab, $ofs_LocalActor_atribGUID, _
@@ -254,7 +254,7 @@ Func _dorun()
 	EndIf
 
 	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_WELCOME) ; TChat
-	
+
 	GetAct()
 	Global $shrinebanlist = ""
 	EmergencyStopCheck()
@@ -303,7 +303,7 @@ Func _botting()
 			EndIf
 			SelectQuest()
 		EndIf
-		
+
 		If _inmenu() And _onloginscreen() = False Then
 			If ($PartieSolo = 'false') And $Totalruns > 1 Then
 			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
