@@ -45,6 +45,7 @@ EndFunc   ;==>_HighPrecisionSleep
 #include <String.au3>
 #include <Array.au3>
 #include "lib\constants.au3"
+#include "lib\Utils.au3"
 #include "lib\FTP.au3"
 #include "lib\ExpTableConst.au3"
 
@@ -3782,7 +3783,7 @@ Func _resumegame()
 
 	If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak = "true" Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
 		Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
-		_Log("Break Time after xx games -> Sleep " & (_format_time($wait_BreakTimeafterxxgames)))
+		_Log("Break Time after xx games -> Sleep " & (formatTime($wait_BreakTimeafterxxgames)))
 		Sleep($wait_BreakTimeafterxxgames)
 		$BreakCounter = 0;on remet le compteur a 0
 		$BreakTimeCounter += 1;on compte les pause effectuer
@@ -4549,7 +4550,7 @@ Func StatsDisplay()
                 $Xp_Moy_Hrs = 0
                 $time_Xp = 0
 				$CoffreTaken = 0
-                $time_Xp = _format_time($time_Xp)
+                $time_Xp = formatTime($time_Xp)
 
         Else
 
@@ -4583,12 +4584,12 @@ Func StatsDisplay()
                 ;calcul temps avant prochain niveau
                 $Xp_Moy_Sec = $Xp_Total * 1000 / $dif_timer_stat
                 $time_Xp = Int($ExperienceNextLevel / $Xp_Moy_Sec) * 1000
-                $time_Xp = _format_time($time_Xp)
+                $time_Xp = formatTime($time_Xp)
 
         EndIf
         ;########
 
-        $timer_stat_total = _format_time($dif_timer_stat); temps total
+        $timer_stat_total = formatTime($dif_timer_stat); temps total
 
         If $Totalruns = 1 Then
                 $timer_stat_run_moyen = 0
@@ -4600,7 +4601,7 @@ Func StatsDisplay()
         Else
                 ;;;$dif_timer_stat_moyen = $dif_timer_stat / ($Totalruns - 1)
                 $dif_timer_stat_moyen = $dif_timer_stat_game / ($Totalruns - 1);on recalcule le temps moyen d'un run par rapport au temps de jeu
-				$timer_stat_run_moyen = _format_time($dif_timer_stat_moyen)
+				$timer_stat_run_moyen = formatTime($dif_timer_stat_moyen)
         EndIf
 
 
@@ -4636,8 +4637,8 @@ Func StatsDisplay()
 		;$DebugMessage = $DebugMessage & "Débuté à  :  " & @HOUR & ":" & @MIN & @CRLF
 		$DebugMessage = $DebugMessage & "Durée Moyenne/Run : " & $timer_stat_run_moyen & @CRLF
 		$DebugMessage = $DebugMessage & "Temps Total De Bot:   " & $timer_stat_total & @CRLF
-		$DebugMessage = $DebugMessage & "Temps Total En Jeu :   " & _format_time($dif_timer_stat_game) & " (" & Round($dif_timer_stat_game_Ratio) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Pauses Effectuées : " & ($BreakTimeCounter + $PauseRepasCounter) & "  /  " & _format_time($dif_timer_stat_pause) & " (" & Round($dif_timer_stat_pause_Ratio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Temps Total En Jeu :   " & formatTime($dif_timer_stat_game) & " (" & Round($dif_timer_stat_game_Ratio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Pauses Effectuées : " & ($BreakTimeCounter + $PauseRepasCounter) & "  /  " & formatTime($dif_timer_stat_pause) & " (" & Round($dif_timer_stat_pause_Ratio) & "%)" & @CRLF
 		;stats XP
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF
