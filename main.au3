@@ -253,7 +253,7 @@ Func _dorun()
 		Detect_Str_full_inventory()
 	EndIf
 
-	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_WELCOME) ; TChat
+	If Not $PartieSolo Then WriteMe($WRITE_ME_WELCOME) ; TChat
 
 	GetAct()
 	Global $shrinebanlist = ""
@@ -305,7 +305,7 @@ Func _botting()
 		EndIf
 
 		If _inmenu() And _onloginscreen() = False Then
-			If ($PartieSolo = 'false') And $Totalruns > 1 Then
+			If Not $PartieSolo And $Totalruns > 1 Then
 			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
 				WriteMe($WRITE_ME_RESART_GAME) ; TChat
 			EndIf
@@ -823,7 +823,7 @@ HotKeySet("{F4}", "Testing_IterateObjetcsList")
 ;HotKeySet("{F6}", "Read_Scene")
 ;HotKeySet("{F7}", "Drawn")
 
-If $Devmode <> "true" Then
+If Not $Devmode Then
 	_botting()
 EndIf
 
@@ -864,7 +864,7 @@ Func Buffinit()
 		AdlibRegister("buff1", $delaiBuff1 * Random(1, 1.2))
 
 	EndIf
-	If $PreBuff1 = "true" Then
+	If $PreBuff1 Then
 		buff1()
 		Sleep(400)
 	EndIf
@@ -872,7 +872,7 @@ Func Buffinit()
 		AdlibRegister("buff2", $delaiBuff2 * Random(1, 1.2))
 
 	EndIf
-	If $PreBuff2 = "true" Then
+	If $PreBuff2 Then
 		buff2()
 		Sleep(400)
 	EndIf
@@ -880,7 +880,7 @@ Func Buffinit()
 		AdlibRegister("buff3", $delaiBuff3 * Random(1, 1.2))
 
 	EndIf
-	If $PreBuff3 = "true" Then
+	If $PreBuff3 Then
 		buff3()
 		Sleep(400)
 	EndIf
@@ -888,7 +888,7 @@ Func Buffinit()
 		AdlibRegister("buff4", $delaiBuff4 * Random(1, 1.2))
 
 	EndIf
-	If $PreBuff4 = "true" Then
+	If $PreBuff4 Then
 		buff4()
 		Sleep(400)
 	EndIf

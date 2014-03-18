@@ -23,23 +23,23 @@ Global $Skill_conf5[6]
 Global $Skill_conf6[6]
 
 
-Global $MonsterTri = "True"
-Global $MonsterRefresh = "True"
-Global $ItemRefresh = "True"
-Global $MonsterPriority = "False"
-Global $Unidentified = "false"
+Global $MonsterTri = True
+Global $MonsterRefresh = True
+Global $ItemRefresh = True
+Global $MonsterPriority = False
+Global $Unidentified = False
 ; recyclage
-Global $Recycle = "false"
+Global $Recycle = False
 Global $QualityRecycle = 9
 ; fonction pause x games
 Global $BreakTime = 360
 Global $Breakafterxxgames = Round(Random(4, 8))
-Global $TakeABreak = "false"
-;Global $PauseRepas = "false"
+Global $TakeABreak = False
+;Global $PauseRepas = False
 
-Global $PartieSolo = "true"
+Global $PartieSolo = True
 
-Global $FilterItemGround = "false"
+Global $FilterItemGround = False
 Global $profilFile = "settings/settings.ini"
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
@@ -49,20 +49,20 @@ Global $SpecialmonsterList = "Goblin|brickhouse_|woodwraith_"
 Global $monsterList = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $BanmonsterList = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
 Global $grabListFile = ""
-Global $Potions = "healthPotion_Mythic"
+Global $Potions = "healthPotion_Console"
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
 Global $d3pass = ""
-Global $PreBuff1 = ""
+Global $PreBuff1 = False
 Global $ToucheBuff1 = ""
 Global $delaiBuff1 = ""
-Global $PreBuff2 = ""
+Global $PreBuff2 = False
 Global $ToucheBuff2 = ""
 Global $delaiBuff2 = ""
-Global $PreBuff3 = ""
+Global $PreBuff3 = False
 Global $ToucheBuff3 = ""
 Global $delaiBuff3 = ""
-Global $PreBuff4 = ""
+Global $PreBuff4 = False
 Global $ToucheBuff4 = ""
 Global $delaiBuff4 = ""
 Global $QualityLevel = 9
@@ -70,18 +70,14 @@ Global $LifeForPotion = 50
 Global $LifeForHealth = 50
 Global $takepot = True
 Global $PotionStock = 100
-Global $TakeShrines = "false"
+Global $TakeShrines = False
 
 ; PauseToSurviveHC
-Global $HCSecurity = "false"
+Global $HCSecurity = False
 Global $MinHCLife = 0
 
 ; BuyPotion
 Global $NbPotionBuy = 0
-
-; PauseToSurviveHC
-;Global $HCSecurity = "false"
-;Global $MinHCLife = 0
 
 Global $MaximumHatred = 125
 Global $MaximumDiscipline = 25
@@ -91,10 +87,10 @@ Global $MaximumArcane = 100
 Global $MaximumMana = 100
 
 ;Global $Act = "3"
-Global $Devmode = "true"
+Global $Devmode = True
 
-Global $UsePath = "false"
-Global $ResActivated = "false"
+Global $UsePath = False
+Global $ResActivated = False
 Global $ResLife = "0"
 Global $Res_compt = 0
 Global $nb_die_t = 0
@@ -112,7 +108,7 @@ Global $Key2 = "é"
 Global $Key3 = '"'
 Global $Key4 = "'"
 
-Global $InventoryCheck = "False"
+Global $InventoryCheck = False
 
 
 
@@ -139,8 +135,8 @@ global $tab_aff2[15][2]=[ _
                                                 [25,25], [30,30], [40,40],[50,50], _
                                                 [60,60], [70,70], [80,80] _
                                                 ]
-	global $gestion_affixe="false"
-	global $gestion_affixe_loot="false"
+	global $gestion_affixe = False
+	global $gestion_affixe_loot = False
 	global $range_arcane=25
 	global $range_peste=18
 	global $range_profa=13
@@ -166,7 +162,7 @@ global $tab_aff2[15][2]=[ _
 	global $BanAffixList=""
     dim $ignore_affix[1][2]
 
-	Global $Gest_affixe_ByClass = "false"
+	Global $Gest_affixe_ByClass = False
     Global $key_cana=""
     Global $cana_statut=""
 ;~ If Not FileExists($profilFile) Then
@@ -228,7 +224,7 @@ Func writeConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	IniWrite($profilFile, "Run info", "PotionStock", $PotionStock)
 	IniWrite($profilFile, "Run info", "TakeShrines", $TakeShrines)
 	IniWrite($profilFile, "Run info", "Unidentified", $Unidentified)
-	IniWrite($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z
+	IniWrite($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
 	;recyclage
 	IniWrite($profilFile, "Run info", "Recycle", $Recycle)
 	IniWrite($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
@@ -385,7 +381,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			$Act1_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act1_Hero_Axe_Z", $Act1_Hero_Axe_Z)
 			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
 			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
-			$Sequence_Aleatoire = IniRead($profilFile, "Run info", "Sequence_Aleatoire", $Sequence_Aleatoire)
+			$Dummy = IniRead($profilFile, "Run info", "Sequence_Aleatoire", $Sequence_Aleatoire)
+			$Sequence_Aleatoire = Trim(StringLower($Dummy)) == "true"
 			$NbreRunChangSeqAlea = IniRead($profilFile, "Run info", "NbreRunChangSeqAlea", $NbreRunChangSeqAlea)
 			$Nombre_de_Run = IniRead($profilFile, "Run info", "Nombre_de_Run", $Nombre_de_Run)
 			$NombreMiniAct1 = IniRead($profilFile, "Run info", "NombreMiniAct1", $NombreMiniAct1)
@@ -433,16 +430,22 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	EndSwitch
 
 	$QualityLevel = IniRead($profilFile, "Run info", "QualiteItem", $QualityLevel)
-	$Unidentified = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
+	$Dummy = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
+	$Unidentified = Trim(StringLower($Dummy)) == "true"
+
 	;recyclage
-	$Recycle = IniRead($profilFile, "Run info", "Recycle", $Recycle)
+	$Dummy = IniRead($profilFile, "Run info", "Recycle", $Recycle)
+	$Recycle = Trim(StringLower($Dummy)) == "true"
 	$QualityRecycle = IniRead($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
-	$FilterItemGround = IniRead($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
+	$Dummy = IniRead($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
+	$FilterItemGround = Trim(StringLower($Dummy)) == "true"
 	; fonction pause x games
 	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
 	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
-	$TakeABreak = IniRead($profilFile, "Run info", "TakeABreak", $TakeABreak)
-	;$PauseRepas = IniRead($profilFile, "Run info", "PauseRepas", $PauseRepas)
+	$Dummy = IniRead($profilFile, "Run info", "TakeABreak", $TakeABreak)
+	$TakeABreak = Trim(StringLower($Dummy)) == "true"
+	;$Dummy = IniRead($profilFile, "Run info", "PauseRepas", $PauseRepas)
+	;$PauseRepas = Trim(StringLower($Dummy)) == "true"
 
 	;Fonction Iniatialisation du Skill suivant le Héros
 	$Heros = IniRead($profilFile, "Run info", "Heros", $Heros)
@@ -472,11 +475,12 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	;choix du type de bot
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
-	$PartieSolo = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
-
+	$Dummy = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
+	$PartieSolo = Trim(StringLower($Dummy)) == "true"
 	$debugBot = IniRead($profilFile, "Run info", "debug", 0)
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
-	$Devmode = IniRead($profilFile, "Run info", "Devmode", $Devmode)
+	$Dummy = IniRead($profilFile, "Run info", "Devmode", $Devmode)
+	$Devmode = Trim(StringLower($Dummy)) == "true"
 
 EndFunc   ;==>LoadConfigs
 
@@ -491,19 +495,23 @@ Func InitSkillHeros($skillHeros)
 	$Key3 = IniRead($skillHeros, "Run info", "Key3", $Key3)
 	$Key4 = IniRead($skillHeros, "Run info", "Key4", $Key4)
 
-	$PreBuff1 = IniRead($skillHeros, "Run info", "PreBuff1", $PreBuff1)
+	$Dummy = IniRead($skillHeros, "Run info", "PreBuff1", $PreBuff1)
+	$PreBuff1 = Trim(StringLower($Dummy)) == "true"
 	$ToucheBuff1 = IniRead($skillHeros, "Run info", "ToucheBuff1", $ToucheBuff1)
 	$delaiBuff1 = IniRead($skillHeros, "Run info", "delaiBuff1", $delaiBuff1)
 
-	$PreBuff2 = IniRead($skillHeros, "Run info", "PreBuff2", $PreBuff2)
+	$Dummy = IniRead($skillHeros, "Run info", "PreBuff2", $PreBuff2)
+	$PreBuff2 = Trim(StringLower($Dummy)) == "true"
 	$ToucheBuff2 = IniRead($skillHeros, "Run info", "ToucheBuff2", $ToucheBuff2)
 	$delaiBuff2 = IniRead($skillHeros, "Run info", "delaiBuff2", $delaiBuff2)
 
-	$PreBuff3 = IniRead($skillHeros, "Run info", "PreBuff3", $PreBuff3)
+	$Dummy = IniRead($skillHeros, "Run info", "PreBuff3", $PreBuff3)
+	$PreBuff3 = Trim(StringLower($Dummy)) == "true"
 	$ToucheBuff3 = IniRead($skillHeros, "Run info", "ToucheBuff3", $ToucheBuff3)
 	$delaiBuff3 = IniRead($skillHeros, "Run info", "delaiBuff3", $delaiBuff3)
 
-	$PreBuff4 = IniRead($skillHeros, "Run info", "PreBuff4", $PreBuff4)
+	$Dummy = IniRead($skillHeros, "Run info", "PreBuff4", $PreBuff4)
+	$PreBuff4 = Trim(StringLower($Dummy)) == "true"
 	$ToucheBuff4 = IniRead($skillHeros, "Run info", "ToucheBuff4", $ToucheBuff4)
 	$delaiBuff4 = IniRead($skillHeros, "Run info", "delaiBuff4", $delaiBuff4)
 
@@ -573,20 +581,28 @@ Func InitSkillHeros($skillHeros)
 	$a_range = IniRead($skillHeros, "Run info", "attackRange", $a_range)
 	$g_range = IniRead($skillHeros, "Run info", "grabRange", $g_range)
 
-	$MonsterTri = IniRead($skillHeros, "Run info", "MonsterTri", $MonsterTri)
-	$MonsterRefresh = IniRead($skillHeros, "Run info", "MonsterRefresh", $MonsterRefresh)
-	$ItemRefresh = IniRead($skillHeros, "Run info", "ItemRefresh", $ItemRefresh)
-	$MonsterPriority = IniRead($skillHeros, "Run info", "MonsterPriority", $MonsterPriority)
-	$InventoryCheck = IniRead($skillHeros, "Run info", "InventoryCheck", $InventoryCheck)
+	$Dummy = IniRead($skillHeros, "Run info", "MonsterTri", $MonsterTri)
+	$MonsterTri = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($skillHeros, "Run info", "MonsterRefresh", $MonsterRefresh)
+	$MonsterRefresh = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($skillHeros, "Run info", "ItemRefresh", $ItemRefresh)
+	$ItemRefresh = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($skillHeros, "Run info", "MonsterPriority", $MonsterPriority)
+	$MonsterPriority = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($skillHeros, "Run info", "InventoryCheck", $InventoryCheck)
+	$InventoryCheck = Trim(StringLower($Dummy)) == "true"
 
 	$a_time = IniRead($skillHeros, "Run info", "attacktimeout", $a_time)
 	$g_time = IniRead($skillHeros, "Run info", "grabtimeout", $g_time)
 
-	$gestion_affixe = IniRead($skillHeros, "Run info", "gestion_affixe", $gestion_affixe)
-	$gestion_affixe_loot = IniRead($skillHeros, "Run info", "gestion_affixe_loot", $gestion_affixe_loot)
+	$Dummy = IniRead($skillHeros, "Run info", "gestion_affixe", $gestion_affixe)
+	$gestion_affixe = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($skillHeros, "Run info", "gestion_affixe_loot", $gestion_affixe_loot)
+	$gestion_affixe_loot = Trim(StringLower($Dummy)) == "true"
 	$BanAffixList = IniRead($skillHeros, "Run info", "BanAffixList", $BanAffixList)
-	$Gest_affixe_ByClass = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)
-
+	$Dummy = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)		
+	$Gest_affixe_ByClass = Trim(StringLower($Dummy)) == "true"
+	
 	$life_arcane = IniRead($skillHeros, "Run info", "Life_Arcane", $life_arcane)
 	$life_peste = IniRead($skillHeros, "Run info", "Life_Peste", $life_peste)
 	$life_profa = IniRead($skillHeros, "Run info", "Life_Profa", $life_profa)
@@ -606,12 +622,15 @@ Func InitSkillHeros($skillHeros)
 ;~ 	$MaximumArcane = IniRead($profilFile, "Run info", "MaximumArcane", $MaximumArcane)
 ;~ 	$MaximumMana = IniRead($profilFile, "Run info", "MaximumMana", $MaximumMana)
 
-	$UsePath = StringLower(IniRead($skillHeros, "Run info", "UsePath", $UsePath))
-	$ResActivated = StringLower(IniRead($skillHeros, "Run info", "ResActivated", $ResActivated))
+	$Dummy = StringLower(IniRead($skillHeros, "Run info", "UsePath", $UsePath))
+	$UsePath = Trim(StringLower($Dummy)) == "true"
+	$Dummy = StringLower(IniRead($skillHeros, "Run info", "ResActivated", $ResActivated))
+	$ResActivated = Trim(StringLower($Dummy)) == "true"
 	$ResLife = IniRead($skillHeros, "Run info", "ResLife", $ResLife)
 
 	;PauseToSurviveHC
-	$HCSecurity = IniRead($skillHeros, "Run info", "HCSecurity", $HCSecurity)
+	$Dummy = IniRead($skillHeros, "Run info", "HCSecurity", $HCSecurity)
+	$HCSecurity = Trim(StringLower($Dummy)) == "true"
 	$MinHCLife = IniRead($skillHeros, "Run info", "MinHCLife", $MinHCLife)
 
 	#cs
