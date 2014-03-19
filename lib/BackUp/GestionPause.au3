@@ -5,7 +5,7 @@
 
 ;~ ;-----------------note-----------------------
 ;~ ; a ajouter dans la fonction resume
-;~ If $TryResumeGame = 0 And $PauseRepas = "true" Then; $TryResumeGame = 0 car on veut pas faire une pause en plein jeu
+;~ If $TryResumeGame = 0 And $PauseRepas Then; $TryResumeGame = 0 car on veut pas faire une pause en plein jeu
 ;~ 		PauseRepas($Totalruns)
 ;~ EndIf
 ;~ ;-----------------------------------------------	 

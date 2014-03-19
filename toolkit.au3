@@ -1027,7 +1027,7 @@ EndFunc
 
 Func Verif_Attrib_GlobalStuff()
 
-	If Trim(StringLower($InventoryCheck)) = "true" Then
+	If $InventoryCheck Then
 
 		Local $HandLeft_Seed = 0
 		Local $HandRight_Seed = 0
@@ -1452,11 +1452,11 @@ Func FilterBackpack()
 		CheckWindowD3Size()
         _checkbackpacksize()
 
-		if trim(StringLower($Unidentified)) = "false" Then
+		If Not $Unidentified Then
 			Take_BookOfCain()
 		;;;Else
 			;;;$Uni_manuel = true ; pacht 1.08
-		EndIF
+		EndIf
 
 		For $i = 0 To $iMax - 1 ;c'est ici que l'on parcour (tours a tours) l'ensemble des items contenut dans notres bag
 
@@ -1464,7 +1464,7 @@ Func FilterBackpack()
 			$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr")
 			$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level) ;on definit la quality de l'item traiter ici
 			If ($quality = 9) Then
-				If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
+				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality = 6) Then
 				$nbRares += 0 ; on definit les rares
@@ -1516,7 +1516,7 @@ Func FilterBackpack()
 
 		Next
 
-		If StringLower($Recycle) = "true" Then
+		If $Recycle Then
 			For $i = 0 To UBound($return) - 1
 				If $return[$i][2] = "Trash" And $return[$i][3] < $QualityRecycle Then ; si QualityRecycle = 9 on recycle jaune,bleu,blanc,-si 6 bleu,blanc , -si 3 blanc et on vend le reste
 					$return[$i][2] = "Recycle"
@@ -2572,11 +2572,11 @@ Func IterateFilterAttack($IgnoreList)
 		Return False
 	Else
 
-		If trim(StringLower($MonsterTri)) = "true" Then
+		If $MonsterTri Then
 			_ArraySort($item_buff_2D, 0, 0, 0, 9)
 		EndIf
 
-		If trim(StringLower($MonsterPriority)) = "true" Then
+		If $MonsterPriority Then
 			Dim $item_buff_2D_buff = TriObjectMonster($item_buff_2D)
 			Dim $item_buff_2D = $item_buff_2D_buff
 		EndIf
@@ -2629,11 +2629,11 @@ Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 	Else
 
 		Local $buff2 = IterateFilterAttack($IgnoreList)
-		If trim(StringLower($MonsterTri)) = "true" Then
+		If $MonsterTri Then
 			_ArraySort($buff2, 0, 0, 0, 9)
 		EndIf
 
-		If trim(StringLower($MonsterPriority)) = "true" Then
+		If $MonsterPriority Then
 			Dim $buff2_buff = TriObjectMonster($buff2)
 			Dim $buff2 = $buff2_buff
 		EndIf
@@ -2868,7 +2868,7 @@ EndFunc
 
 
 Func handle_Shrine(ByRef $item)
-	If $TakeShrines = "True" Then
+	If $TakeShrines Then
 		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
@@ -2901,7 +2901,7 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 				EndIf
 			EndIf
 		EndIf
-		If trim(StringLower($MonsterRefresh)) = "true" Then
+		If $MonsterRefresh Then
 			Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
 			$test_iterateallobjectslist = $buff_array
 		EndIf
@@ -2931,7 +2931,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
     If _MemoryRead($item[8] + 0x0, $d3, 'ptr') <> 0xFFFFFFFF Then
                 ConsoleWrite("Checking " & $item[1] & @CRLF)
 
-				If $gestion_affixe_loot="true" Then
+				If $gestion_affixe_loot Then
 					Dim $item_aff_verif = IterateFilterAffix()
 				Else
 					$item_aff_verif = ""
@@ -2939,7 +2939,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 
 
-			If IsArray($item_aff_verif) and $gestion_affixe_loot="true" Then
+			If IsArray($item_aff_verif) and $gestion_affixe_loot Then
 			   if is_zone_safe($item[2],$item[3],$item[4],$item_aff_verif) or Checkqual($item[0])=9 then
 							$itemDestination = CheckItem($item[0], $item[1])
 							If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or ($itemDestination == "Inventory" And $takepot = True) Then
@@ -2959,7 +2959,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 									EndIf
 
-									If Trim(StringLower($ItemRefresh)) = "true" Then
+									If $ItemRefresh Then
 											Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
 											$test_iterateallobjectslist = $buff_array
 									EndIf
@@ -2996,7 +2996,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
                         EndIf
 
-                        If Trim(StringLower($ItemRefresh)) = "true" Then
+                        If $ItemRefresh Then
                                 Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
                                 $test_iterateallobjectslist = $buff_array
                         EndIf
@@ -3122,7 +3122,7 @@ Func KillMob($name, $offset, $Guid, $test_iterateallobjectslist2)
                 EndIf
 			Dim $pos = UpdateObjectsPos($offset)
 
-                 if $gestion_affixe="true" then maffmove($myposs_aff[0],$myposs_aff[1],$myposs_aff[2],$pos[0],$pos[1])
+                 if $gestion_affixe then maffmove($myposs_aff[0],$myposs_aff[1],$myposs_aff[2],$pos[0],$pos[1])
 			for $a=0 to ubound($test_iterateallobjectslist2)-1
 
 				$CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
@@ -3195,7 +3195,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
                 EndIf
                 Dim $pos = UpdateObjectsPos($offset)
 
-                If $gestion_affixe = "true" Then maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
+                If $gestion_affixe Then maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
                 For $a = 0 To UBound($test_iterateallobjectslist2) - 1
 
                         $CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
@@ -3381,7 +3381,7 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 			If checkIlvlFromtable($GrabListTab, $ACD, $_NAME) Then
 
 				If $_MODE = 0 Then
-				   If StringLower($FilterItemGround) = "false" Then ; si true applique le filtre sur les item au sol,false on applique pas
+				   If Not $FilterItemGround Then ; si true applique le filtre sur les item au sol,false on applique pas
 					  _Log($_NAME & " ==> It's a rare in our list ")
 					  Return "Stash"
 				   Else
@@ -3781,7 +3781,7 @@ Func _resumegame()
 		Sleep($wait_aftertoomanytry)
 	EndIf
 
-	If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak = "true" Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
+	If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
 		Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
 		_Log("Break Time after xx games -> Sleep " & (formatTime($wait_BreakTimeafterxxgames)))
 		Sleep($wait_BreakTimeafterxxgames)
@@ -3824,7 +3824,7 @@ EndFunc   ;==>_logind3
 ;;--------------------------------------------------------------------------------
 Func _leavegame()
 	If _ingame() Then
-		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_QUITE) ; TChat
+		If Not $PartieSolo Then WriteMe($WRITE_ME_QUITE) ; TChat
 		_log("Leave Game")
 		Send($KeyCloseWindows) ; to make sure everything is closed
 		sleep(100)
@@ -5777,7 +5777,7 @@ Func TpRepairAndBack()
 
 	$PortBack = False
 
-    If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
+    If Not $PartieSolo Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
 
 	While Not _intown()
 		if Not _TownPortalnew() Then
@@ -5794,7 +5794,7 @@ Func TpRepairAndBack()
 
 	If $PortBack Then
 
-		If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
+		If Not $PartieSolo Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
 		SafePortBack()
 
 		While Not offsetlist()
@@ -5822,7 +5822,7 @@ Func StashAndRepair()
 	$item_to_stash = 0
 	$SkippedMove = 0
 
-	If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_SALE) ; TChat
+	If Not $PartieSolo Then WriteMe($WRITE_ME_SALE) ; TChat
 
 	While _checkInventoryopen() = False
 		Send($KeyInventory)
@@ -6204,7 +6204,7 @@ Func LoadingSNOExtended()
 
 	_log("GB SNO loaded")
 
-	Return "true"
+	Return True
 EndFunc   ;==>LoadingSNOExtended
 
 
@@ -6599,37 +6599,37 @@ Func Auto_spell_init()
 
 	If StringLower(Trim($nameCharacter)) = "monk" Then
 		Dim $tab_skill_temp = $Monk_skill_Table
-		if $Gest_affixe_ByClass = "true" Then
-			$Gestion_affixe_loot = "false"
-			$Gestion_affixe = "false"
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = False
+			$Gestion_affixe = False
 			_log("Monk detected, Gest Affix disabled")
 		EndIf
 	ElseIf StringLower(Trim($nameCharacter)) = "barbarian" Then
 		Dim $tab_skill_temp = $Barbarian_Skill_Table
-		if $Gest_affixe_ByClass = "true" Then
-			$Gestion_affixe_loot = "false"
-			$Gestion_affixe = "false"
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = False
+			$Gestion_affixe = False
 			_log("Barbarian detected, Gest Affix disabled")
 		EndIf
 	ElseIf StringLower(Trim($nameCharacter)) = "witchdoctor" Then
 		Dim $tab_skill_temp = $WitchDoctor_Skill_Table
-		if $Gest_affixe_ByClass = "true" Then
-			$Gestion_affixe_loot = "true"
-			$Gestion_affixe = "true"
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = True
+			$Gestion_affixe = True
 			_log("WitchDoctor detected, Gest Affix Enabled")
 		EndIf
 	ElseIf StringLower(Trim($nameCharacter)) = "demonhunter" Then
 		Dim $tab_skill_temp = $DemonHunter_skill_Table
-		if $Gest_affixe_ByClass = "true" Then
-			$Gestion_affixe_loot = "true"
-			$Gestion_affixe = "true"
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = True
+			$Gestion_affixe = True
 			_log("DemonHunter detected, Gest Affix Enabled")
 		EndIf
 	ElseIf StringLower(Trim($nameCharacter)) = "wizard" Then
 		Dim $tab_skill_temp = $Wizard_skill_Table
-		if $Gest_affixe_ByClass = "true" Then
-			$Gestion_affixe_loot = "true"
-			$Gestion_affixe = "true"
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = True
+			$Gestion_affixe = True
 			_log("Wizard detected, Gest Affix Enabled")
 		EndIf
 	Else
@@ -6908,7 +6908,7 @@ EndFunc ; ==> CheckZoneBeforeTP()
 
 Func _TownPortalnew($mode=0)
 
-    If ($PartieSolo = 'false') Then WriteMe($WRITE_ME_TP) ; TChat
+    If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
 
 	Local $compt = 0
 
@@ -7489,7 +7489,7 @@ EndFunc    ;==>BuyPotion
 
 Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque la vie de votre personnage descend en dessous d'un seuil fixé
 
-	If StringStripWS(StringLower($HCSecurity),8)= "true" And GetLifeLeftPercent() <= $MinHCLife/100 Then
+	If $HCSecurity And GetLifeLeftPercent() <= $MinHCLife/100 Then
 		Send("{ESCAPE}")
 		While 1
 			Send("{ESCAPE}")
