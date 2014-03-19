@@ -1524,6 +1524,7 @@ Func FilterBackpack()
 			Next
 		EndIf
 
+
 		Send($KeyCloseWindows) ; make sure we close everything
 
 
@@ -2813,7 +2814,7 @@ Func Is_Interact($item, $IgnoreList)
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre($item)
-	if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest", $item[1]) AND $item[9] < 50 Then
+   if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|Chest_Rare", $item[1]) AND $item[9] < 50 Then
 		return True
 	Else
 		return False
