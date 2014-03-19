@@ -543,50 +543,7 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 		;WEnd
 ;_log("trouvé")
 
-$profiler = startProfiling()
-For $i = 0 To 59999
-	_format_time($i)
-Next
-endProfiling($profiler,"_format_time : S")
-
-$profiler = startProfiling()
-For $i = 0 To 59999
-	formatTime($i)
-Next
-endProfiling($profiler,"formatTime : S" )
-
-consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
-consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
-
-$profiler = startProfiling()
-For $i = 60000 To 359999
-	_format_time($i-12)
-Next
-endProfiling($profiler,"_format_time : M")
-
-$profiler = startProfiling()
-For $i = 60000 To 359999
-	formatTime($i)
-Next
-endProfiling($profiler,"formatTime : M")
-
-consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
-consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
-
-$profiler = startProfiling()
-For $i = 250000000 To 250300000
-	_format_time($i)
-Next
-endProfiling($profiler,"_format_time : H")
-
-$profiler = startProfiling()
-For $i = 250000000 To 250300000
-	formatTime($i)
-Next
-endProfiling($profiler,"formatTime : H")
-
-consoleLog(_format_time($i-12), $LOG_LEVEL_VERBOSE)
-consoleLog(formatTime($i-12), $LOG_LEVEL_VERBOSE)
+consoleLog($PreBuff1,$LOG_LEVEL_DEBUG)
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
@@ -905,36 +862,32 @@ EndFunc   ;==>CheckHotkeys
 ;;     Initialise Buffs while in training Area
 ;;--------------------------------------------------------------------------------
 Func Buffinit()
-	If $delaiBuff1 Then
-		AdlibRegister("buff1", $delaiBuff1 * Random(1, 1.2))
-
-	EndIf
 	If $PreBuff1 Then
 		buff1()
+		If $delaiBuff1 Then
+			AdlibRegister("buff1", $delaiBuff1 * Random(1, 1.2))
+		EndIf
 		Sleep(400)
-	EndIf
-	If $delaiBuff2 Then
-		AdlibRegister("buff2", $delaiBuff2 * Random(1, 1.2))
-
 	EndIf
 	If $PreBuff2 Then
 		buff2()
+		If $delaiBuff2 Then
+			AdlibRegister("buff2", $delaiBuff2 * Random(1, 1.2))
+		EndIf
 		Sleep(400)
-	EndIf
-	If $delaiBuff3 Then
-		AdlibRegister("buff3", $delaiBuff3 * Random(1, 1.2))
-
 	EndIf
 	If $PreBuff3 Then
 		buff3()
+		If $delaiBuff3 Then
+			AdlibRegister("buff3", $delaiBuff3 * Random(1, 1.2))
+		EndIf
 		Sleep(400)
-	EndIf
-	If $delaiBuff4 Then
-		AdlibRegister("buff4", $delaiBuff4 * Random(1, 1.2))
-
 	EndIf
 	If $PreBuff4 Then
 		buff4()
+		If $delaiBuff4 Then
+			AdlibRegister("buff4", $delaiBuff4 * Random(1, 1.2))
+		EndIf
 		Sleep(400)
 	EndIf
 EndFunc   ;==>Buffinit
@@ -945,28 +898,32 @@ EndFunc   ;==>Buffinit
 ;;     Stop All buff timers
 ;;--------------------------------------------------------------------------------
 Func UnBuff()
-	If $delaiBuff1 Then
+	If $delaiBuff1 And $PreBuff1 Then
 		AdlibUnRegister("buff1")
 	EndIf
-	If $delaiBuff2 Then
+	If $delaiBuff2 And $PreBuff2 Then
 		AdlibUnRegister("buff2")
 	EndIf
-	If $delaiBuff3 Then
+	If $delaiBuff3 And $PreBuff3 Then
 		AdlibUnRegister("buff3")
 	EndIf
-	If $delaiBuff4 Then
+	If $delaiBuff4 And $PreBuff4 Then
 		AdlibUnRegister("buff4")
 	EndIf
 EndFunc   ;==>UnBuff
+
 Func buff1()
-	Send($ToucheBuff1)
+	Send($Key1)
 EndFunc   ;==>buff1
+
 Func buff2()
-	Send($ToucheBuff2)
+	Send($Key2)
 EndFunc   ;==>buff2
+
 Func buff3()
-	Send($ToucheBuff3)
+	Send($Key3)
 EndFunc   ;==>buff3
+
 Func buff4()
-	Send($ToucheBuff4)
+	Send($Key4)
 EndFunc   ;==>buff4

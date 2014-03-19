@@ -7490,7 +7490,7 @@ EndFunc    ;==>BuyPotion
 
 Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque la vie de votre personnage descend en dessous d'un seuil fixé
 
-	If $HCSecurity And GetLifeLeftPercent() <= $MinHCLife/100 Then
+	If $HCSecurity And GetLifep() <= $MinHCLife/100 Then
 		Send("{ESCAPE}")
 		While 1
 			Send("{ESCAPE}")
