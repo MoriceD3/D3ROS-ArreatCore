@@ -2558,7 +2558,7 @@ Func IterateFilterAttack($IgnoreList)
 	While iterateObjectsList($index, $offset, $count, $item)
 		$compt += 1
 		If Is_Interact($item, $IgnoreList) Then
-			If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) Then
+			If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Power($item) or Is_Health($item) Then 
 				ReDim $item_buff_2D[$i + 1][10]
 				For $x = 0 To 9
 					$item_buff_2D[$i][$x] = $item[$x]
