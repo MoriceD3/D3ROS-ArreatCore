@@ -5119,7 +5119,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 
 	checkForPotion()
 
-	;PauseToSurviveHC() ; pause HCSecurity
+	PauseToSurviveHC() ; pause HCSecurity
 
 	For $i = 0 To 5
 
