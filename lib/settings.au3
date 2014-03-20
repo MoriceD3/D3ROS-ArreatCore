@@ -163,6 +163,7 @@ global $timer_ignore_reset=timerinit()
 global $energy_mini=0
 global $BanAffixList=""
 dim $ignore_affix[1][2]
+Global $debugBot = False
 
 Global $Gest_affixe_ByClass = False
 Global $key_cana=""
@@ -311,7 +312,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
 	$Dummy = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
 	$PartieSolo = Trim(StringLower($Dummy)) == "true"
-	$debugBot = IniRead($profilFile, "Run info", "debug", 0)
+	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
+	$debugBot = Trim(StringLower($Dummy)) == "true"
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
 	$Dummy = IniRead($profilFile, "Run info", "Devmode", $Devmode)
 	$Devmode = Trim(StringLower($Dummy)) == "true"

@@ -393,7 +393,7 @@ EndFunc   ;==>_botting
 
 Func MarkPos()
 	$currentloc = GetCurrentPos()
-	ConsoleWrite($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25" & @CRLF);
+	_log($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25");
 EndFunc   ;==>MarkPos
 
 HotKeySet("{F12}", "MarkPos")
@@ -401,12 +401,12 @@ HotKeySet("{F12}", "MarkPos")
 Func MonsterListing()
 	$Object = IterateObjectList(0)
 	$foundtarget = 0
-	ConsoleWrite("monster listing ===========================" & @CRLF)
+	_log("monster listing ===========================")
 	For $i = 0 To UBound($Object, 1) - 1
 		_ArraySort($Object, 0, 0, 0, 8)
-		ConsoleWrite($Object[$i][2] & @CRLF)
+		_log($Object[$i][2])
 		If $Object[$i][1] <> 0xFFFFFFFF And $Object[$i][7] <> -1 And $Object[$i][8] < 100 Then
-			ConsoleWrite($Object[$i][2] & @CRLF)
+			_log($Object[$i][2])
 		EndIf
 	Next
 EndFunc   ;==>MonsterListing
@@ -853,7 +853,7 @@ Func CheckHotkeys()
 		MsgBox(0, "Mauvais Hotkey", "La touche pour fermer les fenêtres doit être : " & $KeyCloseWindows & @CRLF)
 		Terminate()
 	EndIf
-	ConsoleWrite("Check des touches OK" & @CRLF)
+	_log("Check des touches OK")
 	$hotkeycheck = 1
 EndFunc   ;==>CheckHotkeys
 

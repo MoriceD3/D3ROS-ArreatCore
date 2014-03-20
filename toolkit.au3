@@ -166,7 +166,7 @@ Func ListUi($Visible=0)
 
 			if $IsVisible = 4 OR $Visible = 0 Then
 				$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
-				ConsoleWrite(@CRLF & "Buckit N° " & $g & " (" & $IsVisible  & ") -> " & $Name )
+				_log(@CRLF & "Buckit N° " & $g & " (" & $IsVisible  & ") -> " & $Name )
 			EndIf
 
 			$UiPtr = _memoryread($UiPtr, $d3, "ptr")
@@ -471,7 +471,7 @@ EndFunc   ;==>_checkInventoryopen OK
 ;;--------------------------------------------------------------------------------
 Func IsInArea($area)
 	$area = GetLevelAreaId()
-	ConsoleWrite("Area " & $area & @CRLF)
+	_log("Area " & $area)
 	Return $area = GetLevelAreaId()
 EndFunc   ;==>IsInArea
 
@@ -1100,8 +1100,8 @@ Func antiidle()
 global $shrinebanlist = 0
 $warnloc = GetCurrentPos()
 $warnarea = GetLevelAreaId()
-_log("Lost detected at : " & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2],1);
-_log("Lost area : " & $warnarea,1);
+_log("Lost detected at : " & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2], True);
+_log("Lost area : " & $warnarea, True);
 
 
 If _checkInventoryopen() = False Then
@@ -1160,13 +1160,13 @@ Func GetPackItemLevel($ACD, $_REQ)
 				If $data <> 0x0 Then
 					$AtribData = _MemoryRead($data + 0x4, $d3, 'ptr')
 					If StringLeft($AtribData, 7) = "0x0003B" Then
-						;ConsoleWrite("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') &@crlf) ;FOR DEBUGGING
+						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
 						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
 							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
 						EndIf
 					EndIf
 					If StringLeft($AtribData, 7) = "0xFFFFF" Then
-						;ConsoleWrite("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') &@crlf) ;FOR DEBUGGING
+						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
 						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
 							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
 						EndIf
@@ -1500,14 +1500,12 @@ Func FilterBackpack()
 			;;;If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier); pacht 1.08
 			If $itemDestination = "Stash_Filtre" Then ;Si c'est un item à filtrer
 				If checkFiltreFromtable($GrabListTab, $__ACDACTOR[$i][1], $CurrentIdAttrib) Then ;on lance le filtre sur l'item
-					_log('valide', 1)
-					_log(' - ', 1)
+					_log('valide')
 					$return[$i][2] = "Stash"
 					$nbRares += 1 ; on conte les rares qu'on met au coffre
 				Else
 					$return[$i][2] = "Trash"
-					_log('invalide', 1)
-					_log(' - ', 1)
+					_log('invalide')
 				EndIf
 
 			Else
@@ -1659,12 +1657,12 @@ Func GetACDByGuid($Guid, $_displayInfo = 0)
 		$__ACTOR[$i][3] = _MemoryRead($CurrentOffset + $ofs_LocalActor_atribGUID, $d3, 'ptr')
 		$CurrentOffset = $CurrentOffset + $ofs_LocalActor_StrucSize
 		If $__ACTOR[$i][1] = $Guid Then
-			If $_displayInfo = 1 Then ConsoleWrite('Count : "' & $i & '" ' & $__ACTOR[$i][1] & "' '" & $__ACTOR[$i][2] & "' '" & $__ACTOR[$i][3] & "'" & @CRLF)
+			If $_displayInfo = 1 Then _log('Count : "' & $i & '" ' & $__ACTOR[$i][1] & "' '" & $__ACTOR[$i][2] & "' '" & $__ACTOR[$i][3] & "'" )
 			Global $GetACD = $i
 			Return True
 		EndIf
 	Next
-	ConsoleWrite("Get ACD By Guid was failed" & @CRLF)
+	_log("Get ACD By Guid was failed")
 EndFunc   ;==>GetACDByGuid
 
 ;;================================================================================
@@ -1774,7 +1772,7 @@ Func LinkActors($OBject, $_displayInfo = 0)
 					$LevelInferno = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_LevelInferno, $d3, 'int')
 					$OBject_Mem_Actor[$i][11] = $Type
 					$OBject_Mem_Actor[$i][12] = $Race
-					;if $_displayInfo = 1 Then ConsoleWrite($i & " " & $Object_File_Actor[$ItemIndex][0] & @tab & " " &$MonsterType &@tab & " " & $MonsterRace &@tab & " Level Normal:" & $LevelNormal &@tab & " " & $StringListDB[$Name][1] &" " & @TAB  &$OBject_Mem_Actor[$i][2] &@crlf)
+					;if $_displayInfo = 1 Then _log($i & " " & $Object_File_Actor[$ItemIndex][0] & @tab & " " &$MonsterType &@tab & " " & $MonsterRace &@tab & " Level Normal:" & $LevelNormal &@tab & " " & $StringListDB[$Name][1] &" " & @TAB  &$OBject_Mem_Actor[$i][2])
 				EndIf
 			EndIf
 		EndIf
@@ -1812,7 +1810,7 @@ Func IndexSNO($_offset, $_displayInfo = 0)
 	$_SnoIndex = _MemoryRead($_Pointer + $_deflink, $d3, 'ptr') ;//Moving from the static into the index
 	$_SNOName = _MemoryRead($_Pointer, $d3, 'char[64]') ;//Usually something like "Something" + Def
 	$TempWindex = $_SnoIndex + 0x10 ;//The header is 0xC in size
-	If $_displayInfo = 1 Then ConsoleWrite("-----* Indexing " & $_SNOName & " *-----" & @CRLF)
+	If $_displayInfo = 1 Then _log("-----* Indexing " & $_SNOName & " *-----")
 	Dim $_OutPut[$_SnoCount + 1][2] ;//Setting the size of the output array
 
 	For $i = 1 To $_SnoCount Step +1 ;//Iterating through all the elements
@@ -1822,7 +1820,7 @@ Func IndexSNO($_offset, $_displayInfo = 0)
 		If $ignoreSNOcount = 1 Then $CurIndex = $i
 		$_OutPut[$i][0] = $_CurSnoOffset ;//Poping the data into the output array
 		$_OutPut[$i][1] = $_CurSnoID
-		If $_displayInfo = 1 Then ConsoleWrite($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID & @CRLF)
+		If $_displayInfo = 1 Then _log($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID )
 		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x10 later
 	Next
 
@@ -1857,7 +1855,7 @@ Func IndexStringList($_offset, $_displayInfo = 0)
 		Assign("__" & $_OutPut[$i][0], $_OutPut[$i][1], 2)
 
 		$_CurrentOffset = $_CurrentOffset + $_offset_FileMonster_StrucSize
-		If $_displayInfo = 1 Then ConsoleWrite($_CurrentOffset & " ProxyName: " & $_OutPut[$i][0] & @TAB & " LocalizedName: " & $_OutPut[$i][1] & @CRLF)
+		If $_displayInfo = 1 Then _log($_CurrentOffset & " ProxyName: " & $_OutPut[$i][0] & @TAB & " LocalizedName: " & $_OutPut[$i][1])
 	Next
 
 	Return $_OutPut
@@ -1990,7 +1988,7 @@ Func offsetlist()
 		Global $ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
 		Global $ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
 		Global $ClickToMoveFix = $ClickToMoveMain + $FixSpeed
-		If $_debug Then _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType & @CRLF)
+		If $_debug Then _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
 		Return True
 	Else
 		Return False
@@ -2003,12 +2001,12 @@ EndFunc   ;==>offsetlist
 ;; 		Description:		Iterate object even if they dont have guid, also provide true names
 ;;--------------------------------------------------------------------------------
 Func IterateAllObjectList($_displayInfo)
-	If $_displayInfo = 1 Then ConsoleWrite("-----Iterating through Actors------" & @CRLF)
-	If $_displayInfo = 1 Then ConsoleWrite("First Actor located at: " & $_itrObjectManagerD & @CRLF)
+	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
+	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
 	$_CurOffset = $_itrObjectManagerD
 	$_Count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
 	Dim $OBJ[$_Count + 1][10]
-	If $_displayInfo = 1 Then ConsoleWrite("Number of Actors : " & $_Count & @CRLF)
+	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count )
 	For $i = 0 To $_Count Step +1
 		$_GUID = _MemoryRead($_CurOffset + 0x4, $d3, 'ptr')
 		$_NAME = _MemoryRead($_CurOffset + 0x8, $d3, 'char[64]')
@@ -2033,8 +2031,8 @@ Func IterateAllObjectList($_displayInfo)
 		$OBJ[$i][7] = $_DATA2
 		$OBJ[$i][8] = $Distance
 		$OBJ[$i][9] = $_CurOffset
-		If $_displayInfo = 1 Then ConsoleWrite($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & " Dist: " & $Distance & @TAB & $_NAME & " data3: " & $_DATA3 & @CRLF)
-		;if $_displayINFO = 1 then ConsoleWrite($i & @TAB&" : " & $_POS_X & @TAB& $_POS_Y & @TAB & $_POS_Z & @TAB& $_NAME & @crlf)
+		If $_displayInfo = 1 Then _log($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & " Dist: " & $Distance & @TAB & $_NAME & " data3: " & $_DATA3 )
+		;if $_displayINFO = 1 then _log($i & @TAB&" : " & $_POS_X & @TAB& $_POS_Y & @TAB & $_POS_Z & @TAB& $_NAME)
 		$_CurOffset = $_CurOffset + $_ObjmanagerStrucSize
 	Next
 	Return $OBJ
@@ -2046,12 +2044,12 @@ EndFunc   ;==>IterateAllObjectList
 ;;--------------------------------------------------------------------------------
 Func IterateObjectList($_displayInfo = 0)
 	;	Local $mesureobj = TimerInit() ;;;;;;;;;;;;;;
-	If $_displayInfo = 1 Then ConsoleWrite("-----Iterating through Actors------" & @CRLF)
-	If $_displayInfo = 1 Then ConsoleWrite("First Actor located at: " & $_itrObjectManagerD & @CRLF)
+	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
+	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
 	$_CurOffset = $_itrObjectManagerD
 	$_Count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
 	Dim $OBJ[$_Count + 1][13]
-	If $_displayInfo = 1 Then ConsoleWrite("Number of Actors : " & $_Count & @CRLF)
+	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count)
 	;$init = TimerInit()
 	For $i = 0 To $_Count Step +1
 		$_GUID = _MemoryRead($_CurOffset + 0x4, $d3, 'ptr')
@@ -2078,7 +2076,7 @@ Func IterateObjectList($_displayInfo = 0)
 			$_POS_Z = _MemoryRead($_CurOffset + 0xB8, $d3, 'float')
 			$_DATA = _MemoryRead($_CurOffset + 0x200, $d3, 'int')
 			$_DATA2 = _MemoryRead($_CurOffset + 0x1D0, $d3, 'int')
-			If $_displayInfo = 1 Then ConsoleWrite($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " " & $_ACTORLINK & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & @TAB & $_REAL_NAME & @CRLF)
+			If $_displayInfo = 1 Then _log($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " " & $_ACTORLINK & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & @TAB & $_REAL_NAME)
 		EndIf
 
 		;Im too lazy to do this but the following code needs cleanup and restructure more than anything.
@@ -2107,7 +2105,7 @@ Func IterateObjectList($_displayInfo = 0)
 	;$OBJv2 = LinkActors($OBJ) ;//Would be a waste to do this in the main operation so we add more data to the object here after the main operation.
 	IterateLocalActor()
 	;	Local $difmesureobj = TimerDiff($mesureobj) ;;;;;;;;;;;;;
-	;ConsoleWrite("Mesure iterOBJ :" & $difmesureobj &@crlf) ;FOR DEBUGGING;;;;;;;;;;;;
+	;_log("Mesure iterOBJ :" & $difmesureobj) ;FOR DEBUGGING;;;;;;;;;;;;
 	Return $OBJ
 EndFunc   ;==>IterateObjectList
 
@@ -2194,7 +2192,7 @@ Func GetCurrentPos()
 	$Current_Hero_Z = $return[2]
 
 	;		Local $difmesurepos = TimerDiff($mesurepos) ;;;;;;;;;;;;;
-	;ConsoleWrite("Mesure getcurrentpos :" & $difmesurepos &@crlf) ;FOR DEBUGGING;;;;;;;;;;;;
+	;_log("Mesure getcurrentpos :" & $difmesurepos) ;FOR DEBUGGING;;;;;;;;;;;;
 	Return $return
 EndFunc   ;==>GetCurrentPos
 
@@ -2281,13 +2279,13 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		Sleep(10)
 		$Coords = FromD3toScreenCoords($lastwp_x, $lastwp_y, $lastwp_z)
-		;ConsoleWrite("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2] &@CRLF)
-		;ConsoleWrite("distance/m range: " & $Distance & " : " & $m_range & @CRLF)
+		;_log("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2])
+		;_log("distance/m range: " & $Distance & " : " & $m_range)
 		If $_a = 1 And GetDistance($LastCP[0], $LastCP[1], $LastCP[2]) >= $a_range / 2 Then
 			MouseUp("middle")
 			$LastCP = GetCurrentPos()
 			If $_a = 1 Then Attack()
-			;ConsoleWrite("Last check: " & $Distance & @CRLF)
+			;_log("Last check: " & $Distance)
 			;MouseMove($Coords[0], $Coords[1], 3)
 
 			$Coords_RndX = $Coords[0] + Random(-17,17)
@@ -2930,7 +2928,7 @@ EndFunc   ;==>CheckItem
 Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
         $grabit = False
     If _MemoryRead($item[8] + 0x0, $d3, 'ptr') <> 0xFFFFFFFF Then
-                ConsoleWrite("Checking " & $item[1] & @CRLF)
+                _log("Checking " & $item[1])
 
 				If $gestion_affixe_loot Then
 					Dim $item_aff_verif = IterateFilterAffix()
@@ -3249,7 +3247,7 @@ Func Grabit($name, $offset)
 	Dim $CoordVerif[3]
 
 
-	ConsoleWrite("Grabbing :" & ($name) & @CRLF) ;FOR DEBUGGING
+	_log("Grabbing :" & ($name)) ;FOR DEBUGGING
 
 	Dim $pos = UpdateObjectsPos($offset)
 
@@ -3531,7 +3529,7 @@ Func checkFiltreFromtable($table, $name, $CurrentIdAttrib)
 			If Not $table[$i][3] = 0 Then
 				$filtre_buff = $table[$i][3]
 				$tab_filter = StringSplit($table[$i][4], "|", 2)
-				;_log("filtre avant : " & $filtre_buff, 1)
+				;_log("filtre avant : " & $filtre_buff, True)
 				For $y = 0 To UBound($tab_filter) - 1
 					$const_result = _filter2attrib($CurrentIdAttrib, $tab_filter[$y])
 					$filtre_buff = StringReplace($filtre_buff, $tab_filter[$y], $const_result, 0, 2)
@@ -4054,23 +4052,21 @@ Func _log($text, $write = 0)
 		FileClose($file)
 	EndIf
 
-	ConsoleWrite(@MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
+	_log(@MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text)
 EndFunc   ;==>_log
 #ce
-Func _log($text, $forceDebug = 0)
-	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text
-
-	If $forceDebug == 1 or $debugBot == 1 Then
+Func _log($text, $forceDebug = False)
+	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
+	If $forceDebug or $debugBot Then
 		$file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
 		If $file = -1 Then
-			_log("Log file error, cant be open")
+			ConsoleWrite("!Log file error, can not be opened !")
 		Else
-			FileWrite($file, $texte_write & @CRLF)
+			FileWrite($file, $texte_write)
 		EndIf
 		FileClose($file)
 	EndIf
-
-	ConsoleWrite(@MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
+	ConsoleWrite($texte_write)
 EndFunc   ;==>_log
 
 Func RandSleep($min = 5, $max = 45, $chance = 3)
@@ -4927,7 +4923,7 @@ EndFunc   ;==>mesureStart
 
 Func mesureEnd($nom)
 	Local $difmesuredebug = TimerDiff($mesuredebug) ;;;;;;;;;;;;;
-	ConsoleWrite("Mesure " & $nom & " : " & $difmesuredebug & @CRLF) ;FOR DEBUGGING;;;;;;;;;;;;
+	_log("Mesure " & $nom & " : " & $difmesuredebug) ;FOR DEBUGGING;;;;;;;;;;;;
 EndFunc   ;==>mesureEnd
 
 
@@ -5019,9 +5015,9 @@ Func _inventoryfull()
 			If _memoryread($npnt + 40, $d3, "int") = 1 Then
 				$uitextptr = _memoryread($npnt + 0xAE0, $d3, "ptr")
 				$uitext = BinaryToString(_memoryread($uitextptr, $d3, "byte[1024]"), 4)
-;~                                 ConsoleWrite(@CRLF & $uitext)
+;~                                 _log(@CRLF & $uitext)
 				If StringInStr($uitext, 'nulle part') Or StringInStr($uitext, 'inventaire') Or StringInStr($uitext, 'no place') Or StringInStr($uitext, 'enough inventory') Then
-					ConsoleWrite(@CRLF & $uitext)
+					_log(@CRLF & $uitext, True)
 					Return True
 				EndIf
 
