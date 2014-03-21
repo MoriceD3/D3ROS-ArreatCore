@@ -11,6 +11,114 @@ Global $_GizmoNameStringListID = 0x0000CB23 ;We use this to get local Names on G
 Global $gameBalance = 0x1CD8320 ;0x1CD62F0 ;0x1cd7908 ;0x18E0198 ;0x18DF198 ;0x18A5550 ;0x0189E4D8 ;0x1884F98
 Global $OfsLevelAreaId = 0x1C36260 ;0x1C34250
 
+Global $ofs_MonsterDef                                  = 0x18EC4C0 ; 0x18CBE70 ;1.0.6 0x15DBE00 ;0x015DCE00 ;0x15DBE00
+Global $ofs_StringListDef                               = 0x1CEC778 ;0x17E4EE8 ;ou alors 0x17f8568;0x18DD188;0x18DC188;0x18A2558 ; 0x0158C240 ;0x015E8808 ;0x015E9808
+Global $ofs_ActorDef                                    = 0x18E73F0 ; 0x18C6AD8 ;1.0.6 0x15EC108 ;0x015ED108 ;0x15EC108
+Global $_defptr                                         = 0x10
+Global $_defcount                                       = 0x10C
+Global $_deflink                                        = 0x11C
+Global $_ofs_FileMonster_StrucSize                      = 0x50
+Global $_ofs_FileActor_LinkToMonster                    = 0x6C
+Global $_ofs_FileMonster_MonsterType                    = 0x18
+Global $_ofs_FileMonster_MonsterRace                    = 0x1C
+Global $_ofs_FileMonster_LevelNormal                    = 0x44
+Global $_ofs_FileMonster_LevelNightmare                 = 0x48
+Global $_ofs_FileMonster_LevelHell                      = 0x4c
+Global $_ofs_FileMonster_LevelInferno                   = 0x50
+
+;//GET ACTORATRIB
+Global $ofs_ActorAtrib_Base                             = 0x0196644C ;0x1544E54 ;0x15A1EA4 ;0x015A2EA4;0x015A1EA4
+Global $ofs_ActorAtrib_ofs1                             = 0x390
+Global $ofs_ActorAtrib_ofs2                             = 0x2E8
+Global $ofs_ActorAtrib_ofs3                             = 0x148
+Global $ofs_ActorAtrib_Count                            = 0x108 ; 0x0 0x0
+Global $ofs_ActorAtrib_Indexing_ofs1                    = 0x10
+Global $ofs_ActorAtrib_Indexing_ofs2                    = 0x8
+Global $ofs_ActorAtrib_Indexing_ofs3                    = 0x250
+Global $ofs_ActorAtrib_StrucSize                        = 0x180
+Global $ofs_LocalPlayer_HPBARB                          = 0x34
+Global $ofs_LocalPlayer_HPWIZ                           = 0x38
+
+;//GET LOCAL ACTOR STRUC
+Global $ofs_LocalActor_ofs1                             = 0x378 ;instead of $ofs_ActorAtrib_ofs2
+Global $ofs_LocalActor_ofs2                             = 0x148
+Global $ofs_LocalActor_Count                            = 0x108
+Global $ofs_LocalActor_atribGUID                        = 0x120
+Global $ofs_LocalActor_StrucSize                        = 0x2F8 ;0x2D0 ; 0x0 0x0
+
+;//OBJECT MANAGER
+Global $ofs_objectmanager                               = 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
+Global $ofs__ObjmanagerActorOffsetA                     = 0x920 ;0x8C8 ;0x8b0 ;2.0
+Global $ofs__ObjmanagerActorCount                       = 0x108
+Global $ofs__ObjmanagerActorOffsetB                     = 0x120 ;0x148 ;0x148
+Global $ofs__ObjmanagerActorLinkToCTM                   = 0x1a8 ;0x384
+Global $_ObjmanagerStrucSize                            = 0x44c ;0x42C ;0x42C ;0x428
+
+;//CameraDef
+Global $VIewStatic                                      = 0x015A0BEC
+Global $DebugFlags                                      = $VIewStatic + 0x20
+Global $vftableSubB                                     = 0
+Global $vftableSubA                                     = 0
+Global $ViewOffset                                      = 0
+Global $Ofs_CameraRotationA                             = 0
+Global $Ofs_CameraRotationB                             = 0
+Global $Ofs_CameraRotationC                             = 0
+Global $Ofs_CameraRotationD                             = 0
+Global $Ofs_CameraPosX                                  = 0
+Global $Ofs_CameraPosY                                  = 0
+Global $Ofs_CameraPosZ                                  = 0
+Global $Ofs_CameraFOV                                   = 0
+Global $Ofs_CameraFOVB                                  = 0
+Global $ofs_InteractBase                                = 0x18CD364 ;0x1543B84 ;0x15A0BD4 ;0x015A1BD4;0x15A0BD4
+Global $ofs__InteractOffsetA                            =  0xC4 ;0xA8
+Global $ofs__InteractOffsetB                            = 0x58
+Global $ofs__InteractOffsetUNK1                         = 0x7F20 ;Set to 777c
+Global $ofs__InteractOffsetUNK2                         = 0x7F44 ;Set to 1 for NPC interaction
+Global $ofs__InteractOffsetUNK3                         = 0x7F7C ;Set to 7546 for NPC interaction, 7545 for loot interaction
+Global $ofs__InteractOffsetUNK4                         = 0x7F80 ;Set to 7546 for NPC interaction, 7545 for loot interaction
+Global $ofs__InteractOffsetMousestate                   = 0x7F84 ;Mouse state 1 = clicked, 2 = mouse down
+Global $ofs__InteractOffsetGUID                         = 0x7F88 ;Set to the GUID of the actor you want to interact with
+Global $_ActorAtrib_Base                                = 0
+Global $_ActorAtrib_1                                   = 0
+Global $_ActorAtrib_2                                   = 0
+Global $_ActorAtrib_3                                   = 0
+Global $_ActorAtrib_4                                   = 0
+Global $_ActorAtrib_Count                               = 0
+Global $_LocalActor_1                                   = 0
+Global $_LocalActor_2                                   = 0
+Global $_LocalActor_3                                   = 0
+Global $_LocalActor_Count                               = 0
+Global $_itrObjectManagerA                              = 0
+Global $_itrObjectManagerB                              = 0
+Global $_itrObjectManagerCount                          = 0
+Global $_itrObjectManagerC                              = 0
+Global $_itrObjectManagerD                              = 0
+Global $_itrObjectManagerE                              = 0
+Global $_itrInteractA                                   = 0
+Global $_itrInteractB                                   = 0
+Global $_itrInteractC                                   = 0
+Global $_itrInteractD                                   = 0
+Global $_itrInteractE                                   = 0
+Global $FixSpeed                                        = 0x20 ;69736
+Global $ToggleMove                                      = 0x34
+Global $MoveToXoffset                                   = 0x40
+Global $MoveToYoffset                                   = 0x44
+Global $MoveToZoffset                                   = 0x48
+Global $CurrentX                                        = 0xA8
+Global $CurrentY                                        = 0xAc
+Global $CurrentZ                                        = 0xb0
+Global $RotationOffset                                  = 0x174
+
+Global $ClickToMoveMain                                 = 0
+Global $ClickToMoveRotation                             = 0
+Global $ClickToMoveCurX                                 = 0
+Global $ClickToMoveCurY                                 = 0
+Global $ClickToMoveCurZ                                 = 0
+Global $ClickToMoveToX                                  = 0
+Global $ClickToMoveToY                                  = 0
+Global $ClickToMoveToZ                                  = 0
+Global $ClickToMoveToggle                               = 0
+Global $ClickToMoveFix                                  = 0
 
 Global $Atrib_Axe_Bad_Data[2] = [0x00000000, "float"]
 Global $Atrib_Attribute_Timer[2] = [0x00000001, "int"]
@@ -1405,3 +1513,22 @@ Global $ManaRegen[2] = [$UNKNOW_VALUE, 1]
 Global $SpiritRegen[2] = [$UNKNOW_VALUE, 1]
 Global $ArcaneOnCrit[2] = [$UNKNOW_VALUE, 1]
 Global $HealthPerSpirit[2] = [$UNKNOW_VALUE, 1]
+
+
+;Global $GuidStruct =  "int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int;byte[488]"
+
+Global $GuidStruct =  "int;char[128];byte[4];ptr;byte[40];float;float;float;byte[4];float;float;float;byte[260];int;byte[88];int;byte[44];int;byte[488]"
+Global $TableSizeGuidStruct = 13
+
+
+; ACD STRUCT
+; id_acd -> 1
+; name -> 2
+; id_actor -> 4
+; id_sno -> 5
+; gb_type -> 7
+; id_gb -> 8
+; mobType -> 9 (0-normal, 1-elite, 2-yellow, 3-purple, 4-key_warden)
+; RadiusDefault -> 11
+; IdAttrib -> 13
+$ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];ptr;ptr;int;byte[68];float;byte[28];ptr;byte[468]"

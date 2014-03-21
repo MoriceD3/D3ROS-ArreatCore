@@ -27,7 +27,7 @@ Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
 ;;      Initialize some Globals
 ;;--------------------------------------------------------------------------------
 
-
+Global $D3Interop
 Global $GameOverTime, $GameFailed, $ClickToMoveToggle, $d3, $Step, $a_range, $ResActivated, _
 		$nb_die_t, $rdn_die_t, $ResLife, $Res_compt, $UsePath, $BanmonsterList, $File_Sequence, $TakeShrines, $CoffreTaken
 
@@ -93,6 +93,7 @@ $AverageDps=0 ; DPS constates
 $NbMobsKilled=1 ; Nombre de Mobs croisés
 
 Global $Hero_Axe_Z = 10
+Global $BanTableActor = ""
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
 Global $Count_ACD = 0
 Global $GetACD
@@ -178,7 +179,13 @@ $Expencours = 0
 $Xp_Total = 0
 
 
+Global $ClickableRec[4] = [0,0,0,0]
+Global $SizeWindows = 0
+Global $PointFinal[4] = [0,0,0,0]
+
 CheckWindowD3()
+WinSetOnTop("[CLASS:D3 Main Window Class]", "", 1)
+
 ;;--------------------------------------------------------------------------------
 ;;      Include some files
 ;;--------------------------------------------------------------------------------
@@ -253,6 +260,7 @@ Func _dorun()
 		Send($KeyPortal)
 		Sleep(500)
 		Detect_Str_full_inventory()
+		CheckAndDefineSize()
 	EndIf
 
 	If Not $PartieSolo Then WriteMe($WRITE_ME_WELCOME) ; TChat
@@ -311,7 +319,7 @@ Func _botting()
 			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
 				WriteMe($WRITE_ME_RESART_GAME) ; TChat
 			EndIf
-			RandSleep()
+
 			$DeathCountToggle = True
 			_resumegame()
 		EndIf
@@ -545,9 +553,77 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 		;WEnd
 ;_log("trouvé")
 
+;Global $a_range=70
+;Global $SpecialmonsterList="Uber_|uber_"
+;Global $monsterList="Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni|Uber_|uber_"
+;$IgnoreList = ""
+;Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
+;If IsArray($test_iterateallobjectslist) Then;;
+;
+;		for $i=0 to Ubound($test_iterateallobjectslist) - 1
+;			_log("")
+;			for $y=0 to $TableSizeGuidStruct - 1
+;				_log( $i & ") (" & $y  & ") " & $test_iterateallobjectslist[$i][$y] )
+;			Next
+;			_log("")
+;		Next
+;EndIf
+
+;_log("Finish")
+
+
 consoleLog($PreBuff1,$LOG_LEVEL_DEBUG)
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
+
+Func CheckAndDefineSize()
+	if $SizeWindows = 0 Then
+		$SizeWindows = WinGetClientSize("[CLASS:D3 Main Window Class]")
+		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1])
+	EndIF
+
+	if $ClickableRec[0] = 0 AND $ClickableRec[1] = 0 AND $ClickableRec[2] = 0 AND $ClickableRec[3] = 0 Then
+
+		;$result = GetOfsUI("Root.NormalLayer.game_notify_dialog_backgroundScreen.dlg_new_paragon.button", 0)
+		$OfsBtnParagon = GetOfsFastUI("Root.NormalLayer.game_notify_dialog_backgroundScreen.dlg_new_paragon.button", 1028)
+		Dim $TruePointBtnParagon = GetPositionUI($OfsBtnParagon)
+		Dim $PointParagon = GetUIRectangle($TruePointBtnParagon[0], $TruePointBtnParagon[1], $TruePointBtnParagon[2], $TruePointBtnParagon[3])
+
+		;$result = GetOfsUI("Root.NormalLayer.eventtext_bkgrnd.eventtext_region.checkbox", 0)
+		$OfsBtnCheckBox = GetOfsFastUI("Root.NormalLayer.eventtext_bkgrnd.eventtext_region.checkbox", 31)
+		Dim $TruePointCheckBox = GetPositionUI($OfsBtnCheckBox)
+		Dim $PointCheckBox = GetUIRectangle($TruePointCheckBox[0], $TruePointCheckBox[1], $TruePointCheckBox[2], $TruePointCheckBox[3])
+
+		;$result = GetOfsUI("Root.NormalLayer.portraits.stack.party_stack.portrait_0.Background", 0)
+		$OfsPortrait = GetOfsFastUI("Root.NormalLayer.portraits.stack.party_stack.portrait_0.Background", 707)
+		Dim $TruePointPortrait = GetPositionUI($OfsPortrait)
+		Dim $PointPortrait = GetUIRectangle($TruePointPortrait[0], $TruePointPortrait[1], $TruePointPortrait[2], $TruePointPortrait[3])
+
+		$PointFinal[0] = $PointPortrait[3] + $PointPortrait[0]
+		$PointFinal[1] = $PointPortrait[2] + $PointPortrait[1]
+		$PointFinal[2] = $PointCheckBox[0] - $PointFinal[1]
+		$PointFinal[3] = $PointParagon[1] - $PointFinal[0]
+
+		_log("Zone Clickable -> Y[0] : " & $PointFinal[0] & " - X[1] : " & $PointFinal[1] & " - Width[2] : " & $PointFinal[2] & " - Height[3] : " & $PointFinal[3])
+	EndIF
+EndFunc
+
+Func Checkclickable($coord)
+
+		if $coord[1] <= $PointFinal[0] Then
+			$coord[1] = $PointFinal[0] + 1
+		Elseif $coord[1] >= ($PointFinal[0] + $PointFinal[3]) Then
+			$coord[1] =  ($PointFinal[0] + $PointFinal[3]) - 1
+		EndIF
+
+		if $coord[0] <= $PointFinal[1] Then
+			$coord[0] = $PointFinal[1] + 1
+		Elseif $coord[0] >= ($PointFinal[1] + $PointFinal[2]) Then
+			$coord[0] = ($PointFinal[1] + $PointFinal[2]) - 1
+		EndIF
+
+		return $coord
+EndFunc
 
 Func ClickInventory($c, $l)
 	$result = GetOfsFastUI("Root.NormalLayer.inventory_dialog_mainPage.timer slot 0 x0 y0", 1509)
@@ -570,7 +646,7 @@ EndFunc
 ;###########################################################################
 ;###########################################################################
 ;###########################################################################
-;################iiiiii###########################################################
+;###########################################################################
 ;###########################################################################
 ;###########################################################################
 
