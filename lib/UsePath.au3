@@ -19,7 +19,7 @@ Func UsePath(ByRef $path)
 	$Coords = FromD3toScreenCoords($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 	MouseMove($Coords[0], $Coords[1], 3)
 	$LastCP = GetCurrentPos()
-	MouseDown("middle")
+	MouseDown($MouseMoveClick)
 	Sleep(10)
 	While 1
 
@@ -67,9 +67,9 @@ Func UsePath(ByRef $path)
 		While _MemoryRead($ClickToMoveToggle, $d3, 'float') = 0
 			;_log("Togglemove : " & _MemoryRead($ClickToMoveToggle, $d3, 'float'))
 
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			Attack()
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 
 			$Coords = FromD3toScreenCoords($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 			$angle += $Step
@@ -79,6 +79,8 @@ Func UsePath(ByRef $path)
 			; ci desssous du dirty code pour eviter de cliquer n'importe ou hos de la fenetre du jeu
 			$Coords[0] = $Coords[0] - (Cos($angle) * $Radius)
 			$Coords[1] = $Coords[1] - (Sin($angle) * $Radius)
+
+			$Coords = Checkclickable($Coords)
 
 			dim $Coords_Rnd[2]
 			$Coords_Rnd[0] = Random($Coords[0] - 20, $Coords[0] + 20)
@@ -116,10 +118,10 @@ Func UsePath(ByRef $path)
 		;ConsoleWrite("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2] &@CRLF)
 		;ConsoleWrite("distance/m range: " & $Distance & " : " & $pos[4] & @CRLF)
 		If $path[$posIndex][4] = 1 And GetDistance($LastCP[0], $LastCP[1], $LastCP[2]) >= $a_range / 2 Then
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			$LastCP = GetCurrentPos()
 			Attack()
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 			;ConsoleWrite("Last check: " & $Distance & @CRLF)
 		EndIf
 		$newIndex = getNextIndex($path, $posIndex)
@@ -150,14 +152,14 @@ Func UsePath(ByRef $path)
 
 
 		MouseMove($Coords_RndX, $Coords_RndY, 3) ;little randomisation
-		MouseDown("middle")
+		MouseDown($MouseMoveClick)
 
 	WEnd
 
 	For $i = $posIndex To UBound($path, 1) - 1
 		TraitementSequence($path, $i)
 	Next
-	MouseUp("middle")
+	MouseUp($MouseMoveClick)
 EndFunc   ;==>UsePath
 
 

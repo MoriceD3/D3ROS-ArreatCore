@@ -64,7 +64,7 @@ EndFunc   ;==>init_sequence
 
 Func revive(ByRef $path)
 	If _playerdead_revive() Then
-		MouseUp("middle")
+		MouseUp($MouseMoveClick)
 		$nb_die_t = $nb_die_t + 1
 		$Res_compt = $Res_compt + 1
 		_log("You are dead, max :" & $rdn_die_t - $nb_die_t & " more death allowed")

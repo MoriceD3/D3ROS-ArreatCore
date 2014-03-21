@@ -1121,13 +1121,13 @@ WEnd
 
 ;idleing
 While 1
-MouseClick("middle", Random(100, 200), Random(100, 200), 1, 6)
+MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(600, 700), Random(100, 200), 1, 6)
+MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(600, 700), Random(400, 500), 1, 6)
+MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(100, 200), Random(400, 500), 1, 6)
+MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
 Sleep(Random(40000, 180000))
 Wend
 
@@ -2185,7 +2185,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	$Coords = FromD3toScreenCoords($_x, $_y, $_z)
 	MouseMove($Coords[0], $Coords[1], 3)
 	$LastCP = GetCurrentPos()
-	MouseDown("middle")
+	MouseDown($MouseMoveClick)
 	Sleep(10)
 	While 1
 
@@ -2241,7 +2241,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 		;_log("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2])
 		;_log("distance/m range: " & $Distance & " : " & $m_range)
 		If $_a = 1 And GetDistance($LastCP[0], $LastCP[1], $LastCP[2]) >= $a_range / 2 Then
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			$LastCP = GetCurrentPos()
 			If $_a = 1 Then Attack()
 
@@ -2253,7 +2253,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 
 			MouseMove($Coords_Rnd[0], $Coords_Rnd[1], 3) ;little randomisation
 
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 		EndIf
 		MouseMove($Coords[0], $Coords[1], 3)
 		If TimerDiff($TimeOut) > 75000 Then
@@ -2265,7 +2265,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			ExitLoop
 		EndIf
 	WEnd
-	MouseUp("middle")
+	MouseUp($MouseMoveClick)
 	;;
 	;Sleep(100)
 EndFunc   ;==>MoveToPos
@@ -2305,7 +2305,7 @@ Func InteractByActorName($a_name, $dist = 300)
 				_log($item[1] & " distance : " & $item[9])
 				While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
-					MouseClick("middle", $Coords[0], $Coords[1], 1, 10)
+					MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 					$maxtry += 1
 					_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1])
 					Sleep(800)
@@ -3383,7 +3383,7 @@ Func Grabit($name, $offset)
 		$CoordVerif[0] = $pos[0]
 		$CoordVerif[1] = $pos[1]
 		$CoordVerif[2] = $pos[2]
-		MouseClick("middle", $Coords[0], $Coords[1], 1, 5)
+		MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 	Else
 		Interact($pos[0], $pos[1], $pos[2])
 	EndIf
@@ -3421,7 +3421,7 @@ Func Grabit($name, $offset)
 				_log("Fake GOLD")
 				Return False
 			Else
-				MouseClick("middle", $Coords[0], $Coords[1], 1, 5)
+				MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 			EndIf
 		Else
 
@@ -3693,7 +3693,7 @@ Func OpenWp(ByRef $item)
 		While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 			$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
 			;_log("Dans LE while")
-			MouseClick("middle", $Coords[0], $Coords[1], 1, 10)
+			MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 			$maxtry += 1
 			_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1])
 			Sleep(500)
@@ -4151,7 +4151,7 @@ EndFunc   ;==>GameOverTime
 Func Terminate()
 	_MemoryClose($d3)
 	If $checkx64 = 1 Then
-		MouseUp("middle")
+		MouseUp($MouseMoveClick)
 		MouseUp("left")
 		Send("{SHIFTUP}")
 		Exit 0
@@ -4167,7 +4167,7 @@ Func Terminate()
 		FileWriteLine($file, $DebugMessage)
 		FileClose($file)
 		extendedstats()
-		MouseUp("middle")
+		MouseUp($MouseMoveClick)
 		MouseUp("left")
 		Send("{SHIFTUP}")
 		Exit 0
@@ -7392,7 +7392,7 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
 				  $Coords_affixe = FromD3toScreenCoords($move_coords[0],$move_coords[1],$_z_aff)
 				  Mousemove($Coords_affixe[0], $Coords_affixe[1], 3)
 				  GestSpellcast(0, 0, 0)
-				  MouseClick("middle")
+				  MouseClick($MouseMoveClick)
 				  $ignore_timer=timerinit()
 				  while _MemoryRead($ClickToMoveToggle,$d3,"float")<>0
 ;~ 					 GestSpellcast(0, 2, 0)
