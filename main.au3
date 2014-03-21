@@ -219,6 +219,8 @@ Func _dorun()
             Return False
     EndIf
 
+	If $Totalruns = 1 And Not $PartieSolo Then SetConfigPartieSolo(); TChat configuration du settings
+	
 	If $GameFailed = 0 Then
 		$success += 1
 	EndIf
