@@ -4619,8 +4619,8 @@ Func StatsDisplay()
         $DebugMessage = $DebugMessage & "Resurrections : " & $Res_compt & @CRLF
         $DebugMessage = $DebugMessage & "Deconnexions  : " & $disconnectcount & @CRLF
 		$DebugMessage = $DebugMessage & "Sanctuaires Pris : " & $CheckTakeShrineTaken & @CRLF
-		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
 		$DebugMessage = $DebugMessage & "Coffres Ouverts : " & $CoffreTaken & @CRLF
+		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
 		$DebugMessage = $DebugMessage & "Success Runs : " & Round($successratio * 100) & "%   ( " & ($Totalruns - $success) & " Avortés )" & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 		$DebugMessage = $DebugMessage & "                                 INFOS COFFRE" & @CRLF
