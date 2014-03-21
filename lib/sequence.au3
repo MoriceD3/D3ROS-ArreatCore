@@ -92,6 +92,7 @@ Func revive(ByRef $path)
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
 					_log("Res At Corp")
 					Sleep(Random(6000, 7000))
+					buffinit()
 					Return 1
 				Else ;On ne peut pas revive sur le corp
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint", 820)
