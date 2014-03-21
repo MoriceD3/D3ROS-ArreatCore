@@ -3713,7 +3713,8 @@ Func TakeWPV2($WPNumber=0)
 		Sleep(10)
 	WEnd
 
-	Local $BucketUI
+	Local $BucketUI = 0
+	#cs
 	Switch $WPNumber
 		Case 1
 			$BucketUI = 305
@@ -3738,7 +3739,7 @@ Func TakeWPV2($WPNumber=0)
 		Case 0
 			$BucketUI = 212
 	EndSwitch
-
+	#ce
 
 	if $WPNumber = 0 Then
 		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
@@ -3795,9 +3796,11 @@ Func TakeWPV2($WPNumber=0)
 			;Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
 			;MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
 
-			;ClickUI($NameUI)
-			ClickUI($NameUI, $BucketUI)
-
+			if ($BucketUI = 0) Then
+				ClickUI($NameUI)
+			Else
+				ClickUI($NameUI, $BucketUI)
+			EndIf
 
 			Local $areatry = 0
 			While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
