@@ -89,7 +89,7 @@ Func CheckWindowD3()
 EndFunc   ;==>CheckWindowD3
 
 Func CheckWindowD3Size()
-	Global $SizeWindows = WinGetClientSize("[CLASS:D3 Main Window Class]")
+	$sized3 = WinGetClientSize("[CLASS:D3 Main Window Class]")
 	If $sized3[0] <> $SizeWindows[0] Or $sized3[1] <> $SizeWindows[1] Then
 		WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 		MsgBox(0, Default, "Erreur Dimension : Taille changée " & $sized3[0] & " x " & $sized3[1] & " -> " & $SizeWindows[0] & " x " & $SizeWindows[1])
