@@ -7059,7 +7059,7 @@ Func CheckZoneBeforeTP()
 
 	local $try = 0
 
-	Dim $Item_Affix_Verify = IterateFilterAffix()
+	Dim $Item_Affix_Verify = IterateFilterAffixV2()
 	If IsArray($Item_Affix_Verify) Then
 	   _Log("Affix detecter, on verifie si l'on est trop pres avant de TP")
 
@@ -7418,6 +7418,7 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
    endif
 EndFunc  ;maffmove
 
+#cs
 Func IterateFilterAffix()
         Local $index, $offset, $count, $item[10]
         startIterateObjectsList($index, $offset, $count)
@@ -7460,6 +7461,9 @@ Func IterateFilterAffix()
                 Return $item_affix_2D
         EndIf
  EndFunc   ;==>IterateFilterAffix
+#ce
+
+
 
 $BanAffixList="poison_humanoid|"&$BanAffixList
 
