@@ -3807,14 +3807,24 @@ Func _logind3()
 	EndIf
 
 	WinActivate("[CLASS:D3 Main Window Class]")
-	_log("Login")
-	Sleep(20)
-	Send($d3pass)
-	Sleep(2000)
-	Send("{ENTER}")
-	Sleep(Random(5000, 6000, 1))
+	
+	If Not _checkdisconnect() Then ; le bot ne fait pas la différence entre _checkdisconnect et déconnecter du serveur
+		_Log("Login")
+		Sleep(1000)
+		Send($d3pass)
+		Sleep(2000)
+		Send("{ENTER}")
+		Sleep(Random(5000, 6000, 1))
 
-	$Try_Logind3 += 1
+		$TryLoginD3 += 1
+	Else
+		_Log("Disconnected to server")
+		sleep(2000)
+		Send("{ENTER}")
+		sleep(2000)
+		Send("{ENTER}") ; enter, si jamais on a rentré le mot passe avant que la fenêtre apparaisse
+		sleep(2000)
+	EndIf
 EndFunc   ;==>_logind3
 
 
