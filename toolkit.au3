@@ -5815,6 +5815,7 @@ EndFunc   ;==>ClickOnStashTab (lorenco)
 Func StashAndRepair()
 
 	_log("Func StashAndRepair")
+	Local $Repair = 0
 	$RepairORsell += 1
 	$item_to_stash = 0
 	$SkippedMove = 0
@@ -5908,7 +5909,6 @@ Func StashAndRepair()
 
 	EndIf
 
-
 	Sleep(Random(100, 200))
 	Send($KeyCloseWindows)
 	Sleep(Random(100, 200))
@@ -5946,46 +5946,43 @@ Func StashAndRepair()
 
 	   $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 	   If $ToTrash = -1 Then ; si pas items a aller vendre on répare au forgeron
-		  ;on mesure l'or avant la reparation
-		  Local $GoldBeforeRepaire = GetGold()
+		  Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
 
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
 		  Sleep(100)
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
 		  Sleep(100)
+		  $Repair = 1
 
-		  ;on mesure l'or apres
-		  Local $GoldAfterRepaire = GetGold()
+		  Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 		  $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
 	   EndIf
 
-	   If Not @Error Then
 
-		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2")
-		  Sleep(100)
-		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button")
+	   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2")
+	   Sleep(100)
+	   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button")
 
-		  CheckWindowD3Size()
+	   CheckWindowD3Size()
 
-		  For $i = 0 To UBound($ToRecycle) - 1
-			 InventoryMove($items[$ToRecycle[$i]][0], $items[$ToRecycle[$i]][1])
-			 Sleep(Random(100, 500))
-			 $ItemToRecycle += 1
-			 MouseClick('left')
-			 Sleep(Random(100, 200))
-		  Next
-
+	   For $i = 0 To UBound($ToRecycle) - 1
+		  InventoryMove($items[$ToRecycle[$i]][0], $items[$ToRecycle[$i]][1])
+		  Sleep(Random(100, 500))
+		  $ItemToRecycle += 1
+		  MouseClick('left')
 		  Sleep(Random(100, 200))
-		  Send($KeyCloseWindows)
-		  Sleep(Random(100, 200))
+	   Next
 
-		  ;***************************************************************
-		  If NOT Verif_Attrib_GlobalStuff() Then
-			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - Forgeron)!!!!!")
-			 antiidle()
-		  EndIf
-		  ;****************************************************************
+	   Sleep(Random(100, 200))
+	   Send($KeyCloseWindows)
+	   Sleep(Random(100, 200))
+
+	   ;***************************************************************
+	   If NOT Verif_Attrib_GlobalStuff() Then
+		  _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - Forgeron)!!!!!")
+		  antiidle()
 	   EndIf
+	   ;****************************************************************
 
 	   Sleep(Random(100, 200))
 	   Send($KeyCloseWindows)
@@ -5997,56 +5994,55 @@ Func StashAndRepair()
 	   EndIf
 
     EndIf ; fin recyclage
+	
+	Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
+	BuyPotion()
 
-    $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
-    If $ToTrash <> -1 Then ;si item a vendre
-
-	   ;on mesure l'or avant la reparation
-	   Local $GoldBeforeRepaire = GetGold()
-
-	   BuyPotion()
+    If $Repair = 0 Then
 	   Repair()
+    EndIf
+	
+	Local $GoldAfterRepaire = GetGold();on mesure l'or apres
+	$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation et potion
+    
+	;Trash
+    $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+	   
+    If not @error Then
+	   
+	   Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
 
-	   ;on mesure l'or apres
-	   Local $GoldAfterRepaire = GetGold()
-	   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
 
-	   If not @error Then
+	   CheckWindowD3Size()
 
-		  ;on mesure l'or avant la vente d'objets
-		  Local $GoldBeforeSell = GetGold()
-
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
-
-		  CheckWindowD3Size()
-
-		  For $i = 0 To UBound($ToTrash) - 1
-			 InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
-			 Sleep(Random(100, 500))
-			 $ItemToSell = $ItemToSell + 1
-			 MouseClick('Right')
-			 Sleep(Random(100, 200))
-		  Next
-
+	   For $i = 0 To UBound($ToTrash) - 1
+		  InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
+		  Sleep(Random(100, 500))
+		  $ItemToSell = $ItemToSell + 1
+		  MouseClick('Right')
 		  Sleep(Random(100, 200))
-		  Send($KeyCloseWindows)
-		  Sleep(Random(100, 200))
-
-		  ; on mesure l'or aprÃ¨s
-		  Local $GoldAfterSell = GetGold()
-		  $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
-		  ;****************************************************************
-		  If NOT Verif_Attrib_GlobalStuff() Then
-			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
-			 antiidle()
-		  EndIf
-		  ;****************************************************************
-	   EndIf
+	   Next
 
 	   Sleep(Random(100, 200))
 	   Send($KeyCloseWindows)
 	   Sleep(Random(100, 200))
+
+	   Local $GoldAfterSell = GetGold(); on mesure l'or apres
+	   $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
+	   
+	   ;****************************************************************
+	   If NOT Verif_Attrib_GlobalStuff() Then
+		  _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
+		  antiidle()
+	   EndIf
+	   ;****************************************************************
     EndIf
+
+    Sleep(Random(100, 200))
+    Send($KeyCloseWindows)
+    Sleep(Random(100, 200))
+
 EndFunc   ;==>StashAndRepair
 
 
