@@ -2556,7 +2556,7 @@ Func IterateFilterAttack($IgnoreList)
 	While iterateObjectsList($index, $offset, $count, $item)
 		$compt += 1
 		If Is_Interact($item, $IgnoreList) Then
-			If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Power($item) or Is_Health($item) Then 
+			If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Power($item) or Is_Health($item) Then
 				ReDim $item_buff_2D[$i + 1][10]
 				For $x = 0 To 9
 					$item_buff_2D[$i][$x] = $item[$x]
@@ -3807,7 +3807,7 @@ Func _logind3()
 	EndIf
 
 	WinActivate("[CLASS:D3 Main Window Class]")
-	
+
 	If Not _checkdisconnect() Then ; le bot ne fait pas la différence entre _checkdisconnect et déconnecter du serveur
 		_Log("Login")
 		Sleep(1000)
@@ -4657,7 +4657,7 @@ Func StatsDisplay()
                 $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total/1000)/1000 & " M" & @CRLF
 		EndIf
 		If ($Xp_Total > 999999999) Then ;afficher sous forme "x xxx M"
-                $DebugMessage = $DebugMessage & "XP Obtenu : " & Format_Number(Int($Xp_Total/1000)/1000) & " M" & @CRLF
+                $DebugMessage = $DebugMessage & "XP Obtenu : " & Int($Xp_Total/1000000)/1000 & " M" & @CRLF
 		EndIf
 
         If ($Xp_Moy_Run < 1000000) Then ;afficher en "K"
@@ -6004,22 +6004,22 @@ Func StashAndRepair()
 	   EndIf
 
     EndIf ; fin recyclage
-	
+
 	Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
 	BuyPotion()
 
     If $Repair = 0 Then
 	   Repair()
     EndIf
-	
+
 	Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 	$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation et potion
-    
+
 	;Trash
     $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
-	   
+
     If not @error Then
-	   
+
 	   Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
 
 	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
@@ -6040,7 +6040,7 @@ Func StashAndRepair()
 
 	   Local $GoldAfterSell = GetGold(); on mesure l'or apres
 	   $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
-	   
+
 	   ;****************************************************************
 	   If NOT Verif_Attrib_GlobalStuff() Then
 		  _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
