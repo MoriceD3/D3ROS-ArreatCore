@@ -482,9 +482,9 @@ Global $DemonHunter_skill_Table[24][8] = [ _
 Global $Wizard_skill_Table[28][8] = [ _
 						[$Wizard_Blizzard, "Wizard_Blizzard", 2500, "attack", 40, "arcane", 100, 45], _
 						[$Wizard_DiamondSkin, "Wizard_DiamondSkin", 15000, "life", "", "", 35, ""], _
-						[$Wizard_EnergyArmor, "Wizard_EnergyArmor", 110000, "buff", 25, "arcane", "", ""], _
-						[$Wizard_Familiar, "Wizard_Familiar", 300000, "buff", 20, "arcane", "", ""], _
-						[$Wizard_MagicWeapon, "Wizard_MagicWeapon", 280000, "buff", 25, "arcane", "", ""], _
+						[$Wizard_EnergyArmor, "Wizard_EnergyArmor", 5000, "buff", 25, "arcane", "", ""], _
+						[$Wizard_Familiar, "Wizard_Familiar", 5000, "buff", 20, "arcane", "", ""], _
+						[$Wizard_MagicWeapon, "Wizard_MagicWeapon", 5000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_SpectralBlade, "Wizard_SpectralBlade", "", "physical", "", "", 100, 1], _
 						[$Wizard_ArcaneOrb, "Wizard_ArcaneOrb", "", "attack", 35, "arcane", 100, 45], _
 						[$Wizard_ArcaneTorrent, "Wizard_ArcaneTorrent", "", "attack", 16, "arcane", 100, 45], _
