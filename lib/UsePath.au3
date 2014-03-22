@@ -19,29 +19,10 @@ Func UsePath(ByRef $path)
 	$Coords = FromD3toScreenCoords($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 	MouseMove($Coords[0], $Coords[1], 3)
 	$LastCP = GetCurrentPos()
-	MouseDown("middle")
+	MouseDown($MouseMoveClick)
 	Sleep(10)
 	While 1
 
-		;               If _playerdead_revive() Then
-		;                       $nb_die_t = $nb_die_t + 1
-		;                       $Res_compt = $Res_compt + 1
-		;                       _log("You are dead, max :" & $rdn_die_t - $nb_die_t & " more death allowed")
-		;                       If $nb_die_t <= $rdn_die_t Then
-		;                                       Sleep(Random(5000, 6000))
-		;                                       MouseClick("left", 400, 470, 1, 6)
-		;                                       Sleep(Random(750, 1000))
-		;                                       bloc_sequence($path)
-		;                                       return
-		;                       Else
-		;                                       _log("You have reached the max number of revive : " & $rdn_die_t)
-		;                       EndIf
-		;               EndIf
-
-
-		;If revive($path) Then
-		;	Return
-		;EndIf
 		$res = revive($path)
 		If $res = 2 Then
 			Return
@@ -86,9 +67,9 @@ Func UsePath(ByRef $path)
 		While _MemoryRead($ClickToMoveToggle, $d3, 'float') = 0
 			;_log("Togglemove : " & _MemoryRead($ClickToMoveToggle, $d3, 'float'))
 
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			Attack()
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 
 			$Coords = FromD3toScreenCoords($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 			$angle += $Step
@@ -98,27 +79,17 @@ Func UsePath(ByRef $path)
 			; ci desssous du dirty code pour eviter de cliquer n'importe ou hos de la fenetre du jeu
 			$Coords[0] = $Coords[0] - (Cos($angle) * $Radius)
 			$Coords[1] = $Coords[1] - (Sin($angle) * $Radius)
-			$Coords[0] = min($Coords[0], 790)
-			$Coords[0] = max($Coords[0], 40) ;car on a pas l'envie de cliquer dans les icone du chat
-			$Coords[1] = min($Coords[1], 540);car on a pas l'envie de cliquer dans la bare des skills
-			$Coords[1] = max($Coords[1], 10)
 
-			$Coords_RndX = Random($Coords[0] - 20, $Coords[0] + 20)
-			$Coords_RndY = Random($Coords[1] - 20, $Coords[1] + 20)
+			$Coords = Checkclickable($Coords)
 
-			If $Coords_RndX < 40 Then
-				$Coords_RndX = 40
-			ElseIf $Coords_RndX > 790 Then
-				$Coords_RndX = 790
-			EndIf
+			dim $Coords_Rnd[2]
+			$Coords_Rnd[0] = Random($Coords[0] - 20, $Coords[0] + 20)
+			$Coords_Rnd[1] = Random($Coords[1] - 20, $Coords[1] + 15)
 
-			If $Coords_RndY < 10 Then
-				$Coords_RndY = 10
-			ElseIf $Coords_RndY > 500 Then;pacht 8.2e
-				$Coords_RndY = 500;pacht 8.2e
-			EndIf
-			MouseMove($Coords_RndX, $Coords_RndY, 3) ;little randomisation
+			$Coords_Rnd = Checkclickable($Coords_Rnd)
 
+			MouseMove($Coords_Rnd[0], $Coords_Rnd[1], 3)
+			
 			$toggletry += 1
 			;_log("Tryin move :" & " x:" & $_x & " y:" & $_y & "coords: " & $Coords[0] & "-" & $Coords[1] & " angle: " & $angle & " Toggle try: " & $toggletry)
 			If $angle >= 2.0 * $PI Or $toggletry > 9 Or _playerdead() Then
@@ -147,10 +118,10 @@ Func UsePath(ByRef $path)
 		;ConsoleWrite("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2] &@CRLF)
 		;ConsoleWrite("distance/m range: " & $Distance & " : " & $pos[4] & @CRLF)
 		If $path[$posIndex][4] = 1 And GetDistance($LastCP[0], $LastCP[1], $LastCP[2]) >= $a_range / 2 Then
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			$LastCP = GetCurrentPos()
 			Attack()
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 			;ConsoleWrite("Last check: " & $Distance & @CRLF)
 		EndIf
 		$newIndex = getNextIndex($path, $posIndex)
@@ -181,14 +152,14 @@ Func UsePath(ByRef $path)
 
 
 		MouseMove($Coords_RndX, $Coords_RndY, 3) ;little randomisation
-		MouseDown("middle")
+		MouseDown($MouseMoveClick)
 
 	WEnd
 
 	For $i = $posIndex To UBound($path, 1) - 1
 		TraitementSequence($path, $i)
 	Next
-	MouseUp("middle")
+	MouseUp($MouseMoveClick)
 EndFunc   ;==>UsePath
 
 

@@ -16,11 +16,11 @@ Func offsetlist()
         ;//FILE DEFS
         ;//FILE DEFS
         Global $ofs_MonsterDef = 0x18EC4C0 ; 0x18CBE70 ;1.0.6 0x15DBE00 ;0x015DCE00 ;0x15DBE00
-        Global $ofs_StringListDef = 0x18A2558 ; 0x0158C240 ;0x015E8808 ;0x015E9808
+        Global $ofs_StringListDef = 0x1CEC778 ;0x18A2558 ; 0x0158C240 ;0x015E8808 ;0x015E9808
         Global $ofs_ActorDef = 0x18E73F0 ; 0x18C6AD8 ;1.0.6 0x15EC108 ;0x015ED108 ;0x15EC108
         Global $_defptr = 0x10
         Global $_defcount = 0x10C
-        Global $_deflink = 0x148
+        Global $_deflink = 0x11c
         Global $_ofs_FileMonster_StrucSize = 0x50
         Global $_ofs_FileActor_LinkToMonster = 0x6C
         Global $_ofs_FileMonster_MonsterType = 0x18
@@ -53,12 +53,12 @@ Func offsetlist()
 
 
         ;//OBJECT MANAGER
-        Global $ofs_objectmanager = 0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
-        Global $ofs__ObjmanagerActorOffsetA = 0x8C8 ;0x8b0
+        Global $ofs_objectmanager = 0x1CD841C ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
+        Global $ofs__ObjmanagerActorOffsetA = 0x920 ;0x8b0
         Global $ofs__ObjmanagerActorCount = 0x108
-        Global $ofs__ObjmanagerActorOffsetB = 0x148
-        Global $ofs__ObjmanagerActorLinkToCTM = 0x384
-        Global $_ObjmanagerStrucSize = 0x42C ;0x428
+        Global $ofs__ObjmanagerActorOffsetB = 0x120
+        Global $ofs__ObjmanagerActorLinkToCTM = 0x1a8
+        Global $_ObjmanagerStrucSize = 0x44C ;0x428
 
 
         ;//CameraDef
@@ -138,16 +138,17 @@ EndFunc   ;==>offsetlist
 
 Func GetACDOffsetByACDGUID($Guid)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x868, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "int")
 	$index = BitAND($Guid, 0xFFFF)
 
-	$bitshift = _memoryread($ptr3 + 0x18C, $d3, "int")
+	$bitshift = _memoryread($ptr3 + 0x164, $d3, "int")
 	$group1 = 4 * BitShift($index, $bitshift)
 	$group2 = BitShift(1, -$bitshift) - 1
-	$group3 = _memoryread(_memoryread($ptr3 + 0x148, $d3, "int"), $d3, "int")
-	$group4 = 0x2D0 * BitAND($index, $group2)
+	$group3 = _memoryread(_memoryread($ptr3 + 0x120, $d3, "int"), $d3, "int")
+	$group4 = 0x2f8 * BitAND($index, $group2)
 	Return $group3 + $group1 + $group4
+	_log("index : " & $index& " bitshift : " & $bitshift & " group1 : " & $group1 & " group 2 : " & $group2 & " group 3 : " & $group3 & " group4 : " & $group4)
 EndFunc   ;==>GetACDOffsetByACDGUID
 
 
@@ -156,7 +157,7 @@ EndFunc   ;==>GetACDOffsetByACDGUID
 ; Note(s):                      This function is used by the OffsetList to
 ;                                               get the current player data.
 ;==================================================================================
-Func LocateMyToon()
+#cs Func LocateMyToon()
 
         sleep(1000)
         If $_debug Then _log("Looking for local player")
@@ -175,11 +176,11 @@ Func LocateMyToon()
                         Global $_MyGuid = $_GUID
 						$ACD = GetACDOffsetByACDGUID($_MyGuid)
 						$name_by_acd = _MemoryRead($ACD + 0x4, $d3, 'char[64]')
-					
+
 						$_MyGuid = _memoryread($ACD + 0x120, $d3, "ptr")
 						Global $_MyACDWorld = _memoryread($ACD + 0x108, $d3, "ptr")
-						
-                        
+
+
                         Return True
                         ExitLoop
                 EndIf
@@ -188,6 +189,93 @@ Func LocateMyToon()
         Return False
 
 EndFunc   ;==>LocateMyToon
+#ce
+
+Func LocateMyToon()
+	$count_locatemytoon = 0
+	$idarea = 0
+	$BanTableActor = ""
+
+	Global $_Myoffset = 0
+	Global $_MyGuid = 0
+	Global $_MyACDWorld = 0
+	Global $_MyCharType = 0
+
+					_log("Looking for local player")
+
+					 $_Myoffset = "0x" & Hex(GetPlayerOffset(), 8) ; pour convertir valeur
+					 $_MyGuid = _MemoryRead($_Myoffset + 0x88, $d3, 'ptr')
+					$_NAME = _MemoryRead($_Myoffset + 0x4, $d3, 'char[64]')
+					$_SNO = _MemoryRead($_Myoffset + 0x8c, $d3, 'ptr')
+
+					_log("name -> " & $_NAME)
+					_log("sno -> " & hex($_SNO))
+					_log("guid -> " & $_MyGuid)
+					_log("ofs -> " & $_Myoffset)
+
+					setChararacter($_NAME)
+
+					$ACD = GetACDOffsetByACDGUID($_MyGuid)
+
+					$name_by_acd = _MemoryRead($ACD + 0x4, $d3, 'char[64]')
+					$_MyGuid = _memoryread($ACD + 0x120, $d3, "ptr")
+					$_MyACDWorld = _memoryread($ACD + 0x108, $d3, "ptr")
+
+					_log("My ACD OFS :" & $ACD )
+					_log("My Acd World : " & $_MyACDWorld)
+
+					If NOT trim($_NAME) = ""  Then
+						If trim($_NAME) = trim($name_by_acd) Then
+					 $_MyCharType = $_NAME
+
+							return true
+
+						else
+							$count_locatemytoon += 1
+						EndIf
+					else
+						$count_locatemytoon += 1
+					EndIf
+
+EndFunc
+
+Func GetDistance($_x, $_y, $_z)
+	$CurrentLoc = GetCurrentPos()
+	$xd = $_x - $CurrentLoc[0]
+	$yd = $_y - $CurrentLoc[1]
+	$zd = $_z - $CurrentLoc[2]
+	$Distance = Sqrt($xd * $xd + $yd * $yd + $zd * $zd)
+	Return $Distance
+EndFunc   ;==>GetDistance
+
+Func setChararacter($nameChar)
+	$splitName = StringSplit($nameChar, "_")
+	$nameCharacter = $splitName[1]
+	;_log($nameCharacter)
+EndFunc   ;==>setChararacter
+
+Func GetPlayerOffset()
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x9a4, $d3, "ptr")      ;0x96c
+	$index = _memoryread($ptr2 + 0x0, $d3, "int")
+
+	$ptr1bis = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2bis = _memoryread($ptr1 + 0x88c, $d3, "ptr")    ;0x874
+	$id = _memoryread($ptr2bis + 0x5c + $index * 0xD138, $d3, "int")
+
+	Return GetActorFromId($id)
+EndFunc   ;==>GetPlayerOffset
+
+Func GetActorFromId($id)
+	Local $index, $offset, $count, $item[10]
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+			;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
+			if $item[0] = $id then
+				Return $item[8]
+			EndIf
+	WEnd
+EndFunc   ;==>GetActorFromId
 
  Func _MemoryOpen($iv_Pid, $iv_DesiredAccess = 0x1F0FFF, $iv_InheritHandle = 1)
 
@@ -367,13 +455,14 @@ Func SetPrivilege( $privilege, $bEnable )
     return $ret[0]
  EndFunc   ;==>SetPrivilege
 
- Func IndexSNO($_offset, $_displayInfo = 0)
+Func IndexSNO($_offset, $_displayInfo = 0)
 
 	Local $CurrentSnoOffset = 0x0
 	$_MainOffset = _MemoryRead($_offset, $d3, 'ptr')
 	$_Pointer = _MemoryRead($_MainOffset + $_defptr, $d3, 'ptr')
 	$_SnoCount = _MemoryRead($_Pointer + $_defcount, $d3, 'ptr') ;//Doesnt seem to go beyond 256 for some wierd reason
-	If $_SnoCount >= 256 Then ;//So incase it goes beyond...
+
+	If $_SnoCount >= 10000 Then ;//So incase it goes beyond...
 		$ignoreSNOcount = 1 ;//This enables a redim after the for loop
 		$_SnoCount = 4056 ;//We put a limit to avoid overflow here
 	Else
@@ -382,7 +471,7 @@ Func SetPrivilege( $privilege, $bEnable )
 
 	$_SnoIndex = _MemoryRead($_Pointer + $_deflink, $d3, 'ptr') ;//Moving from the static into the index
 	$_SNOName = _MemoryRead($_Pointer, $d3, 'char[64]') ;//Usually something like "Something" + Def
-	$TempWindex = $_SnoIndex + 0xC ;//The header is 0xC in size
+	$TempWindex = $_SnoIndex + 0x10 ;//The header is 0xC in size
 	If $_displayInfo = 1 Then ConsoleWrite("-----* Indexing " & $_SNOName & " *-----" & @CRLF)
 	Dim $_OutPut[$_SnoCount + 1][2] ;//Setting the size of the output array
 
@@ -394,7 +483,7 @@ Func SetPrivilege( $privilege, $bEnable )
 		$_OutPut[$i][0] = $_CurSnoOffset ;//Poping the data into the output array
 		$_OutPut[$i][1] = $_CurSnoID
 		If $_displayInfo = 1 Then ConsoleWrite($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID & @CRLF)
-		$TempWindex = $TempWindex + 0x10 ;//Next item is located 0x10 later
+		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x10 later
 	Next
 
 	If $ignoreSNOcount = 1 Then ReDim $_OutPut[$CurIndex][2] ;//Here we do the resizing of the array, to minimize memory footprint!?.
@@ -454,34 +543,34 @@ Func Trim($String)
 EndFunc   ;==>Trim
 
 Func GetCurrentPos()
-	;	Local $mesurepos = TimerInit() ;;;;;;;;;;;;;;
 	Dim $return[3]
 
-	$return[0] = _MemoryRead($_Myoffset + 0x0A0, $d3, 'float')
-	$return[1] = _MemoryRead($_Myoffset + 0x0A4, $d3, 'float')
-	$return[2] = _MemoryRead($_Myoffset + 0x0A8, $d3, 'float')
+	Local $PosPlayerStruct = DllStructCreate("byte[164];float;float;float")
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $_Myoffset, 'ptr', DllStructGetPtr($PosPlayerStruct), 'int', DllStructGetSize($PosPlayerStruct), 'int', '')
 
-	$Current_Hero_X = $return[0]
-	$Current_Hero_Y = $return[1]
-	$Current_Hero_Z = $return[2]
+		$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X
+		$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y
+		$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z
 
-	;		Local $difmesurepos = TimerDiff($mesurepos) ;;;;;;;;;;;;;
-	;ConsoleWrite("Mesure getcurrentpos :" & $difmesurepos &@crlf) ;FOR DEBUGGING;;;;;;;;;;;;
-	Return $return
-EndFunc   ;==>GetCurrentPos
+		$Current_Hero_X = $return[0]
+		$Current_Hero_Y = $return[1]
+		$Current_Hero_Z = $return[2]
+
+		Return $return
+EndFunc
 
 Func Load_Configs()
 	$nameSequenceTxt = IniRead($profilFile, "file info", "nameSequenceTxt", $nameSequenceTxt)
 	$PictureScene = IniRead($profilFile, "file info", "PictureScene", $PictureScene)
 	$Picturemtp = IniRead($profilFile, "file info", "Picturemtp", $Picturemtp)
 	$nameObjectListTxt = IniRead($profilFile, "file info", "nameObjectListTxt", $nameObjectListTxt)
-	
+
 	$DrawScene = IniRead($profilFile, "draw info", "DrawScene", $DrawScene)
 	$DrawNavCellWalkable = IniRead($profilFile, "draw info", "DrawNavCellWalkable", $DrawNavCellWalkable)
 	$DrawNavCellUnWalkable = IniRead($profilFile, "draw info", "DrawNavCellUnWalkable", $DrawNavCellUnWalkable)
 	$DrawArrow = IniRead($profilFile, "draw info", "DrawArrow", $DrawArrow)
 	$DrawMtp = IniRead($profilFile, "draw info", "DrawMtp", $DrawMtp)
-	
+
 	$SceneColor = IniRead($profilFile, "draw info", "SceneColor", $SceneColor)
 	$NavcellWalkableColor = IniRead($profilFile, "draw info", "NavcellWalkableColor", $NavcellWalkableColor)
 	$NavcellUnWalkableColor = IniRead($profilFile, "draw info", "NavcellUnWalkableColor", $NavcellUnWalkableColor)
@@ -493,29 +582,40 @@ Func startIterateObjectsList(ByRef $index, ByRef $offset, ByRef $count)
 	$count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
 	$index = 0
 	$offset = $_itrObjectManagerD
+	;_log("Actor Count -> " & $count)
 EndFunc   ;==>startIterateObjectsList
 
 
 Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
-	If $index > $count Then
+
+	If $index > $count + 1 Then
 		Return False
 	EndIf
+
 	$index += 1
-	Local $iterateObjectsListStruct = DllStructCreate("byte[4];ptr;char[64];byte[104];float;float;float;byte[264];int;byte[8];int;byte[44];int")
+	$error = 0
+
+	Do
+	Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int")
+	;Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[24];float;float;float;byte[292];int;byte[88];int;byte[44];int")
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-	$item[0] = DllStructGetData($iterateObjectsListStruct, 2) ; Guid
-	$item[1] = DllStructGetData($iterateObjectsListStruct, 3) ; Name
-	$item[2] = DllStructGetData($iterateObjectsListStruct, 5) ; x
-	$item[3] = DllStructGetData($iterateObjectsListStruct, 6) ; y
-	$item[4] = DllStructGetData($iterateObjectsListStruct, 7) ; z
-	$item[5] = DllStructGetData($iterateObjectsListStruct, 13) ; data 1
-	$item[6] = DllStructGetData($iterateObjectsListStruct, 11) ; data 2
-	$item[7] = DllStructGetData($iterateObjectsListStruct, 9) ; data 3
-	$item[8] = $offset
-	;$item[9] = getDistance($item[2], $item[3], $item[4]) ; Distance
-	$iterateObjectsListStruct = ""
-	$offset = $offset + $_ObjmanagerStrucSize
 
-	Return True
+		$item[0] = DllStructGetData($iterateObjectsListStruct, 4) ; Guid
+		$item[1] = DllStructGetData($iterateObjectsListStruct, 2) ; Name
+		$item[2] = DllStructGetData($iterateObjectsListStruct, 6) ; x
+		$item[3] = DllStructGetData($iterateObjectsListStruct, 7) ; y
+		$item[4] = DllStructGetData($iterateObjectsListStruct, 8) ; z
+		$item[5] = DllStructGetData($iterateObjectsListStruct, 14) ; data 1
+		$item[6] = DllStructGetData($iterateObjectsListStruct, 12) ; data 2
+		$item[7] = DllStructGetData($iterateObjectsListStruct, 10) ; data 3
+		$item[8] = $offset
+		$item[9] = getDistance($item[2], $item[3], $item[4]) ; Distance
+		$iterateObjectsListStruct = ""
+		$offset = $offset + $_ObjmanagerStrucSize
 
+			;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
+
+	Until $error = 0
+
+		Return True
 EndFunc   ;==>iterateObjectsList

@@ -1,3 +1,16 @@
+Mise à jour 8.2f le 21/03/14
+Optimisation des boucles de lectures
+Detection mob/items plus rapide
+Compatible toutes résolutions
+Ne devrais plus cliquer accidentellement sur des UI
+Correction d'un bug empêchant l'attaque si le monstre était trop grand
+Fonction salvage (Lorenco), à parametrer dans le setting.ini
+Autres modifications oubliées
+
+
+
+###########################################################################################################
+
 Mise à jour 8.2e le 13/03/14
 
 Correction d'un bug lorsque le stash était full

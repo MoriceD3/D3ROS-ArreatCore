@@ -109,6 +109,7 @@ Global $Key1 = "&"
 Global $Key2 = "é"
 Global $Key3 = '"'
 Global $Key4 = "'"
+Global $MouseMoveClick = "middle"
 
 Global $InventoryCheck = False
 
@@ -198,7 +199,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Key2 = IniRead($profilFile, "Key info", "Key2", $Key2)
 	$Key3 = IniRead($profilFile, "Key info", "Key3", $Key3)
 	$Key4 = IniRead($profilFile, "Key info", "Key4", $Key4)
-
+	$MouseMoveClick = IniRead($profilFile, "Key info", "MouseMove", $MouseMoveClick)
 	;; Run info
 
 	;; Ajout config run

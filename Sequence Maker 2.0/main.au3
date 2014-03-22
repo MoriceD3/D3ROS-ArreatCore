@@ -64,31 +64,31 @@ Func IterateObj()
 				_log("Enabled to open file, Script will shutdown")
 				Exit
 			EndIf
-			
+
 			$rules_name = "(?i)([a-zA-Z0-9_]*)"
-			
+
 			While iterateObjectsList($index, $offset, $count, $item)
-				
+
 				If StringRegExp($item[1], $rules_name) = 1 Then ;patern declaration ilvl
 					$name_item = StringRegExp($item[1], $rules_name, 2)
-					
+
 					$exist = false
 					for $i=0 To Ubound($Iterate_Objet) - 1
-						
+
 						if StringInStr($Iterate_Objet[$i], $name_item[1], 2) Then
 						;if $Iterate_Objet[$i] = $name_item[1] Then
 							$exist = true
 							ExitLoop
 						EndIf
 					Next
-					
+
 					if $exist = false Then
 						$count_table = Ubound($Iterate_Objet)
 						ReDim $Iterate_Objet[$count_table+1]
 						$Iterate_Objet[$count_table-1] = $name_item[1]
 						FileWriteLine($file, $name_item[1])
 					EndIf
-					
+
 				EndIf
 
 			WEnd
@@ -106,15 +106,10 @@ Func Read_Scene()
 	offsetlist()
 
 	$ObManStoragePtr = _MemoryRead($ofs_objectmanager, $d3, "ptr")
-	$offset = $ObManStoragePtr + 0x794 + 0x178
+	$offset = $ObManStoragePtr + 0x964
 	$sceneCountPtr = _MemoryRead($offset, $d3, "ptr") + 0x108
-	$sceneFirstPtr = _MemoryRead($offset, $d3, "ptr") + 0x148
-	;$walkable = 0
+	$sceneFirstPtr = _MemoryRead($offset, $d3, "ptr") + 0x11c
 
-
-
-	;$obj.Init
-	;$obj.SetCellSize(2.5)
 
 While 1
 	;mesureStart()
@@ -131,25 +126,29 @@ While 1
 	;_log($sceneFirstPtr)
 	;################################## ITERATION OBJ SCENE ########################################
 	for $i=0 to $countScene
-		
-		$scenePtr = _MemoryRead($sceneFirstPtr, $d3, "ptr") + ($i * 0x2A8)
 
-		$Structobj_scene = DllStructCreate("ptr;byte[4];ptr;byte[208];ptr;byte[16];float;float;byte[112];float;float")
+		$scenePtr = _MemoryRead($sceneFirstPtr, $d3, "ptr") + ($i * 0x2BC)
 
-
+		$Structobj_scene = DllStructCreate("ptr;byte[4];ptr;byte[218];ptr;byte[16];float;float;byte[112];float;float")
 		;id_scene -> 1 | id_world -> 3 | id_sno_scene -> 5 | MeshMinX -> 7 | MeshMinY -> 8 | MeshMaxX -> 10 | MeshMaxY -> 11
-
 		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $scenePtr, 'ptr', DllStructGetPtr($Structobj_scene), 'int', DllStructGetSize($Structobj_scene), 'int', '')
 
 		$correlation = true
 
 
-
 		If DllStructGetData($Structobj_scene, 3) = $_MyACDWorld AND DllStructGetData($Structobj_scene, 1) <> 0xFFFFFFFF Then ;id world
-			
+
 			;_log("scene valide N°" & $i & " ACDWorld - > " & DllStructGetData($Structobj_scene, 3) & " Id World -> " &  DllStructGetData($Structobj_scene, 1))
-			
-				
+;   		_log("Id_Sno_Scene : " & DllStructGetData($Structobj_scene, 5))
+;
+;			_log("MinX : " & DllStructGetData($Structobj_scene, 7))
+;			_log("MinY : " & DllStructGetData($Structobj_scene, 8))
+;
+;			_log("MaxX : " & DllStructGetData($Structobj_scene, 10))
+;			_log("MaxY : " & DllStructGetData($Structobj_scene, 11))
+;
+;			_log("")
+
 
 				For $x=0 To Ubound($Scene_table_totale) - 1
 					If $Scene_table_totale[$x][3] = DllStructGetData($Structobj_scene, 7) AND $Scene_table_totale[$x][4] = DllStructGetData($Structobj_scene, 8) AND $Scene_table_totale[$x][2] = DllStructGetData($Structobj_scene, 5) Then
@@ -195,11 +194,11 @@ While 1
 	;################################################################################################
 	;_arraydisplay($Scene_table_totale)
 	If $New_scene_record = True Then ;Si Une nouvelle scene à etait enregistrer
-		
+
 		;_arraydisplay($Scene_table_totale)
 		;exit
 
-		Dim $list_sno_scene = IndexSNO(0x18F0F88,0)
+		Dim $list_sno_scene = IndexSNO(0x01CEC778, 0)
 		;_arraydisplay($list_sno_scene)
 
 
@@ -220,7 +219,7 @@ While 1
 
 			if $correlation = true Then
 				$NavMeshDef = $list_sno_scene[$i][0] + 0x040
-				$NavZoneDef = $list_sno_scene[$i][0] + 0x280
+				$NavZoneDef = $list_sno_scene[$i][0] + 0x180
 
 				;############## ITERATION DES NAVCELL ################
 				$CountNavCell = _memoryRead($NavZoneDef, $d3, "int")
@@ -245,7 +244,7 @@ While 1
 
 								If Mod( DllStructGetData($NavCellStruct, 7) , 2) = 1 Then
 									$flag = 1
-									
+
 									;$walkable += 1
 									;Redim $NavCell_PathFinding[$walkable][4]
 									;$NavCell_PathFinding[$walkable-1][0] = $Scene_table_Totale[$current_scene][3] + DllStructGetData($NavCellStruct, 1)  ;MinX reel
@@ -276,9 +275,8 @@ While 1
 
 			EndIf
 		Next
-		
+
 		_log("Scene Iterate")
-		;PathFinding_Build($NavCell_PathFinding)
 
 	EndIf
 
@@ -290,47 +288,6 @@ WEnd
 
 EndFunc
 
-Func PathFinding_Init()
-
-EndFunc
-
-#cs
-Func PathFinding_Build($NavCell_Table)
-	MesureStart()
-
-		For $i=0 To Ubound($NavCell_Table) - 1
-			$obj.AddVertex($NavCell_Table[$i][0] - $buff_MeshMinX, $NavCell_Table[$i][2] - $buff_MeshMinY, 0)
-			$obj.AddVertex($NavCell_Table[$i][0] - $buff_MeshMinX, $NavCell_Table[$i][3] - $buff_MeshMinY, 0)
-			$obj.AddVertex($NavCell_Table[$i][1] - $buff_MeshMinX, $NavCell_Table[$i][3] - $buff_MeshMinY, 0)
-			$obj.AddVertex($NavCell_Table[$i][1] - $buff_MeshMinX, $NavCell_Table[$i][2] - $buff_MeshMinY, 0)
-			$obj.AddSquare($Count_Addsquare, $Count_Addsquare + 1, $Count_Addsquare + 2, $Count_Addsquare + 3)
-			$Count_Addsquare += 4
-		Next
-
-	_log($obj.build)
-
-	MesureEnd("Build de la map")
-EndFunc
-#ce
-
-#cs
-Func PathFinding_MakePath(byref $startX,byref $startY,byref $startZ,byref $endX, byref $endY, byref $endZ)
-
-	Dim $My_point = $obj.Path($startX - $buff_MeshMinX, $startY - $buff_MeshMinY, 0, $endX - $buff_MeshMinX, $endY - $buff_MeshMinY, 0)
-
-	Redim $Result_Path[Ubound($My_point) / 3][3]
-
-	For $i=1 To Ubound($My_point) step 3
-		_log($i)
-		$Result_Path[$Count_path][0] = $My_point[$i-1]
-		$Result_Path[$Count_path][1] = $My_point[$i]
-		$Result_Path[$Count_path][2] = $My_point[$i+1]
-		$Count_path += 1
-	Next
-
-	return $Result_Path
-EndFunc
-#ce
 
 Func Drawn()
 		_log("taille du tab Scene-> " & Ubound($Scene_table_totale))
@@ -347,7 +304,7 @@ Func Drawn()
 	EndIF
 
 	for $i=0 To Ubound($Scene_table_totale) - 1
-		
+
 		for $y=0 To Ubound($NavCell_Table_Totale) - 1
 
 			If $Scene_table_totale[$i][0] = $NavCell_Table_Totale[$y][7] Then
@@ -360,9 +317,9 @@ Func Drawn()
 				$ty = $NavCell_Table_Totale[$y][4] - $NavCell_Table_Totale[$y][1]
 
 				$flag = $NavCell_Table_Totale[$y][6]
-				
-				
-				
+
+
+
 				if $flag = 1 AND StringLower($DrawNavCellWalkable) = "true" Then
 					Draw_Nav($vy, $vx, $flag, $ty, $tx)
 				ElseIf $flag = 0 AND StringLower($DrawNavCellUnWalkable) = "true" Then
@@ -389,7 +346,7 @@ Func Drawn()
 			Next
 		EndIf
 		#ce
-		
+
 	Save_GDIpicture()
 	_log("Map succefully drawn")
 	exit 0
@@ -448,7 +405,8 @@ Func tri_flag()
 				$table_UnWalkable[$count_Unwalkable-1][6] = $NavCell_Table_Totale[$i][6]
 				$table_UnWalkable[$count_Unwalkable-1][7] = $NavCell_Table_Totale[$i][7]
 			EndIf
-	Next
+		Next
+
 	for $i=0 to Ubound($table_Walkable) - 1
 		$NavCell_Table_Totale[$i][0] = $table_Walkable[$i][0]
 		$NavCell_Table_Totale[$i][1] = $table_Walkable[$i][1]
@@ -459,6 +417,7 @@ Func tri_flag()
 		$NavCell_Table_Totale[$i][6] = $table_Walkable[$i][6]
 		$NavCell_Table_Totale[$i][7] = $table_Walkable[$i][7]
 	Next
+
 	for $i=0 To Ubound($table_UnWalkable) - 1
 		$NavCell_Table_Totale[Ubound($table_Walkable) + $i][0] = $table_UnWalkable[$i][0]
 		$NavCell_Table_Totale[Ubound($table_Walkable) + $i][1] = $table_UnWalkable[$i][1]

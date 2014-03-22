@@ -86,20 +86,13 @@ Func CheckWindowD3()
 		Terminate()
 	EndIf
 	Global $sized3 = WinGetClientSize("[CLASS:D3 Main Window Class]")
-	If $sized3[0] <> 800 Or $sized3[1] <> 600 Then
-		WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
-		MsgBox(0, Default, "Erreur Dimension : Il faut être en 800 x 600 et non pas en " & $sized3[0] & " x " & $sized3[1] & ".")
-		Terminate()
-	Else
-		_log("Setting Window Diablo III OK")
-	EndIf
 EndFunc   ;==>CheckWindowD3
 
 Func CheckWindowD3Size()
-	Global $sized3 = WinGetClientSize("[CLASS:D3 Main Window Class]")
-	If $sized3[0] <> 800 Or $sized3[1] <> 600 Then
+	$sized3 = WinGetClientSize("[CLASS:D3 Main Window Class]")
+	If $sized3[0] <> $SizeWindows[0] Or $sized3[1] <> $SizeWindows[1] Then
 		WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
-		MsgBox(0, Default, "Erreur Dimension : Il faut être en 800 x 600 et non pas en " & $sized3[0] & " x " & $sized3[1] & ".")
+		MsgBox(0, Default, "Erreur Dimension : Taille changée " & $sized3[0] & " x " & $sized3[1] & " -> " & $SizeWindows[0] & " x " & $SizeWindows[1])
 		Terminate()
 
 	EndIf
@@ -447,17 +440,22 @@ Func _checkWPopen()
     $checkWPopenlookfor = "Root.NormalLayer.WaypointMap_main.LayoutRoot"
     Return fastcheckuiitemvisible($checkWPopenlookfor, 1, 2033)
 EndFunc   ;==>_checkWPopen OK
-
 Func _checkVendoropen()
 	$checkVendorOpenlookfor = "Root.NormalLayer.shop_dialog_mainPage.gold_label"
 	Return fastcheckuiitemvisible($checkVendorOpenlookfor, 1, 165)
 EndFunc   ;==>_checkVendoropen OK
-
 Func _checkStashopen()
 	$_checkStashopenlookfor = "Root.NormalLayer.stash_dialog_mainPage"
 	Return fastcheckuiitemvisible($_checkStashopenlookfor, 1, 327)
 EndFunc   ;==>_checkStashopen OK
-
+Func _checkBannerOpen()
+	$checkBannerOpen = "Root.NormalLayer.BattleNetProfileBannerCustomization_main.LayoutRoot.OverlayContainer.PageHeader"
+	Return fastcheckuiitemvisible($checkBannerOpen, 1, 1697)
+EndFunc
+Func _checkParagonOpen()
+	$checkParagonOpen = "Root.NormalLayer.Paragon_main.LayoutRoot"
+	Return fastcheckuiitemvisible($checkParagonOpen, 1, 377)
+EndFunc
 Func _checkInventoryopen()
 	$_checkInventoryopenlookfor = "Root.NormalLayer.inventory_dialog_mainPage"
 	Return fastcheckuiitemvisible($_checkInventoryopenlookfor, 1, 1813)
@@ -1123,13 +1121,13 @@ WEnd
 
 ;idleing
 While 1
-MouseClick("middle", Random(100, 200), Random(100, 200), 1, 6)
+MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(600, 700), Random(100, 200), 1, 6)
+MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(600, 700), Random(400, 500), 1, 6)
+MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
 Sleep(Random(40000, 180000))
-MouseClick("middle", Random(100, 200), Random(400, 500), 1, 6)
+MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
 Sleep(Random(40000, 180000))
 Wend
 
@@ -1450,7 +1448,7 @@ Func FilterBackpack()
 		Sleep(100)
 
 		CheckWindowD3Size()
-        _checkbackpacksize()
+        ;_checkbackpacksize()
 
 		If Not $Unidentified Then
 			Take_BookOfCain()
@@ -1569,6 +1567,7 @@ EndFunc   ;==>Stop
 Func LocateMyToon()
 	$count_locatemytoon = 0
 	$idarea = 0
+	$BanTableActor = ""
 
 	Global $_Myoffset = 0
 	Global $_MyGuid = 0
@@ -1614,12 +1613,14 @@ Func LocateMyToon()
 
 							If $hotkeycheck = 1 Then
 								If Verif_Attrib_GlobalStuff() Then
+									_log("Acd Ofs : " & $ACD)
 									return true
 								Else
 									_log("CHANGEMENT DE STUFF ON TOURNE EN ROND (locatemytoon)!!!!!")
 									antiidle()
 								EndIf
 							Else
+								_log("Acd Ofs : " & $ACD)
 								return true
 							EndIf
 						else
@@ -1643,6 +1644,27 @@ Func LocateMyToon()
 	EndIF
 
 EndFunc   ;==>LocateMyToon
+
+;SetItemLootLevel()
+;
+;Will set the items quality to be looted
+Func SetItemLootLevel()
+	$QualityLevel = StringSplit($QualityLevel, "|")
+	For $i = 1 to UBound($QualityLevel) -1
+		_log("Our qualitilevel is: " & $QualityLevel[$i])
+	Next
+EndFunc	;==>SetItemLootLevel
+
+;SetSalvageLootLevel()
+;
+;Will set the items qualitys to be salvaged
+Func SetSalvageLootLevel()
+	$SalvageQualiteItem = StringSplit($SalvageQualiteItem, "|")
+	For $i = 1 to UBound($SalvageQualiteItem) -1
+		_log("Our salvagelevel is: " & $SalvageQualiteItem[$i])
+	Next
+EndFunc	;==>SetSalvageLootLevel
+
 
 Func GetACDByGuid($Guid, $_displayInfo = 0)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
@@ -1721,7 +1743,7 @@ EndFunc   ;==>iterateLocalActorList
 ;						so the type ("float" or "int") might be wrong.
 ;					This function will always return "false" if the requested atribute does not exsist
 ;==================================================================================
-Func IterateActorAtribs($_GUID, $_REQ)
+func IterateactorAtribs($_GUID, $_REQ)
 	Local $index, $offset, $count, $item[10]
 	startIterateLocalActor($index, $offset, $count)
 
@@ -1866,133 +1888,61 @@ EndFunc   ;==>IndexStringList
 ;;	OffsetList()
 ;;--------------------------------------------------------------------------------
 Func offsetlist()
-	_log("offsetlist")
-	;//FILE DEFS
-	Global $ofs_MonsterDef = 0x18EC4C0 ; 0x18CBE70 ;1.0.6 0x15DBE00 ;0x015DCE00 ;0x15DBE00
-	Global $ofs_StringListDef = 0x17E4EE8 ;ou alors 0x17f8568;0x18DD188;0x18DC188;0x18A2558 ; 0x0158C240 ;0x015E8808 ;0x015E9808
-	Global $ofs_ActorDef = 0x18E73F0 ; 0x18C6AD8 ;1.0.6 0x15EC108 ;0x015ED108 ;0x15EC108
-	Global $_defptr = 0x10
-	Global $_defcount = 0x10C
-	Global $_deflink = 0x11C
-	Global $_ofs_FileMonster_StrucSize = 0x50
-	Global $_ofs_FileActor_LinkToMonster = 0x6C
-	Global $_ofs_FileMonster_MonsterType = 0x18
-	Global $_ofs_FileMonster_MonsterRace = 0x1C
-	Global $_ofs_FileMonster_LevelNormal = 0x44
-	Global $_ofs_FileMonster_LevelNightmare = 0x48
-	Global $_ofs_FileMonster_LevelHell = 0x4c
-	Global $_ofs_FileMonster_LevelInferno = 0x50
+        _log("offsetlist")
+
+        $vftableSubB            = _MemoryRead($VIewStatic, $d3, 'ptr')
+        $vftableSubA            = _MemoryRead($vftableSubB + 0x928, $d3, 'ptr')
+        $ViewOffset             = $vftableSubA
+        $Ofs_CameraRotationA    = $ViewOffset + 0x4
+        $Ofs_CameraRotationB    = $ViewOffset + 0x8
+        $Ofs_CameraRotationC    = $ViewOffset + 0xC
+        $Ofs_CameraRotationD    = $ViewOffset + 0x10
+        $Ofs_CameraPosX         = $ViewOffset + 0x14
+        $Ofs_CameraPosY         = $ViewOffset + 0x18
+        $Ofs_CameraPosZ         = $ViewOffset + 0x1C
+        $Ofs_CameraFOV          = $ViewOffset + 0x30
+        $Ofs_CameraFOVB         = $ViewOffset + 0x30
 
 
 
-	;//GET ACTORATRIB
-	Global $ofs_ActorAtrib_Base = 0x0196644C ;0x1544E54 ;0x15A1EA4 ;0x015A2EA4;0x015A1EA4
-	Global $ofs_ActorAtrib_ofs1 = 0x390
-	Global $ofs_ActorAtrib_ofs2 = 0x2E8
-	Global $ofs_ActorAtrib_ofs3 = 0x148
-	Global $ofs_ActorAtrib_Count = 0x108 ; 0x0 0x0
-	Global $ofs_ActorAtrib_Indexing_ofs1 = 0x10
-	Global $ofs_ActorAtrib_Indexing_ofs2 = 0x8
-	Global $ofs_ActorAtrib_Indexing_ofs3 = 0x250
-	Global $ofs_ActorAtrib_StrucSize = 0x180
-	Global $ofs_LocalPlayer_HPBARB = 0x34
-	Global $ofs_LocalPlayer_HPWIZ = 0x38
+        $_ActorAtrib_Base       = _MemoryRead($ofs_ActorAtrib_Base, $d3, 'ptr')
+        $_ActorAtrib_1          = _MemoryRead($_ActorAtrib_Base + $ofs_ActorAtrib_ofs1, $d3, 'ptr')
+        $_ActorAtrib_2          = _MemoryRead($_ActorAtrib_1 + $ofs_ActorAtrib_ofs2, $d3, 'ptr')
+        $_ActorAtrib_3          = _MemoryRead($_ActorAtrib_2 + $ofs_ActorAtrib_ofs3, $d3, 'ptr')
+        $_ActorAtrib_4          = _MemoryRead($_ActorAtrib_3, $d3, 'ptr')
+        $_ActorAtrib_Count      = $_ActorAtrib_2 + $ofs_ActorAtrib_Count
+        $_LocalActor_1          = _MemoryRead($_ActorAtrib_1 + $ofs_LocalActor_ofs1, $d3, 'ptr')
+        $_LocalActor_2          = _MemoryRead($_LocalActor_1 + $ofs_LocalActor_ofs2, $d3, 'ptr')
+        $_LocalActor_3          = _MemoryRead($_LocalActor_2, $d3, 'ptr')
+        $_LocalActor_Count      = $_LocalActor_1 + $ofs_LocalActor_Count
+        $_itrObjectManagerA     = _MemoryRead($ofs_objectmanager, $d3, 'ptr')
+        $_itrObjectManagerB     = _MemoryRead($_itrObjectManagerA + $ofs__ObjmanagerActorOffsetA, $d3, 'ptr')
+        $_itrObjectManagerCount = $_itrObjectManagerB + $ofs__ObjmanagerActorCount
+        $_itrObjectManagerC     = _MemoryRead($_itrObjectManagerB + $ofs__ObjmanagerActorOffsetB, $d3, 'ptr')
+        $_itrObjectManagerD     = _MemoryRead($_itrObjectManagerC, $d3, 'ptr')
+        $_itrObjectManagerE     = _MemoryRead($_itrObjectManagerD, $d3, 'ptr')
+        $_itrInteractA          = _MemoryRead($ofs_InteractBase, $d3, 'ptr')
+        $_itrInteractB          = _MemoryRead($_itrInteractA, $d3, 'ptr')
+        $_itrInteractC          = _MemoryRead($_itrInteractB, $d3, 'ptr')
+        $_itrInteractD          = _MemoryRead($_itrInteractC + $ofs__InteractOffsetA, $d3, 'ptr')
+        $_itrInteractE          = $_itrInteractD + $ofs__InteractOffsetB
 
-
-	;//GET LOCAL ACTOR STRUC
-	Global $ofs_LocalActor_ofs1 = 0x378 ;instead of $ofs_ActorAtrib_ofs2
-	Global $ofs_LocalActor_ofs2 = 0x148
-	Global $ofs_LocalActor_Count = 0x108
-	Global $ofs_LocalActor_atribGUID = 0x120
-	Global $ofs_LocalActor_StrucSize = 0x2F8 ;0x2D0 ; 0x0 0x0
-
-
-	;//OBJECT MANAGER
-	Global $ofs_objectmanager = 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
-	Global $ofs__ObjmanagerActorOffsetA = 0x920 ;0x8C8 ;0x8b0 ;2.0
-	Global $ofs__ObjmanagerActorCount = 0x108
-	Global $ofs__ObjmanagerActorOffsetB = 0x120 ;0x148 ;0x148
-
-
-
-	Global $ofs__ObjmanagerActorLinkToCTM = 0x1a8 ;0x384
-
-
-	Global $_ObjmanagerStrucSize = 0x44c ;0x42C ;0x42C ;0x428
-
-
-	;//CameraDef
-	Global $VIewStatic = 0x015A0BEC
-	Global $DebugFlags = $VIewStatic + 0x20
-	Global $vftableSubB = _MemoryRead($VIewStatic, $d3, 'ptr')
-	Global $vftableSubA = _MemoryRead($vftableSubB + 0x928, $d3, 'ptr')
-	Global $ViewOffset = $vftableSubA
-	Global $Ofs_CameraRotationA = $ViewOffset + 0x4
-	Global $Ofs_CameraRotationB = $ViewOffset + 0x8
-	Global $Ofs_CameraRotationC = $ViewOffset + 0xC
-	Global $Ofs_CameraRotationD = $ViewOffset + 0x10
-	Global $Ofs_CameraPosX = $ViewOffset + 0x14
-	Global $Ofs_CameraPosY = $ViewOffset + 0x18
-	Global $Ofs_CameraPosZ = $ViewOffset + 0x1C
-	Global $Ofs_CameraFOV = $ViewOffset + 0x30
-	Global $Ofs_CameraFOVB = $ViewOffset + 0x30
-	Global $ofs_InteractBase = 0x18CD364 ;0x1543B84 ;0x15A0BD4 ;0x015A1BD4;0x15A0BD4
-	Global $ofs__InteractOffsetA =  0xC4 ;0xA8
-	Global $ofs__InteractOffsetB = 0x58
-	Global $ofs__InteractOffsetUNK1 = 0x7F20 ;Set to 777c
-	Global $ofs__InteractOffsetUNK2 = 0x7F44 ;Set to 1 for NPC interaction
-	Global $ofs__InteractOffsetUNK3 = 0x7F7C ;Set to 7546 for NPC interaction, 7545 for loot interaction
-	Global $ofs__InteractOffsetUNK4 = 0x7F80 ;Set to 7546 for NPC interaction, 7545 for loot interaction
-	Global $ofs__InteractOffsetMousestate = 0x7F84 ;Mouse state 1 = clicked, 2 = mouse down
-	Global $ofs__InteractOffsetGUID = 0x7F88 ;Set to the GUID of the actor you want to interact with
-	$FixSpeed = 0x20 ;69736
-	$ToggleMove = 0x34
-	$MoveToXoffset = 0x40
-	$MoveToYoffset = 0x44
-	$MoveToZoffset = 0x48
-	$CurrentX = 0xA8
-	$CurrentY = 0xAc
-	$CurrentZ = 0xb0
-	$RotationOffset = 0x174
-	Global $_ActorAtrib_Base = _MemoryRead($ofs_ActorAtrib_Base, $d3, 'ptr')
-	Global $_ActorAtrib_1 = _MemoryRead($_ActorAtrib_Base + $ofs_ActorAtrib_ofs1, $d3, 'ptr')
-	Global $_ActorAtrib_2 = _MemoryRead($_ActorAtrib_1 + $ofs_ActorAtrib_ofs2, $d3, 'ptr')
-	Global $_ActorAtrib_3 = _MemoryRead($_ActorAtrib_2 + $ofs_ActorAtrib_ofs3, $d3, 'ptr')
-	Global $_ActorAtrib_4 = _MemoryRead($_ActorAtrib_3, $d3, 'ptr')
-	Global $_ActorAtrib_Count = $_ActorAtrib_2 + $ofs_ActorAtrib_Count
-	Global $_LocalActor_1 = _MemoryRead($_ActorAtrib_1 + $ofs_LocalActor_ofs1, $d3, 'ptr')
-	Global $_LocalActor_2 = _MemoryRead($_LocalActor_1 + $ofs_LocalActor_ofs2, $d3, 'ptr')
-	Global $_LocalActor_3 = _MemoryRead($_LocalActor_2, $d3, 'ptr')
-	Global $_LocalActor_Count = $_LocalActor_1 + $ofs_LocalActor_Count
-	Global $_itrObjectManagerA = _MemoryRead($ofs_objectmanager, $d3, 'ptr')
-	Global $_itrObjectManagerB = _MemoryRead($_itrObjectManagerA + $ofs__ObjmanagerActorOffsetA, $d3, 'ptr')
-	Global $_itrObjectManagerCount = $_itrObjectManagerB + $ofs__ObjmanagerActorCount
-	Global $_itrObjectManagerC = _MemoryRead($_itrObjectManagerB + $ofs__ObjmanagerActorOffsetB, $d3, 'ptr')
-	Global $_itrObjectManagerD = _MemoryRead($_itrObjectManagerC, $d3, 'ptr')
-	Global $_itrObjectManagerE = _MemoryRead($_itrObjectManagerD, $d3, 'ptr')
-	Global $_itrInteractA = _MemoryRead($ofs_InteractBase, $d3, 'ptr')
-	Global $_itrInteractB = _MemoryRead($_itrInteractA, $d3, 'ptr')
-	Global $_itrInteractC = _MemoryRead($_itrInteractB, $d3, 'ptr')
-	Global $_itrInteractD = _MemoryRead($_itrInteractC + $ofs__InteractOffsetA, $d3, 'ptr')
-	Global $_itrInteractE = $_itrInteractD + $ofs__InteractOffsetB
-
-
-	If LocateMyToon() Then
-		Global $ClickToMoveMain = _MemoryRead($_Myoffset + $ofs__ObjmanagerActorLinkToCTM, $d3, 'ptr')
-		Global $ClickToMoveRotation = $ClickToMoveMain + $RotationOffset
-		Global $ClickToMoveCurX = $ClickToMoveMain + $CurrentX
-		Global $ClickToMoveCurY = $ClickToMoveMain + $CurrentY
-		Global $ClickToMoveCurZ = $ClickToMoveMain + $CurrentZ
-		Global $ClickToMoveToX = $ClickToMoveMain + $MoveToXoffset
-		Global $ClickToMoveToY = $ClickToMoveMain + $MoveToYoffset
-		Global $ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
-		Global $ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
-		Global $ClickToMoveFix = $ClickToMoveMain + $FixSpeed
-		If $_debug Then _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
-		Return True
-	Else
-		Return False
-	EndIf
+        If LocateMyToon() Then
+                $ClickToMoveMain = _MemoryRead($_Myoffset + $ofs__ObjmanagerActorLinkToCTM, $d3, 'ptr')
+                $ClickToMoveRotation = $ClickToMoveMain + $RotationOffset
+                $ClickToMoveCurX = $ClickToMoveMain + $CurrentX
+                $ClickToMoveCurY = $ClickToMoveMain + $CurrentY
+                $ClickToMoveCurZ = $ClickToMoveMain + $CurrentZ
+                $ClickToMoveToX = $ClickToMoveMain + $MoveToXoffset
+                $ClickToMoveToY = $ClickToMoveMain + $MoveToYoffset
+                $ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
+                $ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
+                $ClickToMoveFix = $ClickToMoveMain + $FixSpeed
+                If $_debug Then _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
+                Return True
+        Else
+                Return False
+        EndIf
 
 EndFunc   ;==>offsetlist
 
@@ -2000,6 +1950,7 @@ EndFunc   ;==>offsetlist
 ;;      IterateAllObjectList()
 ;; 		Description:		Iterate object even if they dont have guid, also provide true names
 ;;--------------------------------------------------------------------------------
+#cs
 Func IterateAllObjectList($_displayInfo)
 	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
 	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
@@ -2037,7 +1988,7 @@ Func IterateAllObjectList($_displayInfo)
 	Next
 	Return $OBJ
 EndFunc   ;==>IterateAllObjectList
-
+#ce
 
 ;;--------------------------------------------------------------------------------
 ;;	IterateObjectList()
@@ -2117,6 +2068,7 @@ Func startIterateObjectsList(ByRef $index, ByRef $offset, ByRef $count)
 	$count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
 	$index = 0
 	$offset = $_itrObjectManagerD
+	;_log("Actor Count -> " & $count)
 EndFunc   ;==>startIterateObjectsList
 
 ;;--------------------------------------------------------------------------------
@@ -2125,6 +2077,12 @@ EndFunc   ;==>startIterateObjectsList
 Func FromD3toScreenCoords($_x, $_y, $_z)
 	Dim $return[2]
 	$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
+
+	if NOT $size[0] = $SizeWindows[0] OR NOT $size[1] = $SizeWindows[1] Then
+		_log("!Windows Size Changed")
+		Terminate()
+	EndIF
+
 	$resolutionX = $size[0]
 	$resolutionY = $size[1]
 	$aspectChange = ($resolutionX / $resolutionY) / (800 / 600)
@@ -2150,16 +2108,9 @@ Func FromD3toScreenCoords($_x, $_y, $_z)
 	WEnd
 	$return[0] = ($x + 1) / 2 * $resolutionX
 	$return[1] = (1 - $y) / 2 * $resolutionY
-	If $return[0] > 790 Then
-		$return[0] = 790
-	ElseIf $return[0] < 40 Then ;car on a pas l'envie de cliquer dans les icone du chat
-		$return[0] = 40
-	EndIf
-	If $return[1] > 500 Then ;car on a pas l'envie de cliquer dans la bare des skills ;pacth 8.2e
-		$return[1] = 500;pacth 8.2e
-	ElseIf $return[1] < 10 Then
-		$return[1] = 10
-	EndIf
+
+	$return = Checkclickable($return)
+
 	Return $return
 EndFunc   ;==>FromD3toScreenCoords
 
@@ -2179,6 +2130,7 @@ EndFunc   ;==>UiRatio
 ;;--------------------------------------------------------------------------------
 ;;      GetCurrentPos()
 ;;--------------------------------------------------------------------------------
+#cs
 Func GetCurrentPos()
 	;	Local $mesurepos = TimerInit() ;;;;;;;;;;;;;;
 	Dim $return[3]
@@ -2195,8 +2147,24 @@ Func GetCurrentPos()
 	;_log("Mesure getcurrentpos :" & $difmesurepos) ;FOR DEBUGGING;;;;;;;;;;;;
 	Return $return
 EndFunc   ;==>GetCurrentPos
+#ce
 
+Func GetCurrentPos()
+	Dim $return[3]
 
+	Local $PosPlayerStruct = DllStructCreate("byte[164];float;float;float")
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $_Myoffset, 'ptr', DllStructGetPtr($PosPlayerStruct), 'int', DllStructGetSize($PosPlayerStruct), 'int', '')
+
+		$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
+		$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
+		$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
+
+		$Current_Hero_X = $return[0]
+		$Current_Hero_Y = $return[1]
+		$Current_Hero_Z = $return[2]
+
+		Return $return
+EndFunc  ;==>GetCurrentPos
 
 ;;--------------------------------------------------------------------------------
 ;;      MoveToPos()
@@ -2217,7 +2185,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	$Coords = FromD3toScreenCoords($_x, $_y, $_z)
 	MouseMove($Coords[0], $Coords[1], 3)
 	$LastCP = GetCurrentPos()
-	MouseDown("middle")
+	MouseDown($MouseMoveClick)
 	Sleep(10)
 	While 1
 
@@ -2249,18 +2217,9 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			; ci desssous du dirty code pour eviter de cliquer n'importe ou hos de la fenetre du jeu
 			$Coords[0] = $Coords[0] - (Cos($angle) * $Radius)
 			$Coords[1] = $Coords[1] - (Sin($angle) * $Radius)
-			Switch $Coords[0] ;car on a pas l'envie de cliquer dans les icone du chat
-				  Case 791 To 800
-					 $Coords[0] = 790
-				  Case 0 To 39
-					 $Coords[0] = 40
-			EndSwitch
-			Switch $Coords[1] ;car on a pas l'envie de cliquer dans la bare des skills
-				  Case 541 To 600
-					 $Coords[1] = 540
-				  Case 0 To 9
-					 $Coords[1] = 10
-			EndSwitch
+
+			$Coords = Checkclickable($Coords)
+
 			MouseMove($Coords[0], $Coords[1], 3)
 			$toggletry += 1
 			;_log("Tryin move :" & " x:" & $_x & " y:" & $_y & "coords: " & $Coords[0] & "-" & $Coords[1] & " angle: " & $angle & " Toggle try: " & $toggletry)
@@ -2282,30 +2241,19 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 		;_log("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2])
 		;_log("distance/m range: " & $Distance & " : " & $m_range)
 		If $_a = 1 And GetDistance($LastCP[0], $LastCP[1], $LastCP[2]) >= $a_range / 2 Then
-			MouseUp("middle")
+			MouseUp($MouseMoveClick)
 			$LastCP = GetCurrentPos()
 			If $_a = 1 Then Attack()
-			;_log("Last check: " & $Distance)
-			;MouseMove($Coords[0], $Coords[1], 3)
 
-			$Coords_RndX = $Coords[0] + Random(-17,17)
-			$Coords_RndY = $Coords[1] + Random(-17,17)
+			dim $Coords_Rnd[2]
+			$Coords_Rnd[0] = Random($Coords[0] - 20, $Coords[0] + 20)
+			$Coords_Rnd[1] = Random($Coords[1] - 20, $Coords[1] + 15)
 
-			If $Coords_RndX < 40 Then
-				$Coords_RndX = 40
-			ElseIf $Coords_RndX > 790 Then
-				$Coords_RndX = 790
-			EndIf
+			$Coords_Rnd = Checkclickable($Coords_Rnd)
 
-			If $Coords_RndY < 10 Then
-				$Coords_RndY = 10
-			ElseIf $Coords_RndY > 540 Then
-				$Coords_RndY = 540
-			EndIf
+			MouseMove($Coords_Rnd[0], $Coords_Rnd[1], 3) ;little randomisation
 
-
-			MouseMove($Coords_RndX, $Coords_RndY, 3) ;little randomisation
-			MouseDown("middle")
+			MouseDown($MouseMoveClick)
 		EndIf
 		MouseMove($Coords[0], $Coords[1], 3)
 		If TimerDiff($TimeOut) > 75000 Then
@@ -2317,7 +2265,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			ExitLoop
 		EndIf
 	WEnd
-	MouseUp("middle")
+	MouseUp($MouseMoveClick)
 	;;
 	;Sleep(100)
 EndFunc   ;==>MoveToPos
@@ -2357,7 +2305,7 @@ Func InteractByActorName($a_name, $dist = 300)
 				_log($item[1] & " distance : " & $item[9])
 				While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
-					MouseClick("middle", $Coords[0], $Coords[1], 1, 10)
+					MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 					$maxtry += 1
 					_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1])
 					Sleep(800)
@@ -2485,42 +2433,10 @@ Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 	$index += 1
 	$error = 0
 
-	; 0x1d4 -> Data 3
-	; 0x230 -> Data 2
-	; 0x260 -> Data 1
-
-
-	;if $index > $count Then
-	;	return true
-	;EndIF
-
 	Do
-	Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int")
-	;Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[24];float;float;float;byte[292];int;byte[88];int;byte[44];int")
-	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-
-
-#cs
-		if DllStructGetData($iterateObjectsListStruct, 1)  = -1 OR DllStructGetData($iterateObjectsListStruct, 4) = -1 Then
-			$error = 1
-			$index += 1
-			$offset = $offset + $_ObjmanagerStrucSize
-
-			$iterateObjectsListStruct = ""
-			if $index > $count + 1 Then
-				return false
-			EndIF
-
-
-			ContinueLoop
-		Else
-			if $index > $count + 1 Then
-				return false
-			EndIF
-
-			$error = 0
-		EndIF
-#ce
+		Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int")
+		;Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[24];float;float;float;byte[292];int;byte[88];int;byte[44];int")
+		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
 
 		$item[0] = DllStructGetData($iterateObjectsListStruct, 4) ; Guid
 		$item[1] = DllStructGetData($iterateObjectsListStruct, 2) ; Name
@@ -2534,17 +2450,256 @@ Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 		$item[9] = getDistance($item[2], $item[3], $item[4]) ; Distance
 		$iterateObjectsListStruct = ""
 		$offset = $offset + $_ObjmanagerStrucSize
-
-			;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
+		;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
 
 	Until $error = 0
 
 		Return True
 EndFunc   ;==>iterateObjectsList
 
+Func ArrayStruct($tagStruct, $numElements)
+    $sizeOfMyStruct = DllStructGetSize(DllStructCreate($tagStruct)) ;assumes end padding is included
+    $bytesNeeded = $numElements * $sizeOfMyStruct
+    return DllStructCreate("byte[" & $bytesNeeded & "]")
+EndFunc
+
+Func GetElement($Struct, $Element, $tagSTRUCT)
+   return DllStructCreate($tagSTRUCT, DllStructGetPtr($Struct) + $Element * DllStructGetSize(DllStructCreate($tagStruct)))
+EndFunc
+
+Func IterateCACD(ByRef $ItemCRactor)
+
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
+	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
+	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x120, $d3, "ptr") + 0x0, $d3, "ptr")
+	Local $__ACDACTOR[$_Count + 1][7]
+
+	$iterateACDActorStruct = ArrayStruct($ACDStruct, $_Count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $CurrentOffset, 'ptr', DllStructGetPtr($iterateACDActorStruct), 'int', DllStructGetSize($iterateACDActorStruct), 'int', '')
+
+	For $i = 0 To $_Count
+		$ACDActorStruct = GetElement($iterateACDActorStruct, $i, $ACDStruct)
+
+		if DllStructGetData($ACDActorStruct, 1) <> -1 Then
+
+			;_log(DllStructGetData($ACDActorStruct, 2))
+			$found = false
+			$buff = DllStructGetData($ACDActorStruct, 1) ;ID_ACD
 
 
+			for $y=0 to Ubound($ItemCRactor) - 1
+				;_log($ItemCRactor[$y][0] & " - " & $buff)
+				if $ItemCRactor[$y][0] = $buff Then
+					$ItemCRactor[$y][10] = $buff ;ID_ACD
+					$ItemCRactor[$y][11] = DllStructGetData($ACDActorStruct, 5) ;ID_SNO
+					$ItemCRactor[$y][12] = DllStructGetData($ACDActorStruct, 7) ;GB_TYPE
+					$ItemCRactor[$y][13] = DllStructGetData($ACDActorStruct, 8) ;ID_GB
+					$ItemCRactor[$y][14] = DllStructGetData($ACDActorStruct, 9) ;mobtype
+					$ItemCRactor[$y][15] = DllStructGetData($ACDActorStruct, 11) ;Radius
+					$ItemCRactor[$y][16] = DllStructGetData($ACDActorStruct, 13) ;ID_ATTRIB
+					ExitLoop
+				EndIf
+			Next
 
+		endif
+		$ACDActorStruct = ""
+	Next
+	$iterateACDActorStruct = ""
+return $__ACDACTOR
+EndFunc   ;==>IterateBackpack
+
+
+Func IterateFilterAttackV4($IgnoreList)
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Dim $item_buff_2D[1][$TableSizeGuidStruct]
+	Local $z = 0
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	dim $item[$TableSizeGuidStruct]
+
+	$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
+			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y Head
+			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z Head
+			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+
+			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+
+
+				If Is_Interact($item, $IgnoreList) Then
+				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) Then
+					ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
+
+					For $x = 0 To $TableSizeGuidStruct - 1
+						$item_buff_2D[$z][$x] = $item[$x]
+					Next
+					$z += 1
+				EndIf
+			EndIf
+
+		EndIf
+		$iterateObjectsStruct = ""
+		Next
+
+	$iterateObjectsListStruct = ""
+
+	If $z = 0 Then
+		Return False
+	Else
+
+		If trim(StringLower($MonsterTri)) = "true" Then
+			_ArraySort($item_buff_2D, 0, 0, 0, 9)
+		EndIf
+
+		If trim(StringLower($MonsterPriority)) = "true" Then
+			Dim $item_buff_2D_buff = TriObjectMonster($item_buff_2D)
+			Dim $item_buff_2D = $item_buff_2D_buff
+		EndIf
+		Return $item_buff_2D
+	 EndIf
+EndFunc
+
+Func IterateFilterZoneV2($dist,$n=2)
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Local $z = 0
+	$my_pos_zone=getcurrentpos()
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	dim $item[$TableSizeGuidStruct]
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+		$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+		$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+		$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x
+		$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y
+		$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z
+		$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+		$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+		$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+		$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+		$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+		$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+		$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+
+		$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+
+		$iterateObjectsStruct = ""
+		If Is_Interact($item, "") Then
+			If Is_Mob($item) and sqrt(($item[2]-$my_pos_zone[0])^2 + ($item[3]-$my_pos_zone[1])^2 ) < $dist and $item[4]<10 Then
+				$z += 1
+			EndIf
+
+		EndIf
+	Next
+
+	$iterateObjectsListStruct = ""
+
+	If $z <2 Then
+;~ 	   _log("pas assez de mob proche")
+		Return False
+	Else
+;~ 		 _log("nombre : " & $i)
+		return True
+
+	EndIf
+
+EndFunc
+
+Func IterateFilterAffixV2()
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Dim $item_affix_2D[1][$TableSizeGuidStruct+1]
+	Local $z = 0
+	$pv_affix=getlifep()
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x
+			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y
+			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z
+			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+
+			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+
+
+			If Is_Affix($item, $pv_affix) Then
+				ReDim $item_affix_2D[$z + 1][$TableSizeGuidStruct+1]
+				For $x = 0 To 9
+					$item_affix_2D[$z][$x] = $item[$x]
+				Next
+
+					if StringInStr($item[1],"molten_trail") then $item_affix_2D[$z][13] = $range_lave
+					if StringInStr($item[1],"Desecrator") then $item_affix_2D[$z][13] = $range_profa
+					if (StringInStr($item[1],"bomb_buildup") or StringInStr($item[1],"Icecluster") or stringinstr($item[1],"Molten_deathExplosion") or stringinstr($item[1],"Molten_deathStart")) then  $item_affix_2D[$z][13] = $range_ice
+					if (StringInStr($item[1],"demonmine_C") or StringInStr($item[1],"Crater_DemonClawBomb")) then $item_affix_2D[$z][13] = $range_mine
+					if StringInStr($item[1],"creepMobArm") then $item_affix_2D[$z][13] = $range_arm
+					if (StringInStr($item[1],"spore") or StringInStr($item[1],"Plagued_endCloud") or StringInStr($item[1],"Poison")) then $item_affix_2D[$z][13] = $range_peste
+					if StringInStr($item[1],"ArcaneEnchanted_petsweep") then $item_affix_2D[$z][13] = $range_arcane
+					if StringInStr($item[1],"frozenPulse") then $item_affix_2D[$z][13] = $range_arcane
+
+
+				$z += 1
+			EndIf
+
+
+		EndIf
+		$iterateObjectsStruct = ""
+		Next
+
+	$iterateObjectsListStruct = ""
+
+	If $z = 0 Then
+                Return False
+        Else
+
+                _ArraySort($item_affix_2D, 0, 0, 0, 9)
+
+                Return $item_affix_2D
+        EndIf
+EndFunc
+#cs
 Func IterateFilterAttack($IgnoreList)
 	Local $index, $offset, $count, $item[10]
 	startIterateObjectsList($index, $offset, $count)
@@ -2615,6 +2770,7 @@ $my_pos_zone=getcurrentpos()
 
 	EndIf
 EndFunc   ;==>IterateFilterAttack
+#ce
 
 Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 
@@ -2627,7 +2783,7 @@ Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 		Return UpdateObjectsList(_Array2DDelete($array_obj, 0))
 	Else
 
-		Local $buff2 = IterateFilterAttack($IgnoreList)
+		Local $buff2 = IterateFilterAttackV4($IgnoreList)
 		If $MonsterTri Then
 			_ArraySort($buff2, 0, 0, 0, 9)
 		EndIf
@@ -2640,6 +2796,9 @@ Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 		Return $buff2
 	EndIf
 EndFunc   ;==>UpdateArrayAttack
+
+global $decorlist=""
+global $bandecorlist=""
 
 Func TriObjectMonster($item)
 
@@ -2736,11 +2895,11 @@ EndFunc   ;==>TriObjectMonster
 Func UpdateObjectsList($item)
 	For $i = 0 To UBound($item) - 1
 		Dim $buff_item[4]
-		Local $pos = DllStructCreate("byte[180];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
+		Local $pos = DllStructCreate("byte[180];float;float;float;byte[4];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
 		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $item[$i][8], 'ptr', DllStructGetPtr($pos), 'int', DllStructGetSize($pos), 'int', '')
-		$item[$i][2] = DllStructGetData($pos, 2)
-		$item[$i][3] = DllStructGetData($pos, 3)
-		$item[$i][4] = DllStructGetData($pos, 4)
+		$item[$i][2] = DllStructGetData($pos, 6)
+		$item[$i][3] = DllStructGetData($pos, 7)
+		$item[$i][4] = DllStructGetData($pos, 8)
 		$item[$i][9] = getDistance($item[$i][2], $item[$i][3], $item[$i][4]) ; Distance
 		$pos = ""
 	Next
@@ -2750,17 +2909,17 @@ EndFunc   ;==>UpdateObjectsList
 Func UpdateObjectsPos($offset)
 	Local $obj_pos[4]
 
-	Local $pos = DllStructCreate("byte[180];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
+	Local $pos = DllStructCreate("byte[180];float;float;float;byte[4];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($pos), 'int', DllStructGetSize($pos), 'int', '')
-	$obj_pos[0] = DllStructGetData($pos, 2)
-	$obj_pos[1] = DllStructGetData($pos, 3)
-	$obj_pos[2] = DllStructGetData($pos, 4)
+	$obj_pos[0] = DllStructGetData($pos, 6)
+	$obj_pos[1] = DllStructGetData($pos, 7)
+	$obj_pos[2] = DllStructGetData($pos, 8)
 	$obj_pos[3] = getDistance($obj_pos[0], $obj_pos[1], $obj_pos[2]) ; Distance
 	$pos = ""
 	Return $obj_pos
 EndFunc   ;==>UpdateObjectsPos
 
-Func Is_Shrine($item)
+Func Is_Shrine(ByRef $item)
 	If (StringInStr($item[1], "shrine") or StringInStr($item[1], "PoolOfReflection")) and $item[9] < 35 Then
 		Return True
 	Else
@@ -2768,7 +2927,7 @@ Func Is_Shrine($item)
 	EndIf
 EndFunc   ;==>Is_Shrine
 
-Func Is_Mob($item)
+Func Is_Mob(ByRef $item)
 	If checkfromlist($BanmonsterList, $item[1]) = 0 And checkFromList($monsterList, $item[1]) And $item[6] <> -1 And $item[9] < $a_range Or checkFromList($SpecialmonsterList, $item[1]) And $item[9] < $a_range Then
 		Return True
 	Else
@@ -2776,10 +2935,7 @@ Func Is_Mob($item)
 	EndIf
 EndFunc   ;==>Is_Mob
 
-global $decorlist=""
-global $bandecorlist=""
-
-Func Is_Decor_Breakable($item)
+Func Is_Decor_Breakable(ByRef $item)
 	If checkfromlist($BandecorList, $item[1]) = 0 And checkFromList($decorList, $item[1]) And $item[6] <> -1 And $item[9] < 18  Then
 		Return True
 	Else
@@ -2787,7 +2943,7 @@ Func Is_Decor_Breakable($item)
 	EndIf
 EndFunc   ;==>Is_Mob
 
-Func Is_Loot($item)
+Func Is_Loot(ByRef $item)
 
 	If ($item[5] = 2 And $item[6] = -1) Or (StringInStr($item[1], "orb") And StringInStr($item[1], "unique")) Or (StringInStr($item[1], "Spear") And StringInStr($item[1], "unique")) Then
 		;_log("Is_Loot de l'item -> " & $item[0] & "-" & $item[1] & "-" & $item[2] & " - " & $item[3] & " - " & $item[4] & " - " & $item[5] & " - " & $item[6] & " - " & $item[8] & " - " & $item[9])
@@ -2799,8 +2955,9 @@ EndFunc   ;==>Is_Loot
 
 
 
-Func Is_Interact($item, $IgnoreList)
-	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And StringInStr($IgnoreList, $item[8]) == 0 And StringInStr($handle_banlistdef, $item[2]&"-"&$item[3]&"-"&$item[4]) == 0 And StringInStr($IgnoreItemList, $item[1]) = 0 And checkfromlist($shrinebanlist, $item[8]) = 0 And Abs($Current_Hero_Z - $item[4]) <= $Hero_Axe_Z Then
+Func Is_Interact(ByRef $item, $IgnoreList)
+	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And Not IsInBanActor($item[1]) And StringInStr($IgnoreList, $item[8]) == 0 And Abs($Current_Hero_Z - $item[12]) <= $Hero_Axe_Z Then
+	;	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And StringInStr($IgnoreList, $item[8]) == 0 And StringInStr($handle_banlistdef, $item[2]&"-"&$item[3]&"-"&$item[4]) == 0 And StringInStr($IgnoreItemList, $item[1]) = 0 And checkfromlist($shrinebanlist, $item[8]) = 0 And Abs($Current_Hero_Z - $item[4]) <= $Hero_Axe_Z Then
 		If Not Checkstartlist_regex($Ban_startstrItemList, $item[1]) And Not Checkendlist_regex("_projectile", $item[1]) Then
 			Return True
 		Else
@@ -2811,7 +2968,7 @@ Func Is_Interact($item, $IgnoreList)
 	EndIf
 EndFunc   ;==>Is_Interact
 
-Func Is_Coffre($item)
+Func Is_Coffre(ByRef $item)
    if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|Chest_Rare", $item[1]) AND $item[9] < 50 Then
 		return True
 	Else
@@ -2819,7 +2976,7 @@ Func Is_Coffre($item)
 	EndIF
 EndFunc
 
-Func Is_Health($item)
+Func Is_Health(ByRef $item)
  	If (StringInStr($item[1], "HealthWell") or StringInStr($item[1],"HealthGlobe")) and $item[9] < 35 Then
  		Return True
  	Else
@@ -2827,7 +2984,7 @@ Func Is_Health($item)
  	EndIf
 EndFunc   ;==>Is_Health
 
-Func Is_Power($item)
+Func Is_Power(ByRef $item)
 	If StringInStr($item[1], "PowerGlobe") and $item[9] < 35 Then
 		Return True
 	Else
@@ -2840,7 +2997,8 @@ Func handle_Power(ByRef $item)
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 		If Power($item[1], $item[8], $item[0]) = False Then
-			$shrinebanlist = $shrinebanlist & "|" & $item[8]
+			_log("Ban power -> " & $item[1])
+				BanActor($item[1])
 		EndIf
 	EndIf
 EndFunc   ;==>handle_Power
@@ -2850,7 +3008,8 @@ Func handle_Health(ByRef $item)
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 		If Health($item[1], $item[8], $item[0]) = False Then
-			$shrinebanlist = $shrinebanlist & "|" & $item[8]
+			_log("Ban health -> " & $item[1])
+			BanActor($item[1])
 		EndIf
 	EndIf
 EndFunc   ;==>handle_Health
@@ -2860,7 +3019,8 @@ Func handle_Coffre(ByRef $item)
 		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
 			If Coffre($item) = False Then
-				$shrinebanlist = $shrinebanlist & "|" & $item[8]
+				_log("Ban coffre -> " & $item[1])
+				BanActor($item[1])
 			EndIf
 		EndIf
 EndFunc
@@ -2872,7 +3032,8 @@ Func handle_Shrine(ByRef $item)
 		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 			If shrine($item[1], $item[8], $item[0]) = False Then
-				$shrinebanlist = $shrinebanlist & "|" & $item[8]
+				_log("Ban shrine -> " & $item[1])
+				BanActor($item[1])
 			EndIf
 		EndIf
 	EndIf
@@ -2890,8 +3051,8 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 
 		$foundobject = 1
 		If KillMob($item[1], $item[8], $item[0],$test_iterateallobjectslist) = False Then
-			_log('ignoring ' & $item[1])
-			$IgnoreList = $IgnoreList & $item[8]
+			;_log("Ban monster -> " & $item[1])
+			$IgnoreList = $IgnoreList & $item[8] ; BanActor($item[1])
 
 			If $killtimeout > 2 Or $grabtimeout > 2 Then
 				_log("_checkdisconnect Cuz :If $killtimeout > 2 or $grabtimeout > 2 Then")
@@ -2900,12 +3061,13 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 				EndIf
 			EndIf
 		EndIf
-		If $MonsterRefresh Then
-			Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-			$test_iterateallobjectslist = $buff_array
-		EndIf
+		;If $MonsterRefresh Then
+		;	Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
+		;	$test_iterateallobjectslist = $buff_array
+		;EndIf
 	Else
 		_log('ignoring ' & $item[1])
+		; TODO : Check if should BanActor
 		$IgnoreList = $IgnoreList & $item[8]
 		;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
 		If $killtimeout > 2 Or $grabtimeout > 2 Then
@@ -2927,11 +3089,11 @@ EndFunc   ;==>handle_Mob
 EndFunc   ;==>CheckItem
 Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
         $grabit = False
-    If _MemoryRead($item[8] + 0x0, $d3, 'ptr') <> 0xFFFFFFFF Then
+
                 _log("Checking " & $item[1])
 
 				If $gestion_affixe_loot Then
-					Dim $item_aff_verif = IterateFilterAffix()
+					Dim $item_aff_verif = IterateFilterAffixV2()
 				Else
 					$item_aff_verif = ""
 				EndIf
@@ -2945,9 +3107,14 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 									; this loot is interesting
 									$foundobject = 1
 									If Grabit($item[1], $item[8]) = False Then
-											_log('ignoring ' & $item[1])
-											$IgnoreList = $IgnoreList & $item[8]
-											handle_banlist($item[2]&"-"&$item[3]&"-"&$item[4])
+											_log("Ban Item -> " & $item[1] & " Reason Grabit To False (With affix)")
+											BanActor($item[1])
+
+											;_log('ignoring ' & $item[1])
+											;$IgnoreList = $IgnoreList & $item[8]
+											;handle_banlist($item[2]&"-"&$item[3]&"-"&$item[4])
+
+
 											;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
 											If $killtimeout > 2 Or $grabtimeout > 2 Then
 													If _checkdisconnect() Or _playerdead() Then
@@ -2964,7 +3131,10 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 									EndIf
 							Else
 									If checkFromList($monsterList, $item[1]) = False Then
-											$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
+											_log("Ban Item -> " & $item[1] & " Reason checkFromList To False (With affix)")
+											BanActor($item[1])
+											;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
+
 											;_log('ignoring ' & $item[8] & " : " & $item[1] & " :::::" &$IgnoreItemList)
 									EndIf
 							 EndIf
@@ -2982,9 +3152,11 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 
                         If Grabit($item[1], $item[8]) = False Then
-                                _log('ignoring ' & $item[1])
-                                $IgnoreList = $IgnoreList & $item[8]
-                                handle_banlist($item[2]&"-"&$item[3]&"-"&$item[4])
+								_log("Ban Item -> " & $item[1] & " Reason Grabit To False")
+								BanActor($item[1])
+
+								;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
+
                                 ;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
                                 If $killtimeout > 2 Or $grabtimeout > 2 Then
                                         If _checkdisconnect() Or _playerdead() Then
@@ -3001,12 +3173,16 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
                         EndIf
                 Else
                         If checkFromList($monsterList, $item[1]) = False Then
-                                $IgnoreItemList = $IgnoreItemList & $item[1] & "-"
+								_log("Ban Item -> " & $item[1] & " Reason checkFromList To False")
+								BanActor($item[1])
+
+								;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
+
                                 ;_log('ignoring ' & $item[8] & " : " & $item[1] & " :::::" &$IgnoreItemList)
                         EndIf
                 EndIf
           EndIf
-    EndIf
+
  EndFunc   ;==>handle_Loot
 
 Func handle_banlist($coords_ban)
@@ -3042,8 +3218,11 @@ Func Attack()
 		Return
 	EndIf
 	Local $IgnoreList = ""
-	Local $item[10]
-	Dim $test_iterateallobjectslist = IterateFilterAttack($IgnoreList)
+	Local $item[$TableSizeGuidStruct]
+	Local $OldActor = ""
+
+	Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
+
 	If IsArray($test_iterateallobjectslist) Then
 		While IsArray($test_iterateallobjectslist)
 			If _playerdead_revive() Then
@@ -3055,9 +3234,19 @@ Func Attack()
 				_log("Return Cuz : If _playerdead or gamefailed ")
 				ExitLoop
 			EndIf
-			For $i = 0 To 9
+
+			For $i = 0 To $TableSizeGuidStruct - 1
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
+
+			if $OldActor = $item[1] Then
+				BanActor($item[1])
+				_log("Ban Actor Cause of second passage")
+				ExitLoop
+			Else
+				$OldActor  = $item[1]
+			EndIF
+
 			Select
 				  Case Is_Loot($item)
 					 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
@@ -3074,8 +3263,8 @@ Func Attack()
  				  Case Is_Power($item)
  					 handle_Power($item)
 			EndSelect
-			Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList)
-			Dim $test_iterateallobjectslist = $buff_array
+
+			Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 
 		WEnd
 
@@ -3089,74 +3278,6 @@ EndFunc   ;==>DetectElite
 ;;--------------------------------------------------------------------------------
 ;;      KillMob()
 ;;--------------------------------------------------------------------------------
-#cs;pacth 8.2e
-Func KillMob($name, $offset, $Guid, $test_iterateallobjectslist2)
-        $return = True
-        $begin = TimerInit()
-
-
-        Dim $pos = UpdateObjectsPos($offset)
-
-        $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
-        MouseMove($Coords[0], $Coords[1], 3)
-
-        $elite = DetectElite($Guid)
-        ;loop the attack until the mob is dead
-
-        If $elite Then $CptElite += 1;on compte les elite
-
-		_log("Attacking : " & $name & "; Type : " & $elite);
-
-
-
-        While IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur) > 0
-
-			;_log(IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur))
-
-			$myposs_aff = getcurrentpos()
-
-                If _playerdead_revive() Then
-                        $return = False
-                        ExitLoop
-                EndIf
-			Dim $pos = UpdateObjectsPos($offset)
-
-                 if $gestion_affixe then maffmove($myposs_aff[0],$myposs_aff[1],$myposs_aff[2],$pos[0],$pos[1])
-			for $a=0 to ubound($test_iterateallobjectslist2)-1
-
-				$CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
-				$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-
-				If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 then
-					dim $dist_maj=UpdateObjectsPos($test_iterateallobjectslist2[$a][8])
-					$test_iterateallobjectslist2[$a][9]=$dist_maj[3]
-				Else
-					$test_iterateallobjectslist2[$a][9]=10000
-				endif
-			Next
-
-			_ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
-
-			$dist_verif= getDistance($test_iterateallobjectslist2[0][2], $test_iterateallobjectslist2[0][3], $test_iterateallobjectslist2[0][4])
-			Dim $pos = UpdateObjectsPos($offset)
-			if $pos[3]>$dist_verif+5 then exitloop
-
-;if getDistance($pos[0], $pos[1], $pos[2])>20 and IterateFilterZone(30,1) then exitloop
-
-
-                $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
-                MouseMove($Coords[0], $Coords[1], 3)
-				GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
-                If TimerDiff($begin) > $a_time Then
-					$killtimeout += 1
-                        ; after this time, the mob should be dead, otherwise he is probly unkillable
-					$return = False
-					ExitLoop
-                EndIf
-        WEnd
-        Return $return
-EndFunc   ;==>KillMob
-#ce
 
 Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
         $return = True
@@ -3212,7 +3333,13 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
                 $dist_verif = GetDistance($test_iterateallobjectslist2[0][2], $test_iterateallobjectslist2[0][3], $test_iterateallobjectslist2[0][4])
                 Dim $pos = UpdateObjectsPos($offset)
-                If $pos[3] > $dist_verif + 5 Then ExitLoop
+
+				If $pos[3] > $dist_verif + 5 Then
+					_log("Leave KillMob Cause of Dist Verif : " & $pos[3] & " - " & $dist_verif)
+					ExitLoop
+				EndIf
+				;If $Pos[3] > $Hero_Axe_Z Then ExitLoop
+
                 $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
                 MouseMove($Coords[0], $Coords[1], 3)
                 GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
@@ -3242,7 +3369,7 @@ EndFunc   ;==>KillMob
 ;;      Grabit()
 ;;--------------------------------------------------------------------------------
 Func Grabit($name, $offset)
-	Local $OriginalOffsetValue = _MemoryRead($offset + 0x4, $d3, 'ptr')
+	Local $OriginalOffsetValue = _MemoryRead($offset + 0x0, $d3, 'ptr')
 	$begin = TimerInit()
 	Dim $CoordVerif[3]
 
@@ -3256,12 +3383,12 @@ Func Grabit($name, $offset)
 		$CoordVerif[0] = $pos[0]
 		$CoordVerif[1] = $pos[1]
 		$CoordVerif[2] = $pos[2]
-		MouseClick("middle", $Coords[0], $Coords[1], 1, 5)
+		MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 	Else
 		Interact($pos[0], $pos[1], $pos[2])
 	EndIf
-	While _MemoryRead($offset + 0x4, $d3, 'ptr') = $OriginalOffsetValue
-		If _MemoryRead($offset + 0x4, $d3, 'ptr') = 0xFFFFFFFF Then
+	While _MemoryRead($offset + 0x0, $d3, 'ptr') = $OriginalOffsetValue
+		If _MemoryRead($offset + 0x0, $d3, 'ptr') = 0xFFFFFFFF Then
 			ExitLoop
 		EndIf
 
@@ -3294,7 +3421,7 @@ Func Grabit($name, $offset)
 				_log("Fake GOLD")
 				Return False
 			Else
-				MouseClick("middle", $Coords[0], $Coords[1], 1, 5)
+				MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 			EndIf
 		Else
 
@@ -3566,7 +3693,7 @@ Func OpenWp(ByRef $item)
 		While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 			$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
 			;_log("Dans LE while")
-			MouseClick("middle", $Coords[0], $Coords[1], 1, 10)
+			MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 			$maxtry += 1
 			_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1])
 			Sleep(500)
@@ -3579,12 +3706,40 @@ EndFunc   ;==>OpenWp
 
 Func TakeWPV2($WPNumber=0)
     Local $Curentarea = GetLevelAreaId()
-    Local $Newarea = GetLevelAreaId()
+    Local $Newarea = $Curentarea
 
 	if $GameFailed = 1 Then return False
 	While Not offsetlist()
 		Sleep(10)
 	WEnd
+
+	Local $BucketUI = 0
+	#cs
+	Switch $WPNumber
+		Case 1
+			$BucketUI = 305
+		Case 2
+			$BucketUI = 1540
+		Case 3
+			$BucketUI = 375
+		Case 4
+			$BucketUI = 646
+		Case 5
+			$BucketUI = 302
+		Case 6
+			$BucketUI = 579
+		Case 7
+			$BucketUI = 1898
+		Case 8
+			$BucketUI = 176
+		Case 9
+			$BucketUI = 502
+		Case 10
+			$BucketUI = 1270
+		Case 0
+			$BucketUI = 212
+	EndSwitch
+	#ce
 
 	if $WPNumber = 0 Then
 		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
@@ -3641,9 +3796,11 @@ Func TakeWPV2($WPNumber=0)
 			;Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
 			;MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
 
-			ClickUI($NameUI)
-
-
+			if ($BucketUI = 0) Then
+				ClickUI($NameUI)
+			Else
+				ClickUI($NameUI, $BucketUI)
+			EndIf
 
 			Local $areatry = 0
 			While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
@@ -3773,7 +3930,7 @@ EndFunc   ;==>TakeWP
 ;;--------------------------------------------------------------------------------
 Func _resumegame()
 	_log("Resume Game")
-	Sleep(Random(1500, 3000, 1));pacht 8.2e
+	Sleep(Random(500, 1000, 1));pacht 8.2e
 	If $Try_ResumeGame > 2 Then
 		Local $wait_aftertoomanytry = Random(($Try_ResumeGame * 2) * 60000, ($Try_ResumeGame * 2) * 120000, 1)
 		_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry)
@@ -3948,6 +4105,14 @@ Func GetDistance($_x, $_y, $_z)
 	Return $Distance
 EndFunc   ;==>GetDistance
 
+Func GetDistanceWithoutReadPosition($CurrentLoc, $x, $y, $z)
+	$xd = $x - $CurrentLoc[0]
+	$yd = $y - $CurrentLoc[1]
+	$zd = $z - $CurrentLoc[2]
+	$Distance = Sqrt($xd * $xd + $yd * $yd + $zd * $zd)
+	Return $Distance
+Endfunc
+
 ;;================================================================================
 ; Function:			GetDistance($_x,$_y,$_z)
 ; Description:		Check distance between you and a desired position.
@@ -3989,7 +4154,7 @@ EndFunc   ;==>GameOverTime
 Func Terminate()
 	_MemoryClose($d3)
 	If $checkx64 = 1 Then
-		MouseUp("middle")
+		MouseUp($MouseMoveClick)
 		MouseUp("left")
 		Send("{SHIFTUP}")
 		Exit 0
@@ -4005,7 +4170,7 @@ Func Terminate()
 		FileWriteLine($file, $DebugMessage)
 		FileClose($file)
 		extendedstats()
-		MouseUp("middle")
+		MouseUp($MouseMoveClick)
 		MouseUp("left")
 		Send("{SHIFTUP}")
 		Exit 0
@@ -4046,6 +4211,7 @@ Func TogglePause()
 		WEnd
 	EndIf
 	CheckWindowD3()
+	CheckWindowD3Size()
 EndFunc   ;==>TogglePause
 #cs
 Func _log($text, $write = 0)
@@ -4843,7 +5009,8 @@ If TimerDiff($begin) > 80000 Then
 		WEnd
 
 			$CoffreTaken += 1;on compte les coffres qu'on ouvre
-
+	; TODO : Do that correctly ! 
+	sleep(800)
 EndFunc   ;==>shrine
 
 
@@ -5285,7 +5452,7 @@ switch $action_spell
 				   $dist=$buff_table[8]
 				EndIf
 
-				If  $action_spell = 1  and IterateFilterZone($dist) Then
+				If  $action_spell = 1  and IterateFilterZoneV2($dist) Then
 				   _log("mauvais click droit")
 					launch_spell($i)
 					$buff_table[10] = TimerInit()
@@ -5300,7 +5467,7 @@ switch $action_spell
 				Else
 				   $dist=$buff_table[8]
 				EndIf
-				If  IterateFilterZone($dist) Then
+				If  IterateFilterZoneV2($dist) Then
 					launch_spell($i)
 					$buff_table[10] = TimerInit()
 				EndIf
@@ -5813,14 +5980,18 @@ Func TpRepairAndBack()
 
 EndFunc
 
-Func ClickOnStashTab($num);pacth 8.2e
-        If Not IsNumber($num) Then Return SetError(1, 0, 0)
-        If $num > 3 Or $num < 1 Then
-                _log("ERROR Impossible to open this tab from stash")
-                Return SetError(2, 0, 0)
-        EndIf
-        ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_" & $num)
-EndFunc   ;==>ClickOnStashTab (lorenco)
+Func ClickOnStashTab($num)
+	if $num > 3 OR $num < 2 Then
+		_log("ERROR Impossible to open this tab from stash")
+		return false
+	Endif
+
+	if $num = 2 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_2", 218)
+	elseif $num = 3 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_3", 344)
+	EndIf
+EndFunc
 
 Func StashAndRepair()
 
@@ -6891,7 +7062,7 @@ Func CheckZoneBeforeTP()
 
 	local $try = 0
 
-	Dim $Item_Affix_Verify = IterateFilterAffix()
+	Dim $Item_Affix_Verify = IterateFilterAffixV2()
 	If IsArray($Item_Affix_Verify) Then
 	   _Log("Affix detecter, on verifie si l'on est trop pres avant de TP")
 
@@ -7101,7 +7272,7 @@ func is_zone_safe($x_perso,$y_perso,$z_test,$item_safe)
           for $aa=0 to ubound($item_safe)-1
 
                  $distance_centre_affixe=sqrt(($item_safe[$aa][2]-$x_perso)^2 + ($item_safe[$aa][3]-$y_perso)^2)
-                 if $distance_centre_affixe<$item_safe[$aa][10] then
+                 if $distance_centre_affixe<$item_safe[$aa][13] then
 					$condition_affixe=$condition_affixe+1
 ;~ 					$aa=ubound($item_safe)-1
 				 EndIf
@@ -7211,20 +7382,20 @@ EndFunc
 Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
    reset_timer_ignore()
    if timerdiff($maff_timer)>500 then
-        Dim $item_maff_move = IterateFilterAffix()
+        Dim $item_maff_move = IterateFilterAffixV2()
         If IsArray($item_maff_move) Then
            $a=0
 			while $a<=ubound($item_maff_move)-1
 			   checkforpotion()
 			   mouseup('left')
 ;~ 			   $dist_aff=sqrt(($_x_aff-$item_maff_move[$a][2])*($_x_aff-$item_maff_move[$a][2]) + ($_y_aff-$item_maff_move[$a][3])*($_y_aff-$item_maff_move[$a][3]) + ($_z_aff-$item_maff_move[$a][4])*($_z_aff-$item_maff_move[$a][4]))
-			   if $item_maff_move[$a][9]<$item_maff_move[$a][10] and _playerdead()=false then
+			   if $item_maff_move[$a][9]<$item_maff_move[$a][13] and _playerdead()=false then
 				  dim $move_coords[2]
 				  $move_coords=zone_safe($_x_aff,$_y_aff,$item_maff_move,$_z_aff,$x_mob,$y_mob)
 				  $Coords_affixe = FromD3toScreenCoords($move_coords[0],$move_coords[1],$_z_aff)
 				  Mousemove($Coords_affixe[0], $Coords_affixe[1], 3)
 				  GestSpellcast(0, 0, 0)
-				  MouseClick("middle")
+				  MouseClick($MouseMoveClick)
 				  $ignore_timer=timerinit()
 				  while _MemoryRead($ClickToMoveToggle,$d3,"float")<>0
 ;~ 					 GestSpellcast(0, 2, 0)
@@ -7250,6 +7421,7 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
    endif
 EndFunc  ;maffmove
 
+#cs
 Func IterateFilterAffix()
         Local $index, $offset, $count, $item[10]
         startIterateObjectsList($index, $offset, $count)
@@ -7292,6 +7464,9 @@ Func IterateFilterAffix()
                 Return $item_affix_2D
         EndIf
  EndFunc   ;==>IterateFilterAffix
+#ce
+
+
 
 $BanAffixList="poison_humanoid|"&$BanAffixList
 
@@ -7503,3 +7678,25 @@ Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque 
 	EndIf
 
 EndFunc    ;==>PauseToSurviveHC
+
+Func BanActor($str)
+	if IsArray($BanTableActor) Then
+		Redim $BanTableActor[UBound($BanTableActor) + 1]
+		$BanTableActor[UBound($BanTableActor)-1] = $str
+	Else
+		Dim $BanTableActor[1]
+		$BanTableActor[0] = $str
+	EndIf
+EndFunc
+
+Func IsInBanActor($str)
+	if IsArray($BanTableActor) Then
+		for $i=0 to Ubound($BanTableActor) - 1
+			if $BanTableActor[$i] = $str Then
+				return true
+			EndIf
+		Next
+	Else
+		return false
+	EndIf
+EndFunc
