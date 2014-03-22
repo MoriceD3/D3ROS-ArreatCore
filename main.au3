@@ -209,6 +209,9 @@ WinSetOnTop("[CLASS:D3 Main Window Class]", "", 1)
 HotKeySet("{F2}", "Terminate")
 HotKeySet("{F3}", "TogglePause")
 HotKeySet("{F5}", "StashAndRepairTerminate")
+
+HotKeySet("{F8}", "MarkPos")
+HotKeySet("{F11}", "MonsterListing")
 ;;--------------------------------------------------------------------------------
 ;;      Initialize the offsets
 ;;--------------------------------------------------------------------------------
@@ -409,7 +412,6 @@ Func MarkPos()
 	_log($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25");
 EndFunc   ;==>MarkPos
 
-HotKeySet("{F12}", "MarkPos")
 
 Func MonsterListing()
 	$Object = IterateObjectList(0)
@@ -424,7 +426,6 @@ Func MonsterListing()
 	Next
 EndFunc   ;==>MonsterListing
 
-HotKeySet("{F11}", "MonsterListing")
 
 Func Testing_IterateObjetcsList()
 
