@@ -5953,8 +5953,6 @@ EndFunc   ;==>NeedRepair
 
 Func TpRepairAndBack()
 
-	$PortBack = False
-
     If Not $PartieSolo Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
 
 	While Not _intown()
@@ -5964,9 +5962,6 @@ Func TpRepairAndBack()
 		EndIf
 
 	WEnd
-
-	$PortBack = true
-
 
 	StashAndRepair()
 
@@ -5981,6 +5976,7 @@ Func TpRepairAndBack()
 	EndIf
 
 	$games = 0
+	$PortBack = False
 
 EndFunc
 
@@ -7199,7 +7195,6 @@ Func _TownPortalnew($mode=0)
 		EndIf
 
 		Sleep(100)
-		;;;$PortBack = True ;en test pour le PortBack
 	WEnd
 
 	Local $hTimer = TimerInit()

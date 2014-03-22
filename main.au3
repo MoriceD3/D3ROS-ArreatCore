@@ -93,6 +93,7 @@ $AverageDps=0 ; DPS constates
 $NbMobsKilled=1 ; Nombre de Mobs croisés
 
 Global $StashAndRepair = False
+Global $PortBack 	   = False
 
 Global $Hero_Axe_Z = 10
 Global $BanTableActor = ""
