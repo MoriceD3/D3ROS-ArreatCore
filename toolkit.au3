@@ -2173,10 +2173,14 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	Local $TimeOut = TimerInit()
 	$grabtimeout = 0
 	$killtimeout = 0
-	If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
-		$GameFailed = 1
-		Return
+	
+	If Not $StashAndRepair Then
+	   If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
+			$GameFailed = 1
+			Return
+	   EndIf
 	EndIf
+	
 	Local $toggletry = 0
 	Global $lastwp_x = $_x
 	Global $lastwp_y = $_y
@@ -6000,6 +6004,7 @@ Func StashAndRepair()
 	$RepairORsell += 1
 	$item_to_stash = 0
 	$SkippedMove = 0
+	$StashAndRepair = True
 
 	If Not $PartieSolo Then WriteMe($WRITE_ME_SALE) ; TChat
 
@@ -6223,6 +6228,8 @@ Func StashAndRepair()
     Sleep(Random(100, 200))
     Send($KeyCloseWindows)
     Sleep(Random(100, 200))
+	
+	$StashAndRepair = False
 
 EndFunc   ;==>StashAndRepair
 

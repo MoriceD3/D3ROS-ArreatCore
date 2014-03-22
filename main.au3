@@ -92,6 +92,8 @@ Global $NbMobsKilled
 $AverageDps=0 ; DPS constates
 $NbMobsKilled=1 ; Nombre de Mobs croisés
 
+Global $StashAndRepair = False
+
 Global $Hero_Axe_Z = 10
 Global $BanTableActor = ""
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
