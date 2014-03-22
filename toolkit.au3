@@ -3977,7 +3977,7 @@ Func _logind3()
 		Send("{ENTER}")
 		Sleep(Random(5000, 6000, 1))
 
-		$TryLoginD3 += 1
+		$Try_Logind3 += 1
 	Else
 		_Log("Disconnected to server")
 		sleep(2000)
@@ -4697,7 +4697,7 @@ Func StatsDisplay()
                 $GOLDInthepocket = $GOLD - $GOLDINI
                 $GOLDMOY = $GOLDInthepocket / ($Totalruns - 1)
                 $GoldBySaleRatio = ($GoldBySale / $GOLDInthepocket * 100);ratio des ventes
-				$GoldByColectRatio = (($GOLDInthepocket - $GoldBySale + $GoldByRepaire) / $GOLDInthepocket * 100);ratio de l'or collecté ; git correction de la statistique réparation
+				$GoldByColectRatio = (($GOLDInthepocket - $GoldBySale + $GoldByRepaire) / $GOLDInthepocket * 100);ratio de l'or collecté
 				$GoldByRepaireRatio = ($GoldByRepaire / $GOLDInthepocket * 100);ratio du coût des réparation
 				$dif_timer_stat = TimerDiff($begin_timer_stat);temps total
                 $dif_timer_stat_pause = ($tempsPauseGame + $tempsPauserepas);calcule du temps de pause (game + repas)=total pause
@@ -7612,7 +7612,7 @@ Func BuyPotion()
 	Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
 
 	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
-	   If $potinstock <= ($PotionStock + 10) Then ; git corection parce que pas asser utiliser
+	   If $potinstock <= ($PotionStock + 10) Then 
 
 		  MoveTo($Potion_Vendor) ; on se positionne
 
