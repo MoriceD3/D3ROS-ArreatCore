@@ -4804,7 +4804,7 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Gold Total Obtenu  : " & Format_Number(Ceiling($GOLDInthepocket)) & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Moyen/Run : " & Format_Number(Ceiling($GOLDMOY)) & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & Format_Number(Ceiling($GOLDMOYbyH)) & @CRLF
-		;$DebugMessage = $DebugMessage & "Gold Moyen/Heure Jeu : " & formatNumber(Ceiling($GOLDMOYbyHgame)) & @CRLF ;====> gold de temps de jeu
+		;$DebugMessage = $DebugMessage & "Gold Moyen/Heure Jeu : " & Format_Number(Ceiling($GOLDMOYbyHgame)) & @CRLF ;====> gold de temps de jeu
 		$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : " & Format_Number(Ceiling($GOLDMOYbyH - $GOLDMOYbyHgame)) & "   (" & Round($LossGoldMoyH) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & Format_Number(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & Format_Number(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
@@ -5997,6 +5997,7 @@ Func StashAndRepair()
 
 	_log("Func StashAndRepair")
 	Local $Repair = 0
+	$FailOpen_BookOfCain = 0
 	$RepairORsell += 1
 	$item_to_stash = 0
 	$SkippedMove = 0
@@ -6019,6 +6020,11 @@ Func StashAndRepair()
 	$items = FilterBackpack()
 	$ToStash = _ArrayFindAll($items, "Stash", 0, 0, 0, 1, 2)
 
+	If $FailOpen_BookOfCain Then
+ 		$GameFailed = 1
+ 		Return False
+ 	EndIf
+	
 	If $ToStash <> -1 Then
 		Send($KeyCloseWindows)
 		Sleep(500)
@@ -7524,8 +7530,14 @@ $BanAffixList="poison_humanoid|"&$BanAffixList
         While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error(3)
                 ;_log("Ui : " & fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1512) & " Error : " &  fastcheckuiitemvisible("Root.TopLayer.error_notify.error_text", 1, 1185))
                 _log("tour boucle")
-                if NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
-                        InteractByActorName("All_Book_Of_Cain")
+                If NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
+				   If Not _checkdisconnect() Then
+					  InteractByActorName("All_Book_Of_Cain")
+				   Else
+				      _Log("Failed to open Book Of Cain")
+					  $FailOpen_BookOfCain = 1
+					  Return False
+				   EndIf
                 EndIf
         WEnd
         While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)

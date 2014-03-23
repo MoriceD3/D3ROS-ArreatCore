@@ -66,35 +66,32 @@ Global Const $Smith 		= 1
 Global Const $Potion_Vendor = 2
 
 ; global pour prendre des pause
-Global $BreakCounter = 0
-Global $BreakTimeCounter = 0
+Global $BreakCounter 	  = 0
+Global $BreakTimeCounter  = 0
 Global $PauseRepasCounter = 0
-Global $tempsPauseGame = 0
-Global $tempsPauserepas = 0
+Global $tempsPauseGame 	  = 0
+Global $tempsPauserepas   = 0
 ;statistique
 Global $CheckTakeShrineTaken = 0
-Global $CptElite = 0
-Global $ItemToRecycle = 0
-Global $nbLegs = 0
-Global $nbRares = 0
-Global $GoldByRepaire = 0
-Global $GoldBySale = 0
-Global $GOLDMOYbyHgame = 0
-Global $Xp_Moy_HrsPerte = 0
-Global $Xp_Moy_Hrsgame = 0
-Global $dif_timer_stat_game = 0
+Global $CptElite 			 = 0
+Global $ItemToRecycle 		 = 0
+Global $nbLegs 				 = 0
+Global $nbRares 			 = 0
+Global $GoldByRepaire 		 = 0
+Global $GoldBySale 			 = 0
+Global $GOLDMOYbyHgame 		 = 0
+Global $Xp_Moy_HrsPerte		 = 0
+Global $Xp_Moy_Hrsgame 		 = 0
+Global $dif_timer_stat_game  = 0
 Global $dif_timer_stat_pause = 0
-;debug
-Global $debugBot = 0
-;pacht 8.2e
-Global $AverageDps
-Global $NbMobsKilled
-$AverageDps=0 ; DPS constates
-$NbMobsKilled=1 ; Nombre de Mobs croisés
+Global $AverageDps 			 = 0 
+Global $NbMobsKilled 		 = 1 
 
+Global $FailOpen_BookOfCain = 0
 Global $StashAndRepair = False
 Global $PortBack 	   = False
-
+;debug
+Global $debugBot = 0
 Global $Hero_Axe_Z = 10
 Global $BanTableActor = ""
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
