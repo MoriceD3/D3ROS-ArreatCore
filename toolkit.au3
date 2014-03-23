@@ -2173,14 +2173,14 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	Local $TimeOut = TimerInit()
 	$grabtimeout = 0
 	$killtimeout = 0
-	
+
 	If Not $StashAndRepair Then
 	   If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
 			$GameFailed = 1
 			Return
 	   EndIf
 	EndIf
-	
+
 	Local $toggletry = 0
 	Global $lastwp_x = $_x
 	Global $lastwp_y = $_y
@@ -2551,7 +2551,7 @@ Func IterateFilterAttackV4($IgnoreList)
 
 
 				If Is_Interact($item, $IgnoreList) Then
-				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) Then
+				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Health($item) or Is_Power($item) Then
 					ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
 
 					For $x = 0 To $TableSizeGuidStruct - 1
@@ -2973,7 +2973,7 @@ Func Is_Interact(ByRef $item, $IgnoreList)
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre(ByRef $item)
-   if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|Chest_Rare", $item[1]) AND $item[9] < 50 Then
+   if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands", $item[1]) AND $item[9] < 50 Then
 		return True
 	Else
 		return False
@@ -5013,7 +5013,7 @@ If TimerDiff($begin) > 80000 Then
 		WEnd
 
 			$CoffreTaken += 1;on compte les coffres qu'on ouvre
-	; TODO : Do that correctly ! 
+	; TODO : Do that correctly !
 	sleep(800)
 EndFunc   ;==>shrine
 
@@ -6024,7 +6024,7 @@ Func StashAndRepair()
  		$GameFailed = 1
  		Return False
  	EndIf
-	
+
 	If $ToStash <> -1 Then
 		Send($KeyCloseWindows)
 		Sleep(500)
@@ -6230,7 +6230,7 @@ Func StashAndRepair()
     Sleep(Random(100, 200))
     Send($KeyCloseWindows)
     Sleep(Random(100, 200))
-	
+
 	$StashAndRepair = False
 
 EndFunc   ;==>StashAndRepair
@@ -7624,7 +7624,7 @@ Func BuyPotion()
 	Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
 
 	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
-	   If $potinstock <= ($PotionStock + 10) Then 
+	   If $potinstock <= ($PotionStock + 10) Then
 
 		  MoveTo($Potion_Vendor) ; on se positionne
 
