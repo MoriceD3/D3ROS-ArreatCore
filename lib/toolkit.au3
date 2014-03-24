@@ -2545,7 +2545,8 @@ Func IterateFilterAttackV4($IgnoreList)
 
 
 				If Is_Interact($item, $IgnoreList) Then
-				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Health($item) or Is_Power($item) Then
+				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item)  or Is_Coffre($item) or Is_Health($item) or Is_Power($item) Then
+					;or Is_Decor_Breakable($item) TODO : Not Used pour le moment !
 					ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
 
 					For $x = 0 To $TableSizeGuidStruct - 1
@@ -2918,76 +2919,107 @@ Func UpdateObjectsPos($offset)
 EndFunc   ;==>UpdateObjectsPos
 
 Func Is_Shrine(ByRef $item)
-	If (StringInStr($item[1], "shrine") or StringInStr($item[1], "PoolOfReflection")) and $item[9] < 35 Then
-		Return True
-	Else
-		Return False
-	EndIf
+	Select 
+		Case $item[9] > $range_shrine
+			Return False
+		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection"))
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>Is_Shrine
 
 Func Is_Mob(ByRef $item)
-	If checkfromlist($BanmonsterList, $item[1]) = 0 And checkFromList($monsterList, $item[1]) And $item[6] <> -1 And $item[9] < $a_range Or checkFromList($SpecialmonsterList, $item[1]) And $item[9] < $a_range Then
-		Return True
-	Else
-		Return False
-	EndIf
+	Select 
+		Case $item[9] > $a_range
+			Return False
+		Case IsItemInTable($Table_BanMonster, $item[1])
+			Return False
+		Case (IsItemInTable($Table_Monster, $item[1]) And $item[6] <> -1)
+			Return True
+		Case IsItemInTable($Table_SpecialMonster, $item[1])
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>Is_Mob
 
+#cs
 Func Is_Decor_Breakable(ByRef $item)
+	; TODO : Correct this as lists are not used !
 	If checkfromlist($BandecorList, $item[1]) = 0 And checkFromList($decorList, $item[1]) And $item[6] <> -1 And $item[9] < 18  Then
 		Return True
 	Else
 		Return False
 	EndIf
 EndFunc   ;==>Is_Mob
+#ce 
 
 Func Is_Loot(ByRef $item)
-
-	If ($item[5] = 2 And $item[6] = -1) Or (StringInStr($item[1], "orb") And StringInStr($item[1], "unique")) Or (StringInStr($item[1], "Spear") And StringInStr($item[1], "unique")) Then
-		;_log("Is_Loot de l'item -> " & $item[0] & "-" & $item[1] & "-" & $item[2] & " - " & $item[3] & " - " & $item[4] & " - " & $item[5] & " - " & $item[6] & " - " & $item[8] & " - " & $item[9])
-		Return True
-	Else
-		Return False
-	EndIf
+	Select 
+		Case $item[9] > $g_range
+			Return False
+		Case ($item[5] = 2 And $item[6] = -1)
+			Return True
+		Case (StringInStr($item[1], "unique") And (StringInStr($item[1], "orb") Or StringInStr($item[1], "Spear")))
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>Is_Loot
 
-
-
 Func Is_Interact(ByRef $item, $IgnoreList)
-	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And Not IsBannedActor($item[1]) And StringInStr($IgnoreList, $item[8]) == 0 And Abs($Current_Hero_Z - $item[12]) <= $Hero_Axe_Z Then
-	;	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And StringInStr($IgnoreList, $item[8]) == 0 And StringInStr($handle_banlistdef, $item[2]&"-"&$item[3]&"-"&$item[4]) == 0 And StringInStr($IgnoreItemList, $item[1]) = 0 And checkfromlist($shrinebanlist, $item[8]) = 0 And Abs($Current_Hero_Z - $item[4]) <= $Hero_Axe_Z Then
-		If Not Checkstartlist_regex($Ban_startstrItemList, $item[1]) And Not Checkendlist_regex("_projectile", $item[1]) Then
-			Return True
-		Else
+	Select 
+		Case (($item[0] = 0xFFFFFFFF) Or ($item[0] = "")) ; Mauvais Item
 			Return False
-		EndIf
-	Else
-		Return False
-	EndIf
+		Case ($item[9] > $g_range And $item[9] > $a_range) ; Trop loin
+			Return False
+		Case Abs($Current_Hero_Z - $item[12]) > $Hero_Axe_Z ; Mauvaise axe Z
+			Return False
+		Case (StringInStr($IgnoreList, $item[8]) <> 0) ; Objet ignoré
+			Return False
+		Case IsBannedActor($item[1]) ; Objet banni
+			Return False
+		Case IsItemStartInTable($Table_BanItemStartName, $item[1]) ; Banned known items
+			Return False
+		Case (StringRegExp($item[1], "(?i)_projectile$") = 1) ; Projectile
+			Return False
+		Case Else
+			Return True
+	EndSelect
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre(ByRef $item)
-   if checkfromlist($List_Coffre, $item[1]) AND $item[9] < 50 Then
-		return True
-	Else
-		return False
-	EndIF
+	Select 
+		Case $item[9] > $range_chest
+			Return False
+		Case IsItemInTable($Table_Coffre, $item[1])
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc
 
 Func Is_Health(ByRef $item)
- 	If (StringInStr($item[1], "HealthWell") or StringInStr($item[1],"HealthGlobe")) and $item[9] < 35 Then
- 		Return True
- 	Else
- 		Return False
- 	EndIf
+	Select 
+		Case $item[9] > $range_health
+			Return False
+		Case (StringInStr($item[1], "HealthWell") Or StringInStr($item[1], "HealthGlobe"))
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>Is_Health
 
 Func Is_Power(ByRef $item)
-	If StringInStr($item[1], "PowerGlobe") and $item[9] < 35 Then
-		Return True
-	Else
-		Return False
-	EndIf
+	Select 
+		Case $item[9] > $range_power
+			Return False
+		Case StringInStr($item[1], "PowerGlobe")
+			Return True
+		Case Else
+			Return False
+	EndSelect
 EndFunc   ;==>Is_Power
 
 Func handle_Power(ByRef $item)
@@ -2996,7 +3028,7 @@ Func handle_Power(ByRef $item)
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 		If Power($item[1], $item[8], $item[0]) = False Then
 			_log("Ban power -> " & $item[1])
-				BanActor($item[1])
+			BanActor($item[1])
 		EndIf
 	EndIf
 EndFunc   ;==>handle_Power
@@ -3128,7 +3160,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 											$test_iterateallobjectslist = $buff_array
 									EndIf
 							Else
-									If checkFromList($monsterList, $item[1]) = False Then
+									If checkFromList($List_Monster, $item[1]) = False Then
 											_log("Ban Item -> " & $item[1] & " Reason checkFromList To False (With affix)")
 											BanActor($item[1])
 											;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
@@ -3170,7 +3202,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
                                 $test_iterateallobjectslist = $buff_array
                         EndIf
                 Else
-                        If checkFromList($monsterList, $item[1]) = False Then
+                        If checkFromList($List_Monster, $item[1]) = False Then
 								_log("Ban Item -> " & $item[1] & " Reason checkFromList To False")
 								BanActor($item[1])
 
@@ -3254,8 +3286,8 @@ Func Attack()
 					 handle_Shrine($item)
 				  Case Is_Coffre($item)
 					 handle_Coffre($item)
-				  Case Is_Decor_Breakable($item)
-					 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				  ;Case Is_Decor_Breakable($item) TODO : Not Used for the moment the lists are empty ! 
+				;	 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
 				  Case Is_Health($item)
 					 handle_Health($item)
  				  Case Is_Power($item)
@@ -3581,9 +3613,6 @@ Func checkFromList($list, $compare, $delimiter = '|')
 	Return 0
 EndFunc   ;==>checkFromList
 
-Global $Ban_startstrItemList = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail"
-Global $Ban_endstrItemList = "_projectile"
-Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 
 Func Checkstartlist_regex($compare, $_NAME)
 	Dim $tab_temp = StringSplit($compare, "|", 2)
@@ -7689,6 +7718,28 @@ Func IsBannedActor($actor)
 	For $i = 1 To $TableBannedActors[0]
 		If $TableBannedActors[$i] = $actor Then
 			return True
+		EndIf
+	Next
+	Return False
+EndFunc
+
+Func LoadTableFromString(ByRef $Table, ByRef $string) 
+	$Table = StringSplit($string, "|")
+EndFunc
+
+Func IsItemInTable(ByRef $table, ByRef $itemName)
+	For $i = 1 To $table[0]
+		If StringInStr($itemName, $table[$i]) Then
+			return True
+		EndIf
+	Next
+	Return False
+EndFunc
+
+Func IsItemStartInTable(ByRef $table, ByRef $itemName)
+	For $i = 1 To $table[0]
+		If StringRegExp($itemName, "(?i)^" & $table[$i]) = 1 Then
+			Return True
 		EndIf
 	Next
 	Return False

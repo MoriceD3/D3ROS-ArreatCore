@@ -242,8 +242,9 @@ EndFunc ;==>valeur attackRange
 
 Func SpecialML($String)
 	If Not $String = "" Then
-		$SpecialmonsterList = $String
-		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $SpecialmonsterList)
+		$List_SpecialMonster = $String
+		LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster) ; Chargement de la nouvelle table
+		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $List_SpecialMonster)
 	EndIf
 EndFunc   ;==>SpecialMonsterList
 
@@ -260,15 +261,17 @@ EndFunc   ;==>Trim
 
 Func MonsterList($String)
 	If Not $String = "" Then
-		$monsterList = $String
-		_log("Ajout d'une nouvelle MonsterList : " & $monsterList)
+		$List_Monster = $String
+		LoadTableFromString($Table_Monster, $List_Monster) ; Chargement de la nouvelle table
+		_log("Ajout d'une nouvelle MonsterList : " & $List_Monster)
 	EndIf
 EndFunc   ;==>MonsterList
 
 Func BanList($String)
 	If Not $String = "" Then
-		$BanmonsterList = $BanmonsterList & "|" & $String
-		_log("Ajout d'une nouvelle BanList : " & $BanmonsterList)
+		$List_BanMonster = $List_BanMonster & "|" & $String
+		LoadTableFromString($Table_BanMonster, $List_BanMonster) ; Chargement de la nouvelle table
+		_log("Ajout d'une nouvelle BanList : " & $List_BanMonster)
 	EndIf
 EndFunc   ;==>BanList
 

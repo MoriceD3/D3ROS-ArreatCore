@@ -47,9 +47,9 @@ Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
 Global $g_time = 7500
-Global $SpecialmonsterList = "Goblin|brickhouse_|woodwraith_"
-Global $monsterList = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
-Global $BanmonsterList = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
+Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
+Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
+Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
 Global $grabListFile = ""
 Global $Potions = "healthPotion_Console"
 Global $repairafterxxgames = Round(Random(4, 8))
@@ -249,8 +249,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	EndSwitch
 	;; Fin d'ajout config run
 
-	$monsterList = IniRead($profilFile, "Run info", "monsterList", $monsterList)
-	$SpecialmonsterList = IniRead($profilFile, "Run info", "SpecialmonsterList", $SpecialmonsterList)
+	$List_Monster = IniRead($profilFile, "Run info", "monsterList", $List_Monster)
+	$List_SpecialMonster = IniRead($profilFile, "Run info", "SpecialmonsterList", $List_SpecialMonster)
 
 	;Selection de la difficulte et du pm des monstres
 	$difficulte = IniRead($profilFile, "Run info", "difficulte", $difficulte)
@@ -312,6 +312,13 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Heros = IniRead($profilFile, "Run info", "Heros", $Heros)
 
 	InitSkillHeros("settings/settingsHero" & $Heros & ".ini")
+
+	;Chargement des tables
+	LoadTableFromString($Table_Coffre, $List_Coffre)
+	LoadTableFromString($Table_BanMonster, $List_BanMonster)
+	LoadTableFromString($Table_Monster, $List_Monster)
+	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
+	LoadTableFromString($Table_BanItemStartName, $List_BanItemStartName)
 
 EndFunc   ;==>LoadConfigs
 

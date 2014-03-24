@@ -3,7 +3,7 @@
 ;  Définitions des variables utiles au BOT
 ;
 
-Global $d3, $a_range, $ResActivated, $nb_die_t, $rdn_die_t, $BanmonsterList, $File_Sequence
+Global $d3, $a_range, $ResActivated, $nb_die_t, $rdn_die_t, $File_Sequence
 
 Global $_Myoffset   = 0
 Global $_MyGuid     = 0
@@ -34,6 +34,20 @@ Global Const $WRITE_ME_SALE				= 8
 Global Const $WRITE_ME_DEATH			= 9
 Global Const $WRITE_ME_TAKE_WP			= 10
 Global Const $WRITE_ME_TAKE_BREAK_MENU	= 11
+
+; Item Type
+Global Const $ITEM_TYPE_MOB		= 1
+Global Const $ITEM_TYPE_SHRINE  = 2
+Global Const $ITEM_TYPE_CHEST   = 3
+Global Const $ITEM_TYPE_HEALTH  = 4
+Global Const $ITEM_TYPE_POWER   = 5
+Global Const $ITEM_TYPE_LOOT    = 6
+Global Const $ITEM_TYPE_DECOR   = 7
+
+Global $range_shrine = 35
+Global $range_health = 35
+Global $range_power  = 35
+Global $range_chest  = 50
 
 ; MoveTo
 Global Const $Smith 		= 1
@@ -95,12 +109,16 @@ Global $elite = 0
 Global $handle_banlist1 = ""
 Global $handle_banlist2 = ""
 Global $handle_banlistdef = ""
-Global $Ban_startstrItemList = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail"
 Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 
 Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
-
+Global $Table_Coffre = [0]
+Global $Table_BanMonster  = [0]
+Global $Table_Monster  = [0]
+Global $Table_SpecialMonster  = [0]
+Global $List_BanItemStartName = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail"
+Global $Table_BanItemStartName = [0]
 
 Global $Byte_Full_Inventory[2]
 Global $Byte_Full_Stash[2]
