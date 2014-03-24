@@ -1,3 +1,7 @@
+#include-once
+
+#include "constants.au3"
+#include "settings.au3"
 ;;--------------------------------------------------------------------------------
 ; Function:                     UsePath(ByRef $path)
 ; Description:

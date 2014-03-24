@@ -1,3 +1,4 @@
+#include-once
 #region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
@@ -1531,4 +1532,4 @@ Global $TableSizeGuidStruct = 13
 ; mobType -> 9 (0-normal, 1-elite, 2-yellow, 3-purple, 4-key_warden)
 ; RadiusDefault -> 11
 ; IdAttrib -> 13
-$ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];ptr;ptr;int;byte[68];float;byte[28];ptr;byte[468]"
+Global $ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];ptr;ptr;int;byte[68];float;byte[28];ptr;byte[468]"

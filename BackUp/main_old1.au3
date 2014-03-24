@@ -28,7 +28,7 @@ Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
 ;;--------------------------------------------------------------------------------
 
 
-Global $GameOverTime,$GameFailed,$ClickToMoveToggle,$d3,$Step,$a_range,$ResActivated, _
+Global $GameFailed,$ClickToMoveToggle,$d3,$Step,$a_range,$ResActivated, _
 		$nb_die_t,$rdn_die_t,$ResLife,$Res_compt,$UsePath,$BanmonsterList,$File_Sequence,$TakeShrines
 
 Global $Byte_NoItem_Identify,$Xp_Moy_Hrs, $ofs_objectmanager, $_MyGuid, $ofs_LocalActor_StrucSize, $_ActorAtrib_Count, _

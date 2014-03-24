@@ -1,4 +1,6 @@
+#include-once
 #AutoIt3Wrapper_UseX64=n
+
 #cs ----------------------------------------------------------------------------
 
 	AutoIt Version: 3.3.8.1
@@ -66,7 +68,6 @@ Global $LifeForPotion = 50
 Global $LifeForHealth = 50
 Global $takepot = True
 Global $PotionStock = 100
-Global $TakeShrines = "false"
 Global $KeyCloseWindows = "{SPACE}"
 Global $KeyInventory = "i"
 Global $KeyPotions = "q"
@@ -88,12 +89,10 @@ Global $MaximumFury = 100
 Global $MaximumArcane = 100
 Global $MaximumMana = 100
 
-;Global $Act = "3"
 Global $Devmode = True
-
 Global $UsePath = False
 Global $ResActivated = False
-Global $ResLife = "0"
+Global $ResLife = 0
 Global $Res_compt = 0
 Global $nb_die_t = 0
 Global $rdn_die_t = 0
@@ -110,10 +109,7 @@ Global $Key2 = "é"
 Global $Key3 = '"'
 Global $Key4 = "'"
 Global $MouseMoveClick = "middle"
-
 Global $InventoryCheck = False
-
-
 
 global $tab_aff[60][2]=[ _
                                                 [-5,-5],[-5,5],[5,-5],[5,5], _
@@ -167,9 +163,6 @@ dim $ignore_affix[1][2]
 Global $debugBot = False
 
 Global $Gest_affixe_ByClass = False
-Global $key_cana=""
-Global $cana_statut=""
-
 
 Func InitSettings($configFile = "settings/settings.ini", $grabListPath = "grablist/")
 	loadConfigs($configFile)
@@ -270,16 +263,12 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	Switch $difficulte
 		Case 1
 			$grabListFile = IniRead($profilFile, "Run info", "grablistNormal", $grabListFile)
-
 		Case 2
 			$grabListFile = IniRead($profilFile, "Run info", "grablistDifficile", $grabListFile)
-
 		Case 3
 			$grabListFile = IniRead($profilFile, "Run info", "grablistExpert", $grabListFile)
-
 		Case 4
 			$grabListFile = IniRead($profilFile, "Run info", "grablistCalvaire", $grabListFile)
-
 		Case 5
 			Switch $TypeDeGrabList
 				Case 1

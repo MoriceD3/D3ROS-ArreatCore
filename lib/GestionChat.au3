@@ -1,4 +1,5 @@
 #include-once
+#include "Variables.au3"
 #cs ----------------------------------------------------------------------------
 	Extension permettant de gérer l'intervention du bot via le tchat
 #ce ----------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Func WriteMe($situation)
 	Local $BreakMenu = 10000
 
 	Switch $situation
-		Case 1;dans le menu pour recommencer un run
+		Case $WRITE_ME_RESTART_GAME	;dans le menu pour recommencer un run
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("J'attends un peu et je recommence")
@@ -37,7 +38,7 @@ Func WriteMe($situation)
 			EndSwitch
 			Sleep($StartNewGame)
 
-		Case 2;en jeu, début du run
+		Case $WRITE_ME_WELCOME ;en jeu, début du run
 			Switch Random(1, 5, 1)
 				Case 1
 					WriteInChat("En route pour l'aventure")
@@ -52,7 +53,7 @@ Func WriteMe($situation)
 			EndSwitch
 			Sleep($NewRun)
 
-		Case 3;on met un légendaire au coffre
+		Case $WRITE_ME_HAVE_LEGENDARY ;on met un légendaire au coffre
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("Et encore un souffre dans le coffre")
@@ -62,7 +63,7 @@ Func WriteMe($situation)
 					WriteInChat("Pas moyen d'avoir de bon Leg")
             EndSwitch
 
-		Case 4;le run est terminé le bot quitte
+		Case $WRITE_ME_QUIT ;le run est terminé le bot quitte
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("C'est fini on quitte")
@@ -73,7 +74,7 @@ Func WriteMe($situation)
 			EndSwitch
 			Sleep(1000)
 			
-		Case 5;inventaire plein ou besoin de réparation
+		Case $WRITE_ME_INVENTORY_FULL ;inventaire plein ou besoin de réparation
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("Je suis plein. Je TP et je reviens")
@@ -83,7 +84,7 @@ Func WriteMe($situation)
 					WriteInChat("Hey, je dois aller réparer")
 			EndSwitch
 
-	    Case 6;revient de vider l'inventaire ou de réparer
+	    Case $WRITE_ME_BACK_REPAIR ;revient de vider l'inventaire ou de réparer
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("J'arrive")
@@ -93,7 +94,7 @@ Func WriteMe($situation)
 					WriteInChat("Ça commence à coûter cher en réparation")
 			EndSwitch
 
-		Case 7;on tp en ville pour changer zone
+		Case $WRITE_ME_TP ;on tp en ville pour changer zone
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("Je TP en ville")
@@ -104,7 +105,7 @@ Func WriteMe($situation)
 			EndSwitch
 			Sleep($TP)
 
-	    Case 8;on vend, répare, recycle
+	    Case $WRITE_ME_SALE	;on vend, répare, recycle
 		    Switch Random(1, 3, 1)
 	            Case 1
 			        WriteInChat("je vends")
@@ -114,7 +115,7 @@ Func WriteMe($situation)
                     WriteInChat("Bon j'identifie tout ça pour voir")
             EndSwitch
 
-		Case 9;on est mort
+		Case $WRITE_ME_DEATH ;on est mort
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("Je me suis fait avoir comme un bleu")
@@ -124,7 +125,7 @@ Func WriteMe($situation)
 					WriteInChat("ça pique fort")
  			EndSwitch
 
-		Case 10;change de zone par WP
+		Case $WRITE_ME_TAKE_WP ;change de zone par WP
 			Switch Random(1, 6, 1)
 				Case 1
 					WriteInChat("TP sur moi je change de zone")
@@ -141,7 +142,7 @@ Func WriteMe($situation)
 			EndSwitch
 			Sleep($TaweWp)
 
-		Case 11;dans le menu et on fait une pause
+		Case $WRITE_ME_TAKE_BREAK_MENU ;dans le menu et on fait une pause
 			Switch Random(1, 3, 1)
 				Case 1
 					WriteInChat("Je vais attendre")

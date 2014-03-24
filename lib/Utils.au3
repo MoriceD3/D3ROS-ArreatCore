@@ -1,11 +1,6 @@
 #include-once
 
 #RequireAdmin
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=lib\ico\icon.ico
-#AutoIt3Wrapper_Compression=0
-#AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 Global $FILETIME = "dword;dword"    ;Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTC).
 Global $SYSTEMTIME = "ushort;ushort;ushort;ushort;ushort;ushort;ushort;ushort"

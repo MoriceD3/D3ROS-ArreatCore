@@ -19,7 +19,7 @@
 ;;      Make sure you are running as admin
 ;;--------------------------------------------------------------------------------
 
-
+#include "Variables.au3"
 
 $_debug = 1
 $Admin = IsAdmin()
@@ -40,14 +40,16 @@ EndFunc   ;==>_HighPrecisionSleep
 ;;--------------------------------------------------------------------------------
 ;;      Includes
 ;;--------------------------------------------------------------------------------
-#include "lib\NomadMemory.au3" ;THIS IS EXTERNAL, GET IT AT THE AUTOIT WEBSITE
+
 #include <math.au3>
 #include <String.au3>
 #include <Array.au3>
-#include "lib\constants.au3"
-#include "lib\Utils.au3"
-#include "lib\FTP.au3"
-#include "lib\ExpTableConst.au3"
+#include "constants.au3"
+#include "Utils.au3"
+#include "FTP.au3"
+#include "ExpTableConst.au3"
+#include "NomadMemory.au3"
+ ;THIS IS EXTERNAL, GET IT AT THE AUTOIT WEBSITE
 
 ;;--------------------------------------------------------------------------------
 ;;      Initialize MouseCoords
@@ -113,14 +115,14 @@ Func FindActor($name, $maxRange = 400)
 		offsetlist()
 	EndIF
 
-mesurestart()
+	;mesurestart()
 	Local $index, $offset, $count, $item[10], $find = 0
 	startIterateObjectsList($index, $offset, $count)
 	_log("FinActor -> number -> " & $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 		If StringInStr($item[1], $name) And $item[9] < $maxRange Then
 			$find = 1
-			mesureEnd("FindActor trouver")
+			;mesureEnd("FindActor trouver")
 			Return 1
 		EndIf
 	WEnd
@@ -1095,41 +1097,40 @@ Func Verif_Attrib_GlobalStuff()
 EndFunc
 
 Func antiidle()
-global $shrinebanlist = 0
-$warnloc = GetCurrentPos()
-$warnarea = GetLevelAreaId()
-_log("Lost detected at : " & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2], True);
-_log("Lost area : " & $warnarea, True);
+	$warnloc = GetCurrentPos()
+	$warnarea = GetLevelAreaId()
+	_log("Lost detected at : " & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2], True);
+	_log("Lost area : " & $warnarea, True);
 
 
-If _checkInventoryopen() = False Then
-        Send($KeyInventory)
-        Sleep(150)
-Endif
+	If _checkInventoryopen() = False Then
+	        Send($KeyInventory)
+	        Sleep(150)
+	Endif
 
-Send("{PRINTSCREEN}")
-sleep(150)
-Send($KeyCloseWindows)
+	Send("{PRINTSCREEN}")
+	sleep(150)
+	Send($KeyCloseWindows)
 
-ToolTip("Detection de stuff modifié !" & @CRLF & "Zone : " & $warnarea & @CRLF &  "Position : "  & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2] & @CRLF & "Un screenshot a été pris, il se situe dans document/diablo 3" , 15, 15)
+	ToolTip("Detection de stuff modifié !" & @CRLF & "Zone : " & $warnarea & @CRLF &  "Position : "  & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2] & @CRLF & "Un screenshot a été pris, il se situe dans document/diablo 3" , 15, 15)
 
 
-While Not _intown()
-    _TownPortalnew()
-	sleep(100)
-WEnd
+	While Not _intown()
+	    _TownPortalnew()
+		sleep(100)
+	WEnd
 
-;idleing
-While 1
-MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
-Sleep(Random(40000, 180000))
-MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
-Sleep(Random(40000, 180000))
-MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
-Sleep(Random(40000, 180000))
-MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
-Sleep(Random(40000, 180000))
-Wend
+	;idleing
+	While 1
+	MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
+	Sleep(Random(40000, 180000))
+	MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
+	Sleep(Random(40000, 180000))
+	MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
+	Sleep(Random(40000, 180000))
+	MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
+	Sleep(Random(40000, 180000))
+	Wend
 
 Endfunc
 ;;--------------------------------------------------------------------------------
@@ -1569,12 +1570,6 @@ Func LocateMyToon()
 	$idarea = 0
 	$BanTableActor = ""
 
-	Global $_Myoffset = 0
-	Global $_MyGuid = 0
-	Global $_MyACDWorld = 0
-	Global $_MyCharType = 0
-
-
 	If _ingame() Then
 
 			While  $count_locatemytoon <= 1000
@@ -1611,7 +1606,7 @@ Func LocateMyToon()
 						If trim($_NAME) = trim($name_by_acd) Then
 					 $_MyCharType = $_NAME
 
-							If $hotkeycheck = 1 Then
+							If $hotkeycheck Then
 								If Verif_Attrib_GlobalStuff() Then
 									_log("Acd Ofs : " & $ACD)
 									return true
@@ -2588,8 +2583,8 @@ Func IterateFilterZoneV2($dist,$n=2)
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
 	Local $z = 0
-	$my_pos_zone=getcurrentpos()
 
+	$CurrentLoc = GetCurrentPos()
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
 
@@ -2615,7 +2610,7 @@ Func IterateFilterZoneV2($dist,$n=2)
 
 		$iterateObjectsStruct = ""
 		If Is_Interact($item, "") Then
-			If Is_Mob($item) and sqrt(($item[2]-$my_pos_zone[0])^2 + ($item[3]-$my_pos_zone[1])^2 ) < $dist and $item[4]<10 Then
+			If Is_Mob($item) and sqrt(($item[2]-$CurrentLoc[0])^2 + ($item[3]-$CurrentLoc[1])^2 ) < $dist and $item[4]<10 Then
 				$z += 1
 			EndIf
 
@@ -3994,7 +3989,7 @@ EndFunc   ;==>_logind3
 ;;--------------------------------------------------------------------------------
 Func _leavegame()
 	If _ingame() Then
-		If Not $PartieSolo Then WriteMe($WRITE_ME_QUITE) ; TChat
+		If Not $PartieSolo Then WriteMe($WRITE_ME_QUIT) ; TChat
 		_log("Leave Game")
 		Send($KeyCloseWindows) ; to make sure everything is closed
 		sleep(100)
@@ -4162,10 +4157,7 @@ Func Terminate()
 		MouseUp("left")
 		Send("{SHIFTUP}")
 		Exit 0
-
 	Else
-
-
 		WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 		If Not FileExists(@ScriptDir & ".\stats") Then
 			DirCreate(@ScriptDir & ".\stats")
@@ -4193,15 +4185,12 @@ EndFunc  ;==>StashAndRepairTerminate
 
 Func extendedstats()
 	If $Totalruns >= 15 Then
-
-
-
-$sessionstats = "data.addRow([new Date(" & @YEAR & "," & @MON & "," & @MDAY & "," & @HOUR & "," & @MIN & ")," & ($dif_timer_stat / ($Totalruns) / 1000) & "," & $GOLDMOYbyH / 1000 & "," & ($Xp_Moy_Hrs / 100000) & "," & (($Death*3 + $Res_compt) / $Totalruns)*100 & "," & $successratio * 1000 & "]);"
-$szFile = "statscontrol.html"
-$szText = FileRead($szFile)
-$szText = StringReplace($szText, "//GoGoAu3End", $sessionstats & @CRLF & "//GoGoAu3End")
-FileDelete($szFile)
-FileWrite($szFile,$szText)
+		$sessionstats = "data.addRow([new Date(" & @YEAR & "," & @MON & "," & @MDAY & "," & @HOUR & "," & @MIN & ")," & ($dif_timer_stat / ($Totalruns) / 1000) & "," & $GOLDMOYbyH / 1000 & "," & ($Xp_Moy_Hrs / 100000) & "," & (($Death*3 + $Res_compt) / $Totalruns)*100 & "," & $successratio * 1000 & "]);"
+		$szFile = "statscontrol.html"
+		$szText = FileRead($szFile)
+		$szText = StringReplace($szText, "//GoGoAu3End", $sessionstats & @CRLF & "//GoGoAu3End")
+		FileDelete($szFile)
+		FileWrite($szFile,$szText)
 	EndIf
 EndFunc   ;==>extendedstats
 
@@ -4892,6 +4881,9 @@ Func StatsDisplay()
 		EndSwitch
 
 		$MESSAGE = $DebugMessage
+		Local $posd3 = WinGetPos("Diablo III")
+		$DebugX = $posd3[0] + $posd3[2] + 10
+		$DebugY = $posd3[1]
         ToolTip($MESSAGE, $DebugX, $DebugY)
 
         $Totalruns = $Totalruns + 1 ;compte le nombre de run
@@ -6919,11 +6911,6 @@ EndFunc
 Func Detect_Str_full_inventory()
 
 	_log("Please Wait, initialising UI language detection")
-
-	Global $Byte_Full_Inventory[2]
-	Global $Byte_Full_Stash[2]
-	Global $Byte_Boss_TpDeny[2]
-	Global $Byte_NoItem_Identify[2]
 
 	$pattern_Full_Inventory = "\x50\x69\x63\x6B\x75\x70\x5F\x4E\x6F\x53\x75\x69\x74\x61\x62\x6C\x65\x53\x6C\x6F\x74" ;Pickup_NoSuitableSlot
 	$Mask_Full_Inventory = "xxxxxxxxxxxxxxxxxxxxx"
