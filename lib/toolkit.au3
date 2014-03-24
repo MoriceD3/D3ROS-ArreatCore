@@ -19,8 +19,6 @@
 ;;      Make sure you are running as admin
 ;;--------------------------------------------------------------------------------
 
-#include "Variables.au3"
-
 $_debug = 1
 $Admin = IsAdmin()
 If $Admin <> 1 Then
@@ -44,6 +42,7 @@ EndFunc   ;==>_HighPrecisionSleep
 #include <math.au3>
 #include <String.au3>
 #include <Array.au3>
+#include "Variables.au3"
 #include "constants.au3"
 #include "Utils.au3"
 #include "FTP.au3"
@@ -1568,7 +1567,7 @@ EndFunc   ;==>Stop
 Func LocateMyToon()
 	$count_locatemytoon = 0
 	$idarea = 0
-	$BanTableActor = ""
+	Global $TableBannedActors = [0]
 
 	If _ingame() Then
 
@@ -1998,7 +1997,7 @@ Func IterateObjectList($_displayInfo = 0)
 	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count)
 	;$init = TimerInit()
 	For $i = 0 To $_Count Step +1
-		$_GUID = _MemoryRead($_CurOffset + 0x4, $d3, 'ptr')
+		$_GUID = _MemoryRead($_CurOffset + 0x0, $d3, 'ptr')
 		If $_GUID = 0xffffffff Then ;no need to go through objects without a GUID!
 			$_PROXY_NAME = -1
 			$_REAL_NAME = -1
@@ -2009,7 +2008,7 @@ Func IterateObjectList($_displayInfo = 0)
 			$_DATA = -1
 			$_DATA2 = -1
 		Else
-			$_PROXY_NAME = _MemoryRead($_CurOffset + 0x8, $d3, 'char[64]')
+			$_PROXY_NAME = _MemoryRead($_CurOffset + 0x4, $d3, 'char[64]')
 			$TmpString = StringSplit($_PROXY_NAME, "-")
 			If IsDeclared("__" & $TmpString[1]) Then
 				$_REAL_NAME = Eval("__" & $TmpString[1])
@@ -2955,7 +2954,7 @@ EndFunc   ;==>Is_Loot
 
 
 Func Is_Interact(ByRef $item, $IgnoreList)
-	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And Not IsInBanActor($item[1]) And StringInStr($IgnoreList, $item[8]) == 0 And Abs($Current_Hero_Z - $item[12]) <= $Hero_Axe_Z Then
+	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And Not IsBannedActor($item[1]) And StringInStr($IgnoreList, $item[8]) == 0 And Abs($Current_Hero_Z - $item[12]) <= $Hero_Axe_Z Then
 	;	If $item[0] <> "" And $item[0] <> 0xFFFFFFFF And ($item[9] < $g_range Or $item[9] < $a_range) And StringInStr($IgnoreList, $item[8]) == 0 And StringInStr($handle_banlistdef, $item[2]&"-"&$item[3]&"-"&$item[4]) == 0 And StringInStr($IgnoreItemList, $item[1]) = 0 And checkfromlist($shrinebanlist, $item[8]) = 0 And Abs($Current_Hero_Z - $item[4]) <= $Hero_Axe_Z Then
 		If Not Checkstartlist_regex($Ban_startstrItemList, $item[1]) And Not Checkendlist_regex("_projectile", $item[1]) Then
 			Return True
@@ -2968,7 +2967,7 @@ Func Is_Interact(ByRef $item, $IgnoreList)
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre(ByRef $item)
-   if checkfromlist("Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands", $item[1]) AND $item[9] < 50 Then
+   if checkfromlist($List_Coffre, $item[1]) AND $item[9] < 50 Then
 		return True
 	Else
 		return False
@@ -7680,24 +7679,17 @@ Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque 
 
 EndFunc    ;==>PauseToSurviveHC
 
-Func BanActor($str)
-	if IsArray($BanTableActor) Then
-		Redim $BanTableActor[UBound($BanTableActor) + 1]
-		$BanTableActor[UBound($BanTableActor)-1] = $str
-	Else
-		Dim $BanTableActor[1]
-		$BanTableActor[0] = $str
-	EndIf
+Func BanActor($actor)
+	$TableBannedActors[0] += 1
+	ReDim $TableBannedActors[$TableBannedActors[0] + 1]
+	$TableBannedActors[$TableBannedActors[0]] = $actor
 EndFunc
 
-Func IsInBanActor($str)
-	if IsArray($BanTableActor) Then
-		for $i=0 to Ubound($BanTableActor) - 1
-			if $BanTableActor[$i] = $str Then
-				return true
-			EndIf
-		Next
-	Else
-		return false
-	EndIf
+Func IsBannedActor($actor)
+	For $i = 1 To $TableBannedActors[0]
+		If $TableBannedActors[$i] = $actor Then
+			return True
+		EndIf
+	Next
+	Return False
 EndFunc

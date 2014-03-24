@@ -51,7 +51,7 @@ Global $StashAndRepair = False
 Global $PortBack 	   = False
 
 Global $Hero_Axe_Z = 10
-Global $BanTableActor = ""
+Global $TableBannedActors = [0]
 Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
 Global $Count_ACD = 0
 Global $GetACD
@@ -98,6 +98,9 @@ Global $handle_banlistdef = ""
 Global $Ban_startstrItemList = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail"
 Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
+
+Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
+
 
 Global $Byte_Full_Inventory[2]
 Global $Byte_Full_Stash[2]
