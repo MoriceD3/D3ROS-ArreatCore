@@ -2611,7 +2611,7 @@ Func IterateFilterZoneV2($dist,$n=2)
 		$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
 		$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
 
-		$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+		$item[9] = GetDistanceWithoutReadPosition($my_pos_zone, $Item[10], $Item[11], $Item[12])
 
 		$iterateObjectsStruct = ""
 		If Is_Interact($item, "") Then
