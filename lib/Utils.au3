@@ -56,6 +56,14 @@ Func OpenProcess($pid = @AutoItPID)
    Return $Process[0]
 EndFunc
 
+Func _HighPrecisionSleep($iMicroSeconds)
+   Local $hStruct
+   $hDll = DllOpen("ntdll.dll")
+   $hStruct = DllStructCreate("int64 time;")
+   DllStructSetData($hStruct, "time", -1 * ($iMicroSeconds * 10))
+   DllCall($hDll, "dword", "ZwDelayExecution", "int", 0, "ptr", DllStructGetPtr($hStruct))
+EndFunc   ;==>_HighPrecisionSleep
+
 Func GetProcessTimes(ByRef $hProcess, ByRef $t1, ByRef $t2, ByRef $t3, ByRef $t4)
 ;BOOL WINAPI GetProcessTimes(
 ;  HANDLE hProcess,

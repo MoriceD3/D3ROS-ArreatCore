@@ -19,21 +19,11 @@
 ;;      Make sure you are running as admin
 ;;--------------------------------------------------------------------------------
 
-$_debug = 1
 $Admin = IsAdmin()
 If $Admin <> 1 Then
 	MsgBox(0x30, "ERROR", "This program require administrative rights you fool!")
 	Exit
 EndIf
-
-Global $hDll = DllOpen("ntdll.dll")
-
-Func _HighPrecisionSleep($iMicroSeconds)
-	Local $hStruct
-	$hStruct = DllStructCreate("int64 time;")
-	DllStructSetData($hStruct, "time", -1 * ($iMicroSeconds * 10))
-	DllCall($hDll, "dword", "ZwDelayExecution", "int", 0, "ptr", DllStructGetPtr($hStruct))
-EndFunc   ;==>_HighPrecisionSleep
 
 ;;--------------------------------------------------------------------------------
 ;;      Includes
@@ -56,7 +46,6 @@ EndFunc   ;==>_HighPrecisionSleep
 Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
 Opt("MouseClickDownDelay", Random(10, 20))
 Opt("SendKeyDownDelay", Random(10, 20))
-
 
 ;;--------------------------------------------------------------------------------
 ;;      Open the process
@@ -86,7 +75,6 @@ Func CheckWindowD3()
 		MsgBox(0, Default, "FenÍtre Diablo III absente.")
 		Terminate()
 	EndIf
-	Global $sized3 = WinGetClientSize("[CLASS:D3 Main Window Class]")
 EndFunc   ;==>CheckWindowD3
 
 Func CheckWindowD3Size()
@@ -115,18 +103,17 @@ Func FindActor($name, $maxRange = 400)
 	EndIF
 
 	;mesurestart()
-	Local $index, $offset, $count, $item[10], $find = 0
+	Local $index, $offset, $count, $item[10]
 	startIterateObjectsList($index, $offset, $count)
 	_log("FinActor -> number -> " & $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 		If StringInStr($item[1], $name) And $item[9] < $maxRange Then
-			$find = 1
 			;mesureEnd("FindActor trouver")
-			Return 1
+			Return True
 		EndIf
 	WEnd
 
-	Return 0
+	Return False
 EndFunc   ;==>FindActor
 
 
@@ -393,9 +380,7 @@ EndFunc
 
 
 Func _playerdead()
-
-	$playerdeadlookfor = "Root.NormalLayer.deathmenu_dialog"
-	$return = fastcheckuiitemvisible($playerdeadlookfor, 1, 793)
+	$return = fastcheckuiitemvisible("Root.NormalLayer.deathmenu_dialog", 1, 793)
 	If ($return And $DeathCountToggle) Then
 		$Death += 1
 		$Die2FastCount += 1
@@ -405,61 +390,48 @@ Func _playerdead()
 EndFunc   ;==>_playerdead OK
 
 Func _inmenu()
-	$lobbylookfor = "Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton"
-	Return fastcheckuiitemvisible($lobbylookfor, 1, 1929)
+	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1, 1929)
 EndFunc   ;==>_inmenu OK
 
 Func _checkdisconnect()
-    $disclookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
-    Return fastcheckuiitemvisible($disclookfor, 1, 2022)
+    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 2022)
 EndFunc   ;==>_checkdisconnect OK
 
 Func _checkRepair()
-	$replookfor = "Root.NormalLayer.DurabilityIndicator"
-	Return fastcheckuiitemvisible($replookfor, 1, 895)
+	Return fastcheckuiitemvisible("Root.NormalLayer.DurabilityIndicator", 1, 895)
 EndFunc   ;==>_checkRepair OK
 
 Func _onloginscreen()
-	$loginlookfor = "Root.NormalLayer.BattleNetLogin_main.LayoutRoot.LoginContainer.unnamed30"
-	Return fastcheckuiitemvisible($loginlookfor, 1, 51)
+	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetLogin_main.LayoutRoot.LoginContainer.unnamed30", 1, 51)
 EndFunc   ;==>_onloginscreen OK
 
 Func _escmenu()
-	$escmenuelookfor = "Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame"
-	Return fastcheckuiitemvisible($escmenuelookfor, 1, 1644)
+	Return fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644)
 EndFunc   ;==>_escmenu OK
 
 Func _ingame()
-	$gamelookfor = "Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve"
-	Return fastcheckuiitemvisible($gamelookfor, 1, 1403)
+	Return fastcheckuiitemvisible("Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve", 1, 1403)
 EndFunc   ;==>_ingame OK
 Func _checkSalvageopen()
-    $checkSalvageOpenlookfor = "Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button"
-	Return fastcheckuiitemvisible($checkSalvageOpenlookfor, 1, 629)
+	Return fastcheckuiitemvisible("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button", 1, 629)
 EndFunc   ;==>_checkSalvageopen OK
 Func _checkWPopen()
-    $checkWPopenlookfor = "Root.NormalLayer.WaypointMap_main.LayoutRoot"
-    Return fastcheckuiitemvisible($checkWPopenlookfor, 1, 2033)
+    Return fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot", 1, 2033)
 EndFunc   ;==>_checkWPopen OK
 Func _checkVendoropen()
-	$checkVendorOpenlookfor = "Root.NormalLayer.shop_dialog_mainPage.gold_label"
-	Return fastcheckuiitemvisible($checkVendorOpenlookfor, 1, 165)
+	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.gold_label", 1, 165)
 EndFunc   ;==>_checkVendoropen OK
 Func _checkStashopen()
-	$_checkStashopenlookfor = "Root.NormalLayer.stash_dialog_mainPage"
-	Return fastcheckuiitemvisible($_checkStashopenlookfor, 1, 327)
+	Return fastcheckuiitemvisible("Root.NormalLayer.stash_dialog_mainPage", 1, 327)
 EndFunc   ;==>_checkStashopen OK
 Func _checkBannerOpen()
-	$checkBannerOpen = "Root.NormalLayer.BattleNetProfileBannerCustomization_main.LayoutRoot.OverlayContainer.PageHeader"
-	Return fastcheckuiitemvisible($checkBannerOpen, 1, 1697)
+	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetProfileBannerCustomization_main.LayoutRoot.OverlayContainer.PageHeader", 1, 1697)
 EndFunc
 Func _checkParagonOpen()
-	$checkParagonOpen = "Root.NormalLayer.Paragon_main.LayoutRoot"
-	Return fastcheckuiitemvisible($checkParagonOpen, 1, 377)
+	Return fastcheckuiitemvisible("Root.NormalLayer.Paragon_main.LayoutRoot", 1, 377)
 EndFunc
 Func _checkInventoryopen()
-	$_checkInventoryopenlookfor = "Root.NormalLayer.inventory_dialog_mainPage"
-	Return fastcheckuiitemvisible($_checkInventoryopenlookfor, 1, 1813)
+	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 1813)
 EndFunc   ;==>_checkInventoryopen OK
 
 
@@ -475,274 +447,8 @@ Func IsInArea($area)
 EndFunc   ;==>IsInArea
 
 Func GetLevelAreaId()
-        Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
+	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
 EndFunc   ;==>GetLevelAreaId
-
-Func LevelAreaConstants()
-	Global $A1_C6_SpiderCave_01_Entrance = 0xE3A6
-	Global $A1_C6_SpiderCave_01_Main = 0x132EC
-	Global $A1_C6_SpiderCave_01_Queen = 0xF506
-	Global $A1_Dun_Crypt_Dev_Hell = 0x36581
-	Global $A1_Fields_Cave_SwordOfJustice_Level01 = 0x1D455
-	Global $A1_Fields_Den = 0x21045
-	Global $A1_Fields_Den_Level02 = 0x2F6b8
-	Global $A1_Fields_RandomDRLG_CaveA_Level01 = 0x141C4
-	Global $A1_Fields_RandomDRLG_CaveA_Level02 = 0x141C5
-	Global $A1_Fields_RandomDRLG_ScavengerDenA_Level01 = 0x13D0D
-	Global $A1_Fields_RandomDRLG_ScavengerDenA_Level02 = 0x13D17
-	Global $A1_Fields_Vendor_Tinker_Exterior = 0x2bC0C
-	Global $A1_Highlands_RandomDRLG_GoatmanCaveA_Level01 = 0x14286
-	Global $A1_Highlands_RandomDRLG_GoatmanCaveA_Level02 = 0x14287
-	Global $A1_Highlands_RandomDRLG_WestTower_Level01 = 0x14196
-	Global $A1_Highlands_RandomDRLG_WestTower_Level02 = 0x14197
-	Global $A1_Random_Level01 = 0x33A17
-	Global $A1_trDun_Blacksmith_Cellar = 0x144A6
-	Global $A1_trDun_ButchersLair_02 = 0x16301
-	Global $A1_trDun_Cain_Intro = 0xED2A
-	Global $A1_trDun_Cave_Highlands_Random01_VendorRescue = 0x21310
-	Global $A1_trdun_Cave_Nephalem_01 = 0xEBEC
-	Global $A1_trdun_Cave_Nephalem_02 = 0xEBED
-	Global $A1_trdun_Cave_Nephalem_03 = 0xEBEE
-	Global $A1_trDun_Cave_Old_Ruins_Random01 = 0x278AC
-	Global $A1_trDun_CrownRoom = 0x18FDA
-	Global $A1_trDun_Crypt_Event_Tower_Of_Power = 0x138F4
-	Global $A1_trDun_Crypt_Flooded_Memories_Level01 = 0x18F9c
-	Global $A1_trDun_Crypt_Flooded_Memories_Level02 = 0x287A6
-	Global $A1_trdun_Crypt_Special_00 = 0x25BDC
-	Global $A1_trdun_Crypt_Special_01 = 0xECB9
-	Global $A1_trDun_Event_JarOfSouls = 0x2371E
-	Global $A1_trDun_FalseSecretPassage_01 = 0x14540
-	Global $A1_trDun_FalseSecretPassage_02 = 0x14541
-	Global $A1_trDun_FalseSecretPassage_03 = 0x14542
-	Global $A1_trDun_Jail_Level01 = 0x171d0
-	Global $A1_trDun_Jail_Level01_Cells = 0x1783D
-	Global $A1_trDun_Leoric01 = 0x4D3E
-	Global $A1_trDun_Leoric02 = 0x4D3F
-	Global $A1_trDun_Leoric03 = 0x4D40
-	Global $A1_trDun_Level01 = 0x4D44
-	Global $A1_trDun_Level04 = 0x4D47
-	Global $A1_trDun_Level05_Templar = 0x15763
-	Global $A1_trDun_Level06 = 0x4D49
-	Global $A1_trDun_Level07B = 0x4D4B
-	Global $A1_trDun_Level07D = 0x4D4D
-	Global $A1_trDun_Tyrael_Level09 = 0x1CAA3
-	Global $A1_trDun_TyraelJail = 0x24447
-	Global $A1_trOut_AdriasCellar = 0xF5F8
-	Global $A1_trOUT_AdriasHut = 0x4DD9
-	Global $A1_trOut_BatesFarmCellar = 0x248A5
-	Global $A1_trOUT_Church = 0x4DDD
-	Global $A1_trOut_Fields_Vendor_Curios = 0x1A3B7
-	Global $A1_trOut_Fields_Vendor_Curios_Exterior = 0x2BE7B
-	Global $A1_trOUT_FishingVillage = 0x4DDF
-	Global $A1_trOUT_FishingVillageHeights = 0x1FB03
-	Global $A1_trOut_ForlornFarm = 0x20B72
-	Global $A1_trOUT_Graveyard = 0x4DE2
-	Global $A1_trOUT_Highlands = 0x4DE4
-	Global $A1_trOUT_Highlands_Bridge = 0x16DC0
-	Global $A1_trOut_Highlands_DunExterior_A = 0x15718
-	Global $A1_trOUT_Highlands_ServantHouse_Cellar_Vendor = 0x29CD1
-	Global $A1_trOUT_Highlands_Sub240_GoatmanGraveyard = 0x1F95F
-	Global $A1_trOUT_Highlands2 = 0x4DE5
-	Global $A1_trOUT_Highlands3 = 0x4AF
-	Global $A1_trOut_Leoric_Manor_Int = 0x189F6
-	Global $A1_trOUT_LeoricsManor = 0x4DE7
-	Global $A1_trOut_MysticWagon = 0x20F08
-	Global $A1_trOUT_NewTristram = 0x4DEB
-	Global $A1_trOUT_NewTristram_AttackArea = 0x316CE
-	Global $A1_trOUT_NewTristramOverlook = 0x26186
-	Global $A1_trOut_Old_Tristram = 0x163FD
-	Global $A1_trOut_Old_Tristram_Road = 0x164BC
-	Global $A1_trOut_Old_Tristram_Road_Cath = 0x18BE7
-	Global $A1_trOut_OldTristram_Cellar = 0x1A22B
-	Global $A1_trOut_OldTristram_Cellar_1 = 0x1A104
-	Global $A1_trOut_OldTristram_Cellar_2 = 0x1A105
-	Global $A1_trOut_OldTristram_Cellar_3 = 0x19322
-	Global $A1_trOut_oldTristram_TreeCave = 0x19C87
-	Global $A1_trOut_Scoundrel_Event_Old_Mill_2 = 0x35556
-	Global $A1_trOut_TownAttack_ChapelCellar = 0x1D43E
-	Global $A1_trOut_Tristram_CainsHouse = 0x1FC73
-	Global $A1_trOut_Tristram_Inn = 0x1AB91
-	Global $A1_trOut_Tristram_LeahsRoom = 0x15349
-	Global $A1_trOut_TristramFields_A = 0x4DF0
-	Global $A1_trOut_TristramFields_B = 0x4DF1
-	Global $A1_trOut_TristramFields_ExitA = 0xF085
-	Global $A1_trOut_TristramFields_Forsaken_Grounds = 0x2BD6F
-	Global $A1_trOut_TristramFields_Secluded_Grove = 0x2BD6E
-	Global $A1_trOut_TristramWilderness = 0x4DF2
-	Global $A1_trOut_TristramWilderness_SubScenes = 0x236AA
-	Global $A1_trOut_Vendor_Tinker_Room = 0x19821
-	Global $A1_trOut_Wilderness_BurialGrounds = 0x11C08
-	Global $A1_trOut_Wilderness_CorpseHouse = 0x30ADF
-	Global $A1_trOut_Wilderness_Sub80_FamilyTree = 0x236A1
-	Global $A2_Belial_Room_01 = 0xED55
-	Global $A2_Belial_Room_Intro = 0x13D1A
-	Global $A2_c1Dun_Swr_Caldeum_01 = 0x4D4F
-	Global $A2_c2dun_Zolt_TreasureHunter = 0x4D53
-	Global $A2_c3Dun_Aqd_Oasis_Level01 = 0xE069
-	Global $A2_cadun_Zolt_Timed01_Level01 = 0x4D52
-	Global $A2_cadun_Zolt_Timed01_Level02 = 0x29108
-	Global $A2_Caldeum = 0x19234
-	Global $A2_Caldeum_Uprising = 0x33613
-	Global $A2_caOut_Alcarnus_RandomCellar_1 = 0x245A7
-	Global $A2_caOut_Alcarnus_RandomCellar_2 = 0x245A8
-	Global $A2_caOut_Alcarnus_RandomCellar_3 = 0x245A9
-	Global $A2_caOUT_Boneyard_01 = 0xD24A
-	Global $A2_caOUT_Borderlands_Khamsin_Mine = 0xEE8A
-	Global $A2_caOUT_BorderlandsKhamsin = 0xF8B2
-	Global $A2_caOut_Cellar_Alcarnus_Main = 0x2FAC4
-	Global $A2_caOut_CT_RefugeeCamp = 0xD811
-	Global $A2_caOut_CT_RefugeeCamp_Gates = 0x318FD
-	Global $A2_caOut_CT_RefugeeCamp_Hub = 0x2917A
-	Global $A2_caOut_Hub_Inn = 0x2AA00
-	Global $A2_caOut_Interior_C_DogBite = 0x2D7BB
-	Global $A2_caOut_Interior_H_RockWorm = 0x232F5
-	Global $A2_caOut_Mine_Abandoned_Cellar = 0x4D81
-	Global $A2_caOut_Oasis = 0xE051
-	Global $A2_caOut_Oasis_Exit = 0x2ACE2
-	Global $A2_caOut_Oasis_Exit_A = 0x2AD07
-	Global $A2_caOut_Oasis_Rakanishu = 0x33BDD
-	Global $A2_caOut_Oasis_RandomCellar_1 = 0x27099
-	Global $A2_caOut_Oasis_RandomCellar_2 = 0x2709A
-	Global $A2_caOut_Oasis_RandomCellar_3 = 0x2709B
-	Global $A2_caOut_Oasis_RandomCellar_4 = 0x27bE7
-	Global $A2_caOut_Oasis1_Water = 0xE664
-	Global $A2_caOut_Oasis2 = 0xE058
-	Global $A2_caOut_OasisCellars = 0x1B100
-	Global $A2_caOUT_StingingWinds = 0x4D7F
-	Global $A2_caOUT_StingingWinds_Alcarnus_Tier1 = 0x4D71
-	Global $A2_caOUT_StingingWinds_Alcarnus_Tier2 = 0x4D72
-	Global $A2_caOUT_StingingWinds_Bridge = 0x29886
-	Global $A2_caOUT_StingingWinds_Canyon = 0x4D7C
-	Global $A2_caOUT_StingingWinds_FallenCamp01 = 0x288EF
-	Global $A2_caOUT_StingingWinds_PostBridge = 0x4D7E
-	Global $A2_caOUT_StingingWinds_PreAlcarnus = 0x4D7B
-	Global $A2_caOUT_StingingWinds_PreBridge = 0x4D7D
-	Global $A2_caOut_Stranded2 = 0x1DA4A
-	Global $A2_caOut_ZakarwaMerchantCellar = 0x1BEBB
-	Global $A2_Cave_Random01 = 0x26F64
-	Global $A2_Cave_Random01_Level02 = 0x35E85
-	Global $A2_CultistCellarEast = 0x19218
-	Global $A2_CultistCellarWest = 0x19214
-	Global $A2_dun_Aqd_Control_A = 0xF9F3
-	Global $A2_dun_Aqd_Control_B = 0xF9F4
-	Global $A2_dun_Aqd_Oasis_RandomFacePuzzle_Large = 0x26B82
-	Global $A2_dun_Aqd_Oasis_RandomFacePuzzle_Small = 0x26AB0
-	Global $A2_dun_Aqd_Special_01 = 0xF520
-	Global $A2_dun_Aqd_Special_A = 0xF53A
-	Global $A2_dun_Aqd_Special_B = 0xF53C
-	Global $A2_Dun_Aqd_Swr_to_Oasis_Level01 = 0x23D96
-	Global $A2_dun_Cave_BloodVial_01 = 0x31F55
-	Global $A2_dun_Cave_BloodVial_02 = 0x31F83
-	Global $A2_dun_Oasis_Cave_MapDungeon = 0x29616
-	Global $A2_dun_Oasis_Cave_MapDungeon_Level02 = 0x2F6bF
-	Global $A2_dun_PortalRoulette_A = 0x1B37F
-	Global $A2_Dun_Swr_Adria_Level01 = 0xE47E
-	Global $A2_Dun_Swr_Caldeum_Sewers_01 = 0x1B205
-	Global $A2_dun_Zolt_Blood02_Level01_Part1 = 0x1E12E
-	Global $A2_dun_Zolt_Blood02_Level01_Part2 = 0x25872
-	Global $A2_Dun_Zolt_BossFight_Level04 = 0xEB22
-	Global $A2_dun_Zolt_Head_Random01 = 0xF0C0
-	Global $A2_Dun_Zolt_Level01 = 0x4D55
-	Global $A2_Dun_Zolt_Level02 = 0x4D56
-	Global $A2_Dun_Zolt_Level03 = 0x4D57
-	Global $A2_Dun_Zolt_Lobby = 0x4D58
-	Global $A2_Dun_Zolt_LobbyCenter = 0x2AFBA
-	Global $A2_Dun_Zolt_Random_Level01 = 0x4D59
-	Global $A2_Dun_Zolt_Random_Level02 = 0x36571
-	Global $A2_dun_Zolt_Random_PortalRoulette_02 = 0x2FDCF
-	Global $A2_Dun_Zolt_ShadowRealm_Level01 = 0x13AD0
-	Global $A2_Event_DyingManMine = 0x2270B
-	Global $A2_Event_PriceOfMercy_Cellar = 0x2FD9E
-	Global $A2_Rockworm_Cellar_Cave = 0x2FE81
-	Global $A2_trDun_Boneyard_Spider_Cave_01 = 0x1B437
-	Global $A2_trDun_Boneyard_Spider_Cave_02 = 0x35758
-	Global $A2_trDun_Boneyard_Worm_Cave_01 = 0x1B433
-	Global $A2_trDun_Boneyard_Worm_Cave_02 = 0x35759
-	Global $A2_trDun_Cave_Oasis_Random01 = 0xF46F
-	Global $A2_trDun_Cave_Oasis_Random01_Level02 = 0x2F6C2
-	Global $A2_trDun_Cave_Oasis_Random02 = 0xF46E
-	Global $A2_trDun_Cave_Oasis_Random02_Level02 = 0x27551
-	Global $A2_dun_Aqd_Oasis_Level00 = 0x2F0B6
-	Global $A2_dun_Aqd_Oasis_Level01 = 0x2F0B1
-	Global $A3_AzmodanFight = 0x1B39C
-	Global $A3_Battlefield_A = 0x1B7A4
-	Global $A3_Battlefield_B = 0x1B7B5
-	Global $A3_Battlefield_C = 0x1B7C4
-	Global $A3_Bridge_01 = 0x10F80
-	Global $A3_Bridge_Choke_A = 0x25DA8
-	Global $A3_Dun_Battlefield_Gate = 0x25C14
-	Global $A3_dun_Bridge_Interior_Random01 = 0x224ad
-	Global $A3_dun_Bridge_Interior_Random02 = 0x32270
-	Global $A3_Dun_Crater_Level_01 = 0x15040
-	Global $A3_Dun_Crater_Level_02 = 0x1d209
-	Global $A3_Dun_Crater_Level_03 = 0x1d20a
-	Global $A3_dun_Crater_ST_Level01 = 0x13b97
-	Global $A3_dun_Crater_ST_Level01B = 0x1d365
-	Global $A3_dun_Crater_ST_Level02 = 0x13b98
-	Global $A3_dun_Crater_ST_Level02B = 0x2200a
-	Global $A3_dun_Crater_ST_Level04 = 0x14cd2
-	Global $A3_dun_Crater_ST_Level04B = 0x1d368
-	Global $A3_dun_IceCaves_Random_01 = 0x2e3a1
-	Global $A3_dun_IceCaves_Random_01_Level_02 = 0x36206
-	Global $A3_dun_IceCaves_Timed_01 = 0x2ea66
-	Global $A3_dun_IceCaves_Timed_01_Level_02 = 0x36207
-	Global $A3_Dun_Keep_Hub = 0x16b11
-	Global $A3_Dun_Keep_Hub_Inn = 0x2d38c
-	Global $A3_Dun_Keep_Level03 = 0x126ac
-	Global $A3_Dun_Keep_Level04 = 0x16baf
-	Global $A3_Dun_Keep_Level05 = 0x21500
-	Global $A3_Dun_Keep_Random_01 = 0x2aa4a
-	Global $A3_Dun_Keep_Random_01_Level_02 = 0x36238
-	Global $A3_Dun_Keep_Random_02 = 0x2c7f2
-	Global $A3_Dun_Keep_Random_02_Level_02 = 0x36239
-	Global $A3_Dun_Keep_Random_03 = 0x2c802
-	Global $A3_Dun_Keep_Random_03_Level_02 = 0x3623a
-	Global $A3_Dun_Keep_Random_04 = 0x2c8e6
-	Global $A3_Dun_Keep_Random_04_Level_02 = 0x36241
-	Global $A3_Dun_Keep_Random_Cellar_01 = 0x35ee9
-	Global $A3_Dun_Keep_Random_Cellar_02 = 0x35ee8
-	Global $A3_Dun_Keep_Random_Cellar_03 = 0x303f7
-	Global $A3_Dun_Keep_TheBreach_Level04 = 0x3558f
-	Global $A3_dun_rmpt_Level01 = 0x16b20
-	Global $A3_dun_rmpt_Level02 = 0x16bf5
-	Global $A3_Gluttony_Boss = 0x1b280
-	Global $A3_dun_Hub_Adria_Tower = 0x31222
-	Global $A3_dun_hub_AdriaTower_Intro_01 = 0x3253e
-	Global $A4_dun_Diablo_Arena = 0x1abfb
-	Global $A4_dun_Diablo_Arena_Phase3 = 0x348c3
-	Global $A4_dun_Garden_of_Hope_01 = 0x1abca
-	Global $A4_dun_Garden_of_Hope_02 = 0x1abcc
-	Global $A4_dun_Garden3_SpireEntrance = 0x1d44a
-	Global $A4_dun_Heaven_1000_Monsters_Fight = 0x1aa5d
-	Global $A4_dun_Heaven_1000_Monsters_Fight_Entrance = 0x2f169
-	Global $A4_dun_Hell_Portal_01 = 0x1abd6
-	Global $A4_dun_Hell_Portal_02 = 0x1abdb
-	Global $A4_Dun_Keep_Hub = 0x301ed
-	Global $A4_dun_LibraryOfFate = 0x23120
-	Global $A4_dun_Spire_00 = 0x307a4
-	Global $A4_dun_Spire_01 = 0x1abe2
-	Global $A4_dun_Spire_02 = 0x1abe4
-	Global $A4_dun_Spire_03 = 0x1abe6
-	Global $A4_dun_Spire_04 = 0x33728
-	Global $A4_dun_Spire_SigilRoom_A = 0x313c4
-	Global $A4_dun_Spire_SigilRoom_B = 0x2ae7a
-	Global $A4_dun_Spire_SigilRoom_C = 0x313c6
-	Global $A4_dun_Spire_SigilRoom_D = 0x313c7
-	Global $A4_dun_Diablo_ShadowRealm_01 = 0x25845
-	Global $A4_dun_spire_DiabloEntrance = 0x3227a
-	Global $A4_dun_spire_exterior = 0x34964
-	Global $Axe_Bad_Data = 0x4d60
-	Global $PvP_Maze_01 = 0x4da2
-	Global $PvP_Octogon_01 = 0x4da3
-	Global $PvP_Pillar_01 = 0x4da4
-	Global $PvP_Stairs_01 = 0x4da5
-	Global $PvP_Test_BlueTeam = 0x4da6
-	Global $PvP_Test_Neutral = 0x4da7
-	Global $PvP_Test_RedTeam = 0x4da8
-	Global $PvPArena = 0x4d9c
-EndFunc   ;==>LevelAreaConstants
-
-
 
 ;;--------------------------------------------------------------------------------
 ;;     Find which Act we are in
@@ -766,10 +472,8 @@ Func GetAct()
 				$Act = 3
 			ElseIf StringInStr($MyArea, "a4") Then
 				$Act = 4
-
 			EndIf
 			;  _log("We are in map : " & $area &" " & $asResult[0])
-
 
 			;set our vendor aaccording to the act we are in as we know it.
 			Switch $Act
@@ -797,36 +501,6 @@ Func GetAct()
 EndFunc   ;==>GetAct
 
 ;;--------------------------------------------------------------------------------
-;;     Adapt repair tab aaccording to MP act and diff
-;;--------------------------------------------------------------------------------
-#cs
-Func GetRepairTab()
-	GetMonsterPow2()
-	GetDifficulty()
-	GetAct()
-
-	If $MP > 0 And $GameDifficulty = 4 Then
-		Switch $Act
-			Case 1
-				Global $RepairTab = 2
-			Case 2 To 4
-				Global $RepairTab = 3
-		EndSwitch
-	Else
-		Switch $Act
-			Case 1
-				Global $RepairTab = 2
-			Case 2 To 4
-				Global $RepairTab = 3
-		EndSwitch
-
-	EndIf
-	_log("RepairTab : " & $RepairTab & " ---> MP : " & $MP & " GameDiff : " & $GameDifficulty)
-
-EndFunc   ;==>GetRepairTab
-#ce
-
-;;--------------------------------------------------------------------------------
 ;;     Find MP MF handicap
 ;;	   Get MF handicap and deduce game MP from it
 ;;
@@ -836,26 +510,6 @@ Func GetMonsterPow()
 	$MP = Round($MfCap, 0)
 	_log("Power monster : " & $MP)
 EndFunc   ;==>GetMonsterPow
-
-;;--------------------------------------------------------------------------------
-;;     Find MonsterPower
-;;	   Get it Via UI element
-;;
-;;--------------------------------------------------------------------------------
-#cs
-Func GetMonsterPow2()
-
-	$GetMonsterPow2 = fastCheckuiValue('Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve.clock', 1, 28)
-	$asMpResult = StringRegExp($GetMonsterPow2, '(\()([0-9]{1,2})(\))', 1)
-	If @error == 0 Then
-		$MP = Number($asMpResult[1])
-	Else
-		$MP = 0
-	EndIf
-	_log("Power monster : " & $MP)
-	;_log("Power monster : " & $GetMonsterPow2)
-EndFunc   ;==>GetMonsterPow2
-#ce
 
 ;;--------------------------------------------------------------------------------
 ;;     Find Difficulty from vendor
@@ -892,9 +546,9 @@ EndFunc   ;==>GetDifficulty
 ;
 ;;--------------------------------------------------------------------------------
 Func _intown()
-	If $_debug Then _log("-----Checking if In Town------")
+	_log("-----Checking if In Town------")
 	$town = findActor('Player_Shared_Stash', 448)
-	If $town = 1 Then
+	If $town Then
 		_log("We are in town ")
 		Return True
 	Else
@@ -1550,15 +1204,6 @@ Func _filter2attrib($CurrentIdAttrib, $filter2read)
 	EndIf
 EndFunc   ;==>_filter2attrib
 
-;;--------------------------------------------------------------------------------
-;;      Stop()
-;;--------------------------------------------------------------------------------
-Func Stop()
-	Exit
-EndFunc   ;==>Stop
-
-
-
 ;;================================================================================
 ; Function:                     LocateMyToon
 ; Note(s):                      This function is used by the OffsetList to
@@ -1576,7 +1221,7 @@ Func LocateMyToon()
 				$idarea = GetLevelAreaId()
 
 				if $idarea <> -1 Then
-					If $_debug Then _log("Looking for local player")
+					_log("Looking for local player")
 
 					 $_Myoffset = "0x" & Hex(GetPlayerOffset(), 8) ; pour convertir valeur
 					 $_MyGuid = _MemoryRead($_Myoffset + 0x88, $d3, 'ptr')
@@ -1681,27 +1326,6 @@ Func GetACDByGuid($Guid, $_displayInfo = 0)
 	_log("Get ACD By Guid was failed")
 EndFunc   ;==>GetACDByGuid
 
-;;================================================================================
-; Function:			IterateLocalActor
-; Note(s):			Iterates through all the local actors.
-;						Used by IterateActorAtribs
-;					This is bad use of variables, should be fixed!
-;==================================================================================
-Func IterateLocalActor()
-	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
-	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
-	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
-	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x148, $d3, "ptr") + 0x0, $d3, "ptr");$_LocalActor_3
-	Global $__ACTOR[$_Count + 1][4]
-	For $i = 0 To $_Count
-		$__ACTOR[$i][1] = _MemoryRead($CurrentOffset, $d3, 'ptr')
-		$__ACTOR[$i][2] = _MemoryRead($CurrentOffset + 0x4, $d3, 'char[64]')
-		$__ACTOR[$i][3] = _MemoryRead($CurrentOffset + $ofs_LocalActor_atribGUID, $d3, 'ptr')
-		;_log($__ACTOR[$i][1] & " : " & $__ACTOR[$i][2] & " : " & $__ACTOR[$i][3])
-		$CurrentOffset = $CurrentOffset + $ofs_LocalActor_StrucSize
-	Next
-EndFunc   ;==>IterateLocalActor
 Func startIterateLocalActor(ByRef $index, ByRef $offset, ByRef $count)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
 	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
@@ -1932,128 +1556,13 @@ Func offsetlist()
                 $ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
                 $ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
                 $ClickToMoveFix = $ClickToMoveMain + $FixSpeed
-                If $_debug Then _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
+                _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
                 Return True
         Else
                 Return False
         EndIf
 
 EndFunc   ;==>offsetlist
-
-;;--------------------------------------------------------------------------------
-;;      IterateAllObjectList()
-;; 		Description:		Iterate object even if they dont have guid, also provide true names
-;;--------------------------------------------------------------------------------
-#cs
-Func IterateAllObjectList($_displayInfo)
-	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
-	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
-	$_CurOffset = $_itrObjectManagerD
-	$_Count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
-	Dim $OBJ[$_Count + 1][10]
-	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count )
-	For $i = 0 To $_Count Step +1
-		$_GUID = _MemoryRead($_CurOffset + 0x4, $d3, 'ptr')
-		$_NAME = _MemoryRead($_CurOffset + 0x8, $d3, 'char[64]')
-		$_POS_X = _MemoryRead($_CurOffset + 0xB0, $d3, 'float')
-		$_POS_Y = _MemoryRead($_CurOffset + 0xB4, $d3, 'float')
-		$_POS_Z = _MemoryRead($_CurOffset + 0xB8, $d3, 'float')
-		$_DATA = _MemoryRead($_CurOffset + 0x200, $d3, 'int')
-		$_DATA2 = _MemoryRead($_CurOffset + 0x1D0, $d3, 'int')
-		$_DATA3 = _MemoryRead($_CurOffset + 0x1C4, $d3, 'int')
-		$CurrentLoc = GetCurrentPos()
-		$xd = $_POS_X - $CurrentLoc[0]
-		$yd = $_POS_Y - $CurrentLoc[1]
-		$zd = $_POS_Z - $CurrentLoc[2]
-		$Distance = Sqrt($xd * $xd + $yd * $yd + $zd * $zd)
-		$OBJ[$i][0] = $i
-		$OBJ[$i][1] = $_GUID
-		$OBJ[$i][2] = $_NAME
-		$OBJ[$i][3] = $_POS_X
-		$OBJ[$i][4] = $_POS_Y
-		$OBJ[$i][5] = $_POS_Z
-		$OBJ[$i][6] = $_DATA
-		$OBJ[$i][7] = $_DATA2
-		$OBJ[$i][8] = $Distance
-		$OBJ[$i][9] = $_CurOffset
-		If $_displayInfo = 1 Then _log($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & " Dist: " & $Distance & @TAB & $_NAME & " data3: " & $_DATA3 )
-		;if $_displayINFO = 1 then _log($i & @TAB&" : " & $_POS_X & @TAB& $_POS_Y & @TAB & $_POS_Z & @TAB& $_NAME)
-		$_CurOffset = $_CurOffset + $_ObjmanagerStrucSize
-	Next
-	Return $OBJ
-EndFunc   ;==>IterateAllObjectList
-#ce
-
-;;--------------------------------------------------------------------------------
-;;	IterateObjectList()
-;;--------------------------------------------------------------------------------
-Func IterateObjectList($_displayInfo = 0)
-	;	Local $mesureobj = TimerInit() ;;;;;;;;;;;;;;
-	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
-	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
-	$_CurOffset = $_itrObjectManagerD
-	$_Count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
-	Dim $OBJ[$_Count + 1][13]
-	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count)
-	;$init = TimerInit()
-	For $i = 0 To $_Count Step +1
-		$_GUID = _MemoryRead($_CurOffset + 0x0, $d3, 'ptr')
-		If $_GUID = 0xffffffff Then ;no need to go through objects without a GUID!
-			$_PROXY_NAME = -1
-			$_REAL_NAME = -1
-			$_ACTORLINK = -1
-			$_POS_X = -1
-			$_POS_Y = -1
-			$_POS_Z = -1
-			$_DATA = -1
-			$_DATA2 = -1
-		Else
-			$_PROXY_NAME = _MemoryRead($_CurOffset + 0x4, $d3, 'char[64]')
-			$TmpString = StringSplit($_PROXY_NAME, "-")
-			If IsDeclared("__" & $TmpString[1]) Then
-				$_REAL_NAME = Eval("__" & $TmpString[1])
-			Else
-				$_REAL_NAME = $_PROXY_NAME
-			EndIf
-			$_ACTORLINK = _MemoryRead($_CurOffset + 0x88, $d3, 'ptr')
-			$_POS_X = _MemoryRead($_CurOffset + 0xB0, $d3, 'float')
-			$_POS_Y = _MemoryRead($_CurOffset + 0xB4, $d3, 'float')
-			$_POS_Z = _MemoryRead($_CurOffset + 0xB8, $d3, 'float')
-			$_DATA = _MemoryRead($_CurOffset + 0x200, $d3, 'int')
-			$_DATA2 = _MemoryRead($_CurOffset + 0x1D0, $d3, 'int')
-			If $_displayInfo = 1 Then _log($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " " & $_ACTORLINK & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & @TAB & $_REAL_NAME)
-		EndIf
-
-		;Im too lazy to do this but the following code needs cleanup and restructure more than anything.
-		;You want to include all the data into this one structure rather than having it at multiple locations
-		;and the useless things should be removed.
-		$CurrentLoc = GetCurrentPos()
-		$xd = $_POS_X - $CurrentLoc[0]
-		$yd = $_POS_Y - $CurrentLoc[1]
-		$zd = $_POS_Z - $CurrentLoc[2]
-		$Distance = Sqrt($xd * $xd + $yd * $yd + $zd * $zd)
-		$OBJ[$i][0] = $_CurOffset
-		$OBJ[$i][1] = $_GUID
-		$OBJ[$i][2] = $_PROXY_NAME
-		$OBJ[$i][3] = $_POS_X
-		$OBJ[$i][4] = $_POS_Y
-		$OBJ[$i][5] = $_POS_Z
-		$OBJ[$i][6] = $_DATA
-		$OBJ[$i][7] = $_DATA2
-		$OBJ[$i][8] = $Distance
-		$OBJ[$i][9] = $_ACTORLINK
-		$OBJ[$i][10] = $_REAL_NAME
-		$OBJ[$i][11] = -1
-		$OBJ[$i][12] = -1
-		$_CurOffset = $_CurOffset + $_ObjmanagerStrucSize
-	Next
-	;$OBJv2 = LinkActors($OBJ) ;//Would be a waste to do this in the main operation so we add more data to the object here after the main operation.
-	IterateLocalActor()
-	;	Local $difmesureobj = TimerDiff($mesureobj) ;;;;;;;;;;;;;
-	;_log("Mesure iterOBJ :" & $difmesureobj) ;FOR DEBUGGING;;;;;;;;;;;;
-	Return $OBJ
-EndFunc   ;==>IterateObjectList
-
 
 ;;--------------------------------------------------------------------------------
 ;;      Function to iterate all objects()
@@ -2119,29 +1628,6 @@ Func UiRatio($_x, $_y)
 	$return[1] = $size[1] * ($_y / 600)
 	Return $return
 EndFunc   ;==>UiRatio
-
-
-;;--------------------------------------------------------------------------------
-;;      GetCurrentPos()
-;;--------------------------------------------------------------------------------
-#cs
-Func GetCurrentPos()
-	;	Local $mesurepos = TimerInit() ;;;;;;;;;;;;;;
-	Dim $return[3]
-
-	$return[0] = _MemoryRead($_Myoffset + 0x0A4, $d3, 'float')
-	$return[1] = _MemoryRead($_Myoffset + 0x0A8, $d3, 'float')
-	$return[2] = _MemoryRead($_Myoffset + 0x0AC, $d3, 'float')
-
-	$Current_Hero_X = $return[0]
-	$Current_Hero_Y = $return[1]
-	$Current_Hero_Z = $return[2]
-
-	;		Local $difmesurepos = TimerDiff($mesurepos) ;;;;;;;;;;;;;
-	;_log("Mesure getcurrentpos :" & $difmesurepos) ;FOR DEBUGGING;;;;;;;;;;;;
-	Return $return
-EndFunc   ;==>GetCurrentPos
-#ce
 
 Func GetCurrentPos()
 	Dim $return[3]
@@ -2279,16 +1765,6 @@ Func Interact($_x, $_y, $_z)
 	;	Sleep(50)
 	;WEnd
 EndFunc   ;==>Interact
-
-;;--------------------------------------------------------------------------------
-;;      Approach() Approach a NPC without left clicking
-;;--------------------------------------------------------------------------------
-Func Approach($_x, $_y, $_z)
-	; MoveToPos($_x, $_y, $_z, 0, 25)
-	;While _MemoryRead($_itrInteractE + $ofs__InteractOffsetUNK2, $d3, 'int') = 1
-	;	Sleep(50)
-	;WEnd
-EndFunc   ;==>Approach
 
 ;;--------------------------------------------------------------------------------
 ;;   InteractByActorName()
@@ -2723,78 +2199,6 @@ Func IterateFilterAffixV2()
                 Return $item_affix_2D
         EndIf
 EndFunc
-#cs
-Func IterateFilterAttack($IgnoreList)
-	Local $index, $offset, $count, $item[10]
-	startIterateObjectsList($index, $offset, $count)
-	Dim $item_buff_2D[1][10]
-	Local $i = 0
-
-	$compt = 0
-
-	While iterateObjectsList($index, $offset, $count, $item)
-		$compt += 1
-		If Is_Interact($item, $IgnoreList) Then
-			If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item) or Is_Decor_Breakable($item) or Is_Coffre($item) or Is_Power($item) or Is_Health($item) Then
-				ReDim $item_buff_2D[$i + 1][10]
-				For $x = 0 To 9
-					$item_buff_2D[$i][$x] = $item[$x]
-				Next
-				$i += 1
-			EndIf
-
-		EndIf
-	WEnd
-
-	If $i = 0 Then
-		Return False
-	Else
-
-		If $MonsterTri Then
-			_ArraySort($item_buff_2D, 0, 0, 0, 9)
-		EndIf
-
-		If $MonsterPriority Then
-			Dim $item_buff_2D_buff = TriObjectMonster($item_buff_2D)
-			Dim $item_buff_2D = $item_buff_2D_buff
-		EndIf
-		Return $item_buff_2D
-	 EndIf
-
-EndFunc   ;==>IterateFilterAttack
-
-Func IterateFilterZone($dist,$n=2)
-	Local $index, $offset, $count, $item[10]
-	startIterateObjectsList($index, $offset, $count)
-;~ 	Dim $item_buff_2D[1][10]
-	Local $i = 0
-$my_pos_zone=getcurrentpos()
-	$compt = 0
-
-	While iterateObjectsList($index, $offset, $count, $item)
-		$compt += 1
-		If Is_Interact($item, "") Then
-			If Is_Mob($item) and sqrt(($item[2]-$my_pos_zone[0])^2 + ($item[3]-$my_pos_zone[1])^2 ) < $dist and $item[4]<10 Then
-;~ 				ReDim $item_buff_2D[$i + 1][10]
-;~ 				For $x = 0 To 9
-;~ 					$item_buff_2D[$i][$x] = $item[$x]
-;~ 				Next
-				$i += 1
-			EndIf
-
-		EndIf
-	WEnd
-;= 0 or ubound($item_buff_2D)
-	If $i <2 Then
-;~ 	   _log("pas assez de mob proche")
-		Return False
-	Else
-;~ 		 _log("nombre : " & $i)
-		return True
-
-	EndIf
-EndFunc   ;==>IterateFilterAttack
-#ce
 
 Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 
@@ -4082,14 +3486,14 @@ Global $VendorTabSell = 0
 Func Repair()
 	GetAct()
 
-Switch $Act
-        Case 1
-                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074,1,25)
-        Case 2
-                ;do nothing act 2
-        Case 3 To 4
-                ;do nothing act 3-4
-EndSwitch
+	Switch $Act
+	        Case 1
+	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074,1,25)
+	        Case 2
+	                ;do nothing act 2
+	        Case 3 To 4
+	                ;do nothing act 3-4
+	EndSwitch
 
 	InteractByActorName($RepairVendor)
 
@@ -4258,24 +3662,7 @@ Func TogglePause()
 	CheckWindowD3()
 	CheckWindowD3Size()
 EndFunc   ;==>TogglePause
-#cs
-Func _log($text, $write = 0)
 
-	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text
-
-	If $write == 1 Then
-		$file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
-		If $file = -1 Then
-			_log("Log file error, cant be open")
-		Else
-			FileWrite($file, $texte_write & @CRLF)
-		EndIf
-		FileClose($file)
-	EndIf
-
-	_log(@MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text)
-EndFunc   ;==>_log
-#ce
 Func _log($text, $forceDebug = False)
 	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
 	If $forceDebug or $debugBot Then
@@ -4402,284 +3789,6 @@ Func GetArcane()
 	WEnd
 EndFunc   ;==>GetArcane
 
-;;--------------------------------------------------------------------------------
-;;      checkForSpell()
-;;--------------------------------------------------------------------------------
-#cs
-Func checkForSpell()
-	checkForPotion()
-	;Local $mesurepot = TimerInit() ;;;;;;;;;;;;;;
-	Local $source
-	Local $MaximumSource
-	Switch $nameCharacter
-		Case "DemonHunter"
-			$discipline = GetDisc()
-			$hatred = GetHatred()
-			$life = GetLifep()
-
-			$diffRightClick = TimerDiff($timeforRightclick)
-			If $RightClickSpell = "True" And $life <= $LifeForRightClickSpell / 100 And $diffRightClick > $RightClickSpellDelay Then
-				If $RightClickSpellEnergy <> "" Then
-					If $RightClickSpellEnergy = "hatred" Then
-						If $hatred > $RightClickSpellEnergyNeeds / $MaximumHatred Then
-							MouseClick("right")
-							$timeforRightclick = TimerInit()
-						EndIf
-					Else
-						If $discipline > $RightClickSpellEnergyNeeds / $MaximumDiscipline Then
-							MouseClick("right")
-							$timeforRightclick = TimerInit()
-						EndIf
-					EndIf
-				Else
-					MouseClick("right")
-					$timeforRightclick = TimerInit()
-				EndIf
-			EndIf
-
-
-			$discipline = GetDisc()
-			$hatred = GetHatred()
-			$life = GetLifep()
-
-			$diffSpell1 = TimerDiff($timeforSpell1)
-			If $Spell1Activated = "True" And $life <= $LifeForSpell1 / 100 And $diffSpell1 > $DefayForSpell1 Then
-				If $EnergySpell1 <> "" Then
-					If $EnergySpell1 = "hatred" Then
-						If $hatred > $EnergyNeedsSpell1 / $MaximumHatred Then
-							Send($KeyForSpell1)
-							$timeforSpell1 = TimerInit()
-						EndIf
-					Else
-						If $discipline > $EnergyNeedsSpell1 / $MaximumDiscipline Then
-							Send($KeyForSpell1)
-							$timeforSpell1 = TimerInit()
-						EndIf
-					EndIf
-				Else
-					Send($KeyForSpell1)
-					$timeforSpell1 = TimerInit()
-				EndIf
-			EndIf
-
-			$discipline = GetDisc()
-			$hatred = GetHatred()
-			$life = GetLifep()
-
-			$diffSpell2 = TimerDiff($timeforSpell2)
-			If $Spell2Activated = "True" And $life <= $LifeForSpell2 / 100 And $diffSpell2 > $DefayForSpell2 Then
-				If $EnergySpell2 <> "" Then
-					If $EnergySpell2 = "hatred" Then
-						If $hatred > $EnergyNeedsSpell2 / $MaximumHatred Then
-							Send($KeyForSpell2)
-							$timeforSpell2 = TimerInit()
-						EndIf
-					Else
-						If $discipline > $EnergyNeedsSpell2 / $MaximumDiscipline Then
-							Send($KeyForSpell2)
-							$timeforSpell2 = TimerInit()
-						EndIf
-					EndIf
-				Else
-					Send($KeyForSpell2)
-					$timeforSpell2 = TimerInit()
-				EndIf
-			EndIf
-
-			$discipline = GetDisc()
-			$hatred = GetHatred()
-			$life = GetLifep()
-
-			$diffSpell3 = TimerDiff($timeforSpell3)
-			If $Spell3Activated = "True" And $life <= $LifeForSpell3 / 100 And $diffSpell3 > $DefayForSpell3 Then
-				If $EnergySpell3 <> "" Then
-					If $EnergySpell3 = "hatred" Then
-						If $hatred > $EnergyNeedsSpell3 / $MaximumHatred Then
-							Send($KeyForSpell3)
-							$timeforSpell3 = TimerInit()
-						EndIf
-					Else
-						If $discipline > $EnergyNeedsSpell3 / $MaximumDiscipline Then
-							Send($KeyForSpell3)
-							$timeforSpell3 = TimerInit()
-						EndIf
-					EndIf
-				Else
-					Send($KeyForSpell3)
-					$timeforSpell3 = TimerInit()
-				EndIf
-			EndIf
-
-			$discipline = GetDisc()
-			$hatred = GetHatred()
-			$life = GetLifep()
-
-			$diffSpell4 = TimerDiff($timeforSpell4)
-			If $Spell4Activated = "True" And $life <= $LifeForSpell4 / 100 And $diffSpell4 > $DefayForSpell4 Then
-				If $EnergySpell4 <> "" Then
-					If $EnergySpell4 = "hatred" Then
-						If $hatred > $EnergyNeedsSpell4 / $MaximumHatred Then
-							Send($KeyForSpell4)
-							$timeforSpell4 = TimerInit()
-						EndIf
-					Else
-						If $discipline > $EnergyNeedsSpell4 / $MaximumDiscipline Then
-							Send($KeyForSpell4)
-							$timeforSpell4 = TimerInit()
-						EndIf
-					EndIf
-				Else
-					Send($KeyForSpell4)
-					$timeforSpell4 = TimerInit()
-				EndIf
-			EndIf
-
-
-		Case "Monk"
-			$MaximumSource = $MaximumSpirit
-			actionForSpell($MaximumSource)
-		Case "Barbarian"
-			$MaximumSource = $MaximumFury
-			actionForSpell($MaximumSource)
-		Case "wizard"
-			$MaximumSource = $MaximumArcane
-			actionForSpell($MaximumSource)
-		Case "WitchDoctor"
-			$MaximumSource = $MaximumMana
-			actionForSpell($MaximumSource)
-	EndSwitch
-
-EndFunc   ;==>checkForSpell
-
-
-Func actionForSpell($MaximumSource)
-
-	$life = GetLifep()
-	Switch $nameCharacter
-		Case "Monk"
-			$source = GetSpirit()
-		Case "Barbarian"
-			$source = GetFury()
-		Case "wizard"
-			$source = GetArcane()
-		Case "WitchDoctor"
-			$source = GetMana()
-	EndSwitch
-	$diffRightClick = TimerDiff($timeforRightclick)
-	If $RightClickSpell = "True" And $life <= $LifeForRightClickSpell / 100 And $diffRightClick > $RightClickSpellDelay Then
-		If $RightClickSpellEnergy <> "" Then
-			If $source > $RightClickSpellEnergyNeeds / $MaximumSource Then
-				MouseClick("right")
-				$timeforRightclick = TimerInit()
-			EndIf
-		Else
-			MouseClick("right")
-			$timeforRightclick = TimerInit()
-		EndIf
-	EndIf
-
-	$life = GetLifep()
-	Switch $nameCharacter
-		Case "Monk"
-			$source = GetSpirit()
-		Case "Barbarian"
-			$source = GetFury()
-		Case "wizard"
-			$source = GetArcane()
-		Case "WitchDoctor"
-			$source = GetMana()
-	EndSwitch
-
-	$diffSpell1 = TimerDiff($timeforSpell1)
-	If $Spell1Activated = "True" And $life <= $LifeForSpell1 / 100 And $diffSpell1 > $DefayForSpell1 Then
-		If $EnergySpell1 <> "" Then
-			If $source > $EnergyNeedsSpell1 / $MaximumSource Then
-				Send($KeyForSpell1)
-				$timeforSpell1 = TimerInit()
-			EndIf
-		Else
-			Send($KeyForSpell1)
-			$timeforSpell1 = TimerInit()
-		EndIf
-	EndIf
-
-	$life = GetLifep()
-	Switch $nameCharacter
-		Case "Monk"
-			$source = GetSpirit()
-		Case "Barbarian"
-			$source = GetFury()
-		Case "wizard"
-			$source = GetArcane()
-		Case "WitchDoctor"
-			$source = GetMana()
-	EndSwitch
-
-	$diffSpell2 = TimerDiff($timeforSpell2)
-	If $Spell2Activated = "True" And $life <= $LifeForSpell2 / 100 And $diffSpell2 > $DefayForSpell2 Then
-		If $EnergySpell2 <> "" Then
-			If $source > $EnergyNeedsSpell2 / $MaximumSource Then
-				Send($KeyForSpell2)
-				$timeforSpell2 = TimerInit()
-			EndIf
-		Else
-			Send($KeyForSpell2)
-			$timeforSpell2 = TimerInit()
-		EndIf
-	EndIf
-
-	$life = GetLifep()
-	Switch $nameCharacter
-		Case "Monk"
-			$source = GetSpirit()
-		Case "Barbarian"
-			$source = GetFury()
-		Case "wizard"
-			$source = GetArcane()
-		Case "WitchDoctor"
-			$source = GetMana()
-	EndSwitch
-
-	$diffSpell3 = TimerDiff($timeforSpell3)
-	If $Spell3Activated = "True" And $life <= $LifeForSpell3 / 100 And $diffSpell3 > $DefayForSpell3 Then
-		If $EnergySpell3 <> "" Then
-			If $source > $EnergyNeedsSpell3 / $MaximumSource Then
-				Send($KeyForSpell3)
-				$timeforSpell3 = TimerInit()
-			EndIf
-		Else
-			Send($KeyForSpell3)
-			$timeforSpell3 = TimerInit()
-		EndIf
-	EndIf
-
-	$life = GetLifep()
-	Switch $nameCharacter
-		Case "Monk"
-			$source = GetSpirit()
-		Case "Barbarian"
-			$source = GetFury()
-		Case "wizard"
-			$source = GetArcane()
-		Case "WitchDoctor"
-			$source = GetMana()
-	EndSwitch
-
-	$diffSpell4 = TimerDiff($timeforSpell4)
-	If $Spell4Activated = "True" And $life <= $LifeForSpell4 / 100 And $diffSpell4 > $DefayForSpell4 Then
-		If $EnergySpell4 <> "" Then
-			If $source > $EnergyNeedsSpell4 / $MaximumSource Then
-				Send($KeyForSpell4)
-				$timeforSpell4 = TimerInit()
-			EndIf
-		Else
-			Send($KeyForSpell4)
-			$timeforSpell4 = TimerInit()
-		EndIf
-	EndIf
-
-EndFunc   ;==>actionForSpell
-#ce
 ;;--------------------------------------------------------------------------------
 ;;############# Stats by YoPens
 ;;--------------------------------------------------------------------------------
@@ -5882,24 +4991,6 @@ Func GestSpellInit()
 
 EndFunc   ;==>GestSpellInit
 
-#cs
-Func offset_spell_search($str)
-	$var = ""
-	If $str = "" Then
-		$var = "false"
-	Else
-
-		$var = Eval($str)
-		If $var = "" Then
-			$var = "wrong"
-		EndIf
-	EndIf
-	;_log("search :" & $var)
-	Return $var
-
-EndFunc   ;==>offset_spell_search
-#ce
-
 ;;================================================================================
 ; Function:                     GetPlayerOffset
 ; Note(s):
@@ -6281,13 +5372,6 @@ Func StashAndRepair()
 	$StashAndRepair = False
 
 EndFunc   ;==>StashAndRepair
-
-
-
-
-
-
-
 
 ;;--------------------------------------------------------------------------------
 ;;	Gets levels from Gamebalance file, returns a list with snoid and lvl
@@ -6708,52 +5792,6 @@ Func SafePortBack()
 	EndIf
 EndFunc   ;==>SafePortBack
 
-Func xml_to_item($name, $stats)
-	$rules_name = "(?i){c:[a-z0-9]*}([a-z0-9ÈËÍÎÓÔÏ‚‡‰˚¸˘ˆÙÚˇ" & @CRLF & " \+ \% \- \í \' ]*){/c}"
-	$rules_stats = "(?i){c:[a-z0-9]*}([a-z0-9ÈËÍÎÓÔÏ‚‡‰˚¸˘ˆÙÚˇ" & @CRLF & " \+ \% \- \í \' ]*){/c}"
-	;$rules_stat = "(?i){c:[a-z1-9]*}(.*){/c}"
-	$str = "<item>" & @CRLF
-	If StringRegExp($name, $rules_name) = 1 Then ;patern declaration ilvl
-		$name_item = StringRegExp($name, $rules_name, 2)
-		;MsgBox(1, "", $name_item[1])
-		$name = "<name>" & $name_item[1] & "</name>" & @CRLF
-	EndIf
-
-	If StringRegExp($stats, $rules_stats) = 1 Then
-		$stats_item = StringRegExp($stats, $rules_stats, 3)
-		;_ArrayDisplay($stats_item)
-		$temp_stats = ""
-		For $i = 0 To UBound($stats_item) - 1
-			$temp_stats = $temp_stats & "<stats>- " & $stats_item[$i] & "</stats>" & @CRLF
-
-		Next
-	EndIf
-	$str = $str & $name & $temp_stats & "</item>" & @CRLF & @CRLF
-	Return $str
-EndFunc   ;==>xml_to_item
-
-Func Xml_To_Str($str, $load_file)
-	Local $file = FileOpen($load_file, 1)
-	If $file = -1 Then
-		MsgBox(0, "Error", "Unable to open xml file : " & $load_file)
-		Exit
-
-	EndIf
-	FileWrite($file, $str)
-	FileClose($file)
-EndFunc   ;==>Xml_To_Str
-
-
-Func Ftp_Upload_To_Xml($file)
-	If Not $ftpserver = "" And Not $ftpusername = "" And Not $ftppass = "" Then
-		$Open = _FTPOpen('MyFTP Control')
-		$Conn = _FTPConnect($Open, $ftpserver, $ftpusername, $ftppass)
-		$Ftpp = _FtpPutFile($Conn, $file, "statistique_D3/" & $file)
-		$Ftpc = _FTPClose($Open)
-	EndIf
-EndFunc   ;==>Ftp_Upload_To_Xml
-
-
 Func fastcheckuiitemvisiblesize($valuetocheckfor, $visibility, $bucket)
         Global $itemsize[4]
         $ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
@@ -6818,15 +5856,7 @@ Func _checkbackpacksize() ;ok pour v 2.0
 
 EndFunc   ;==>_checkbackpacksize
 
-
-
-
-
-
 Func Auto_spell_init()
-
-
-
 	If StringLower(Trim($nameCharacter)) = "monk" Then
 		Dim $tab_skill_temp = $Monk_skill_Table
 		if $Gest_affixe_ByClass Then
@@ -7080,20 +6110,6 @@ Func GetLocalPlayer()
 		return 0
 	EndIf
 EndFunc
-
-#cs
-Func GetLocalPlayer()
-	Global $ObjManStorage = 0x7CC ;0x794
-	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x984, $d3, 'int') ;0x94C/934
-	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + $ObjManStorage + 0xA8, $d3, 'int')
-
-	if $v0 <> 0 AND _MemoryRead($v0, $d3, 'int') <> -1 AND $v1 <> 0 Then
-		return 0x8008 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
-	Else
-		return 0
-	EndIf
-EndFunc
-#ce
 
 Func GetActivePlayerSkill($index)
 	$Local_player = GetLocalPlayer()
@@ -7471,53 +6487,6 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
    endif
 EndFunc  ;maffmove
 
-#cs
-Func IterateFilterAffix()
-        Local $index, $offset, $count, $item[10]
-        startIterateObjectsList($index, $offset, $count)
-        Dim $item_affix_2D[1][11]
-        Local $i = 0
-	    $pv_affix=getlifep()
-        $compt = 0
-;~ 		 $ii=0
-        While iterateObjectsList($index, $offset, $count, $item)
-			$compt += 1
-			If Is_Affix($item,$pv_affix)  Then
-			   ReDim $item_affix_2D[$i + 1][11]
-			   For $x = 0 To 9
-				  $item_affix_2D[$i][$x] = $item[$x]
-			   Next
-
-			   if StringInStr($item[1],"molten_trail") then $item_affix_2D[$i][10] = $range_lave
-			   if (StringInStr($item[1],"woodWraith_explosion") or StringInStr($item[1],"WoodWraith_sporeCloud_emitter") ) then  $item_affix_2D[$i][10] = $range_ice
-			   if StringInStr($item[1],"sandwasp_projectile") then $item_affix_2D[$i][10] = $range_arcane
-			   if StringInStr($item[1],"Desecrator") then $item_affix_2D[$i][10] = $range_profa
-			   if (StringInStr($item[1],"bomb_buildup") or StringInStr($item[1],"Icecluster") or stringinstr($item[1],"Molten_deathExplosion") or stringinstr($item[1],"Molten_deathStart")) then  $item_affix_2D[$i][10] = $range_ice
-			   if (StringInStr($item[1],"demonmine_C") or StringInStr($item[1],"Crater_DemonClawBomb")) then $item_affix_2D[$i][10] = $range_mine
-			   if StringInStr($item[1],"creepMobArm") then $item_affix_2D[$i][10] = $range_arm
-			   if (StringInStr($item[1],"spore") or StringInStr($item[1],"Plagued_endCloud") or StringInStr($item[1],"Poison")) then $item_affix_2D[$i][10] = $range_peste
-			   if StringInStr($item[1],"ArcaneEnchanted_petsweep") then $item_affix_2D[$i][10] = $range_arcane
-			   if StringInStr($item[1],"frozenPulse") then $item_affix_2D[$i][10] = $range_arcane;pacth 8.2 e
-
-;~ 			   if $item_affix_2D[$i][10]-$item_affix_2D[$i][9]>0 then $ii=$ii+1
-
-			   $i += 1
-			EndIf
-        WEnd
-;~  or $ii=0
-        If $i = 0 Then
-                Return False
-        Else
-
-                _ArraySort($item_affix_2D, 0, 0, 0, 9)
-
-                Return $item_affix_2D
-        EndIf
- EndFunc   ;==>IterateFilterAffix
-#ce
-
-
-
 $BanAffixList="poison_humanoid|"&$BanAffixList
 
  Func Is_Affix($item,$pv=0)
@@ -7601,13 +6570,6 @@ Func IsTeleport()
 	return false
 EndFunc
 
-Func GameState()
-	;1 // In Game
-	;0 // Loading Screen
-	;5 // Menu
-	;return _memoryRead(_memoryRead($ObjManStorage ,$d3, "ptr") + 0x900, $d3, "ptr")
-Endfunc
-
 Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act avant d'interagir
     GetAct()
 
@@ -7639,18 +6601,6 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 
 	Sleep(100)
 EndFunc   ;==>MoveTo
-
-;~ Func getGold() ; Fonction qui mesure l'or
-;~         IterateLocalActor()
-;~         $foundobject = 0
-;~         For  $i = 0 To UBound ( $__ACTOR ,1 )-1
-;~                 If StringInStr($__ACTOR[$i][2],"GoldCoin-") Then
-;~                         return IterateActorAtribs( $__ACTOR[$i][1],$Atrib_ItemStackQuantityLo)
-;~                         ExitLoop
-;~                 EndIf
-;~         Next
-;~         Return 0
-;~ EndFunc
 
 Func getGold()
     Local $index, $offset, $count, $item[4]

@@ -181,6 +181,98 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ListUi(1)
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
+
+;;--------------------------------------------------------------------------------
+;;	IterateObjectList()
+; TODO : Correct or remove
+;;--------------------------------------------------------------------------------
+Func IterateObjectList($_displayInfo = 0)
+	;	Local $mesureobj = TimerInit() ;;;;;;;;;;;;;;
+	If $_displayInfo = 1 Then _log("-----Iterating through Actors------")
+	If $_displayInfo = 1 Then _log("First Actor located at: " & $_itrObjectManagerD )
+	$_CurOffset = $_itrObjectManagerD
+	$_Count = _MemoryRead($_itrObjectManagerCount, $d3, 'int')
+	Dim $OBJ[$_Count + 1][13]
+	If $_displayInfo = 1 Then _log("Number of Actors : " & $_Count)
+	;$init = TimerInit()
+	For $i = 0 To $_Count Step +1
+		$_GUID = _MemoryRead($_CurOffset + 0x0, $d3, 'ptr')
+		If $_GUID = 0xffffffff Then ;no need to go through objects without a GUID!
+			$_PROXY_NAME = -1
+			$_REAL_NAME = -1
+			$_ACTORLINK = -1
+			$_POS_X = -1
+			$_POS_Y = -1
+			$_POS_Z = -1
+			$_DATA = -1
+			$_DATA2 = -1
+		Else
+			$_PROXY_NAME = _MemoryRead($_CurOffset + 0x4, $d3, 'char[64]')
+			$TmpString = StringSplit($_PROXY_NAME, "-")
+			If IsDeclared("__" & $TmpString[1]) Then
+				$_REAL_NAME = Eval("__" & $TmpString[1])
+			Else
+				$_REAL_NAME = $_PROXY_NAME
+			EndIf
+			$_ACTORLINK = _MemoryRead($_CurOffset + 0x88, $d3, 'ptr')
+			$_POS_X = _MemoryRead($_CurOffset + 0xB0, $d3, 'float')
+			$_POS_Y = _MemoryRead($_CurOffset + 0xB4, $d3, 'float')
+			$_POS_Z = _MemoryRead($_CurOffset + 0xB8, $d3, 'float')
+			$_DATA = _MemoryRead($_CurOffset + 0x200, $d3, 'int')
+			$_DATA2 = _MemoryRead($_CurOffset + 0x1D0, $d3, 'int')
+			If $_displayInfo = 1 Then _log($i & @TAB & " : " & $_CurOffset & " " & $_GUID & " " & $_ACTORLINK & " : " & $_DATA & " " & $_DATA2 & " " & @TAB & $_POS_X & " " & $_POS_Y & " " & $_POS_Z & @TAB & $_REAL_NAME)
+		EndIf
+
+		;Im too lazy to do this but the following code needs cleanup and restructure more than anything.
+		;You want to include all the data into this one structure rather than having it at multiple locations
+		;and the useless things should be removed.
+		$CurrentLoc = GetCurrentPos()
+		$xd = $_POS_X - $CurrentLoc[0]
+		$yd = $_POS_Y - $CurrentLoc[1]
+		$zd = $_POS_Z - $CurrentLoc[2]
+		$Distance = Sqrt($xd * $xd + $yd * $yd + $zd * $zd)
+		$OBJ[$i][0] = $_CurOffset
+		$OBJ[$i][1] = $_GUID
+		$OBJ[$i][2] = $_PROXY_NAME
+		$OBJ[$i][3] = $_POS_X
+		$OBJ[$i][4] = $_POS_Y
+		$OBJ[$i][5] = $_POS_Z
+		$OBJ[$i][6] = $_DATA
+		$OBJ[$i][7] = $_DATA2
+		$OBJ[$i][8] = $Distance
+		$OBJ[$i][9] = $_ACTORLINK
+		$OBJ[$i][10] = $_REAL_NAME
+		$OBJ[$i][11] = -1
+		$OBJ[$i][12] = -1
+		$_CurOffset = $_CurOffset + $_ObjmanagerStrucSize
+	Next
+	;$OBJv2 = LinkActors($OBJ) ;//Would be a waste to do this in the main operation so we add more data to the object here after the main operation.
+	IterateLocalActor()
+	;	Local $difmesureobj = TimerDiff($mesureobj) ;;;;;;;;;;;;;
+	;_log("Mesure iterOBJ :" & $difmesureobj) ;FOR DEBUGGING;;;;;;;;;;;;
+	Return $OBJ
+EndFunc   ;==>IterateObjectList
+;;================================================================================
+; Function:			IterateLocalActor
+; Note(s):			Iterates through all the local actors.
+;						Used by IterateActorAtribs
+;					This is bad use of variables, should be fixed!
+;==================================================================================
+Func IterateLocalActor()
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
+	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
+	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x148, $d3, "ptr") + 0x0, $d3, "ptr");$_LocalActor_3
+	Global $__ACTOR[$_Count + 1][4]
+	For $i = 0 To $_Count
+		$__ACTOR[$i][1] = _MemoryRead($CurrentOffset, $d3, 'ptr')
+		$__ACTOR[$i][2] = _MemoryRead($CurrentOffset + 0x4, $d3, 'char[64]')
+		$__ACTOR[$i][3] = _MemoryRead($CurrentOffset + $ofs_LocalActor_atribGUID, $d3, 'ptr')
+		;_log($__ACTOR[$i][1] & " : " & $__ACTOR[$i][2] & " : " & $__ACTOR[$i][3])
+		$CurrentOffset = $CurrentOffset + $ofs_LocalActor_StrucSize
+	Next
+EndFunc   ;==>IterateLocalActor
 ;###########################################################################
 ;###########################################################################
 ;###########################################################################
