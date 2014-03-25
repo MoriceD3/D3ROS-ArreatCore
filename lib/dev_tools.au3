@@ -178,23 +178,7 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;EndIf
 
 ;_log("Finish")
-
-BanActor("Toto1")
-BanActor("Toto2")
-BanActor("Toto3")
-BanActor("Toto4")
-
-consoleLog(IsBannedActor("Toto1"))
-consoleLog(IsBannedActor("Toto2"))
-consoleLog(IsBannedActor("Toto3"))
-consoleLog(IsBannedActor("Toto4"))
-consoleLog(IsBannedActor("Toto5"))
-
-consoleLog($TableBannedActors[0])
-
-
-consoleLog($PreBuff1,$LOG_LEVEL_DEBUG)
-
+ListUi(1)
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
 ;###########################################################################

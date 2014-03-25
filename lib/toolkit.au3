@@ -2611,7 +2611,7 @@ Func IterateFilterZoneV2($dist, $n=2)
 
 	dim $item[$TableSizeGuidStruct]
 
-	for $i=0 to $count
+	For $i=0 To $count
 		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
 		$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
 		$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
@@ -2631,24 +2631,20 @@ Func IterateFilterZoneV2($dist, $n=2)
 
 		$iterateObjectsStruct = ""
 		If Is_Interact($item, "") Then
-			If Is_Mob($item) and sqrt(($item[2]-$CurrentLoc[0])^2 + ($item[3]-$CurrentLoc[1])^2 ) < $dist and $item[4]<10 Then
-				$z += 1
+			If $item[9] < $dist Then
+				If Is_Mob($item) Then
+					$z += 1
+					If $z >= $n Then
+						$iterateObjectsListStruct = ""
+						Return True
+					EndIf
+				EndIf
 			EndIf
-
 		EndIf
 	Next
 
 	$iterateObjectsListStruct = ""
-
-	If $z < $n Then
-;~ 	   _log("pas assez de mob proche")
-		Return False
-	Else
-;~ 		 _log("nombre : " & $i)
-		return True
-
-	EndIf
-
+	Return False
 EndFunc
 
 Func IterateFilterAffixV2()
@@ -2657,11 +2653,12 @@ Func IterateFilterAffixV2()
 	startIterateObjectsList($index, $offset, $count)
 	Dim $item_affix_2D[1][$TableSizeGuidStruct+1]
 	Local $z = 0
-	$pv_affix=getlifep()
-
+	
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	
 	$CurrentLoc = GetCurrentPos()
+	$pv_affix=getlifep()
 
 	for $i=0 to $count
 		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
@@ -2682,7 +2679,6 @@ Func IterateFilterAffixV2()
 			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
 
 			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
-
 
 			If Is_Affix($item, $pv_affix) Then
 				ReDim $item_affix_2D[$z + 1][$TableSizeGuidStruct+1]
@@ -6029,7 +6025,7 @@ Func TpRepairAndBack()
 EndFunc
 
 Func ClickOnStashTab($num)
-	if $num > 3 OR $num < 2 Then
+	if $num > 4 OR $num < 2 Then
 		_log("ERROR Impossible to open this tab from stash")
 		return false
 	Endif
@@ -6038,6 +6034,8 @@ Func ClickOnStashTab($num)
 		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_2", 218)
 	elseif $num = 3 Then
 		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_3", 344)
+	elseif $num = 4 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_4", 1054)
 	EndIf
 EndFunc
 
@@ -6120,12 +6118,13 @@ Func StashAndRepair()
 					ClickOnStashTab(3)
 					$tabfull = 2
 				ElseIf $tabfull = 2 Then
+					ClickOnStashTab(4)
+					$tabfull = 3
+				ElseIf $tabfull = 3 Then
 					_log('Stash is full : Botting stopped')
 					Terminate()
 				EndIf
-
 				Sleep(5000)
-
 			Else
 				$ItemToStash = $ItemToStash + 1
 			EndIf
