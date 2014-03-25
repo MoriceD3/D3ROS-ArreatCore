@@ -2511,15 +2511,16 @@ EndFunc   ;==>IterateBackpack
 
 Func IterateFilterAttackV4($IgnoreList)
 
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	Local $index, $offset, $count
 	startIterateObjectsList($index, $offset, $count)
-	Dim $item_buff_2D[1][$TableSizeGuidStruct]
+
+	Dim $item_buff_2D[1][$TableSizeGuidStruct + 1]
+	Dim $item[$TableSizeGuidStruct + 1]
+
 	Local $z = 0
 
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-
-	dim $item[$TableSizeGuidStruct]
 
 	$CurrentLoc = GetCurrentPos()
 
@@ -2537,48 +2538,68 @@ Func IterateFilterAttackV4($IgnoreList)
 			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
 			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
 
-			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
-			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
+			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
 			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
 
 			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
 
+			$handle = False
 
-				If Is_Interact($item, $IgnoreList) Then
-				If Is_Shrine($item) Or Is_Mob($item) Or Is_Loot($item)  or Is_Coffre($item) or Is_Health($item) or Is_Power($item) Then
-					;or Is_Decor_Breakable($item) TODO : Not Used pour le moment !
-					ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
+			If Is_Interact($item, $IgnoreList) Then
+				Select
+					Case Is_Shrine($item) 
+						$handle = True
+						$Item[13] = $ITEM_TYPE_SHRINE
+					Case Is_Mob($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_MOB
+					Case Is_Loot($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_LOOT
+					Case Is_Coffre($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_CHEST
+					Case Is_Health($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_HEALTH
+					Case Is_Power($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_POWER
+				EndSelect
+			EndIf
 
-					For $x = 0 To $TableSizeGuidStruct - 1
-						$item_buff_2D[$z][$x] = $item[$x]
-					Next
-					$z += 1
-				EndIf
+			If $handle Then
+				ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct + 1]
+				For $x = 0 To $TableSizeGuidStruct
+					$item_buff_2D[$z][$x] = $item[$x]
+				Next
+				$z += 1
 			EndIf
 
 		EndIf
 		$iterateObjectsStruct = ""
-		Next
+	Next
 
 	$iterateObjectsListStruct = ""
 
 	If $z = 0 Then
 		Return False
 	Else
-
-		If trim(StringLower($MonsterTri)) = "true" Then
+		If $MonsterTri Then
 			_ArraySort($item_buff_2D, 0, 0, 0, 9)
 		EndIf
 
-		If trim(StringLower($MonsterPriority)) = "true" Then
+		If $MonsterPriority Then
 			Dim $item_buff_2D_buff = TriObjectMonster($item_buff_2D)
 			Dim $item_buff_2D = $item_buff_2D_buff
 		EndIf
+
 		Return $item_buff_2D
 	 EndIf
 EndFunc
 
-Func IterateFilterZoneV2($dist,$n=2)
+Func IterateFilterZoneV2($dist, $n=2)
 
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
@@ -2602,8 +2623,8 @@ Func IterateFilterZoneV2($dist,$n=2)
 		$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
 		$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
 
-		$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
-		$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+		$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
+		$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
 		$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
 
 		$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
@@ -2619,7 +2640,7 @@ Func IterateFilterZoneV2($dist,$n=2)
 
 	$iterateObjectsListStruct = ""
 
-	If $z <2 Then
+	If $z < $n Then
 ;~ 	   _log("pas assez de mob proche")
 		Return False
 	Else
@@ -2801,11 +2822,11 @@ global $bandecorlist=""
 
 Func TriObjectMonster($item)
 
-	Dim $tab_monster[1][10]
-	Dim $tab_other[1][10]
-	Dim $tab_mixte[1][10]
-	Dim $tab_elite[1][10]
-	Dim $item_temp[10]
+	Dim $tab_monster[1][$TableSizeGuidStruct+1]
+	Dim $tab_other[1][$TableSizeGuidStruct+1]
+	Dim $tab_mixte[1][$TableSizeGuidStruct+1]
+	Dim $tab_elite[1][$TableSizeGuidStruct+1]
+	Dim $item_temp[$TableSizeGuidStruct+1]
 	$compt_monster = 0
 	$compt_other = 0
 	$compt_elite = 0
@@ -2813,7 +2834,7 @@ Func TriObjectMonster($item)
 
 	For $i = 0 To UBound($item) - 1
 
-		For $z = 0 to 9
+		For $z = 0 to $TableSizeGuidStruct
 			$item_temp[$z] = $item[$i][$z]
 		Next
 
@@ -2833,9 +2854,9 @@ Func TriObjectMonster($item)
 		   if Is_Mob($item_temp) Then
 
 			If UBound($tab_monster) > 1 Or $compt_monster <> 0 Then
-				ReDim $tab_monster[UBound($tab_monster) + 1][10]
+				ReDim $tab_monster[UBound($tab_monster) + 1][$TableSizeGuidStruct+1]
 			EndIf
-			For $y = 0 To 9
+			For $y = 0 To $TableSizeGuidStruct
 				$tab_monster[UBound($tab_monster) - 1][$y] = $item[$i][$y]
 			Next
 			$compt_monster += 1
@@ -2843,9 +2864,9 @@ Func TriObjectMonster($item)
 		Else
 
 			If UBound($tab_other) > 1 Or $compt_other <> 0 Then
-				ReDim $tab_other[UBound($tab_other) + 1][10]
+				ReDim $tab_other[UBound($tab_other) + 1][$TableSizeGuidStruct+1]
 			EndIf
-			For $y = 0 To 9
+			For $y = 0 To $TableSizeGuidStruct
 				$tab_other[UBound($tab_other) - 1][$y] = $item[$i][$y]
 			Next
 			$compt_other += 1
@@ -2868,9 +2889,9 @@ Func TriObjectMonster($item)
 	For $i = 0 To UBound($tab_monster) - 1
 
 		If UBound($tab_mixte) > 1 Or $compt_mixte <> 0 Then
-			ReDim $tab_mixte[UBound($tab_mixte) + 1][10]
+			ReDim $tab_mixte[UBound($tab_mixte) + 1][$TableSizeGuidStruct+1]
 		EndIf
-		For $y = 0 To 9
+		For $y = 0 To $TableSizeGuidStruct
 			$tab_mixte[UBound($tab_mixte) - 1][$y] = $tab_monster[$i][$y]
 		Next
 		$compt_mixte += 1
@@ -2879,9 +2900,9 @@ Func TriObjectMonster($item)
 	For $i = 0 To UBound($tab_other) - 1
 
 		If UBound($tab_mixte) > 1 Or $compt_mixte <> 0 Then
-			ReDim $tab_mixte[UBound($tab_mixte) + 1][10]
+			ReDim $tab_mixte[UBound($tab_mixte) + 1][$TableSizeGuidStruct+1]
 		EndIf
-		For $y = 0 To 9
+		For $y = 0 To $TableSizeGuidStruct
 			$tab_mixte[UBound($tab_mixte) - 1][$y] = $tab_other[$i][$y]
 		Next
 		$compt_mixte += 1
@@ -2920,6 +2941,8 @@ EndFunc   ;==>UpdateObjectsPos
 
 Func Is_Shrine(ByRef $item)
 	Select 
+		Case Not $TakeShrines
+			Return False
 		Case $item[9] > $range_shrine
 			Return False
 		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection"))
@@ -3045,26 +3068,24 @@ Func handle_Health(ByRef $item)
 EndFunc   ;==>handle_Health
 
 Func handle_Coffre(ByRef $item)
-		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
-		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
-			If Coffre($item) = False Then
-				_log("Ban coffre -> " & $item[1])
-				BanActor($item[1])
-			EndIf
+	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
+		If Coffre($item) = False Then
+			_log("Ban coffre -> " & $item[1])
+			BanActor($item[1])
 		EndIf
+	EndIf
 EndFunc
 
 
 Func handle_Shrine(ByRef $item)
-	If $TakeShrines Then
-		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
-		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-			If shrine($item[1], $item[8], $item[0]) = False Then
-				_log("Ban shrine -> " & $item[1])
-				BanActor($item[1])
-			EndIf
+	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+		If shrine($item[1], $item[8], $item[0]) = False Then
+			_log("Ban shrine -> " & $item[1])
+			BanActor($item[1])
 		EndIf
 	EndIf
 EndFunc   ;==>handle_Shrine
@@ -3247,58 +3268,57 @@ Func Attack()
 		_log("Return Cuz : If _playerdead or gamefailed ")
 		Return
 	EndIf
+
 	Local $IgnoreList = ""
-	Local $item[$TableSizeGuidStruct]
+	Local $item[$TableSizeGuidStruct + 1]
 	Local $OldActor = ""
 
 	Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 
-	If IsArray($test_iterateallobjectslist) Then
-		While IsArray($test_iterateallobjectslist)
-			If _playerdead_revive() Then
-				_log("ExitLoop cause of player_revive")
-				ExitLoop
-			EndIf
-			If _playerdead() Or ($GameFailed = 1) Then
-				$GameFailed = 1
-				_log("Return Cuz : If _playerdead or gamefailed ")
-				ExitLoop
-			EndIf
+	While IsArray($test_iterateallobjectslist)
+		If _playerdead_revive() Then
+			_log("ExitLoop cause of player_revive")
+			ExitLoop
+		EndIf
+		If _playerdead() Or ($GameFailed = 1) Then
+			$GameFailed = 1
+			_log("Return Cuz : If _playerdead or gamefailed ")
+			ExitLoop
+		EndIf
 
-			For $i = 0 To $TableSizeGuidStruct - 1
-				$item[$i] = $test_iterateallobjectslist[0][$i]
-			Next
+		For $i = 0 To $TableSizeGuidStruct
+			$item[$i] = $test_iterateallobjectslist[0][$i]
+		Next
 
-			if $OldActor = $item[1] Then
-				BanActor($item[1])
-				_log("Ban Actor Cause of second passage")
-				ExitLoop
-			Else
-				$OldActor  = $item[1]
-			EndIF
+		if $OldActor = $item[1] Then
+			BanActor($item[1])
+			_log("Ban Actor Cause of second passage")
+			ExitLoop
+		Else
+			$OldActor  = $item[1]
+		EndIF
 
-			Select
-				  Case Is_Loot($item)
-					 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
-				  Case Is_Mob($item)
-					 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
-				  Case Is_Shrine($item)
-					 handle_Shrine($item)
-				  Case Is_Coffre($item)
-					 handle_Coffre($item)
-				  ;Case Is_Decor_Breakable($item) TODO : Not Used for the moment the lists are empty ! 
-				;	 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
-				  Case Is_Health($item)
-					 handle_Health($item)
- 				  Case Is_Power($item)
- 					 handle_Power($item)
-			EndSelect
+		Select
+			   Case $item[13] = $ITEM_TYPE_LOOT
+				 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
+			   Case $item[13] = $ITEM_TYPE_MOB
+				 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+			   Case $item[13] = $ITEM_TYPE_SHRINE
+				 handle_Shrine($item)
+			   Case $item[13] = $ITEM_TYPE_CHEST
+				 handle_Coffre($item)
+			  ;Case $item[13] = $ITEM_TYPE_DECOR  TODO : Not Used for the moment the lists are empty ! 
+			;	 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+			   Case $item[13] = $ITEM_TYPE_HEALTH
+				 handle_Health($item)
+			   Case $item[13] = $ITEM_TYPE_POWER
+				 handle_Power($item)
+		EndSelect
 
-			Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
+		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 
-		WEnd
+	WEnd
 
-	EndIf
 EndFunc   ;==>Attack
 
 Func DetectElite($Guid)

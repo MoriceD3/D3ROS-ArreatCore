@@ -44,7 +44,7 @@ Global Const $ITEM_TYPE_POWER   = 5
 Global Const $ITEM_TYPE_LOOT    = 6
 Global Const $ITEM_TYPE_DECOR   = 7
 
-Global $range_shrine = 35
+Global $range_shrine = 50
 Global $range_health = 35
 Global $range_power  = 35
 Global $range_chest  = 50
