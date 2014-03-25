@@ -264,6 +264,25 @@ Func LevelAreaConstants()
 	Global $PvPArena = 0x4d9c
 EndFunc   ;==>LevelAreaConstants
 
+Func handle_banlist($coords_ban)
+	If StringInStr($handle_banlist1, $coords_ban) = false Then
+		_log("banlist 1 -> " & $coords_ban)
+		$handle_banlist1 = $handle_banlist1 & "|" & $coords_ban
+	ElseIf StringInStr($handle_banlist1, $coords_ban)  And StringInStr($handle_banlist2, $coords_ban) = false Then
+		_log("banlist 2 -> " & $coords_ban)
+		$handle_banlist2 = $handle_banlist2 & "|" & $coords_ban
+	ElseIf StringInStr($handle_banlist2, $coords_ban)  Then
+		_log("banlist def -> " & $coords_ban)
+		$handle_banlistdef = $handle_banlistdef & "|" & $coords_ban
+	 EndIf
+	 				_log("banlist 1 -> " & $handle_banlist1)
+
+				_log("banlist 2 -> " & $handle_banlist2)
+
+			_log("banlist def -> " & $handle_banlistdef)
+
+EndFunc   ;==>handle_banlist
+
 Func xml_to_item($name, $stats)
 	$rules_name = "(?i){c:[a-z0-9]*}([a-z0-9éèêëîïìâàäûüùöôòÿ" & @CRLF & " \+ \% \- \’ \' ]*){/c}"
 	$rules_stats = "(?i){c:[a-z0-9]*}([a-z0-9éèêëîïìâàäûüùöôòÿ" & @CRLF & " \+ \% \- \’ \' ]*){/c}"

@@ -106,9 +106,6 @@ Global $grabskip = 0
 Global $maxhp
 
 Global $elite = 0
-Global $handle_banlist1 = ""
-Global $handle_banlist2 = ""
-Global $handle_banlistdef = ""
 Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 

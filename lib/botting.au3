@@ -124,9 +124,6 @@ Func _botting()
 		If _onloginscreen() = False And _playerdead() = False And _ingame() = True Then
 			$timermaxgamelength = TimerInit()
 			If _dorun() = True Then
-				$handle_banlist1 = ""
-				$handle_banlist2 = ""
-				$handle_banlistdef = ""
 				$Try_ResumeGame = 0
 				$Try_Logind3 = 0
 				$BreakCounter += 1;on ce met a compter les games avant la pause

@@ -2644,25 +2644,6 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
  EndFunc   ;==>handle_Loot
 
-Func handle_banlist($coords_ban)
-	If StringInStr($handle_banlist1, $coords_ban) = false Then
-		_log("banlist 1 -> " & $coords_ban)
-		$handle_banlist1 = $handle_banlist1 & "|" & $coords_ban
-	ElseIf StringInStr($handle_banlist1, $coords_ban)  And StringInStr($handle_banlist2, $coords_ban) = false Then
-		_log("banlist 2 -> " & $coords_ban)
-		$handle_banlist2 = $handle_banlist2 & "|" & $coords_ban
-	ElseIf StringInStr($handle_banlist2, $coords_ban)  Then
-		_log("banlist def -> " & $coords_ban)
-		$handle_banlistdef = $handle_banlistdef & "|" & $coords_ban
-	 EndIf
-	 				_log("banlist 1 -> " & $handle_banlist1)
-
-				_log("banlist 2 -> " & $handle_banlist2)
-
-			_log("banlist def -> " & $handle_banlistdef)
-
-EndFunc   ;==>handle_banlist
-
 ;;--------------------------------------------------------------------------------
 ;;      Attack()
 ;;--------------------------------------------------------------------------------
