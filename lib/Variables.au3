@@ -114,7 +114,7 @@ Global $Table_Coffre = [0]
 Global $Table_BanMonster  = [0]
 Global $Table_Monster  = [0]
 Global $Table_SpecialMonster  = [0]
-Global $List_BanItemStartName = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail"
+Global $List_BanItemStartName = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal"
 Global $Table_BanItemStartName = [0]
 
 Global $Byte_Full_Inventory[2]
