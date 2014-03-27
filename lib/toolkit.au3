@@ -1654,7 +1654,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	$grabtimeout = 0
 	$killtimeout = 0
 
-	If Not $StashAndRepair Then
+	If Not $Execute_StashAndRepair Then
 	   If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
 			$GameFailed = 1
 			Return
@@ -1678,7 +1678,9 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			ExitLoop
 		EndIf
 
-		GestSpellcast(0, 0, 0)
+		If Not $Execute_StashAndRepair Then
+		   GestSpellcast(0, 0, 0)
+		EndIf
 
 		$CurrentLoc = GetCurrentPos()
 		$xd = $lastwp_x - $CurrentLoc[0]
@@ -5114,12 +5116,14 @@ EndFunc
 Func StashAndRepair()
 
 	_log("Func StashAndRepair")
+	
 	Local $Repair = 0
+	$Execute_StashAndRepair = True
 	$FailOpen_BookOfCain = 0
+	$SkippedMove = 0
+	
 	$RepairORsell += 1
 	$item_to_stash = 0
-	$SkippedMove = 0
-	$StashAndRepair = True
 
 	If Not $PartieSolo Then WriteMe($WRITE_ME_SALE) ; TChat
 
@@ -5148,8 +5152,8 @@ Func StashAndRepair()
 		Sleep(500)
 		InteractByActorName('Player_Shared_Stash')
 		Sleep(700)
+		
 		Local $stashtry = 0
-
 		While _checkStashopen() = False
 			If $stashtry <= 4 Then
 				_log('Fail to open Stash')
@@ -5198,7 +5202,7 @@ Func StashAndRepair()
 				EndIf
 				Sleep(5000)
 			Else
-				$ItemToStash = $ItemToStash + 1
+				$ItemToStash += 1
 			EndIf
 		Next
 
@@ -5305,7 +5309,7 @@ Func StashAndRepair()
 	Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
 	BuyPotion()
 
-    If $Repair = 0 Then
+    If Not $Repair Then
 	   Repair()
     EndIf
 
@@ -5350,7 +5354,7 @@ Func StashAndRepair()
     Send($KeyCloseWindows)
     Sleep(Random(100, 200))
 
-	$StashAndRepair = False
+	$Execute_StashAndRepair = False
 
 EndFunc   ;==>StashAndRepair
 

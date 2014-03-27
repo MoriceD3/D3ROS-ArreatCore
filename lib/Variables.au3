@@ -60,9 +60,9 @@ Global $PauseRepasCounter = 0
 Global $tempsPauseGame 	  = 0
 Global $tempsPauserepas   = 0
 
-Global $FailOpen_BookOfCain = 0
-Global $StashAndRepair = False
-Global $PortBack 	   = False
+Global $Execute_StashAndRepair  = False
+Global $FailOpen_BookOfCain 	= 0
+Global $PortBack 	   			= False
 
 Global $Hero_Axe_Z = 10
 Global $TableBannedActors = [0]
