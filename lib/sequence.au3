@@ -195,13 +195,6 @@ Func SendSequence(ByRef $arr_sequence)
 	If $sequence_save = 1 Then
 		; ON ENVOIT ICI L'ARRAY A LA FONCTION DE DEPLACEMENT
 
-		If $autobuff Then
-			Sleep(500)
-			buffinit()
-			_log("enclenchement auto du buffinit()")
-		EndIf
-
-
 		$arr_sequence = reverse_arr($arr_sequence)
 		;**TEMPORAIRE**
 		bloc_sequence($arr_sequence)
@@ -418,6 +411,12 @@ Func sequence()
 
 					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
 					
+					If $autobuff Then ; Buff avant de prendre le WP
+					   Sleep(500)
+					   buffinit()
+					   _Log("enclenchement auto du buffinit()")
+					EndIf
+					
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
 
@@ -603,6 +602,11 @@ Func sequence()
 					ElseIf StringInStr($line, "safeportback()", 2) Then; safeportback() detected
 						SafePortBack()
 					ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportback() detected
+						Sleep(500)
+						buffinit() ; on Buff avant de prendre le portal ;git 4
+						_Log("enclenchement auto du buffinit()")
+						
+						Sleep(500)
 						SafePortStart()
 					ElseIf StringInStr($line, "nobloc()", 2) Then ;InteractByActorName detected
 

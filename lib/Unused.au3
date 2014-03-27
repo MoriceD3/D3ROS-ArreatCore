@@ -930,3 +930,39 @@ Func offset_spell_search($str)
 
 EndFunc   ;==>offset_spell_search
 #ce
+#cs
+Func FormatNumber($StringToFormat)
+	Local $StringFormatted = ""
+	Local $ArrayStringToFormat = StringSplit($StringToFormat, "")
+	Local $counterForSeparator = 1
+	For $i = $ArrayStringToFormat[0] To 1 Step -1
+		If $counterForSeparator = 3 Then
+			$StringFormatted = " " & $ArrayStringToFormat[$i] & $StringFormatted
+			$counterForSeparator = 0
+		Else
+			$StringFormatted = $ArrayStringToFormat[$i] & $StringFormatted
+		EndIf
+		$counterForSeparator += 1
+	Next
+	Return $StringFormatted
+EndFunc   ;==>FormatNumber
+#ce
+#cs
+;;--------------------------------------------------------------------------------
+; Function:             _format_time()
+; Description:          Format time by length
+;
+; Note(s): faster than YoPens : 100% if < 1mn, 150% if < 1h, 30% if more
+;;--------------------------------------------------------------------------------
+Func _format_time($mS)
+        Switch $mS
+                Case 0 To 59999                 ; less than 1 mn
+                        Return Round(($mS / 1000), 2) & " s"
+                Case 60000 To 359999    ; 1 mn to 1 hour
+                        Return Int($mS / 60000) & " mn " & Round(($mS / 1000) - Int(Int($mS / 60000) * 60)) & " s"
+                Case Else                               ; more than 1 hour
+                        Return Int($mS / 3600000) & "h " & Int((Int($mS / 60000) - Int(Int($mS / 3600000) * 3600) / 60)) & "mn " & Round(($mS / 1000) - Int($mS / 3600000) * 3600 - Int(Int($mS / 60000) - Int(Int($mS / 3600000) * 3600) / 60) * 60) & "s"
+        EndSwitch
+        Return $mS
+EndFunc   ;==>_format_time
+#ce
