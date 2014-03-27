@@ -51,8 +51,11 @@ Global $range_decor  = 18
 Global $range_chest  = 50
 
 ; MoveTo
-Global Const $Smith 		= 1
-Global Const $Potion_Vendor = 2
+Global Const $MOVETO_SMITH 		   = 1
+Global Const $MOVETO_POTION_VENDOR = 2
+Global Const $MOVETO_REPAIR_VENDOR = 3
+Global Const $MOVETO_BOOKOFCAIN    = 4
+Global Const $MOVETO_PORTAL	       = 5
 
 ; global pour prendre des pause
 Global $BreakCounter 	  = 0

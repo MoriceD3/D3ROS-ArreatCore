@@ -488,6 +488,14 @@ Func MapItemWithLvl($items, $snowithlvl, $indexForBGID)
 	Return $newItems
 EndFunc   ;==>MapItemWithLvl
 
+Func IsTeleport()
+	if _memoryRead( _memoryRead($_Myoffset + 0x1a4, $d3, "ptr") + 0x18, $d3, "int") = 31 Then
+		return true
+	EndIf
+
+	return false
+EndFunc
+
 ;;--------------------------------------------------------------------------------
 ;;      SkipDialog()
 ;;--------------------------------------------------------------------------------

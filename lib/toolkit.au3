@@ -3065,14 +3065,7 @@ Global $VendorTabSell = 0
 Func Repair()
 	GetAct()
 
-	Switch $Act
-	        Case 1
-	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074,1,25)
-	        Case 2
-	                ;do nothing act 2
-	        Case 3 To 4
-	                ;do nothing act 3-4
-	EndSwitch
+	MoveTo($MOVETO_REPAIR_VENDOR)
 
 	InteractByActorName($RepairVendor)
 
@@ -4513,7 +4506,7 @@ Func StashAndRepair()
 	$ToRecycle = _ArrayFindAll($items, "Recycle", 0, 0, 0, 1, 2)
 	If $ToRecycle <> -1 Then ; si item a recyclé
 
-	   MoveTo($Smith)
+	   MoveTo($MOVETO_SMITH)
 
 	   InteractByActorName("PT_Blacksmith_RepairShortcut")
 	   Sleep(700)
@@ -4585,7 +4578,7 @@ Func StashAndRepair()
 	   Sleep(Random(500, 1000))
 
 	   If $ToTrash <> -1 Then  ;si item a vendre
-		  MoveTo($Smith)
+		  MoveTo($MOVETO_SMITH)
 	   EndIf
 
     EndIf ; fin recyclage
@@ -4811,27 +4804,8 @@ Func SafePortBack()
 	$Curentarea = GetLevelAreaId()
 	_log('cur area :' & $Curentarea)
 	;Go to center according to act
-	Switch $Act
-		Case 1 ; act 1
-			MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 25)
-			MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 25)
-			MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 25)
 
-		Case 2 ; act 2
-			;mtp a definir
-
-
-		Case 3 ; act 3
-			MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
-			MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
-			MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
-
-		Case 4 ; act 4
-			MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
-			MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
-			MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
-
-	EndSwitch
+	MoveTo($MOVETO_PORTAL)
 
 	Local $HearthPortalTry = 0
 	Local $NewAreaOk = 0
@@ -5611,42 +5585,26 @@ $BanAffixList="poison_humanoid|"&$BanAffixList
 	Send($KeyCloseWindows)
 	sleep(50)
 
-	Switch $Act
-			Case 1
-				MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561,0,20)
-			Case 2
-				;do nothing act 2
-			Case 3 To 4
-				MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305,0,20)
-	EndSwitch
+	MoveTo($MOVETO_BOOKOFCAIN)
 
+    InteractByActorName("All_Book_Of_Cain")
 
-        InteractByActorName("All_Book_Of_Cain")
-
-        While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error(3)
-                ;_log("Ui : " & fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1512) & " Error : " &  fastcheckuiitemvisible("Root.TopLayer.error_notify.error_text", 1, 1185))
-                _log("tour boucle")
-                If NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
-				   If Not _checkdisconnect() Then
-					  InteractByActorName("All_Book_Of_Cain")
-				   Else
-				      _Log("Failed to open Book Of Cain")
-					  $FailOpen_BookOfCain = 1
-					  Return False
-				   EndIf
-                EndIf
-        WEnd
-        While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-                sleep(50)
-        Wend
-	EndFunc
-
-Func IsTeleport()
-	if _memoryRead( _memoryRead($_Myoffset + 0x1a4, $d3, "ptr") + 0x18, $d3, "int") = 31 Then
-		return true
-	EndIf
-
-	return false
+    While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error(3)
+            ;_log("Ui : " & fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1512) & " Error : " &  fastcheckuiitemvisible("Root.TopLayer.error_notify.error_text", 1, 1185))
+            _log("tour boucle")
+            If NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
+			   If Not _checkdisconnect() Then
+				  InteractByActorName("All_Book_Of_Cain")
+			   Else
+			      _Log("Failed to open Book Of Cain")
+				  $FailOpen_BookOfCain = 1
+				  Return False
+			   EndIf
+            EndIf
+    WEnd
+    While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+            sleep(50)
+    Wend
 EndFunc
 
 Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act avant d'interagir
@@ -5658,24 +5616,53 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	EndIf
 
 	Switch $BeforeInteract
-
-		 Case 1 ; Smith
+		 Case $MOVETO_SMITH ; Smith
 			Switch $Act
 			   Case 1
-					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129,1,25)
-			   Case 2
-					 ;do nothing act 2
-			   Case 3 To 4
+					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 25)
+			   Case 2 To 4
 					 ;do nothing act 3 and 4
 			EndSwitch
-		 Case 2 ; Potion_Vendor
+		 Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
-				  Case 1
-						MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561,1,25)
-				  Case 2 to 4
-						;do nothing act 2, 3 and 4
+				Case 1
+					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 25)
+				Case 2 to 4
+					;do nothing act 2, 3 and 4
 			EndSwitch
-
+		Case $MOVETO_REPAIR_VENDOR
+			Switch $Act
+	        Case 1
+	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 25)
+	        Case 2 To 4
+	                ;do nothing act 3-4
+	    Case $MOVETO_BOOKOFCAIN
+	    	Switch $Act
+				Case 1
+					MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 25)
+				Case 2
+					;do nothing act 2
+				Case 3 To 4
+					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 25)
+			EndSwitch
+	    Case $MOVETO_PORTAL
+	    	Switch $Act
+				Case 1 ; act 1
+					MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 25)
+					MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 25)
+					MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 25)
+				Case 2 ; act 2
+					;mtp a definir
+				Case 3 ; act 3
+					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
+					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
+					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
+				Case 4 ; act 4
+					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
+					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
+					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
+			EndSwitch
+		EndSwitch
 	EndSwitch
 
 	Sleep(100)
@@ -5703,7 +5690,7 @@ Func BuyPotion()
 	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
 	   If $potinstock <= ($PotionStock + 10) Then
 
-		  MoveTo($Potion_Vendor) ; on se positionne
+		  MoveTo($MOVETO_POTION_VENDOR) ; on se positionne
 
 		  InteractByActorName($PotionVendor)
 		  Sleep(700)
@@ -5716,7 +5703,7 @@ Func BuyPotion()
 				  InteractByActorName($PotionVendor)
 			   Else
 				  _Log('Failed to open Vendor after 4 try')
-				  MoveTo($Potion_Vendor) ; on se repositionne
+				  MoveTo($MOVETO_POTION_VENDOR) ; on se repositionne
 				  $GameFailed = 1
 				  Return False  ; si pas fenêtre on sort de la fonction
 			   EndIf
@@ -5746,7 +5733,7 @@ Func BuyPotion()
 		  Send($KeyCloseWindows); ferme l'inventaire
 		  Sleep(500)
 
-		  MoveTo($Potion_Vendor) ; on se repositionne
+		  MoveTo($MOVETO_POTION_VENDOR) ; on se repositionne
 	   Else
 		  _Log('Vous avez asser potion')
 	   EndIf

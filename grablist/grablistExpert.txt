@@ -9,7 +9,10 @@ fchestArmor=Sockets:3 and Resall:60 and (Str:150 or Int:150 or Dex:150) and Vita
 fhead=Sockets:1 and (Str:100 or Int:100 or Dex:100)
 fboots=MovSpeed:12 and Resall:40 and (Str:100 or Int:100 or Dex:100)
 
-GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_Smith_Drop|Crafting_Tier_|CraftingReagent_Legendary_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|Crafting_Looted_Reagent_|Crafting_Magic_|Crafting_AssortedParts_|Crafting_Rare_
+GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_|Crafting_Tier_|CraftingReagent_Legendary_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|Crafting_Looted_Reagent_|Crafting_Magic_|Crafting_AssortedParts_|Crafting_Rare_
+
+weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Mace
+head=voodooMask_|spiritStone_|WizardHat_|Helm_
 
 weapon1h[q:6](fweapon)
 Amulet_[q:6]
