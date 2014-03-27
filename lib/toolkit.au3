@@ -2043,6 +2043,9 @@ Func IterateFilterAttackV4($IgnoreList)
 					Case Is_Power($item)
 						$handle = True
 						$Item[13] = $ITEM_TYPE_POWER
+					Case Is_Decor_Breakable($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_DECOR
 				EndSelect
 			EndIf
 
@@ -2376,16 +2379,18 @@ Func Is_Mob(ByRef $item)
 	EndSelect
 EndFunc   ;==>Is_Mob
 
-#cs
 Func Is_Decor_Breakable(ByRef $item)
-	; TODO : Correct this as lists are not used !
-	If checkfromlist($BandecorList, $item[1]) = 0 And checkFromList($decorList, $item[1]) And $item[6] <> -1 And $item[9] < 18  Then
-		Return True
-	Else
-		Return False
-	EndIf
-EndFunc   ;==>Is_Mob
-#ce 
+	Select 
+		Case $item[9] > $range_decor
+			Return False
+		Case $item[6] = -1
+			Return False
+		Case IsItemInTable($Table_Decor, $item[1])
+			Return True
+		Case Else
+			Return False
+	EndSelect
+EndFunc   ;==>Is_Decor_Breakable
 
 Func Is_Loot(ByRef $item)
 	Select 
@@ -2697,8 +2702,9 @@ Func Attack()
 				 handle_Shrine($item)
 			   Case $item[13] = $ITEM_TYPE_CHEST
 				 handle_Coffre($item)
-			  ;Case $item[13] = $ITEM_TYPE_DECOR  TODO : Not Used for the moment the lists are empty ! 
-			;	 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+			   Case $item[13] = $ITEM_TYPE_DECOR
+			   	 ; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
+				 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
 			   Case $item[13] = $ITEM_TYPE_HEALTH
 				 handle_Health($item)
 			   Case $item[13] = $ITEM_TYPE_POWER

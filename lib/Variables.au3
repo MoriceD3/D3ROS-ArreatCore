@@ -47,6 +47,7 @@ Global Const $ITEM_TYPE_DECOR   = 7
 Global $range_shrine = 50
 Global $range_health = 35
 Global $range_power  = 35
+Global $range_decor  = 18
 Global $range_chest  = 50
 
 ; MoveTo
@@ -109,10 +110,10 @@ Global $elite = 0
 Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 
-Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $Table_Coffre = [0]
 Global $Table_BanMonster  = [0]
 Global $Table_Monster  = [0]
+Global $Table_Decor  = [0]
 Global $Table_SpecialMonster  = [0]
 Global $List_BanItemStartName = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal"
 Global $Table_BanItemStartName = [0]

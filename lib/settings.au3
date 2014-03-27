@@ -50,6 +50,8 @@ Global $g_time = 7500
 Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
+Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|BonePile"
+Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $grabListFile = ""
 Global $Potions = "healthPotion_Console"
 Global $repairafterxxgames = Round(Random(4, 8))
@@ -250,6 +252,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	;; Fin d'ajout config run
 
 	$List_Monster = IniRead($profilFile, "Run info", "monsterList", $List_Monster)
+	$List_Decor = IniRead($profilFile, "Run info", "decorList", $List_Decor)
+	$List_Coffre = IniRead($profilFile, "Run info", "chestList", $List_Coffre)
 	$List_SpecialMonster = IniRead($profilFile, "Run info", "SpecialmonsterList", $List_SpecialMonster)
 
 	;Selection de la difficulte et du pm des monstres
@@ -319,6 +323,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	LoadTableFromString($Table_Monster, $List_Monster)
 	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
 	LoadTableFromString($Table_BanItemStartName, $List_BanItemStartName)
+	LoadTableFromString($Table_Decor, $List_Decor)
 
 EndFunc   ;==>LoadConfigs
 

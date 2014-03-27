@@ -237,7 +237,7 @@ Func SpecialML($String)
 	If Not $String = "" Then
 		$List_SpecialMonster = $String
 		LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster) ; Chargement de la nouvelle table
-		_log("Ajout d'une nouvelle SpecialMonsterlist : " & $List_SpecialMonster)
+		_log("Remplacement de la SpecialMonsterlist : " & $List_SpecialMonster)
 	EndIf
 EndFunc   ;==>SpecialMonsterList
 
@@ -256,7 +256,7 @@ Func MonsterList($String)
 	If Not $String = "" Then
 		$List_Monster = $String
 		LoadTableFromString($Table_Monster, $List_Monster) ; Chargement de la nouvelle table
-		_log("Ajout d'une nouvelle MonsterList : " & $List_Monster)
+		_log("Remplacement de la MonsterList : " & $List_Monster)
 	EndIf
 EndFunc   ;==>MonsterList
 
@@ -267,6 +267,22 @@ Func BanList($String)
 		_log("Ajout d'une nouvelle BanList : " & $List_BanMonster)
 	EndIf
 EndFunc   ;==>BanList
+
+Func ChestList($String)
+	If Not $String = "" Then
+		$List_Coffre = $String
+		LoadTableFromString($Table_Coffre, $List_Coffre) ; Chargement de la nouvelle table
+		_log("Remplacement de la ChestList : " & $List_Coffre)
+	EndIf
+EndFunc   ;==>ChestList
+
+Func DecorList($String)
+	If Not $String = "" Then
+		$List_Decor = $String
+		LoadTableFromString($Table_Decor, $List_Decor) ; Chargement de la nouvelle table
+		_log("Remplacement de la DecorList : " & $List_Decor)
+	EndIf
+EndFunc   ;==>DecorList
 
 Func MaxGameLength($String)
 	If Not $String = "" Then
@@ -494,6 +510,18 @@ Func sequence()
 					$line = StringReplace($line, "banlist=", "", 0, 2)
 					_log("Enclenchement d'un Banlist() line : " & $i + 1)
 					BanList($line)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "decorlist=", 2) Then; Decorlist detected
+					$line = StringReplace($line, "decorlist=", "", 0, 2)
+					_log("Enclenchement d'un Decorlist() line : " & $i + 1)
+					DecorList($line)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "chestlist=", 2) Then; Chestlist detected
+					$line = StringReplace($line, "chestlist=", "", 0, 2)
+					_log("Enclenchement d'un Chestlist() line : " & $i + 1)
+					ChestList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
