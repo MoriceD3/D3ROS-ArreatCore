@@ -43,12 +43,15 @@ Global Const $ITEM_TYPE_HEALTH  = 4
 Global Const $ITEM_TYPE_POWER   = 5
 Global Const $ITEM_TYPE_LOOT    = 6
 Global Const $ITEM_TYPE_DECOR   = 7
+Global Const $ITEM_TYPE_RACK    = 8
+
 
 Global $range_shrine = 50
 Global $range_health = 35
 Global $range_power  = 35
 Global $range_decor  = 18
 Global $range_chest  = 50
+Global $range_rack  = 50
 
 ; MoveTo
 Global Const $MOVETO_SMITH 		   = 1
@@ -114,6 +117,7 @@ Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 
 Global $Table_Coffre = [0]
+Global $Table_Rack = [0]
 Global $Table_BanMonster  = [0]
 Global $Table_Monster  = [0]
 Global $Table_Decor  = [0]

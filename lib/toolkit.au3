@@ -1718,7 +1718,7 @@ Func IterateFilterAttackV4($IgnoreList)
 
 			If Is_Interact($item, $IgnoreList) Then
 				Select
-					Case Is_Shrine($item) 
+					Case Is_Shrine($item)
 						$handle = True
 						$Item[13] = $ITEM_TYPE_SHRINE
 					Case Is_Mob($item)
@@ -1730,6 +1730,9 @@ Func IterateFilterAttackV4($IgnoreList)
 					Case Is_Coffre($item)
 						$handle = True
 						$Item[13] = $ITEM_TYPE_CHEST
+					Case Is_Rack($item)
+						$handle = True
+						$Item[13] = $ITEM_TYPE_RACK
 					Case Is_Health($item)
 						$handle = True
 						$Item[13] = $ITEM_TYPE_HEALTH
@@ -1826,10 +1829,10 @@ Func IterateFilterAffixV2()
 	startIterateObjectsList($index, $offset, $count)
 	Dim $item_affix_2D[1][$TableSizeGuidStruct+1]
 	Local $z = 0
-	
+
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-	
+
 	$CurrentLoc = GetCurrentPos()
 	$pv_affix=getlifep()
 
@@ -2045,7 +2048,7 @@ Func UpdateObjectsPos($offset)
 EndFunc   ;==>UpdateObjectsPos
 
 Func Is_Shrine(ByRef $item)
-	Select 
+	Select
 		Case Not $TakeShrines
 			Return False
 		Case $item[9] > $range_shrine
@@ -2058,7 +2061,7 @@ Func Is_Shrine(ByRef $item)
 EndFunc   ;==>Is_Shrine
 
 Func Is_Mob(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $a_range
 			Return False
 		Case IsItemInTable($Table_BanMonster, $item[1])
@@ -2073,7 +2076,7 @@ Func Is_Mob(ByRef $item)
 EndFunc   ;==>Is_Mob
 
 Func Is_Decor_Breakable(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $range_decor
 			Return False
 		Case $item[6] = -1
@@ -2086,7 +2089,7 @@ Func Is_Decor_Breakable(ByRef $item)
 EndFunc   ;==>Is_Decor_Breakable
 
 Func Is_Loot(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $g_range
 			Return False
 		Case ($item[5] = 2 And $item[6] = -1)
@@ -2099,7 +2102,7 @@ Func Is_Loot(ByRef $item)
 EndFunc   ;==>Is_Loot
 
 Func Is_Interact(ByRef $item, $IgnoreList)
-	Select 
+	Select
 		Case (($item[0] = 0xFFFFFFFF) Or ($item[0] = "")) ; Mauvais Item
 			Return False
 		Case ($item[9] > $g_range And $item[9] > $a_range) ; Trop loin
@@ -2120,7 +2123,7 @@ Func Is_Interact(ByRef $item, $IgnoreList)
 EndFunc   ;==>Is_Interact
 
 Func Is_Coffre(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $range_chest
 			Return False
 		Case IsItemInTable($Table_Coffre, $item[1])
@@ -2130,8 +2133,19 @@ Func Is_Coffre(ByRef $item)
 	EndSelect
 EndFunc
 
+Func Is_Rack(ByRef $item)
+	Select
+		Case $item[9] > $range_rack
+			Return False
+		Case IsItemInTable($Table_Rack, $item[1])
+			Return True
+		Case Else
+			Return False
+	EndSelect
+EndFunc
+
 Func Is_Health(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $range_health
 			Return False
 		Case (StringInStr($item[1], "HealthWell") Or StringInStr($item[1], "HealthGlobe"))
@@ -2142,7 +2156,7 @@ Func Is_Health(ByRef $item)
 EndFunc   ;==>Is_Health
 
 Func Is_Power(ByRef $item)
-	Select 
+	Select
 		Case $item[9] > $range_power
 			Return False
 		Case StringInStr($item[1], "PowerGlobe")
@@ -2392,6 +2406,8 @@ Func Attack()
 			   Case $item[13] = $ITEM_TYPE_SHRINE
 				 handle_Shrine($item)
 			   Case $item[13] = $ITEM_TYPE_CHEST
+				 handle_Coffre($item)
+			   Case $item[13] = $ITEM_TYPE_RACK
 				 handle_Coffre($item)
 			   Case $item[13] = $ITEM_TYPE_DECOR
 			   	 ; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
@@ -2871,7 +2887,7 @@ Func TakeWPV2($WPNumber = 0)
     Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
 
-	If $GameFailed = 1 Then 
+	If $GameFailed = 1 Then
 		Return False
 	EndIf
 
@@ -4393,12 +4409,12 @@ EndFunc
 Func StashAndRepair()
 
 	_log("Func StashAndRepair")
-	
+
 	Local $Repair = 0
 	$Execute_StashAndRepair = True
 	$FailOpen_BookOfCain = 0
 	$SkippedMove = 0
-	
+
 	$RepairORsell += 1
 	$item_to_stash = 0
 
@@ -4429,7 +4445,7 @@ Func StashAndRepair()
 		Sleep(500)
 		InteractByActorName('Player_Shared_Stash')
 		Sleep(700)
-		
+
 		Local $stashtry = 0
 		While _checkStashopen() = False
 			If $stashtry <= 4 Then
@@ -5772,7 +5788,7 @@ Func IsBannedActor($actor)
 	Return False
 EndFunc
 
-Func LoadTableFromString(ByRef $Table, ByRef $string) 
+Func LoadTableFromString(ByRef $Table, ByRef $string)
 	$Table = StringSplit($string, "|")
 EndFunc
 

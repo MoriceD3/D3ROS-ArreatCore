@@ -51,7 +51,8 @@ Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
 Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|BonePile"
-Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
+Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest"
+Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $grabListFile = ""
 Global $Potions = "healthPotion_Console"
 Global $repairafterxxgames = Round(Random(4, 8))
@@ -254,6 +255,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$List_Monster = IniRead($profilFile, "Run info", "monsterList", $List_Monster)
 	$List_Decor = IniRead($profilFile, "Run info", "decorList", $List_Decor)
 	$List_Coffre = IniRead($profilFile, "Run info", "chestList", $List_Coffre)
+	$List_Rack = IniRead($profilFile, "Run info", "rackList", $List_Rack)
 	$List_SpecialMonster = IniRead($profilFile, "Run info", "SpecialmonsterList", $List_SpecialMonster)
 
 	;Selection de la difficulte et du pm des monstres
@@ -319,6 +321,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	;Chargement des tables
 	LoadTableFromString($Table_Coffre, $List_Coffre)
+	LoadTableFromString($Table_Rack, $List_Rack)
 	LoadTableFromString($Table_BanMonster, $List_BanMonster)
 	LoadTableFromString($Table_Monster, $List_Monster)
 	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
@@ -432,9 +435,9 @@ Func InitSkillHeros($skillHeros)
 	$Dummy = IniRead($skillHeros, "Run info", "gestion_affixe_loot", $gestion_affixe_loot)
 	$gestion_affixe_loot = Trim(StringLower($Dummy)) == "true"
 	$BanAffixList = IniRead($skillHeros, "Run info", "BanAffixList", $BanAffixList)
-	$Dummy = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)		
+	$Dummy = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)
 	$Gest_affixe_ByClass = Trim(StringLower($Dummy)) == "true"
-	
+
 	$life_arcane = IniRead($skillHeros, "Run info", "Life_Arcane", $life_arcane)
 	$life_peste = IniRead($skillHeros, "Run info", "Life_Peste", $life_peste)
 	$life_profa = IniRead($skillHeros, "Run info", "Life_Profa", $life_profa)
@@ -488,7 +491,7 @@ Func InitSkillHeros($skillHeros)
 	EndIf
 	#ce
 EndFunc   ;==>InitSkillHeros
- 
+
  Func Init_GrabListTab()
 
 	Dim $tab_temp = StringSplit($grablist, "|", 2)
@@ -573,7 +576,7 @@ EndFunc   ;==>InitSkillHeros
 		$detect = 0
 	Next
 EndFunc   ;==>Init_GrabListTab
- 
+
 Func Init_grablistFile($grabListPath = "grablist/")
 	Dim $txttoarray[1]
 	;local $load_file = ""
