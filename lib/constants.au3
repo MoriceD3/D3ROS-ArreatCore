@@ -4,6 +4,17 @@
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #endregion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+Global $Ofs_UI_A = 0x994
+Global $Ofs_UI_B = 0x0
+Global $Ofs_UI_C = 0x10
+Global $Ofs_UI_D = 0x0
+
+Global $Ofs_UI_nPtr = 0x10
+Global $Ofs_UI_Visible = 0x24
+Global $Ofs_UI_Name = 0x38
+Global $Ofs_UI_Text = 0xa58
+
+
 Global $_Const_MonsterType[10] = ["Unknown", "Undead", "Demon", "Beast", "Human", "Breakable", "Scenery", "Ally", "Team", "Helper"]
 Global $_Const_MonsterRace[12] = ["Unknown", "Unknown(INDEX ME!)", "Fallen", "GoatMen", "Rogue", "Skeleton", "Zombie", "Spider", "Triune", "WoodWraith", "Human", "Animal"]
 Global $_MonsterNameStringListID = 0x0000CB35 ;We use this to get local Names on monsters and NPC's

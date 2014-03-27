@@ -48,7 +48,116 @@ Func formatTime($time_milisecond)
 	EndIf
 EndFunc   ;==>formatTime
 
+;----------------------------------------------------------------------------------------------------------------------
+;   Fuction         _Array2DDelete(ByRef $ARRAY, $iDEL, $bCOL=False)
+;
+;   Description     Delete one row on a given index in an 1D/2D -Array
+;
+;   Parameter       $ARRAY      the array, where one row will deleted
+;                   $iDEL       Row(Column)-Index to delete
+;                   $bCOL       If True, delete column instead of row (default False)
+;
+;   Return          Succes      0   ByRef $ARRAY
+;                   Failure     1   set @error = 1; given array are not array
+;                                   set @error = 2; want delete column, but not 2D-array
+;                                   set @error = 3; index is out of range
+;
+; Author            BugFix (bugfix@autoit.de)
+;----------------------------------------------------------------------------------------------------------------------
+Func _Array2DDelete(ByRef $ARRAY, $iDEL, $bCOL = False)
+   If (Not IsArray($ARRAY)) Then Return SetError(1, 0, 1)
+   Local $UBound2nd = UBound($ARRAY, 2), $k
+   If $bCOL Then
+      If $UBound2nd = 0 Then Return SetError(2, 0, 1)
+      If ($iDEL < 0) Or ($iDEL > $UBound2nd - 1) Then Return SetError(3, 0, 1)
+   Else
+      If ($iDEL < 0) Or ($iDEL > UBound($ARRAY) - 1) Then Return SetError(3, 0, 1)
+   EndIf
+   If $UBound2nd = 0 Then
+      Local $arTmp[UBound($ARRAY) - 1]
+      $k = 0
+      For $i = 0 To UBound($ARRAY) - 1
+         If $i <> $iDEL Then
+            $arTmp[$k] = $ARRAY[$i]
+            $k += 1
+         EndIf
+      Next
+   Else
+      If $bCOL Then
+         Local $arTmp[UBound($ARRAY)][$UBound2nd - 1]
+         For $i = 0 To UBound($ARRAY) - 1
+            $k = 0
+            For $l = 0 To $UBound2nd - 1
+               If $l <> $iDEL Then
+                  $arTmp[$i][$k] = $ARRAY[$i][$l]
+                  $k += 1
+               EndIf
+            Next
+         Next
+      Else
+         Local $arTmp[UBound($ARRAY) - 1][$UBound2nd]
+         $k = 0
+         For $i = 0 To UBound($ARRAY) - 1
+            If $i <> $iDEL Then
+               For $l = 0 To $UBound2nd - 1
+                  $arTmp[$k][$l] = $ARRAY[$i][$l]
+               Next
+               $k += 1
+            EndIf
+         Next
+      EndIf
+   EndIf
+   $ARRAY = $arTmp
+   Return $ARRAY
+EndFunc   ;==>_Array2DDelete
 
+; #FUNCTION# =====================================================================
+; Name...........: __ArrayConcatenate
+; Description ...: Concatenate two 1D or 2D arrays
+; Syntax.........: __ArrayConcatenate(ByRef $avArrayTarget, Const ByRef $avArraySource)
+; Parameters ....: $avArrayTarget - The array to concatenate onto
+;             $avArraySource - The array to concatenate from - Must be 1D or 2D to match $avArrayTarget,
+;                          and if 2D, then Ubound($avArraySource, 2) <= Ubound($avArrayTarget, 2).
+; Return values .: Success - Index of last added item
+;             Failure - -1, sets @error to 1 and @extended per failure (see code below)
+; Author ........: Ultima
+; Modified.......: PsaltyDS - 1D/2D version, changed return value and @error/@extended to be consistent with __ArrayAdd()
+; Remarks .......:
+; Related .......: __ArrayAdd, _ArrayPush
+; Link ..........;
+; Example .......; Yes
+; ===============================================================================
+Func __ArrayConcatenate(ByRef $avArrayTarget, Const ByRef $avArraySource)
+   If Not IsArray($avArrayTarget) Then Return SetError(1, 1, -1); $avArrayTarget is not an array
+   If Not IsArray($avArraySource) Then Return SetError(1, 2, -1); $avArraySource is not an array
+
+   Local $iUBoundTarget0 = UBound($avArrayTarget, 0), $iUBoundSource0 = UBound($avArraySource, 0)
+   If $iUBoundTarget0 <> $iUBoundSource0 Then Return SetError(1, 3, -1); 1D/2D dimensionality did not match
+   If $iUBoundTarget0 > 2 Then Return SetError(1, 4, -1); At least one array was 3D or more
+
+   Local $iUBoundTarget1 = UBound($avArrayTarget, 1), $iUBoundSource1 = UBound($avArraySource, 1)
+
+   Local $iNewSize = $iUBoundTarget1 + $iUBoundSource1
+   If $iUBoundTarget0 = 1 Then
+      ; 1D arrays
+      ReDim $avArrayTarget[$iNewSize]
+      For $i = 0 To $iUBoundSource1 - 1
+         $avArrayTarget[$iUBoundTarget1 + $i] = $avArraySource[$i]
+      Next
+   Else
+      ; 2D arrays
+      Local $iUBoundTarget2 = UBound($avArrayTarget, 2), $iUBoundSource2 = UBound($avArraySource, 2)
+      If $iUBoundSource2 > $iUBoundTarget2 Then Return SetError(1, 5, -1); 2D boundry of source too large for target
+      ReDim $avArrayTarget[$iNewSize][$iUBoundTarget2]
+      For $r = 0 To $iUBoundSource1 - 1
+         For $c = 0 To $iUBoundSource2 - 1
+            $avArrayTarget[$iUBoundTarget1 + $r][$c] = $avArraySource[$r][$c]
+         Next
+      Next
+   EndIf
+
+   Return $iNewSize - 1
+EndFunc   ;==>__ArrayConcatenate
 
 Func FileTimeToNum(ByRef $FT)
    Return BITOr(BitShift(DllStructGetData($FT, 1), 32), DllStructGetData($FT, 2))

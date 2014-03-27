@@ -327,6 +327,324 @@ Func Ftp_Upload_To_Xml($file)
 		$Ftpc = _FTPClose($Open)
 	EndIf
 EndFunc   ;==>Ftp_Upload_To_Xml
+;;--------------------------------------------------------------------------------
+;;     Find Difficulty from vendor
+;;	   Get vendor Level and deduce game difficulty from it
+;;		$GameDifficulty = not yet determined, 1 = Norm, 2 = Nm, 3 = Hell, 4 = Inferno
+;;--------------------------------------------------------------------------------
+Func GetDifficulty()
+	If $GameDifficulty = 0 Then
+
+		Local $index, $offset, $count, $item[4]
+		startIterateLocalActor($index, $offset, $count)
+		While iterateLocalActorList($index, $offset, $count, $item)
+			If StringInStr($item[1], $RepairVendor) Then
+				Global $npclevel = IterateActorAtribs($item[0], $Atrib_Level)
+
+				Switch $npclevel
+					Case 1 To 59
+						Global $GameDifficulty = 1
+					Case 60 To 70
+						Global $GameDifficulty = 4
+				EndSwitch
+
+				ExitLoop
+			EndIf
+		WEnd
+		_log("Game Difficulty is : " & $GameDifficulty)
+	EndIf
+EndFunc   ;==>GetDifficulty
+
+;;--------------------------------------------------------------------------------
+; Function:			GetPackItemLevel($ACD, $_REQ)
+;;--------------------------------------------------------------------------------
+Func GetPackItemLevel($ACD, $_REQ)
+	;IterateLocalActor()
+	;$ACDIndex = _ArraySearch($__ACTOR, "0x" & Hex($_guid), 0, 0, 0, 1, 1, 1) ;this bitch is slow as hell
+	If $ACD = -1 Then Return False
+	$_Count = _MemoryRead($_ActorAtrib_Count, $d3, 'int')
+	If $_Count > 500 Then
+		_log("Attention la valeur de Count était de " & $_Count)
+		$_Count = 500
+	EndIf
+
+	$CurrentOffset = $_ActorAtrib_4
+	Dim $ACTORatrib
+	For $i = 0 To $_Count
+		$ACTORatrib = _MemoryRead($CurrentOffset, $d3, 'ptr')
+		If $ACTORatrib = $ACD Then
+			$test = _MemoryRead($CurrentOffset + 0x10, $d3, 'ptr')
+			$CurretOffset = $test
+			For $i = 0 To 825
+				$data = _MemoryRead($CurretOffset, $d3, 'ptr')
+				$CurretOffset = $CurretOffset + 0x4
+				If $data <> 0x0 Then
+					$AtribData = _MemoryRead($data + 0x4, $d3, 'ptr')
+					If StringLeft($AtribData, 7) = "0x0003B" Then
+						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
+						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
+							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
+						EndIf
+					EndIf
+					If StringLeft($AtribData, 7) = "0xFFFFF" Then
+						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
+						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
+							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
+						EndIf
+					EndIf
+				EndIf
+			Next
+			Return False
+		EndIf
+		$CurrentOffset = $CurrentOffset + $ofs_ActorAtrib_StrucSize
+	Next
+	Return False
+EndFunc   ;==>GetPackItemLevel
+
+;;--------------------------------------------------------------------------------
+;;	Getting Backpack Item Info, extended to show some more info
+;;  $bag = 0 for backpack and 15 for stash
+;;--------------------------------------------------------------------------------
+Func IterateBackpackExtendedWithLvl($bag = 0)
+	$list = IndexSNO($gameBalance)
+	$armorOffs = 0
+	$weaponOffs = 0
+	$otherOffs = 0
+	For $j = 0 To UBound($list) - 1
+		;19750 = armor, 19754 = weapon, 1953 = other
+		If ($list[$j][1] = 19750) Then
+			$armorOffs = $list[$j][0]
+		EndIf
+		If ($list[$j][1] = 19754) Then
+			$weaponOffs = $list[$j][0]
+		EndIf
+		If ($list[$j][1] = 19753) Then
+			$otherOffs = $list[$j][0]
+		EndIf
+	Next
+	Local $armorItems = GetLevels($armorOffs)
+	Local $weaponItems = GetLevels($weaponOffs)
+	Local $otherItems = GetLevels($otherOffs)
+	Local $data = IterateBackpack($bag)
+	Local $armorItemsWithLvl = MapItemWithLvl($data, $armorItems, 8)
+	Local $weaponItemsWithLvl = MapItemWithLvl($data, $weaponItems, 8)
+	Local $otherItemsWithLvl = MapItemWithLvl($data, $otherItems, 8)
+	Local $allItems[UBound($armorItemsWithLvl, 1)][UBound($armorItemsWithLvl, 2)]
+	For $i = 0 To UBound($allItems) - 1 Step 1
+		If $armorItemsWithLvl[$i][9] <> "" Then
+			;copy from $armorItemsWithLvl to all items
+			For $j = 0 To UBound($armorItemsWithLvl, 2) - 1 Step 1
+				$allItems[$i][$j] = $armorItemsWithLvl[$i][$j]
+			Next
+		ElseIf $weaponItemsWithLvl[$i][9] <> "" Then
+			;copy from $weaponItemsWithLvl to all items
+			For $j = 0 To UBound($weaponItemsWithLvl, 2) - 1 Step 1
+				$allItems[$i][$j] = $weaponItemsWithLvl[$i][$j]
+			Next
+		ElseIf $otherItemsWithLvl[$i][9] <> "" Then
+			;copy from $otherItemsWithLvl to all items
+			For $j = 0 To UBound($otherItemsWithLvl, 2) - 1 Step 1
+				$allItems[$i][$j] = $otherItemsWithLvl[$i][$j]
+			Next
+		EndIf
+	Next
+	Return $allItems
+EndFunc   ;==>IterateBackpackExtendedWithLvl
+
+
+;;--------------------------------------------------------------------------------
+;;	Maps snos containg a lvl to the item with that snoid
+;;--------------------------------------------------------------------------------
+Func MapItemWithLvl($items, $snowithlvl, $indexForBGID)
+	Local $newItems = $items
+	ReDim $newItems[UBound($items, 1)][UBound($items, 2) + UBound($snowithlvl, 2) + 9] ;add size for some new variables
+	For $i = 0 To UBound($items) - 1 Step 1
+		For $j = 0 To UBound($snowithlvl) - 1 Step 1
+			If $snowithlvl[$j][0] = $items[$i][$indexForBGID] Then
+				$newItems[$i][$indexForBGID + 1] = $snowithlvl[$j][1] ;ilvl
+				$newItems[$i][$indexForBGID + 2] = $snowithlvl[$j][2] ;min dmg
+				$newItems[$i][$indexForBGID + 3] = $snowithlvl[$j][3] ;;max dmg
+				$newItems[$i][$indexForBGID + 4] = $snowithlvl[$j][4] ;;min armor
+				$newItems[$i][$indexForBGID + 5] = $snowithlvl[$j][5] ;max armor
+				$newItems[$i][$indexForBGID + 6] = $snowithlvl[$j][6] ;min dmg modifier
+				$newItems[$i][$indexForBGID + 7] = $snowithlvl[$j][7] ;max dmg modifier
+				$newItems[$i][$indexForBGID + 8] = $snowithlvl[$j][8] ;gold
+				$newItems[$i][$indexForBGID + 9] = $snowithlvl[$j][9] ;weapon speed
+				;;some extra attributes
+				$newItems[$i][$indexForBGID + 10] = IterateActorAtribs($newItems[$i][0], $Atrib_Item_Quality_Level) ;quality lvl
+				$newItems[$i][$indexForBGID + 11] = IterateActorAtribs($newItems[$i][0], $Atrib_Strength_Item) ;str
+				$newItems[$i][$indexForBGID + 12] = IterateActorAtribs($newItems[$i][0], $Atrib_Vitality_Item) ;vit
+				$newItems[$i][$indexForBGID + 12] = IterateActorAtribs($newItems[$i][0], $Atrib_Intelligence_Item) ;int
+				$newItems[$i][$indexForBGID + 13] = IterateActorAtribs($newItems[$i][0], $Atrib_Dexterity_Item) ;dex
+				$newItems[$i][$indexForBGID + 15] = IterateActorAtribs($newItems[$i][0], $Atrib_Resistance_All) ;all res
+				$newItems[$i][$indexForBGID + 16] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Gold_Find) * 100) ;gf in %
+				$newItems[$i][$indexForBGID + 17] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Magic_Find) * 100) ;mf in %
+				$newItems[$i][$indexForBGID + 18] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Hitpoints_Max_Percent_Bonus_Item) * 100) ;life %
+				$newItems[$i][$indexForBGID + 19] = _MemoryRead($newItems[$i][7] + 0x164, $d3, 'int') > 0 ;0ffset + 164 ;true=unid, false=identified
+				ExitLoop
+			EndIf
+		Next
+	Next
+	Return $newItems
+EndFunc   ;==>MapItemWithLvl
+
+;;--------------------------------------------------------------------------------
+;;      SkipDialog()
+;;--------------------------------------------------------------------------------
+Func SkipDialog($_Count)
+	For $i = 1 To $_Count
+		Send($KeyCloseWindows)
+		Sleep(100)
+	Next
+EndFunc   ;==>SkipDialog
+
+;;--------------------------------------------------------------------------------
+; Functions:                     mesurestart() mesureend()
+; Description:    Mesurer...
+;;--------------------------------------------------------------------------------
+Func mesureStart()
+	Global $mesuredebug = TimerInit() ;;;;;;;;;;;;;;
+	$init = TimerInit()
+EndFunc   ;==>mesureStart
+
+Func mesureEnd($nom)
+	Local $difmesuredebug = TimerDiff($mesuredebug) ;;;;;;;;;;;;;
+	_log("Mesure " & $nom & " : " & $difmesuredebug) ;FOR DEBUGGING;;;;;;;;;;;;
+EndFunc   ;==>mesureEnd
+
+
+;;--------------------------------------------------------------------------------
+;;   TakeWP()
+;;--------------------------------------------------------------------------------
+Func TakeWP($tarChapter, $tarNum, $curChapter, $curNum)
+	If $GameFailed = 0 Then
+		Local $Waypoint = ""
+		While Not offsetlist()
+			Sleep(10)
+		WEnd
+
+		;*******************************************************
+		Local $index, $offset, $count, $item[10], $maxRange = 80
+		startIterateObjectsList($index, $offset, $count)
+		While iterateObjectsList($index, $offset, $count, $item)
+			If (StringInStr($item[1], "waypoint_arrival_ribbonGeo") And $item[9] < $maxRange) Or (StringInStr($item[1], "waypoint_neutral_ringGlow") And $item[9] < $maxRange) Or (StringInStr($item[1], "waypoint_neutral_ringGlow") And $item[9] < $maxRange) Then
+				If StringInStr($item[1], "waypoint_arrival_ribbonGeo") Then
+					$Waypoint = "waypoint_arrival_ribbonGeo"
+				ElseIf StringInStr($item[1], "waypoint_neutral_ringGlow") Then
+					$Waypoint = "waypoint_neutral_ringGlow"
+				Else
+					$Waypoint = "Waypoint_Town"
+				EndIf
+				ExitLoop
+			EndIf
+		WEnd
+
+		If $Waypoint = "" Then
+			$Waypoint = "waypoint"
+		EndIf
+		;******************************************************
+
+		;******************************************************
+
+		If $Waypoint = "waypoint" Then ;WAYPOINT PAR DEFAUT ON a PAS TROUVER ITEM
+			_log("enclenchement Old waypoint")
+			InteractByActorName($Waypoint)
+			Sleep(350)
+			Local $wptry = 0
+			While _checkWPopen() = False And _playerdead() = False
+				If $wptry <= 6 Then
+					_log('Fail to open wp')
+					$wptry = $wptry + 1
+					InteractByActorName($Waypoint)
+				EndIf
+				If $wptry > 6 Then
+					$GameFailed = 1
+					_log('Failed to open wp after 6 try')
+					ExitLoop
+				EndIf
+			WEnd
+
+		Else ;WAYPOINT DEFINIT, ON A ITEM
+			_log("enclechement new waypoint")
+			OpenWp($item)
+			Sleep(350)
+			Local $wptry = 0
+			While _checkWPopen() = False And _playerdead() = False
+				If $wptry <= 6 Then
+					_log('Fail to open wp')
+					$wptry = $wptry + 1
+					OpenWp($item)
+				EndIf
+				If $wptry > 6 Then
+					$GameFailed = 1
+					_log('Failed to open wp after 6 try')
+					ExitLoop
+				EndIf
+			WEnd
+
+		EndIf
+
+
+		If $tarChapter <> $curChapter Or ($tarChapter = $curChapter And $tarChapter < $curChapter) Then
+			For $i = 0 To $tarChapter - 1
+				$coord = UiRatio(35, 100 + ($i * 12.5))
+				MouseClick("left", $coord[0], $coord[1], 1, 3) ; Close chapters
+			Next
+			$coord = UiRatio(145, 100 + ($tarChapter * 12.5) + 23 + ($tarNum * 32))
+			MouseClick("left", $coord[0], $coord[1], 1, 3) ; Click wp
+		EndIf
+		If $tarChapter = $curChapter And $tarChapter > $curChapter Then
+			For $i = 0 To $tarChapter - 1
+				$coord = UiRatio(35, 100 + ($i * 12.5))
+				MouseClick("left", $coord[0], $coord[1], 1, 3) ; Close chapters
+			Next
+			$coord = UiRatio(145, 100 + ($tarChapter * 12.5) + 23 + 12 + ($tarNum * 32))
+			MouseClick("left", $coord[0], $coord[1], 1, 3) ; Click wp
+		EndIf
+		Sleep(1500)
+
+		While Not offsetlist()
+			Sleep(10)
+		WEnd
+		$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
+	EndIf
+EndFunc   ;==>TakeWP
+
+;;--------------------------------------------------------------------------------
+;;	Gets levels from Gamebalance file, returns a list with snoid and lvl
+;;--------------------------------------------------------------------------------
+Func GetLevels($offset)
+	If $offset <> 0 Then
+		$ofs = $offset + 0x218;
+		$read = _MemoryRead($ofs, $d3, 'int')
+		While $read = 0
+			$ofs += 0x4
+			$read = _MemoryRead($ofs, $d3, 'int')
+		WEnd
+		$size = _MemoryRead($ofs + 0x4, $d3, 'int')
+		$size -= 0x5F8
+		$ofs = $offset + _MemoryRead($ofs, $d3, 'int')
+		$nr = $size / 0x5F8
+		Local $snoItems[$nr + 1][10]
+		$j = 0
+		For $i = 0 To $size Step 0x5F8
+			$ofs_address = $ofs + $i
+			$snoItems[$j][0] = _MemoryRead($ofs_address, $d3, 'ptr')
+			$snoItems[$j][1] = _MemoryRead($ofs_address + 0x114, $d3, 'int') ;lvl
+			$snoItems[$j][2] = _MemoryRead($ofs_address + 0x1C8, $d3, 'float') ;min dmg
+			$snoItems[$j][3] = $snoItems[$j][2] + _MemoryRead($ofs_address + 0x1CC, $d3, 'float') ;max dmg
+			$snoItems[$j][4] = _MemoryRead($ofs_address + 0x224, $d3, 'float') ;min armor
+			$snoItems[$j][5] = $snoItems[$j][4] + _MemoryRead($ofs_address + 0x228, $d3, 'float') ;max armor
+			$snoItems[$j][6] = _MemoryRead($ofs_address + 0x32C, $d3, 'float') ;min dmg modifier
+			$snoItems[$j][7] = $snoItems[$j][4] + _MemoryRead($ofs_address + 0x330, $d3, 'float') ;max dmg modifier
+			$snoItems[$j][8] = _MemoryRead($ofs_address + 0x12C, $d3, 'int') ;gold price
+			$snoItems[$j][9] = _MemoryRead($ofs_address + 0x2D4, $d3, 'float') ;wpn speed
+			$j += 1
+		Next
+	EndIf
+	Return $snoItems
+EndFunc   ;==>GetLevels
+
 
 #cs
 Func GetLocalPlayer()

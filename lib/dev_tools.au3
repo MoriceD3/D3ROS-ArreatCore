@@ -12,6 +12,37 @@ HotKeySet("{F8}", "MarkPos")
 HotKeySet("{F11}", "MonsterListing")
 
 
+Func ListUi($Visible=0)
+	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$UiPtr2 = _memoryread($UiPtr1 + $Ofs_UI_A, $d3, "ptr")
+	$UiPtr3 = _memoryread($UiPtr2 + $Ofs_UI_B, $d3, "ptr")
+
+	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
+	$UiCount = _memoryread($UiPtr3 + $Ofs_UI_D, $d3, "int")
+
+	;_log("Ui Count -> " & $UiCount)
+
+	for $g=0 to $UiCount - 1
+		$UiPtr = _memoryread($BuckitOfs, $d3, "ptr")
+		while $UiPtr <> 0
+			$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
+			$IsVisible =  BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
+			;$IsVisible = _memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr")
+
+			if $IsVisible = 4 OR $Visible = 0 Then
+				$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
+				_log(@CRLF & "Buckit N° " & $g & " (" & $IsVisible  & ") -> " & $Name )
+			EndIf
+
+			$UiPtr = _memoryread($UiPtr, $d3, "ptr")
+		WEnd
+		$BuckitOfs = $BuckitOfs + 0x4
+
+
+	Next
+
+EndFunc
+
 Func MarkPos()
 	$currentloc = GetCurrentPos()
 	_log($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25");

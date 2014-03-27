@@ -101,13 +101,11 @@ Func FindActor($name, $maxRange = 400)
 		offsetlist()
 	EndIF
 
-	;mesurestart()
 	Local $index, $offset, $count, $item[10]
 	startIterateObjectsList($index, $offset, $count)
 	_log("FinActor -> number -> " & $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 		If StringInStr($item[1], $name) And $item[9] < $maxRange Then
-			;mesureEnd("FindActor trouver")
 			Return True
 		EndIf
 	WEnd
@@ -115,68 +113,23 @@ Func FindActor($name, $maxRange = 400)
 	Return False
 EndFunc   ;==>FindActor
 
-
-Global $Ofs_UI_A = 0x994
-Global $Ofs_UI_B = 0x0
-Global $Ofs_UI_C = 0x10
-Global $Ofs_UI_D = 0x0
-
-Global $Ofs_UI_nPtr = 0x10
-Global $Ofs_UI_Visible = 0x24
-Global $Ofs_UI_Name = 0x38
-Global $Ofs_UI_Text = 0xa58
-
-
-Func ListUi($Visible=0)
-	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$UiPtr2 = _memoryread($UiPtr1 + $Ofs_UI_A, $d3, "ptr")
-	$UiPtr3 = _memoryread($UiPtr2 + $Ofs_UI_B, $d3, "ptr")
-
-	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
-	$UiCount = _memoryread($UiPtr3 + $Ofs_UI_D, $d3, "int")
-
-	;_log("Ui Count -> " & $UiCount)
-
-	for $g=0 to $UiCount - 1
-		$UiPtr = _memoryread($BuckitOfs, $d3, "ptr")
-		while $UiPtr <> 0
-			$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
-			$IsVisible =  BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
-			;$IsVisible = _memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr")
-
-			if $IsVisible = 4 OR $Visible = 0 Then
-				$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
-				_log(@CRLF & "Buckit N° " & $g & " (" & $IsVisible  & ") -> " & $Name )
-			EndIf
-
-			$UiPtr = _memoryread($UiPtr, $d3, "ptr")
-		WEnd
-		$BuckitOfs = $BuckitOfs + 0x4
-
-
-	Next
-
-EndFunc
-
-Func ClickUI($name, $bucket=-1)
-
-	if $bucket = -1 Then ;no bucket given slow method
+Func ClickUI($name, $bucket = -1)
+	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
 	Else ;bucket given, fast method
 		$result = GetOfsFastUI($name, $bucket)
 	EndIf
 
-
-	if $result = false Then
-		_log("(ClickUI) UI DOESNT EXIT ! -> " & $name)
+	If $result = False Then
+		_log("(ClickUI) UI DOESNT EXIT ! -> " & $name & " (" & $bucket  & ")")
 		return false
 	EndIf
 
 	Dim $Point = GetPositionUI($result)
 
-	while $Point[0] = 0 AND $Point[1] = 0
+	While $Point[0] = 0 And $Point[1] = 0
 		$Point = GetPositionUI($result)
-		sleep(500)
+		sleep(250)
 	WEnd
 
 	Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
@@ -511,35 +464,6 @@ Func GetMonsterPow()
 EndFunc   ;==>GetMonsterPow
 
 ;;--------------------------------------------------------------------------------
-;;     Find Difficulty from vendor
-;;	   Get vendor Level and deduce game difficulty from it
-;;		$GameDifficulty = not yet determined, 1 = Norm, 2 = Nm, 3 = Hell, 4 = Inferno
-;;--------------------------------------------------------------------------------
-Func GetDifficulty()
-	If $GameDifficulty = 0 Then
-
-		Local $index, $offset, $count, $item[4]
-		startIterateLocalActor($index, $offset, $count)
-		While iterateLocalActorList($index, $offset, $count, $item)
-			If StringInStr($item[1], $RepairVendor) Then
-				Global $npclevel = IterateActorAtribs($item[0], $Atrib_Level)
-
-				Switch $npclevel
-					Case 1 To 59
-						Global $GameDifficulty = 1
-					Case 60 To 70
-						Global $GameDifficulty = 4
-				EndSwitch
-
-				ExitLoop
-			EndIf
-		WEnd
-		_log("Game Difficulty is : " & $GameDifficulty)
-	EndIf
-EndFunc   ;==>GetDifficulty
-
-
-;;--------------------------------------------------------------------------------
 ; Function:			TownStateCheck()
 ; Description:		Check if we are in town or not by comparing distance from stash
 ;
@@ -785,173 +709,6 @@ Func antiidle()
 	Wend
 
 Endfunc
-;;--------------------------------------------------------------------------------
-; Function:			GetPackItemLevel($ACD, $_REQ)
-;;--------------------------------------------------------------------------------
-Func GetPackItemLevel($ACD, $_REQ)
-	;IterateLocalActor()
-	;$ACDIndex = _ArraySearch($__ACTOR, "0x" & Hex($_guid), 0, 0, 0, 1, 1, 1) ;this bitch is slow as hell
-	If $ACD = -1 Then Return False
-	$_Count = _MemoryRead($_ActorAtrib_Count, $d3, 'int')
-	If $_Count > 500 Then
-		_log("Attention la valeur de Count était de " & $_Count)
-		$_Count = 500
-	EndIf
-
-	$CurrentOffset = $_ActorAtrib_4
-	Dim $ACTORatrib
-	For $i = 0 To $_Count
-		$ACTORatrib = _MemoryRead($CurrentOffset, $d3, 'ptr')
-		If $ACTORatrib = $ACD Then
-			$test = _MemoryRead($CurrentOffset + 0x10, $d3, 'ptr')
-			$CurretOffset = $test
-			For $i = 0 To 825
-				$data = _MemoryRead($CurretOffset, $d3, 'ptr')
-				$CurretOffset = $CurretOffset + 0x4
-				If $data <> 0x0 Then
-					$AtribData = _MemoryRead($data + 0x4, $d3, 'ptr')
-					If StringLeft($AtribData, 7) = "0x0003B" Then
-						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
-						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
-							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
-						EndIf
-					EndIf
-					If StringLeft($AtribData, 7) = "0xFFFFF" Then
-						;_log("Debug :" &$data+0x4 & " : " & _MemoryRead($data+0x4, $d3, 'int') ) ;FOR DEBUGGING
-						If "0x" & StringRight($AtribData, 3) = $_REQ[0] Then
-							Return _MemoryRead($data + 0x8, $d3, $_REQ[1])
-						EndIf
-					EndIf
-				EndIf
-			Next
-			Return False
-		EndIf
-		$CurrentOffset = $CurrentOffset + $ofs_ActorAtrib_StrucSize
-	Next
-	Return False
-EndFunc   ;==>GetPackItemLevel
-;;--------------------------------------------------------------------------------
-;;	Getting Backpack Item Info, extended to show some more info
-;;  $bag = 0 for backpack and 15 for stash
-;;--------------------------------------------------------------------------------
-Func IterateBackpackExtendedWithLvl($bag = 0)
-	$list = IndexSNO($gameBalance)
-	$armorOffs = 0
-	$weaponOffs = 0
-	$otherOffs = 0
-	For $j = 0 To UBound($list) - 1
-		;19750 = armor, 19754 = weapon, 1953 = other
-		If ($list[$j][1] = 19750) Then
-			$armorOffs = $list[$j][0]
-		EndIf
-		If ($list[$j][1] = 19754) Then
-			$weaponOffs = $list[$j][0]
-		EndIf
-		If ($list[$j][1] = 19753) Then
-			$otherOffs = $list[$j][0]
-		EndIf
-	Next
-	Local $armorItems = GetLevels($armorOffs)
-	Local $weaponItems = GetLevels($weaponOffs)
-	Local $otherItems = GetLevels($otherOffs)
-	Local $data = IterateBackpack($bag)
-	Local $armorItemsWithLvl = MapItemWithLvl($data, $armorItems, 8)
-	Local $weaponItemsWithLvl = MapItemWithLvl($data, $weaponItems, 8)
-	Local $otherItemsWithLvl = MapItemWithLvl($data, $otherItems, 8)
-	Local $allItems[UBound($armorItemsWithLvl, 1)][UBound($armorItemsWithLvl, 2)]
-	For $i = 0 To UBound($allItems) - 1 Step 1
-		If $armorItemsWithLvl[$i][9] <> "" Then
-			;copy from $armorItemsWithLvl to all items
-			For $j = 0 To UBound($armorItemsWithLvl, 2) - 1 Step 1
-				$allItems[$i][$j] = $armorItemsWithLvl[$i][$j]
-			Next
-		ElseIf $weaponItemsWithLvl[$i][9] <> "" Then
-			;copy from $weaponItemsWithLvl to all items
-			For $j = 0 To UBound($weaponItemsWithLvl, 2) - 1 Step 1
-				$allItems[$i][$j] = $weaponItemsWithLvl[$i][$j]
-			Next
-		ElseIf $otherItemsWithLvl[$i][9] <> "" Then
-			;copy from $otherItemsWithLvl to all items
-			For $j = 0 To UBound($otherItemsWithLvl, 2) - 1 Step 1
-				$allItems[$i][$j] = $otherItemsWithLvl[$i][$j]
-			Next
-		EndIf
-	Next
-	Return $allItems
-EndFunc   ;==>IterateBackpackExtendedWithLvl
-
-;;--------------------------------------------------------------------------------
-;;	Maps snos containg a lvl to the item with that snoid
-;;--------------------------------------------------------------------------------
-Func MapItemWithLvl($items, $snowithlvl, $indexForBGID)
-	Local $newItems = $items
-	ReDim $newItems[UBound($items, 1)][UBound($items, 2) + UBound($snowithlvl, 2) + 9] ;add size for some new variables
-	For $i = 0 To UBound($items) - 1 Step 1
-		For $j = 0 To UBound($snowithlvl) - 1 Step 1
-			If $snowithlvl[$j][0] = $items[$i][$indexForBGID] Then
-				$newItems[$i][$indexForBGID + 1] = $snowithlvl[$j][1] ;ilvl
-				$newItems[$i][$indexForBGID + 2] = $snowithlvl[$j][2] ;min dmg
-				$newItems[$i][$indexForBGID + 3] = $snowithlvl[$j][3] ;;max dmg
-				$newItems[$i][$indexForBGID + 4] = $snowithlvl[$j][4] ;;min armor
-				$newItems[$i][$indexForBGID + 5] = $snowithlvl[$j][5] ;max armor
-				$newItems[$i][$indexForBGID + 6] = $snowithlvl[$j][6] ;min dmg modifier
-				$newItems[$i][$indexForBGID + 7] = $snowithlvl[$j][7] ;max dmg modifier
-				$newItems[$i][$indexForBGID + 8] = $snowithlvl[$j][8] ;gold
-				$newItems[$i][$indexForBGID + 9] = $snowithlvl[$j][9] ;weapon speed
-				;;some extra attributes
-				$newItems[$i][$indexForBGID + 10] = IterateActorAtribs($newItems[$i][0], $Atrib_Item_Quality_Level) ;quality lvl
-				$newItems[$i][$indexForBGID + 11] = IterateActorAtribs($newItems[$i][0], $Atrib_Strength_Item) ;str
-				$newItems[$i][$indexForBGID + 12] = IterateActorAtribs($newItems[$i][0], $Atrib_Vitality_Item) ;vit
-				$newItems[$i][$indexForBGID + 12] = IterateActorAtribs($newItems[$i][0], $Atrib_Intelligence_Item) ;int
-				$newItems[$i][$indexForBGID + 13] = IterateActorAtribs($newItems[$i][0], $Atrib_Dexterity_Item) ;dex
-				$newItems[$i][$indexForBGID + 15] = IterateActorAtribs($newItems[$i][0], $Atrib_Resistance_All) ;all res
-				$newItems[$i][$indexForBGID + 16] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Gold_Find) * 100) ;gf in %
-				$newItems[$i][$indexForBGID + 17] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Magic_Find) * 100) ;mf in %
-				$newItems[$i][$indexForBGID + 18] = Round(IterateActorAtribs($newItems[$i][0], $Atrib_Hitpoints_Max_Percent_Bonus_Item) * 100) ;life %
-				$newItems[$i][$indexForBGID + 19] = _MemoryRead($newItems[$i][7] + 0x164, $d3, 'int') > 0 ;0ffset + 164 ;true=unid, false=identified
-				ExitLoop
-			EndIf
-		Next
-	Next
-	Return $newItems
-EndFunc   ;==>MapItemWithLvl
-
-;;--------------------------------------------------------------------------------
-;;	Gets levels from Gamebalance file, returns a list with snoid and lvl
-;;--------------------------------------------------------------------------------
-Func GetLevels($offset)
-	If $offset <> 0 Then
-		$ofs = $offset + 0x218;
-		$read = _MemoryRead($ofs, $d3, 'int')
-		While $read = 0
-			$ofs += 0x4
-			$read = _MemoryRead($ofs, $d3, 'int')
-		WEnd
-		$size = _MemoryRead($ofs + 0x4, $d3, 'int')
-		$size -= 0x5F8
-		$ofs = $offset + _MemoryRead($ofs, $d3, 'int')
-		$nr = $size / 0x5F8
-		Local $snoItems[$nr + 1][10]
-		$j = 0
-		For $i = 0 To $size Step 0x5F8
-			$ofs_address = $ofs + $i
-			$snoItems[$j][0] = _MemoryRead($ofs_address, $d3, 'ptr')
-			$snoItems[$j][1] = _MemoryRead($ofs_address + 0x114, $d3, 'int') ;lvl
-			$snoItems[$j][2] = _MemoryRead($ofs_address + 0x1C8, $d3, 'float') ;min dmg
-			$snoItems[$j][3] = $snoItems[$j][2] + _MemoryRead($ofs_address + 0x1CC, $d3, 'float') ;max dmg
-			$snoItems[$j][4] = _MemoryRead($ofs_address + 0x224, $d3, 'float') ;min armor
-			$snoItems[$j][5] = $snoItems[$j][4] + _MemoryRead($ofs_address + 0x228, $d3, 'float') ;max armor
-			$snoItems[$j][6] = _MemoryRead($ofs_address + 0x32C, $d3, 'float') ;min dmg modifier
-			$snoItems[$j][7] = $snoItems[$j][4] + _MemoryRead($ofs_address + 0x330, $d3, 'float') ;max dmg modifier
-			$snoItems[$j][8] = _MemoryRead($ofs_address + 0x12C, $d3, 'int') ;gold price
-			$snoItems[$j][9] = _MemoryRead($ofs_address + 0x2D4, $d3, 'float') ;wpn speed
-			$j += 1
-		Next
-	EndIf
-	Return $snoItems
-EndFunc   ;==>GetLevels
-
-
 
 Func triBackPack($avArray)
 
@@ -1835,70 +1592,6 @@ Func GetACDOffsetByACDGUID($Guid)
 	_log("index : " & $index& " bitshift : " & $bitshift & " group1 : " & $group1 & " group 2 : " & $group2 & " group 3 : " & $group3 & " group4 : " & $group4)
 EndFunc   ;==>GetACDOffsetByACDGUID
 
-;----------------------------------------------------------------------------------------------------------------------
-;   Fuction         _Array2DDelete(ByRef $ARRAY, $iDEL, $bCOL=False)
-;
-;   Description     Delete one row on a given index in an 1D/2D -Array
-;
-;   Parameter       $ARRAY      the array, where one row will deleted
-;                   $iDEL       Row(Column)-Index to delete
-;                   $bCOL       If True, delete column instead of row (default False)
-;
-;   Return          Succes      0   ByRef $ARRAY
-;                   Failure     1   set @error = 1; given array are not array
-;                                   set @error = 2; want delete column, but not 2D-array
-;                                   set @error = 3; index is out of range
-;
-; Author            BugFix (bugfix@autoit.de)
-;----------------------------------------------------------------------------------------------------------------------
-Func _Array2DDelete(ByRef $ARRAY, $iDEL, $bCOL = False)
-	If (Not IsArray($ARRAY)) Then Return SetError(1, 0, 1)
-	Local $UBound2nd = UBound($ARRAY, 2), $k
-	If $bCOL Then
-		If $UBound2nd = 0 Then Return SetError(2, 0, 1)
-		If ($iDEL < 0) Or ($iDEL > $UBound2nd - 1) Then Return SetError(3, 0, 1)
-	Else
-		If ($iDEL < 0) Or ($iDEL > UBound($ARRAY) - 1) Then Return SetError(3, 0, 1)
-	EndIf
-	If $UBound2nd = 0 Then
-		Local $arTmp[UBound($ARRAY) - 1]
-		$k = 0
-		For $i = 0 To UBound($ARRAY) - 1
-			If $i <> $iDEL Then
-				$arTmp[$k] = $ARRAY[$i]
-				$k += 1
-			EndIf
-		Next
-	Else
-		If $bCOL Then
-			Local $arTmp[UBound($ARRAY)][$UBound2nd - 1]
-			For $i = 0 To UBound($ARRAY) - 1
-				$k = 0
-				For $l = 0 To $UBound2nd - 1
-					If $l <> $iDEL Then
-						$arTmp[$i][$k] = $ARRAY[$i][$l]
-						$k += 1
-					EndIf
-				Next
-			Next
-		Else
-			Local $arTmp[UBound($ARRAY) - 1][$UBound2nd]
-			$k = 0
-			For $i = 0 To UBound($ARRAY) - 1
-				If $i <> $iDEL Then
-					For $l = 0 To $UBound2nd - 1
-						$arTmp[$k][$l] = $ARRAY[$i][$l]
-					Next
-					$k += 1
-				EndIf
-			Next
-		EndIf
-	EndIf
-	$ARRAY = $arTmp
-	Return $ARRAY
-EndFunc   ;==>_Array2DDelete
-
-
 Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 
 	If $index > $count + 1 Then
@@ -2544,13 +2237,11 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 EndFunc   ;==>handle_Mob
 
  Func Checkqual($_GUID)
-        ; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
-                $ACD = GetACDOffsetByACDGUID($_GUID)
-                $CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
-                $quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
-
-
-        Return $quality
+    ; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
+    $ACD = GetACDOffsetByACDGUID($_GUID)
+    $CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
+    $quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
+    Return $quality
 EndFunc   ;==>CheckItem
 Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
         $grabit = False
@@ -2685,7 +2376,7 @@ Func Attack()
 			$item[$i] = $test_iterateallobjectslist[0][$i]
 		Next
 
-		if $OldActor = $item[1] Then
+		If $OldActor = $item[1] Then
 			BanActor($item[1])
 			_log("Ban Actor Cause of second passage")
 			ExitLoop
@@ -3119,16 +2810,6 @@ Func checkFiltreFromtable($table, $name, $CurrentIdAttrib)
 
 EndFunc   ;==>checkFiltreFromtable
 
-;;--------------------------------------------------------------------------------
-;;      SkipDialog()
-;;--------------------------------------------------------------------------------
-Func SkipDialog($_Count)
-	For $i = 1 To $_Count
-		Send($KeyCloseWindows)
-		Sleep(100)
-	Next
-EndFunc   ;==>SkipDialog
-
 Func OpenWp(ByRef $item)
 	Local $maxtry = 0
 	If NOT _playerdead() Then
@@ -3269,104 +2950,6 @@ Func TakeWPV2($WPNumber=0)
 		EndIF
 
 EndFunc
-
-;;--------------------------------------------------------------------------------
-;;   TakeWP()
-;;--------------------------------------------------------------------------------
-Func TakeWP($tarChapter, $tarNum, $curChapter, $curNum)
-	If $GameFailed = 0 Then
-		Local $Waypoint = ""
-		While Not offsetlist()
-			Sleep(10)
-		WEnd
-
-		;*******************************************************
-		Local $index, $offset, $count, $item[10], $maxRange = 80
-		startIterateObjectsList($index, $offset, $count)
-		While iterateObjectsList($index, $offset, $count, $item)
-			If (StringInStr($item[1], "waypoint_arrival_ribbonGeo") And $item[9] < $maxRange) Or (StringInStr($item[1], "waypoint_neutral_ringGlow") And $item[9] < $maxRange) Or (StringInStr($item[1], "waypoint_neutral_ringGlow") And $item[9] < $maxRange) Then
-				If StringInStr($item[1], "waypoint_arrival_ribbonGeo") Then
-					$Waypoint = "waypoint_arrival_ribbonGeo"
-				ElseIf StringInStr($item[1], "waypoint_neutral_ringGlow") Then
-					$Waypoint = "waypoint_neutral_ringGlow"
-				Else
-					$Waypoint = "Waypoint_Town"
-				EndIf
-				ExitLoop
-			EndIf
-		WEnd
-
-		If $Waypoint = "" Then
-			$Waypoint = "waypoint"
-		EndIf
-		;******************************************************
-
-		;******************************************************
-
-		If $Waypoint = "waypoint" Then ;WAYPOINT PAR DEFAUT ON a PAS TROUVER ITEM
-			_log("enclenchement Old waypoint")
-			InteractByActorName($Waypoint)
-			Sleep(350)
-			Local $wptry = 0
-			While _checkWPopen() = False And _playerdead() = False
-				If $wptry <= 6 Then
-					_log('Fail to open wp')
-					$wptry = $wptry + 1
-					InteractByActorName($Waypoint)
-				EndIf
-				If $wptry > 6 Then
-					$GameFailed = 1
-					_log('Failed to open wp after 6 try')
-					ExitLoop
-				EndIf
-			WEnd
-
-		Else ;WAYPOINT DEFINIT, ON A ITEM
-			_log("enclechement new waypoint")
-			OpenWp($item)
-			Sleep(350)
-			Local $wptry = 0
-			While _checkWPopen() = False And _playerdead() = False
-				If $wptry <= 6 Then
-					_log('Fail to open wp')
-					$wptry = $wptry + 1
-					OpenWp($item)
-				EndIf
-				If $wptry > 6 Then
-					$GameFailed = 1
-					_log('Failed to open wp after 6 try')
-					ExitLoop
-				EndIf
-			WEnd
-
-		EndIf
-
-
-		If $tarChapter <> $curChapter Or ($tarChapter = $curChapter And $tarChapter < $curChapter) Then
-			For $i = 0 To $tarChapter - 1
-				$coord = UiRatio(35, 100 + ($i * 12.5))
-				MouseClick("left", $coord[0], $coord[1], 1, 3) ; Close chapters
-			Next
-			$coord = UiRatio(145, 100 + ($tarChapter * 12.5) + 23 + ($tarNum * 32))
-			MouseClick("left", $coord[0], $coord[1], 1, 3) ; Click wp
-		EndIf
-		If $tarChapter = $curChapter And $tarChapter > $curChapter Then
-			For $i = 0 To $tarChapter - 1
-				$coord = UiRatio(35, 100 + ($i * 12.5))
-				MouseClick("left", $coord[0], $coord[1], 1, 3) ; Close chapters
-			Next
-			$coord = UiRatio(145, 100 + ($tarChapter * 12.5) + 23 + 12 + ($tarNum * 32))
-			MouseClick("left", $coord[0], $coord[1], 1, 3) ; Click wp
-		EndIf
-		Sleep(1500)
-
-		While Not offsetlist()
-			Sleep(10)
-		WEnd
-		$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
-	EndIf
-EndFunc   ;==>TakeWP
-
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
@@ -3664,6 +3247,7 @@ Func RandSleep($min = 5, $max = 45, $chance = 3)
 		Next
 	EndIf
 EndFunc   ;==>RandSleep
+
 Func _randomclick($x, $y, $button = "left")
 	$coord = UiRatio($x, $y)
 	MouseClick($button, Random($coord[0] - 3, $coord[0] + 3), Random($coord[1] - 3, $coord[1] + 3))
@@ -3942,23 +3526,6 @@ Func Die2Fast()
 	$Die2FastCount = 0
 EndFunc   ;==>Die2Fast
 
-
-;;--------------------------------------------------------------------------------
-; Functions:                     mesurestart() mesureend()
-; Description:    Mesurer...
-;;--------------------------------------------------------------------------------
-Func mesureStart()
-	Global $mesuredebug = TimerInit() ;;;;;;;;;;;;;;
-	$init = TimerInit()
-EndFunc   ;==>mesureStart
-
-Func mesureEnd($nom)
-	Local $difmesuredebug = TimerDiff($mesuredebug) ;;;;;;;;;;;;;
-	_log("Mesure " & $nom & " : " & $difmesuredebug) ;FOR DEBUGGING;;;;;;;;;;;;
-EndFunc   ;==>mesureEnd
-
-
-
 ;;--------------------------------------------------------------------------------
 ; Functions:                     Attrib STUFF
 ; Description:    Read Atrib without dll
@@ -4021,12 +3588,10 @@ EndFunc   ;==>GetAttributeFloat
 
 
 Func IsPowerReady($idAttrib, $idPower)
-
 	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Power_Cooldown[0], BitShift($idPower, -12))), $d3, "int") <= 0
 EndFunc   ;==>IsPowerReady
 
 Func IsBuffActive($idAttrib, $idPower)
-
 	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Buff_Active[0], BitShift($idPower, -12))), $d3, "int") == 1
 EndFunc   ;==>IsBuffActive
 
@@ -4776,9 +4341,6 @@ Func GoToTown()
 	RandSleep()
 EndFunc   ;==>GoToTown
 
-
-
-
 Func NeedRepair()
 	TpRepairAndBack()
 EndFunc   ;==>NeedRepair
@@ -5115,56 +4677,6 @@ Func GetLevelsAdvanced($offset)
 	Return $snoItems
 
 EndFunc   ;==>GetLevelsAdvanced
-
-
-
-; #FUNCTION# =====================================================================
-; Name...........: __ArrayConcatenate
-; Description ...: Concatenate two 1D or 2D arrays
-; Syntax.........: __ArrayConcatenate(ByRef $avArrayTarget, Const ByRef $avArraySource)
-; Parameters ....: $avArrayTarget - The array to concatenate onto
-;				  $avArraySource - The array to concatenate from - Must be 1D or 2D to match $avArrayTarget,
-;								   and if 2D, then Ubound($avArraySource, 2) <= Ubound($avArrayTarget, 2).
-; Return values .: Success - Index of last added item
-;				  Failure - -1, sets @error to 1 and @extended per failure (see code below)
-; Author ........: Ultima
-; Modified.......: PsaltyDS - 1D/2D version, changed return value and @error/@extended to be consistent with __ArrayAdd()
-; Remarks .......:
-; Related .......: __ArrayAdd, _ArrayPush
-; Link ..........;
-; Example .......; Yes
-; ===============================================================================
-Func __ArrayConcatenate(ByRef $avArrayTarget, Const ByRef $avArraySource)
-	If Not IsArray($avArrayTarget) Then Return SetError(1, 1, -1); $avArrayTarget is not an array
-	If Not IsArray($avArraySource) Then Return SetError(1, 2, -1); $avArraySource is not an array
-
-	Local $iUBoundTarget0 = UBound($avArrayTarget, 0), $iUBoundSource0 = UBound($avArraySource, 0)
-	If $iUBoundTarget0 <> $iUBoundSource0 Then Return SetError(1, 3, -1); 1D/2D dimensionality did not match
-	If $iUBoundTarget0 > 2 Then Return SetError(1, 4, -1); At least one array was 3D or more
-
-	Local $iUBoundTarget1 = UBound($avArrayTarget, 1), $iUBoundSource1 = UBound($avArraySource, 1)
-
-	Local $iNewSize = $iUBoundTarget1 + $iUBoundSource1
-	If $iUBoundTarget0 = 1 Then
-		; 1D arrays
-		ReDim $avArrayTarget[$iNewSize]
-		For $i = 0 To $iUBoundSource1 - 1
-			$avArrayTarget[$iUBoundTarget1 + $i] = $avArraySource[$i]
-		Next
-	Else
-		; 2D arrays
-		Local $iUBoundTarget2 = UBound($avArrayTarget, 2), $iUBoundSource2 = UBound($avArraySource, 2)
-		If $iUBoundSource2 > $iUBoundTarget2 Then Return SetError(1, 5, -1); 2D boundry of source too large for target
-		ReDim $avArrayTarget[$iNewSize][$iUBoundTarget2]
-		For $r = 0 To $iUBoundSource1 - 1
-			For $c = 0 To $iUBoundSource2 - 1
-				$avArrayTarget[$iUBoundTarget1 + $r][$c] = $avArraySource[$r][$c]
-			Next
-		Next
-	EndIf
-
-	Return $iNewSize - 1
-EndFunc   ;==>__ArrayConcatenate
 
 ;;--------------------------------------------------------------------------------
 ;;  LoadingSNOExtended
