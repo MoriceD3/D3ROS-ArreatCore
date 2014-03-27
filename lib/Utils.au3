@@ -28,6 +28,13 @@ Func consoleLog($text, $level = 0)
 	ConsoleWrite($start & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
 EndFunc   ;==> consoleLog
 
+Func Format_Number($str)
+	$str = _StringReverse($str) ; renversement de la chaîne pour la traîtée à l'envers
+	$str = StringRegExpReplace($str, "(\d{3})", "$1 ") ; on cherche tous les regroupement de n chiffres pour les remplacer par eux même suivi d'un espace
+	$str = _StringReverse($str) ; on remets la chaîne à l'endroit
+	$str = StringStripWS($str, 1) ; efface éventuellement l'espace en trop à l'avant , lorsque le nombre est composé d'un nombre multiple de n chiffres
+	Return $str
+EndFunc;==>Format_Number
 
 Func formatTime($time_milisecond)
 	if ($time_milisecond < 60000) Then

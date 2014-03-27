@@ -483,3 +483,143 @@ Func InitSkillHeros($skillHeros)
 	EndIf
 	#ce
 EndFunc   ;==>InitSkillHeros
+ 
+ Func Init_GrabListTab()
+
+	Dim $tab_temp = StringSplit($grablist, "|", 2)
+
+	Local $rules_ilvl = '(?i)\[ilvl:([0-9]{1,2})\]'
+	Local $rules_quality = '(?i)\[q:([0-9]{1,2})\]'
+	Local $rules_filtre = '(?i)\(([[:ascii:]+]+)\)' ;enleve les "(" de premier niveau
+
+	Local $i = 0, $detect = 0
+	Global $GrabListTab[UBound($tab_temp)][5]
+	For $y = 0 To UBound($tab_temp) - 1
+		$tab_buff = StringLower(trim($tab_temp[$y]))
+
+		If StringRegExp($tab_buff, $rules_ilvl) = 1 Then ;patern declaration ilvl
+			$tab_RegExp = StringRegExp($tab_buff, $rules_ilvl, 2)
+			$tab_buff = StringReplace($tab_buff, $tab_RegExp[0], "", 0, 2)
+
+			$curr_ilvl = $tab_RegExp[1]
+		Else
+			$curr_ilvl = 0
+		EndIf
+
+
+		If StringRegExp($tab_buff, $rules_quality) = 1 Then ;patern declaration quality
+			$tab_RegExp = StringRegExp($tab_buff, $rules_quality, 2)
+			$tab_buff = StringReplace($tab_buff, $tab_RegExp[0], "", 0, 2)
+			$curr_quality = $tab_RegExp[1]
+		Else
+			$curr_quality = 0
+		EndIf
+
+
+		If StringRegExp($tab_buff, $rules_filtre) = 1 Then ;patern declaration filtre
+			$tab_RegExp = StringRegExp($tab_buff, $rules_filtre, 2)
+			$tab_buff = StringReplace($tab_buff, $tab_RegExp[0], "", 0, 2)
+			$tab_RegExp[1] = StringReplace($tab_RegExp[1], "and", " and ", 0, 2)
+			$tab_RegExp[1] = StringReplace($tab_RegExp[1], "or", " or ", 0, 2)
+
+			For $x = 0 To UBound($tab_grablist) - 1
+				If StringInStr($tab_RegExp[1], $tab_grablist[$x][0], 0) Then
+					$tab_RegExp[1] = StringReplace($tab_RegExp[1], $tab_grablist[$x][0], $tab_grablist[$x][1], 0, 2)
+				EndIf
+			Next
+
+			$curr_filtre = $tab_RegExp[1]
+			$curr_filtre_str = give_str_from_filter($tab_RegExp[1])
+		Else
+			$curr_filtre = 0
+			$curr_filtre_str = ""
+		EndIf
+
+		For $x = 0 To UBound($tab_grablist) - 1
+			If StringInStr($tab_buff, $tab_grablist[$x][0], 0) Then
+				$tab = StringSplit($tab_grablist[$x][1], "|", 2)
+				For $Z = 0 To UBound($tab) - 1
+
+					If $Z > 0 Then
+						ReDim $GrabListTab[UBound($GrabListTab) + 1][5]
+					EndIf
+
+					$GrabListTab[$i][0] = $tab[$Z]
+					$GrabListTab[$i][1] = $curr_ilvl
+					$GrabListTab[$i][2] = $curr_quality
+					$GrabListTab[$i][3] = $curr_filtre
+					$GrabListTab[$i][4] = $curr_filtre_str
+
+					$i += 1
+				Next
+				$detect = 1
+			EndIf
+		Next
+
+		If $detect = 0 Then
+			$GrabListTab[$i][0] = $tab_buff
+			$GrabListTab[$i][1] = $curr_ilvl
+			$GrabListTab[$i][2] = $curr_quality
+			$GrabListTab[$i][3] = $curr_filtre
+			$GrabListTab[$i][4] = $curr_filtre_str
+			$i += 1
+		EndIf
+
+		$detect = 0
+	Next
+EndFunc   ;==>Init_GrabListTab
+ 
+Func Init_grablistFile($grabListPath = "grablist/")
+	Dim $txttoarray[1]
+	;local $load_file = ""
+	Local $compt_line = 0
+
+	Local $file = FileOpen($grabListPath &  $grabListFile, 0)
+	If $file = -1 Then
+		MsgBox(0, "Error", "Unable to open file : " & $grabListFile)
+		Exit
+	EndIf
+
+	While 1 ;Boucle de traitement de lecture du fichier txt
+		$line = FileReadLine($file)
+		If @error = -1 Then ExitLoop
+
+		If $line <> "" Then
+			$line = StringLower($line)
+			ReDim $txttoarray[$compt_line + 1]
+			$txttoarray[$compt_line] = $line
+			$compt_line += 1
+		EndIf
+	WEnd
+
+	FileClose($file)
+
+	Global $tab_grablist[1][2]
+	Global $grablist = ""
+	Local $compt = 0
+
+	For $i = 0 To UBound($txttoarray) - 1
+		If StringInStr($txttoarray[$i], "=", 0) Then
+			$var_temp = StringSplit($txttoarray[$i], "=", 2)
+
+			$var_temp[0] = trim($var_temp[0])
+
+			ReDim $tab_grablist[$compt + 1][2]
+
+			$tab_grablist[$compt][0] = $var_temp[0]
+			$tab_grablist[$compt][1] = $var_temp[1]
+
+			Assign($var_temp[0], $var_temp[1], 2)
+			$compt += 1
+		Else
+
+			If $grablist = "" Then
+				$grablist = $txttoarray[$i]
+			Else
+				$grablist = $grablist & "|" & $txttoarray[$i]
+			EndIf
+
+		EndIf
+	Next
+
+EndFunc   ;==>Init_grablistFile
