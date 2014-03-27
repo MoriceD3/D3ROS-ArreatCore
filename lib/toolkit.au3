@@ -2828,44 +2828,60 @@ Func OpenWp(ByRef $item)
 
 EndFunc   ;==>OpenWp
 
-Func TakeWPV2($WPNumber=0)
+Func GetBucketForWP($WPNumber)
+	Switch $WPNumber
+		Case 0
+			Return 212
+		Case 1
+			Return 305
+		Case 2
+			Return 1540
+		Case 3
+			Return 375
+		Case 4
+			Return 646
+		Case 5
+			Return 302
+		Case 6
+			Return 579
+		Case 7
+			Return 1898
+		Case 8
+			Return 176
+		Case 9
+			Return 502
+		Case 10
+			Return 1270
+		Case 11
+			Return 1509
+		Case 12
+			Return 1578
+		Case 13
+			Return 404
+		Case 14
+			Return 246
+		Case 15
+			Return 373
+		Case Else
+			Return 0
+	EndSwitch
+EndFunc
+
+Func TakeWPV2($WPNumber = 0)
     Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
 
-	if $GameFailed = 1 Then return False
+	If $GameFailed = 1 Then 
+		Return False
+	EndIf
+
 	While Not offsetlist()
 		Sleep(10)
 	WEnd
 
-	Local $BucketUI = 0
-	#cs
-	Switch $WPNumber
-		Case 1
-			$BucketUI = 305
-		Case 2
-			$BucketUI = 1540
-		Case 3
-			$BucketUI = 375
-		Case 4
-			$BucketUI = 646
-		Case 5
-			$BucketUI = 302
-		Case 6
-			$BucketUI = 579
-		Case 7
-			$BucketUI = 1898
-		Case 8
-			$BucketUI = 176
-		Case 9
-			$BucketUI = 502
-		Case 10
-			$BucketUI = 1270
-		Case 0
-			$BucketUI = 212
-	EndSwitch
-	#ce
+	Local $BucketUI = GetBucketForWP($WPNumber)
 
-	if $WPNumber = 0 Then
+	If $WPNumber = 0 Then
 		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
 	Else
 		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
@@ -2891,9 +2907,7 @@ Func TakeWPV2($WPNumber=0)
 
 		WEnd
 
-
-
-		if $WayPointFound Then
+		If $WayPointFound Then
 			_Log("WP Found")
 			OpenWp($item)
 			Sleep(750)
@@ -2912,15 +2926,10 @@ Func TakeWPV2($WPNumber=0)
 				EndIf
 			WEnd
 
-
 			sleep(500)
 			_log("clicking wp UI")
 
-			;Dim $Point = GetPositionUI(GetOfsUI($NameUI, 1))
-			;Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
-			;MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
-
-			if ($BucketUI = 0) Then
+			If ($BucketUI = 0) Then
 				ClickUI($NameUI)
 			Else
 				ClickUI($NameUI, $BucketUI)
@@ -2938,17 +2947,16 @@ Func TakeWPV2($WPNumber=0)
 			While Not offsetlist()
 				Sleep(10)
 			WEnd
-		$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
+
+			$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
 
 			return true
-
 		Else
 			_log("WP Not Found")
 			$GameFailed = 1
 			_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
 			return False
 		EndIF
-
 EndFunc
 
 ;;--------------------------------------------------------------------------------
