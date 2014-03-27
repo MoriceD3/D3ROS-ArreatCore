@@ -1,5 +1,5 @@
 #include-once
-; 
+;
 ;  Définitions des variables utiles au BOT
 ;
 
@@ -109,7 +109,7 @@ Global $elite = 0
 Global $Ban_endstrItemList = "_projectile"
 Global $Ban_ItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
 
-Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
+Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $Table_Coffre = [0]
 Global $Table_BanMonster  = [0]
 Global $Table_Monster  = [0]
@@ -145,8 +145,8 @@ Global $Xp_Moy_HrsPerte		 = 0
 Global $Xp_Moy_Hrsgame 		 = 0
 Global $dif_timer_stat_game  = 0
 Global $dif_timer_stat_pause = 0
-Global $AverageDps 			 = 0 
-Global $NbMobsKilled 		 = 1 
+Global $AverageDps 			 = 0
+Global $NbMobsKilled 		 = 1
 Global $Xp_Total 			 = 0
 Global $Expencours 			 = 0
 Global $NiveauParagon 		 = 0
