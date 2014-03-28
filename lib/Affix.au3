@@ -7,23 +7,21 @@
 
 Func IterateFilterAffixV2()
 
-	Local $index, $offset, $count
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
-	Dim $item_affix_2D[1][$TableSizeGuidStruct+1]
+	Dim $item_affix_2D[1][$TableSizeGuidStruct + 1]
 	Local $z = 0
 	
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
 	
 	$CurrentLoc = GetCurrentPos()
-	$pv_affix=getlifep()
+	$pv_affix = getlifep()
 
 	for $i=0 to $count
 		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
 
-		$item = GetItemFromList($iterateObjectsListStruct, $offset, $i, $CurrentLoc)
-
-		If $item <> False Then
+		If GetItemFromList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 			$range = GetAffixRange($item, $pv_affix)
 			If $range <> -1 Then
 				ReDim $item_affix_2D[$z + 1][$TableSizeGuidStruct + 1]
@@ -35,7 +33,6 @@ Func IterateFilterAffixV2()
 
 				$z += 1
 			EndIf
-
 
 		EndIf
 		$iterateObjectsStruct = ""
@@ -54,10 +51,11 @@ EndFunc  ;==> IterateFilterAffixV2()
 
 Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
 	; TODO : Vérifier les ranges et les vies associées a priori quelques incohérences
+	
 	Select
 		Case $item[9] > 50
 			Return -1
-		Case checkfromlist($BanAffixList, $item[1]) <> 1
+		Case checkfromlist($BanAffixList, $item[1]) = 1
 			Return -1
 		Case StringInStr($item[1], "bomb_buildup") And ($pv <= $Life_explo / 100)
 			Return $range_ice

@@ -1092,14 +1092,19 @@ Func startIterateLocalActor(ByRef $index, ByRef $offset, ByRef $count)
 EndFunc   ;==>startIterateLocalActor
 
 Func iterateLocalActorList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
+	
+	If $index > $count Then 
+		Return False
+	EndIf
+
 	Local $iterateLocalActorListStruct = DllStructCreate("ptr;char[64];byte[" & Int($ofs_LocalActor_atribGUID) - 68 & "];ptr")
-	If $index > $count Then Return False
+	
 	$index += 1
+	
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateLocalActorListStruct), 'int', DllStructGetSize($iterateLocalActorListStruct), 'int', '')
 	$item[0] = DllStructGetData($iterateLocalActorListStruct, 1)
 	$item[1] = DllStructGetData($iterateLocalActorListStruct, 2)
 	$item[2] = DllStructGetData($iterateLocalActorListStruct, 4)
-
 	$item[3] = $offset ; Item Offset
 	;_log('kick: ' &$item[0] & " : " & $item[1] & " : " & $item[2] & " : " & $item[3])
 	$offset = $offset + $ofs_LocalActor_StrucSize
@@ -1262,61 +1267,59 @@ EndFunc   ;==>IndexStringList
 ;;	OffsetList()
 ;;--------------------------------------------------------------------------------
 Func offsetlist()
-        _log("offsetlist")
+	_log("offsetlist")
 
-        $vftableSubB            = _MemoryRead($VIewStatic, $d3, 'ptr')
-        $vftableSubA            = _MemoryRead($vftableSubB + 0x928, $d3, 'ptr')
-        $ViewOffset             = $vftableSubA
-        $Ofs_CameraRotationA    = $ViewOffset + 0x4
-        $Ofs_CameraRotationB    = $ViewOffset + 0x8
-        $Ofs_CameraRotationC    = $ViewOffset + 0xC
-        $Ofs_CameraRotationD    = $ViewOffset + 0x10
-        $Ofs_CameraPosX         = $ViewOffset + 0x14
-        $Ofs_CameraPosY         = $ViewOffset + 0x18
-        $Ofs_CameraPosZ         = $ViewOffset + 0x1C
-        $Ofs_CameraFOV          = $ViewOffset + 0x30
-        $Ofs_CameraFOVB         = $ViewOffset + 0x30
+	$vftableSubB            = _MemoryRead($VIewStatic, $d3, 'ptr')
+	$vftableSubA            = _MemoryRead($vftableSubB + 0x928, $d3, 'ptr')
+	$ViewOffset             = $vftableSubA
+	$Ofs_CameraRotationA    = $ViewOffset + 0x4
+	$Ofs_CameraRotationB    = $ViewOffset + 0x8
+	$Ofs_CameraRotationC    = $ViewOffset + 0xC
+	$Ofs_CameraRotationD    = $ViewOffset + 0x10
+	$Ofs_CameraPosX         = $ViewOffset + 0x14
+	$Ofs_CameraPosY         = $ViewOffset + 0x18
+	$Ofs_CameraPosZ         = $ViewOffset + 0x1C
+	$Ofs_CameraFOV          = $ViewOffset + 0x30
+	$Ofs_CameraFOVB         = $ViewOffset + 0x30
 
+	$_ActorAtrib_Base       = _MemoryRead($ofs_ActorAtrib_Base, $d3, 'ptr')
+	$_ActorAtrib_1          = _MemoryRead($_ActorAtrib_Base + $ofs_ActorAtrib_ofs1, $d3, 'ptr')
+	$_ActorAtrib_2          = _MemoryRead($_ActorAtrib_1 + $ofs_ActorAtrib_ofs2, $d3, 'ptr')
+	$_ActorAtrib_3          = _MemoryRead($_ActorAtrib_2 + $ofs_ActorAtrib_ofs3, $d3, 'ptr')
+	$_ActorAtrib_4          = _MemoryRead($_ActorAtrib_3, $d3, 'ptr')
+	$_ActorAtrib_Count      = $_ActorAtrib_2 + $ofs_ActorAtrib_Count
+	$_LocalActor_1          = _MemoryRead($_ActorAtrib_1 + $ofs_LocalActor_ofs1, $d3, 'ptr')
+	$_LocalActor_2          = _MemoryRead($_LocalActor_1 + $ofs_LocalActor_ofs2, $d3, 'ptr')
+	$_LocalActor_3          = _MemoryRead($_LocalActor_2, $d3, 'ptr')
+	$_LocalActor_Count      = $_LocalActor_1 + $ofs_LocalActor_Count
+	$_itrObjectManagerA     = _MemoryRead($ofs_objectmanager, $d3, 'ptr')
+	$_itrObjectManagerB     = _MemoryRead($_itrObjectManagerA + $ofs__ObjmanagerActorOffsetA, $d3, 'ptr')
+	$_itrObjectManagerCount = $_itrObjectManagerB + $ofs__ObjmanagerActorCount
+	$_itrObjectManagerC     = _MemoryRead($_itrObjectManagerB + $ofs__ObjmanagerActorOffsetB, $d3, 'ptr')
+	$_itrObjectManagerD     = _MemoryRead($_itrObjectManagerC, $d3, 'ptr')
+	$_itrObjectManagerE     = _MemoryRead($_itrObjectManagerD, $d3, 'ptr')
+	$_itrInteractA          = _MemoryRead($ofs_InteractBase, $d3, 'ptr')
+	$_itrInteractB          = _MemoryRead($_itrInteractA, $d3, 'ptr')
+	$_itrInteractC          = _MemoryRead($_itrInteractB, $d3, 'ptr')
+	$_itrInteractD          = _MemoryRead($_itrInteractC + $ofs__InteractOffsetA, $d3, 'ptr')
+	$_itrInteractE          = $_itrInteractD + $ofs__InteractOffsetB
 
-
-        $_ActorAtrib_Base       = _MemoryRead($ofs_ActorAtrib_Base, $d3, 'ptr')
-        $_ActorAtrib_1          = _MemoryRead($_ActorAtrib_Base + $ofs_ActorAtrib_ofs1, $d3, 'ptr')
-        $_ActorAtrib_2          = _MemoryRead($_ActorAtrib_1 + $ofs_ActorAtrib_ofs2, $d3, 'ptr')
-        $_ActorAtrib_3          = _MemoryRead($_ActorAtrib_2 + $ofs_ActorAtrib_ofs3, $d3, 'ptr')
-        $_ActorAtrib_4          = _MemoryRead($_ActorAtrib_3, $d3, 'ptr')
-        $_ActorAtrib_Count      = $_ActorAtrib_2 + $ofs_ActorAtrib_Count
-        $_LocalActor_1          = _MemoryRead($_ActorAtrib_1 + $ofs_LocalActor_ofs1, $d3, 'ptr')
-        $_LocalActor_2          = _MemoryRead($_LocalActor_1 + $ofs_LocalActor_ofs2, $d3, 'ptr')
-        $_LocalActor_3          = _MemoryRead($_LocalActor_2, $d3, 'ptr')
-        $_LocalActor_Count      = $_LocalActor_1 + $ofs_LocalActor_Count
-        $_itrObjectManagerA     = _MemoryRead($ofs_objectmanager, $d3, 'ptr')
-        $_itrObjectManagerB     = _MemoryRead($_itrObjectManagerA + $ofs__ObjmanagerActorOffsetA, $d3, 'ptr')
-        $_itrObjectManagerCount = $_itrObjectManagerB + $ofs__ObjmanagerActorCount
-        $_itrObjectManagerC     = _MemoryRead($_itrObjectManagerB + $ofs__ObjmanagerActorOffsetB, $d3, 'ptr')
-        $_itrObjectManagerD     = _MemoryRead($_itrObjectManagerC, $d3, 'ptr')
-        $_itrObjectManagerE     = _MemoryRead($_itrObjectManagerD, $d3, 'ptr')
-        $_itrInteractA          = _MemoryRead($ofs_InteractBase, $d3, 'ptr')
-        $_itrInteractB          = _MemoryRead($_itrInteractA, $d3, 'ptr')
-        $_itrInteractC          = _MemoryRead($_itrInteractB, $d3, 'ptr')
-        $_itrInteractD          = _MemoryRead($_itrInteractC + $ofs__InteractOffsetA, $d3, 'ptr')
-        $_itrInteractE          = $_itrInteractD + $ofs__InteractOffsetB
-
-        If LocateMyToon() Then
-                $ClickToMoveMain = _MemoryRead($_Myoffset + $ofs__ObjmanagerActorLinkToCTM, $d3, 'ptr')
-                $ClickToMoveRotation = $ClickToMoveMain + $RotationOffset
-                $ClickToMoveCurX = $ClickToMoveMain + $CurrentX
-                $ClickToMoveCurY = $ClickToMoveMain + $CurrentY
-                $ClickToMoveCurZ = $ClickToMoveMain + $CurrentZ
-                $ClickToMoveToX = $ClickToMoveMain + $MoveToXoffset
-                $ClickToMoveToY = $ClickToMoveMain + $MoveToYoffset
-                $ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
-                $ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
-                $ClickToMoveFix = $ClickToMoveMain + $FixSpeed
-                _log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
-                Return True
-        Else
-                Return False
-        EndIf
+	If LocateMyToon() Then
+		$ClickToMoveMain = _MemoryRead($_Myoffset + $ofs__ObjmanagerActorLinkToCTM, $d3, 'ptr')
+		$ClickToMoveRotation = $ClickToMoveMain + $RotationOffset
+		$ClickToMoveCurX = $ClickToMoveMain + $CurrentX
+		$ClickToMoveCurY = $ClickToMoveMain + $CurrentY
+		$ClickToMoveCurZ = $ClickToMoveMain + $CurrentZ
+		$ClickToMoveToX = $ClickToMoveMain + $MoveToXoffset
+		$ClickToMoveToY = $ClickToMoveMain + $MoveToYoffset
+		$ClickToMoveToZ = $ClickToMoveMain + $MoveToZoffset
+		$ClickToMoveToggle = $ClickToMoveMain + $ToggleMove
+		$ClickToMoveFix = $ClickToMoveMain + $FixSpeed
+		_log("My toon located at: " & $_Myoffset & ", GUID: " & $_MyGuid & ", NAME: " & $_MyCharType)
+		Return True
+	Else
+		Return False
+	EndIf
 
 EndFunc   ;==>offsetlist
 
@@ -1635,10 +1638,8 @@ Func GetElement($Struct, $Element, $tagSTRUCT)
    return DllStructCreate($tagSTRUCT, DllStructGetPtr($Struct) + $Element * DllStructGetSize(DllStructCreate($tagStruct)))
 EndFunc
 
-Func GetItemFromList(ByRef $iterateObjectsListStruct, ByRef $offset, ByRef $position, $CurrentPosition = False)
+Func GetItemFromList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, ByRef $position, $CurrentPosition = False)
 
-	Dim $item[$TableSizeGuidStruct]
-	
 	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $GuidStruct)
 
 	If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
@@ -1664,7 +1665,7 @@ Func GetItemFromList(ByRef $iterateObjectsListStruct, ByRef $offset, ByRef $posi
 		Return False
 	EndIf
 
-	Return $item
+	Return True
 
 EndFunc
 
