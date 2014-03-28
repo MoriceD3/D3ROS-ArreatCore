@@ -1820,83 +1820,6 @@ Func IterateFilterZoneV2($dist, $n=2)
 	Return False
 EndFunc
 
-Func IterateFilterAffixV2()
-
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
-	startIterateObjectsList($index, $offset, $count)
-	Dim $item_affix_2D[1][$TableSizeGuidStruct+1]
-	Local $z = 0
-	
-	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
-	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-	
-	$CurrentLoc = GetCurrentPos()
-	$pv_affix=getlifep()
-
-	for $i=0 to $count
-		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
-
-		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
-			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
-			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
-			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x
-			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y
-			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z
-			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
-			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
-			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
-			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
-
-			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
-			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
-			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
-
-			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
-
-			If Is_Affix($item, $pv_affix) Then
-				ReDim $item_affix_2D[$z + 1][$TableSizeGuidStruct+1]
-				For $x = 0 To 9
-					$item_affix_2D[$z][$x] = $item[$x]
-				Next
-
-					if (StringInStr($item[1],"woodWraith_explosion") or StringInStr($item[1],"WoodWraith_sporeCloud_emitter")) then  $item_affix_2D[$z][13] = $range_ice
-				    if (StringInStr($item[1],"sandwasp_projectile") or StringInStr($item[1],"succubus_bloodStar_projectile")) then $item_affix_2D[$z][13] = $range_arcane
-			        if StringInStr($item[1],"molten_trail") then $item_affix_2D[$z][13] = $range_lave
-			        if (StringInStr($item[1],"Corpulent_") and (StringLower(Trim($nameCharacter)) = "demonhunter" or StringLower(Trim($nameCharacter)) = "witchdoctor" or StringLower(Trim($nameCharacter)) = "wizard")) then $item_affix_2D[$z][13] = $range_arcane
-                    if StringInStr($item[1],"Corpulent_suicide_blood") then $item_affix_2D[$z][13] = $range_arcane
-			        if StringInStr($item[1],"Desecrator") then $item_affix_2D[$z][13] = $range_profa
-			        if (StringInStr($item[1],"bomb_buildup") or StringInStr($item[1],"iceClusters") or stringinstr($item[1],"Molten_deathExplosion") or stringinstr($item[1],"Molten_deathStart")) then  $item_affix_2D[$z][13] = $range_ice
-			        if StringInStr($item[1],"frozenPulse") then $item_affix_2D[$z][13] = $range_arcane
-					if StringInStr($item[1],"Orbiter_Projectile") then $item_affix_2D[$z][13] = $range_arcane
-			        if StringInStr($item[1],"Battlefield_demonic_forge") then $item_affix_2D[$z][13] = $range_arcane
-			        if (StringInStr($item[1],"CorpseBomber_projectile") or StringInStr($item[1],"CorpseBomber_bomb_start")) then $item_affix_2D[$z][13] = $range_ice
-			        if StringInStr($item[1],"Thunderstorm_Impact") then $item_affix_2D[$z][13] = $range_ice
-			        if (StringInStr($item[1],"demonmine_C") or StringInStr($item[1],"Crater_DemonClawBomb")) then $item_affix_2D[$z][13] = $range_mine
-			        if StringInStr($item[1],"creepMobArm") then $item_affix_2D[$z][13] = $range_arm
-			        if (StringInStr($item[1],"spore") or StringInStr($item[1],"Plagued_endCloud") or StringInStr($item[1],"Poison")) then $item_affix_2D[$z][13] = $range_peste
-			        if StringInStr($item[1],"ArcaneEnchanted_petsweep") then $item_affix_2D[$z][13] = $range_arcane
-
-
-				$z += 1
-			EndIf
-
-
-		EndIf
-		$iterateObjectsStruct = ""
-		Next
-
-	$iterateObjectsListStruct = ""
-
-	If $z = 0 Then
-                Return False
-        Else
-
-                _ArraySort($item_affix_2D, 0, 0, 0, 9)
-
-                Return $item_affix_2D
-        EndIf
-EndFunc
-
 Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
 
 	If UBound($array_obj) <= 1 Or Not IsArray($array_obj) Then
@@ -5538,44 +5461,6 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
 
    endif
 EndFunc  ;maffmove
-
-$BanAffixList="poison_humanoid|"&$BanAffixList
-
- Func Is_Affix($item,$pv=0)
-	if $item[9]<50 then
-                 if ((StringInStr($item[1],"bomb_buildup") and $pv<=$Life_explo/100 ) or _
-					(StringInStr($item[1],"Corpulent_") and $pv<=$Life_explo/100 ) or _
-					(StringInStr($item[1],"demonmine_C") and $pv<=$Life_mine/100)  or _
-					(StringInStr($item[1],"creepMobArm") and $pv<=$Life_arm/100 )  or _
-					(StringInStr($item[1],"woodWraith_explosion") and $pv<=$Life_spore/100)  or _
-				    (StringInStr($item[1],"WoodWraith_sporeCloud_emitter") and $pv<=$Life_spore/100 )  or _
-				    (StringInStr($item[1],"sandwasp_projectile") and $pv<=$Life_proj/100 )  or _
-					(StringInStr($item[1],"succubus_bloodStar_projectile") and $pv<=$Life_proj/100 )  or _
-					(StringInStr($item[1],"Crater_DemonClawBomb") and $pv<=$Life_mine/100 )  or _
-					(stringinstr($item[1],"Molten_deathExplosion") and $pv<=$Life_explo/100 ) or _
-					(stringinstr($item[1],"Molten_deathStart") and $pv<=$Life_explo/100 )   or _
-					(StringInStr($item[1],"icecluster") and $pv<=$Life_ice/100 )   or _
-					(StringInStr($item[1],"Orbiter_Projectile") and $pv<=$Life_ice/100 )   or _
-					(StringInStr($item[1],"Thunderstorm") and $pv<=$Life_ice/100 )   or _
-					(StringInStr($item[1],"CorpseBomber_projectile") and $pv<=$Life_proj/100 )   or _
-					(StringInStr($item[1],"CorpseBomber_bomb_start") and $pv<=$Life_explo/100 )   or _
-					(StringInStr($item[1],"Battlefield_demonic_forge") and $pv<=$Life_ice/100 )   or _
-                    (StringInStr($item[1],"frozenPulse") and $pv<=$Life_ice/100 )   or _
-					(StringInStr($item[1],"spore") and $pv<=$Life_spore/100 )  or _
-					(StringInStr($item[1],"ArcaneEnchanted_petsweep") and $pv<=$Life_arcane/100 ) or _
-					(StringInStr($item[1],"desecrator") and $pv<=$Life_profa/100 ) or _
-					(StringInStr($item[1],"Plagued_endCloud") and $pv<=$Life_peste/100 )  or _
-					(StringInStr($item[1],"poison") and $pv<=$Life_poison/100 ) or _
-					(StringInStr($item[1],"molten_trail") and $pv<=$Life_lave/100 )) _
-					and checkfromlist($BanAffixList, $item[1]) = 0 then
-                Return True
-        Else
-                Return False
-		 EndIf
-   EndIf
-
- EndFunc   ;==>Is_Affix
-
 
  Func Take_BookOfCain()
 

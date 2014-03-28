@@ -33,6 +33,7 @@ Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
 #include "lib\toolkit.au3"
 #include "lib\botting.au3"
 #include "lib\stats.au3"
+#include "lib\Affix.au3"
 ;Automatisation des séquences
 #include "lib\GestionMenu.au3"
 ; TChat

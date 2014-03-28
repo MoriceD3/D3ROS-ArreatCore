@@ -47,6 +47,7 @@ Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
 Global $g_time = 7500
+Global $BanAffixList = "poison_humanoid|"
 Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
@@ -99,10 +100,10 @@ Global $Res_compt = 0
 Global $nb_die_t = 0
 Global $rdn_die_t = 0
 
-Global $ftpserver=""
-Global $ftpusername=""
-Global $ftppass=""
-Global $ftpfilename=""
+Global $ftpserver = ""
+Global $ftpusername = ""
+Global $ftppass = ""
+Global $ftpfilename = ""
 
 Global $File_Sequence = "sequence\sequence.txt"
 
@@ -113,7 +114,7 @@ Global $Key4 = "'"
 Global $MouseMoveClick = "middle"
 Global $InventoryCheck = False
 
-global $tab_aff[60][2]=[ _
+Global $tab_aff[60][2]=[ _
                                                 [-5,-5],[-5,5],[5,-5],[5,5], _
                                                 [-10,-10],[-10,10],[10,-10],[10,10], _
                                                 [-15,-10],[-15,10],[15,-10],[15,10], _
@@ -130,38 +131,37 @@ global $tab_aff[60][2]=[ _
                                                 [-70,-70],[-70,70],[70,-70],[70,70], _
                                                 [-80,-80],[-80,80],[80,-80],[80,80] _
                                                 ]
-global $tab_aff2[15][2]=[ _
+Global $tab_aff2[15][2]=[ _
                                                 [5,5], [10,10], [15,10], [10,20], _
                                                 [20,10], [10,15], [15,15] , [20,20], _
                                                 [25,25], [30,30], [40,40],[50,50], _
                                                 [60,60], [70,70], [80,80] _
                                                 ]
-global $gestion_affixe = False
-global $gestion_affixe_loot = False
-global $range_arcane=25
-global $range_peste=18
-global $range_profa=13
-global $range_lave=13
-global $range_arm=15
-global $range_mine=13
-global $range_explosion=18
-global $range_ice=20
-Global $life_arcane=100
-Global $life_peste=100
-Global $life_profa=100
-Global $life_proj=100
-Global $life_ice=100
-Global $life_poison=100
-Global $life_explo=100
-Global $life_lave=100
-Global $life_mine=100
-Global $life_arm=100
-Global $life_spore=100
-Global $maff_timer=timerinit()
-global $timer_ignore_reset=timerinit()
-global $energy_mini=0
-global $BanAffixList=""
-dim $ignore_affix[1][2]
+Global $gestion_affixe 		= False
+Global $gestion_affixe_loot = False
+Global $range_arcane = 25
+Global $range_peste = 18
+Global $range_profa = 13
+Global $range_lave = 13
+Global $range_arm = 15
+Global $range_mine = 13
+Global $range_explosion = 18
+Global $range_ice = 20
+Global $life_arcane = 100
+Global $life_peste = 100
+Global $life_profa = 100
+Global $life_proj = 100
+Global $life_ice = 100
+Global $life_poison = 100
+Global $life_explo = 100
+Global $life_lave = 100
+Global $life_mine = 100
+Global $life_arm = 100
+Global $life_spore = 100
+Global $maff_timer = timerinit()
+Global $timer_ignore_reset = timerinit()
+Global $energy_mini = 0
+Dim    $ignore_affix[1][2]
 Global $debugBot = False
 
 Global $Gest_affixe_ByClass = False
