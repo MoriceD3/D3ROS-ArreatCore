@@ -11,10 +11,10 @@ Func IterateFilterAffixV2()
 	startIterateObjectsList($index, $offset, $count)
 	Dim $item_affix_2D[1][$TableSizeGuidStruct + 1]
 	Local $z = 0
-	
+
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-	
+
 	$CurrentLoc = GetCurrentPos()
 	$pv_affix = getlifep()
 
@@ -46,52 +46,53 @@ Func IterateFilterAffixV2()
 EndFunc  ;==> IterateFilterAffixV2()
 
 Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
-	; TODO : Vérifier les ranges et les vies associées a priori quelques incohérences
+	; TODO : Vérifier les ranges
+
 	Select
 		Case $item[9] > 50
 			Return -1
-		Case IsItemInTable($Table_BanAffix, $item[1])
+		Case checkfromlist($BanAffixList, $item[1]) = 1
 			Return -1
 		Case StringInStr($item[1], "bomb_buildup") And ($pv <= $Life_explo / 100)
-			Return $range_ice
+			Return $range_explo
 		Case (StringInStr($item[1], "Corpulent_") And ($pv <= $Life_explo / 100) And (Trim($nameCharacter) = "demonhunter" Or Trim($nameCharacter) = "witchdoctor" Or Trim($nameCharacter) = "wizard"))
-			Return $range_arcane
-		Case StringInStr($item[1], "demonmine_C") And ($pv <= $Life_explo / 100)
+			Return $range_explo
+		Case StringInStr($item[1], "demonmine_C") And ($pv <= $Life_mine / 100)
 			Return $range_mine
 		Case StringInStr($item[1], "Corpulent_suicide_blood") And ($pv <= $Life_explo / 100)
-			Return $range_arcane
+			Return $range_explo
 		Case StringInStr($item[1], "creepMobArm") And ($pv <= $Life_arm / 100)
 			Return $range_arm
 		Case StringInStr($item[1], "woodWraith_explosion") And ($pv <= $Life_spore / 100)
-			Return $range_ice
+			Return $range_spore
 		Case StringInStr($item[1], "WoodWraith_sporeCloud_emitter") And ($pv <= $Life_spore / 100)
-			Return $range_ice
+			Return $range_spore
 		Case StringInStr($item[1], "sandwasp_projectile") And ($pv <= $Life_proj / 100)
-			Return $range_arcane
+			Return $range_proj
 		Case StringInStr($item[1], "succubus_bloodStar_projectile") And ($pv <= $Life_proj / 100)
-			Return $range_arcane
+			Return $range_proj
 		Case StringInStr($item[1], "Crater_DemonClawBomb") And ($pv <= $Life_mine / 100)
 			Return $range_mine
 		Case StringInStr($item[1], "Molten_deathExplosion") And ($pv <= $Life_explo / 100)
-			Return $range_ice
+			Return $range_explo
 		Case StringInStr($item[1], "Molten_deathStart") And ($pv <= $Life_explo / 100)
-			Return $range_ice
+			Return $range_explo
 		Case StringInStr($item[1], "iceClusters") And ($pv <= $Life_ice / 100)
 			Return $range_ice
-		Case StringInStr($item[1], "Orbiter_Projectile") And ($pv <= $Life_ice / 100)
-			Return $range_arcane
-		Case StringInStr($item[1], "Thunderstorm_Impact") And ($pv <= $Life_ice / 100)
-			Return $range_ice
-		Case StringInStr($item[1], "CorpseBomber_projectile") And ($pv <= $Life_proj / 100)
-			Return $range_ice
-		Case StringInStr($item[1], "CorpseBomber_bomb_start") And ($pv <= $Life_explo / 100)
-			Return $range_ice
-		Case StringInStr($item[1], "Battlefield_demonic_forge") And ($pv <= $Life_ice / 100)
-			Return $range_arcane
+		Case StringInStr($item[1], "Orbiter_Projectile") And ($pv <= $Life_lightning / 100)
+			Return $range_lightning
+		Case StringInStr($item[1], "Thunderstorm_Impact") And ($pv <= $Life_lightning / 100)
+			Return $range_lightning
+		Case StringInStr($item[1], "CorpseBomber_projectile") And ($pv <= $Life_poison / 100)
+			Return $range_poison
+		Case StringInStr($item[1], "CorpseBomber_bomb_start") And ($pv <= $Life_poison / 100)
+			Return $range_poison
+		Case StringInStr($item[1], "Battlefield_demonic_forge") And ($pv <= $Life_lave / 100)
+			Return $range_lave
 		Case StringInStr($item[1], "frozenPulse") And ($pv <= $Life_ice / 100)
-			Return $range_arcane
+			Return $range_ice
 		Case StringInStr($item[1], "spore") And ($pv <= $Life_spore / 100)
-			Return $range_peste
+			Return $range_spore
 		Case StringInStr($item[1], "ArcaneEnchanted_petsweep") And ($pv <= $Life_arcane / 100)
 			Return $range_arcane
 		Case StringInStr($item[1], "Desecrator") And ($pv <= $Life_profa / 100)
@@ -99,7 +100,7 @@ Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
 		Case StringInStr($item[1], "Plagued_endCloud") And ($pv <= $Life_peste / 100)
 			Return $range_peste
 		Case StringInStr($item[1], "Poison") And ($pv <= $Life_poison / 100)
-			Return $range_peste
+			Return $range_poison
 		Case StringInStr($item[1], "molten_trail") And ($pv <= $Life_lave / 100)
 			Return $range_lave
 		Case Else
@@ -189,7 +190,7 @@ Func zone_safe($x_perso,$y_perso,$item_verif,$z_test,$x_mob,$y_mob)
 		$y_test = $y_perso + $abs * $tab_aff2[$b][1]
 		If is_zone_safe($x_test,$y_test,$z_test,$item_verif) And check_ignore_affix($x_test,$y_test) Then
 			$bb = $bb + 1
-			ReDim $safe_array[$bb + 1][3]		
+			ReDim $safe_array[$bb + 1][3]
 			$distance_safe = getdistance($x_test,$y_test,0)
 			$safe_array[$bb][0] = $distance_safe
 			$safe_array[$bb][1] = $x_test
@@ -229,7 +230,7 @@ Func maffmove($_x_aff,$_y_aff,$_z_aff,$x_mob,$y_mob)
 					$ignore_timer = timerinit()
 					While _MemoryRead($ClickToMoveToggle,$d3,"float") <> 0
 						; GestSpellcast(0, 2, 0)
-						If timerdiff($ignore_timer) > 10000 Then 
+						If timerdiff($ignore_timer) > 10000 Then
 							ExitLoop
 						EndIf
 						Sleep(10)
