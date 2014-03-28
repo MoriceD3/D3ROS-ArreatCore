@@ -51,7 +51,7 @@ Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
 	Select
 		Case $item[9] > 50
 			Return -1
-		Case checkfromlist($BanAffixList, $item[1]) = 1
+		Case IsItemInTable($Table_BanAffix, $item[1])
 			Return -1
 		Case StringInStr($item[1], "bomb_buildup") And ($pv <= $Life_explo / 100)
 			Return $range_explo

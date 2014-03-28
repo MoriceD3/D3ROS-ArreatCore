@@ -455,7 +455,7 @@ Func InitSkillHeros($skillHeros)
 	$life_mine = IniRead($skillHeros, "Run info", "Life_Mine", $life_mine)
 	$life_arm = IniRead($skillHeros, "Run info", "Life_Arm", $life_arm)
 	$life_spore = IniRead($skillHeros, "Run info", "Life_Spore", $life_spore)
-	$life_lightning = IniRead($skillHeros, "Run info", "Life_lightning", $life_lightning)
+	$life_lightning = IniRead($skillHeros, "Run info", "Life_Lightning", $life_lightning)
 
 ;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
 ;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)
