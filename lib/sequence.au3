@@ -80,9 +80,9 @@ Func revive(ByRef $path)
 		$nb_die_t = $nb_die_t + 1
 		$Res_compt = $Res_compt + 1
 		_log("You are dead, max :" & $rdn_die_t - $nb_die_t & " more death allowed")
-		
+
 		If Not $PartieSolo Then WriteMe($WRITE_ME_DEATH) ; TChat
-		
+
 		If $nb_die_t <= $rdn_die_t AND NOT _checkRepair() Then
 
 			Sleep(Random(5000, 6000))
@@ -276,6 +276,14 @@ Func ChestList($String)
 	EndIf
 EndFunc   ;==>ChestList
 
+Func RackList($String)
+	If Not $String = "" Then
+		$List_Rack = $String
+		LoadTableFromString($Table_Rack, $List_Rack) ; Chargement de la nouvelle table
+		_log("Remplacement de la RackList : " & $List_Rack)
+	EndIf
+EndFunc   ;==>RackList
+
 Func DecorList($String)
 	If Not $String = "" Then
 		$List_Decor = $String
@@ -426,13 +434,13 @@ Func sequence()
 				If StringInStr($line, "takewp=", 2) Then; TakeWP detected
 
 					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
-					
+
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
 					   _Log("enclenchement auto du buffinit()")
 					EndIf
-					
+
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
 
@@ -522,6 +530,12 @@ Func sequence()
 					$line = StringReplace($line, "chestlist=", "", 0, 2)
 					_log("Enclenchement d'un Chestlist() line : " & $i + 1)
 					ChestList($line)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "racklist=", 2) Then; Racklist detected
+					$line = StringReplace($line, "racklist=", "", 0, 2)
+					_log("Enclenchement d'un Racklist() line : " & $i + 1)
+					RackList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
@@ -633,7 +647,7 @@ Func sequence()
 						Sleep(500)
 						buffinit() ; on Buff avant de prendre le portal ;git 4
 						_Log("enclenchement auto du buffinit()")
-						
+
 						Sleep(500)
 						SafePortStart()
 					ElseIf StringInStr($line, "nobloc()", 2) Then ;InteractByActorName detected
