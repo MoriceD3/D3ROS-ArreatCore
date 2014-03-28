@@ -38,7 +38,7 @@ Global $BreakTime = 360
 Global $Breakafterxxgames = Round(Random(4, 8))
 Global $TakeABreak = False
 ;Global $PauseRepas = False
-
+Global $tab_grablist[1][2]
 Global $PartieSolo = True
 
 Global $FilterItemGround = False
@@ -602,7 +602,6 @@ Func Init_grablistFile($grabListPath = "grablist/")
 
 	FileClose($file)
 
-	Global $tab_grablist[1][2]
 	Global $grablist = ""
 	Local $compt = 0
 
