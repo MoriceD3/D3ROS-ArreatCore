@@ -22,6 +22,12 @@ Global	$ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea,$SequenceFileA
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
 Global	$Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
 
+; check ui error
+Global Const $MODE_INVENTORY_FULL 		= 0
+Global Const $MODE_STASH_FULL	  		= 1
+Global Const $MODE_BOSS_TP_DENIED 		= 2
+Global Const $MODE_NO_IDENTIFIED_ITEM 	= 3
+
 ; GestionChat
 Global Const $WRITE_ME_RESTART_GAME		= 1
 Global Const $WRITE_ME_WELCOME			= 2
@@ -64,13 +70,13 @@ Global $PauseRepasCounter = 0
 Global $tempsPauseGame 	  = 0
 Global $tempsPauserepas   = 0
 
+Global $Execute_TpRepairAndBack = False ; correction double tp inventaire plein
 Global $Execute_StashAndRepair  = False
-Global $FailOpen_BookOfCain 	= 0
 Global $PortBack 	   			= False
+Global $FailOpen_BookOfCain 	= 0
 
 Global $Hero_Axe_Z = 10
 Global $TableBannedActors = [0]
-Global $Tp_Repair_And_Back = 0 ; correction double tp inventaire plein
 Global $Count_ACD = 0
 Global $GetACD
 Global $nameCharacter
