@@ -2567,12 +2567,12 @@ Func Grabit($name, $offset)
 
 
 			;If _inventoryfull() Then
-			If Detect_UI_error(0) And $Tp_Repair_And_Back = 0 Then ; $Tp_Repair_And_Back = 0,car on ne veut pas y rentrer plus d'une fois "correction double tp inventaire plein"
-				$Tp_Repair_And_Back = 1
+			If Detect_UI_error($MODE_INVENTORY_FULL) And Not $Execute_TpRepairAndBack Then ; $Execute_TpRepairAndBack = 0,car on ne veut pas y rentrer plus d'une fois "correction double tp inventaire plein"
+				$Execute_TpRepairAndBack = True
 				Unbuff()
 					TpRepairAndBack()
 				Buffinit()
-				$Tp_Repair_And_Back = 0
+				$Execute_TpRepairAndBack = False
 			EndIf
 
 		EndIf
@@ -4460,7 +4460,7 @@ Func StashAndRepair()
 
 			MouseClick('Right')
 			Sleep(Random(50, 200))
-			If Detect_UI_error(1) Then
+			If Detect_UI_error($MODE_STASH_FULL) Then
 				_log('Tab is full : Switching tab')
 				CheckWindowD3Size()
 				$i = $i - 1
@@ -5009,31 +5009,30 @@ Func Detect_UI_error($mode=0)
         $Visibility = 1
 
 
-
-		if $mode = 0 Then
-			if CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Full_Inventory[0]) Then
+		If $mode = $MODE_INVENTORY_FULL Then
+			If CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Full_Inventory[0]) Then
 				_log("ERROR DETECT -> INVENTORY FULL")
 				return true
 			Else
 				return false
 			EndIf
-		ElseIf $mode = 1 Then
-			if CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Full_Stash[0]) Then
+		ElseIf $mode = $MODE_STASH_FULL Then
+			If CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Full_Stash[0]) Then
 				_log("ERROR DETECT -> STACH FULL")
 				return true
 			Else
 				return false
 			EndIf
-		ElseIf $mode = 2 Then
-			if CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Boss_TpDeny[0]) Then
+		ElseIf $mode = $MODE_BOSS_TP_DENIED Then
+			If CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_Boss_TpDeny[0]) Then
 				_log("ERROR DETECT -> CAN'T TP IN BOSS ROOM")
 				return true
 			Else
 				return false
 			EndIf
-		ElseIf $mode = 3 Then
+		ElseIf $mode = $MODE_NO_IDENTIFIED_ITEM Then
 			_log("$Byte_NoItem_Identify[0] : " & $Byte_NoItem_Identify[0])
-			if CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_NoItem_Identify[0]) Then
+			If CheckTextvalueUI($bucket, $valuetocheckfor, $Byte_NoItem_Identify[0]) Then
 				_log("ERROR DETECT -> NO ITEM IDENTIFY")
 				return true
 			Else
@@ -5041,7 +5040,7 @@ Func Detect_UI_error($mode=0)
 			EndIf
 		EndIf
 
-	_log("ERROR DETECT -> NO ERROR DETECT")
+	    _log("ERROR DETECT -> NO ERROR DETECT")
 
 EndFunc
 
@@ -5238,14 +5237,14 @@ Func _TownPortalnew($mode=0)
 			Send($KeyPortal)
 			Sleep(250)
 
-			If $Choix_Act_Run < 100 And Detect_UI_error(2) AND NOT _intown() Then
+			If $Choix_Act_Run < 100 And Detect_UI_error($MODE_BOSS_TP_DENIED) AND NOT _intown() Then
 				_Log('Detection Asmo room')
 				Return False
 			EndIf
 
 			$Current_area = GetLevelAreaId()
 
-			If Detect_UI_error(0) = False And $GameFailed = 0 Then
+			If Detect_UI_error($MODE_INVENTORY_FULL) = False And $GameFailed = 0 Then
 				_Log("enclenchement fastCheckui de la barre de loading")
 
 			    While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
@@ -5589,7 +5588,7 @@ $BanAffixList="poison_humanoid|"&$BanAffixList
 
     InteractByActorName("All_Book_Of_Cain")
 
-    While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error(3)
+    While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error($MODE_NO_IDENTIFIED_ITEM)
             ;_log("Ui : " & fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1512) & " Error : " &  fastcheckuiitemvisible("Root.TopLayer.error_notify.error_text", 1, 1185))
             _log("tour boucle")
             If NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
