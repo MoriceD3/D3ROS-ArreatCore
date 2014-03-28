@@ -1573,7 +1573,10 @@ Func GetACDOffsetByACDGUID($Guid)
 EndFunc   ;==>GetACDOffsetByACDGUID
 
 Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
-
+	If $count = 65535 Then
+		Return False
+	EndIf
+	
 	If $index > $count + 1 Then
 		Return False
 	EndIf
