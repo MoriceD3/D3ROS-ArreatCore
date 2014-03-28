@@ -47,7 +47,7 @@ Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
 Global $g_time = 7500
-Global $BanAffixList = "poison_humanoid|"
+Global $List_BanAffix = "poison_humanoid"
 Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
@@ -327,6 +327,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
 	LoadTableFromString($Table_BanItemStartName, $List_BanItemStartName)
 	LoadTableFromString($Table_Decor, $List_Decor)
+	LoadTableFromString($Table_BanAffix, $List_BanAffix)
 
 EndFunc   ;==>LoadConfigs
 
@@ -434,7 +435,7 @@ Func InitSkillHeros($skillHeros)
 	$gestion_affixe = Trim(StringLower($Dummy)) == "true"
 	$Dummy = IniRead($skillHeros, "Run info", "gestion_affixe_loot", $gestion_affixe_loot)
 	$gestion_affixe_loot = Trim(StringLower($Dummy)) == "true"
-	$BanAffixList = IniRead($skillHeros, "Run info", "BanAffixList", $BanAffixList)
+	$List_BanAffix = IniRead($skillHeros, "Run info", "BanAffixList", $List_BanAffix)
 	$Dummy = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)
 	$Gest_affixe_ByClass = Trim(StringLower($Dummy)) == "true"
 
