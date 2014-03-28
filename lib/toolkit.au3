@@ -1391,15 +1391,15 @@ Func GetCurrentPos()
 	Local $PosPlayerStruct = DllStructCreate("byte[164];float;float;float")
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $_Myoffset, 'ptr', DllStructGetPtr($PosPlayerStruct), 'int', DllStructGetSize($PosPlayerStruct), 'int', '')
 
-		$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
-		$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
-		$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
+	$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
+	$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
+	$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
 
-		$Current_Hero_X = $return[0]
-		$Current_Hero_Y = $return[1]
-		$Current_Hero_Z = $return[2]
+	$Current_Hero_X = $return[0]
+	$Current_Hero_Y = $return[1]
+	$Current_Hero_Z = $return[2]
 
-		Return $return
+	Return $return
 EndFunc  ;==>GetCurrentPos
 
 ;;--------------------------------------------------------------------------------
@@ -3422,32 +3422,31 @@ Func shrine($name, $offset, $Guid)
 
 
 Func Coffre($item)
+	$name = $item[1]
+	$offset = $item[8]
+	$Guid = $item[0]
 
-		$name = $item[1]
-		$offset = $item[8]
-		$Guid = $item[0]
+    Local $begin = TimerInit()
+    While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And _playerdead() = False
 
-        Local $begin = TimerInit()
-        While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And _playerdead() = False
-
-                If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
-                        If TimerDiff($begin) > 6000 Then
-                                _log('Coffre is banned because time out')
-                                Return False
-                                ExitLoop
-                        Else
-                                $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                                MouseMove($Coords[0], $Coords[1], 3)
-                        EndIf
-                EndIf
-If TimerDiff($begin) > 80000 Then
-            _log('Fake Actionnable')
-            Return false
+        If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
+            If TimerDiff($begin) > 6000 Then
+                _log('Coffre is banned because time out')
+                Return False
+                ExitLoop
+            Else
+                $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+                MouseMove($Coords[0], $Coords[1], 3)
+            EndIf
         EndIf
-                Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-		WEnd
+		If TimerDiff($begin) > 80000 Then
+	        _log('Fake Actionnable')
+	        Return false
+	    EndIf
+        Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
 
-			$CoffreTaken += 1;on compte les coffres qu'on ouvre
+	$CoffreTaken += 1;on compte les coffres qu'on ouvre
 	; TODO : Do that correctly !
 	sleep(800)
 EndFunc   ;==>shrine
@@ -5684,11 +5683,11 @@ EndFunc	;==>getGold
 
 Func BuyPotion()
 
-	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
-	Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
-
 	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
-	   If $potinstock <= ($PotionStock + 10) Then
+		If $potinstock <= ($PotionStock + 10) Then
+
+    	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
+		Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic
 
 		  MoveTo($MOVETO_POTION_VENDOR) ; on se positionne
 
@@ -5735,10 +5734,10 @@ Func BuyPotion()
 
 		  MoveTo($MOVETO_POTION_VENDOR) ; on se repositionne
 	   Else
-		  _Log('Vous avez asser potion')
+		  _Log('Vous avez assez potion')
 	   EndIf
     Else
-	   _Log('Fonction BuyPotion déactivée')
+	   _Log('Fonction BuyPotion désactivée')
     EndIf
 
 EndFunc    ;==>BuyPotion
