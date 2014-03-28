@@ -101,7 +101,7 @@ Func FindActor($name, $maxRange = 400)
 		offsetlist()
 	EndIF
 
-	Local $index, $offset, $count, $item[10]
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
 	_log("FinActor -> number -> " & $count)
 	While iterateObjectsList($index, $offset, $count, $item)
@@ -386,18 +386,6 @@ Func _checkInventoryopen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 1813)
 EndFunc   ;==>_checkInventoryopen OK
 
-
-;;--------------------------------------------------------------------------------
-; Function:			IsInArea($area)
-; Description:		Check where we are
-;
-;;--------------------------------------------------------------------------------
-Func IsInArea($area)
-	$area = GetLevelAreaId()
-	_log("Area " & $area)
-	Return $area = GetLevelAreaId()
-EndFunc   ;==>IsInArea
-
 Func GetLevelAreaId()
 	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
 EndFunc   ;==>GetLevelAreaId
@@ -451,17 +439,6 @@ Func GetAct()
 		EndIf
 	EndIf
 EndFunc   ;==>GetAct
-
-;;--------------------------------------------------------------------------------
-;;     Find MP MF handicap
-;;	   Get MF handicap and deduce game MP from it
-;;
-;;--------------------------------------------------------------------------------
-Func GetMonsterPow()
-	$MfCap = (IterateActorAtribs($_MyGuid, $Atrib_Magic_Find_Handicap) * 10)
-	$MP = Round($MfCap, 0)
-	_log("Power monster : " & $MP)
-EndFunc   ;==>GetMonsterPow
 
 ;;--------------------------------------------------------------------------------
 ; Function:			TownStateCheck()
@@ -1123,7 +1100,7 @@ EndFunc   ;==>iterateLocalActorList
 ;					This function will always return "false" if the requested atribute does not exsist
 ;==================================================================================
 func IterateactorAtribs($_GUID, $_REQ)
-	Local $index, $offset, $count, $item[10]
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateLocalActor($index, $offset, $count)
 
 	While iterateLocalActorList($index, $offset, $count, $item)
@@ -1531,7 +1508,7 @@ EndFunc   ;==>Interact
 ;;   InteractByActorName()
 ;;--------------------------------------------------------------------------------
 Func InteractByActorName($a_name, $dist = 300)
-	Local $index, $offset, $count, $item[10], $foundobject = 0
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
 	Local $maxtry = 0
 	startIterateObjectsList($index, $offset, $count)
 	If _playerdead() = False Then
@@ -1601,31 +1578,16 @@ Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 		Return False
 	EndIf
 
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, 0, False)
+
 	$index += 1
-	$error = 0
+	$iterateObjectsListStruct = ""
+	$offset = $offset + $_ObjmanagerStrucSize
 
-	Do
-		Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int")
-		;Local $iterateObjectsListStruct = DllStructCreate("int;char[128];byte[4];ptr;byte[24];float;float;float;byte[292];int;byte[88];int;byte[44];int")
-		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
-
-		$item[0] = DllStructGetData($iterateObjectsListStruct, 4) ; Guid
-		$item[1] = DllStructGetData($iterateObjectsListStruct, 2) ; Name
-		$item[2] = DllStructGetData($iterateObjectsListStruct, 6) ; x
-		$item[3] = DllStructGetData($iterateObjectsListStruct, 7) ; y
-		$item[4] = DllStructGetData($iterateObjectsListStruct, 8) ; z
-		$item[5] = DllStructGetData($iterateObjectsListStruct, 14) ; data 1
-		$item[6] = DllStructGetData($iterateObjectsListStruct, 12) ; data 2
-		$item[7] = DllStructGetData($iterateObjectsListStruct, 10) ; data 3
-		$item[8] = $offset
-		$item[9] = getDistance($item[2], $item[3], $item[4]) ; Distance
-		$iterateObjectsListStruct = ""
-		$offset = $offset + $_ObjmanagerStrucSize
-		;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
-
-	Until $error = 0
-
-		Return True
+	Return True
 EndFunc   ;==>iterateObjectsList
 
 Func ArrayStruct($tagStruct, $numElements)
@@ -1638,7 +1600,7 @@ Func GetElement($Struct, $Element, $tagSTRUCT)
    return DllStructCreate($tagSTRUCT, DllStructGetPtr($Struct) + $Element * DllStructGetSize(DllStructCreate($tagStruct)))
 EndFunc
 
-Func GetItemFromList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, ByRef $position, $CurrentPosition = False)
+Func GetItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, $position, $CurrentPosition = False)
 
 	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $GuidStruct)
 
@@ -1651,7 +1613,7 @@ Func GetItemFromList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset
 		$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
 		$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
 		$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
-		$item[8] = $offset + $position*DllStructGetSize($iterateObjectsStruct)
+		$item[8] = $offset + $position * DllStructGetSize($iterateObjectsStruct)
 		$item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
 		$item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
 		$item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
@@ -1728,26 +1690,9 @@ Func IterateFilterAttackV4($IgnoreList)
 
 	$CurrentLoc = GetCurrentPos()
 
-	for $i=0 to $count
-		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+	For $i = 0 To $count
 
-		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
-			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
-			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
-			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
-			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y Head
-			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z Head
-			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
-			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
-			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
-			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
-
-			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
-			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
-			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
-
-			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
-
+		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 			$handle = False
 
 			If Is_Interact($item, $IgnoreList) Then
@@ -1788,7 +1733,6 @@ Func IterateFilterAttackV4($IgnoreList)
 			EndIf
 
 		EndIf
-		$iterateObjectsStruct = ""
 	Next
 
 	$iterateObjectsListStruct = ""
@@ -1819,34 +1763,18 @@ Func IterateFilterZoneV2($dist, $n=2)
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
 
-	dim $item[$TableSizeGuidStruct]
+	Dim $item[$TableSizeGuidStruct]
 
-	For $i=0 To $count
-		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
-		$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
-		$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
-		$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x
-		$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y
-		$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z
-		$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
-		$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
-		$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
-		$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
-
-		$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
-		$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
-		$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
-
-		$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
-
-		$iterateObjectsStruct = ""
-		If Is_Interact($item, "") Then
-			If $item[9] < $dist Then
-				If Is_Mob($item) Then
-					$z += 1
-					If $z >= $n Then
-						$iterateObjectsListStruct = ""
-						Return True
+	For $i = 0 To $count
+		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
+			If Is_Interact($item, "") Then
+				If $item[9] < $dist Then
+					If Is_Mob($item) Then
+						$z += 1
+						If $z >= $n Then
+							$iterateObjectsListStruct = ""
+							Return True
+						EndIf
 					EndIf
 				EndIf
 			EndIf
@@ -2208,12 +2136,13 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 EndFunc   ;==>handle_Mob
 
  Func Checkqual($_GUID)
-    ; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
-    $ACD = GetACDOffsetByACDGUID($_GUID)
-    $CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
-    $quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
-    Return $quality
+	; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
+	$ACD = GetACDOffsetByACDGUID($_GUID)
+	$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
+	$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
+	Return $quality
 EndFunc   ;==>CheckItem
+
 Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
         $grabit = False
 
@@ -2785,7 +2714,7 @@ EndFunc   ;==>checkFiltreFromtable
 
 Func OpenWp(ByRef $item)
 	Local $maxtry = 0
-	If NOT _playerdead() Then
+	If Not _playerdead() Then
 		_log($item[1] & " distance : " & $item[9])
 		While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 			$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
@@ -2863,73 +2792,73 @@ Func TakeWPV2($WPNumber = 0)
 	$WayPointEntity = "Waypoint"
 	$WayPointFound = False
 
-	Local $index, $offset, $count, $item[10], $maxRange = 80
-		startIterateObjectsList($index, $offset, $count)
-		While iterateObjectsList($index, $offset, $count, $item)
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $maxRange = 80
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
 
-			If StringInStr($item[1], $WayPointEntity) Then
-				_log("WayPoint Found, Try with MaxRange")
-				If $item[9] < $maxRange Then
-					_log("WayPoint OK, MaxRange OK")
-					$WayPointFound = true
-					ExitLoop
-				Else
-					_log("WayPoint OK, MaxRange FALSE")
-				EndIF
+		If StringInStr($item[1], $WayPointEntity) Then
+			_log("WayPoint Found, Try with MaxRange")
+			If $item[9] < $maxRange Then
+				_log("WayPoint OK, MaxRange OK")
+				$WayPointFound = true
+				ExitLoop
+			Else
+				_log("WayPoint OK, MaxRange FALSE")
+			EndIF
+		EndIf
+
+	WEnd
+
+	If $WayPointFound Then
+		_Log("WP Found")
+		OpenWp($item)
+		Sleep(750)
+		Local $wptry = 0
+		While _checkWPopen() = False And _playerdead() = False
+			If $wptry <= 6 Then
+				_log('Fail to open wp')
+				$wptry += 1
+				OpenWp($item)
+				Sleep(500)
 			EndIf
-
+			If $wptry > 6 Then
+				$GameFailed = 1
+				_log('Failed to open wp after 6 try')
+				return false
+			EndIf
 		WEnd
 
-		If $WayPointFound Then
-			_Log("WP Found")
-			OpenWp($item)
-			Sleep(750)
-			Local $wptry = 0
-			While _checkWPopen() = False And _playerdead() = False
-				If $wptry <= 6 Then
-					_log('Fail to open wp')
-					$wptry += 1
-					OpenWp($item)
-					Sleep(500)
-				EndIf
-				If $wptry > 6 Then
-					$GameFailed = 1
-					_log('Failed to open wp after 6 try')
-					return false
-				EndIf
-			WEnd
+		sleep(500)
+		_log("clicking wp UI")
 
-			sleep(500)
-			_log("clicking wp UI")
-
-			If ($BucketUI = 0) Then
-				ClickUI($NameUI)
-			Else
-				ClickUI($NameUI, $BucketUI)
-			EndIf
-
-			Local $areatry = 0
-			While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
-				$Newarea = GetLevelAreaId()
-				Sleep(500)
-				$areatry += 1
-			WEnd
-
-			Sleep(500)
-
-			While Not offsetlist()
-				Sleep(10)
-			WEnd
-
-			$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
-
-			return true
+		If ($BucketUI = 0) Then
+			ClickUI($NameUI)
 		Else
-			_log("WP Not Found")
-			$GameFailed = 1
-			_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
-			return False
-		EndIF
+			ClickUI($NameUI, $BucketUI)
+		EndIf
+
+		Local $areatry = 0
+		While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
+			$Newarea = GetLevelAreaId()
+			Sleep(500)
+			$areatry += 1
+		WEnd
+
+		Sleep(500)
+
+		While Not offsetlist()
+			Sleep(10)
+		WEnd
+
+		$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
+
+		return true
+	Else
+		_log("WP Not Found")
+		$GameFailed = 1
+		_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
+		return False
+	EndIF
 EndFunc
 
 ;;--------------------------------------------------------------------------------
@@ -2953,10 +2882,7 @@ Func _resumegame()
 		$tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
 	EndIf
 
-
-	;_randomclick(135, 285)
 	ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton")
-
 
 	$Try_ResumeGame += 1
 	Sleep(7000)
@@ -3074,19 +3000,15 @@ EndFunc   ;==>Repair
 
 
 Func DefineVendorTab()
-
-	if $VendorTabRepair = "" Then ;On a jamais insctancier la recherche des tables
-
-		if fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.tab_4", 1, 1984) Then
+	If $VendorTabRepair = "" Then ;On a jamais insctancier la recherche des tables
+		If fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.tab_4", 1, 1984) Then
 			$VendorTabRepair = 3
 			_log("Definition of Repair Tab to TAB 3")
 		Else
 			$VendorTabRepair = 2
 			_log("Definition of Repair Tab to TAB 2")
 		EndIf
-
 	EndIf
-
 EndFunc
 
 ;;================================================================================
@@ -3143,6 +3065,7 @@ Func GetMyStats()
 	_log("Movement speed : " & IterateActorAtribs($_MyGuid, $Atrib_Movement_Scalar_Capped_Total))
 
 EndFunc   ;==>GetMyStats
+
 Func GameOverTime()
 	Global $timedifmaxgamelength = TimerDiff($timermaxgamelength)
 	If $timedifmaxgamelength > $maxgamelength Then
@@ -3197,20 +3120,6 @@ Func TogglePause()
 	CheckWindowD3Size()
 EndFunc   ;==>TogglePause
 
-Func _log($text, $forceDebug = False)
-	$texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
-	If $forceDebug or $debugBot Then
-		$file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
-		If $file = -1 Then
-			ConsoleWrite("!Log file error, can not be opened !")
-		Else
-			FileWrite($file, $texte_write)
-		EndIf
-		FileClose($file)
-	EndIf
-	ConsoleWrite($texte_write)
-EndFunc   ;==>_log
-
 Func RandSleep($min = 5, $max = 45, $chance = 3)
 	$randNum = Round(Random(1, 100))
 	If $randNum <= $chance Then
@@ -3240,89 +3149,6 @@ Func setChararacter($nameChar)
 	$nameCharacter = $splitName[1]
 	;_log($nameCharacter)
 EndFunc   ;==>setChararacter
-
-;;--------------------------------------------------------------------------------
-;;      Getfury()
-;;--------------------------------------------------------------------------------
-Func GetFury()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "furyBall_liquid") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetFury
-;;
-
-;--------------------------------------------------------------------------------
-;;      Gethatred()
-;;--------------------------------------------------------------------------------
-Func GetHatred()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "hatred") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetHatred
-;;
-
-;--------------------------------------------------------------------------------
-;;      Getdisc()
-;;--------------------------------------------------------------------------------
-Func GetDisc()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "discipline") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetDisc
-;;
-
-;--------------------------------------------------------------------------------
-;;      Getspirit()
-;;--------------------------------------------------------------------------------
-Func GetSpirit()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "Monk_Spirit") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetSpirit
-;;
-
-;--------------------------------------------------------------------------------
-;;      Getmana()
-;;--------------------------------------------------------------------------------
-Func GetMana()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "mana") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetMana
-;;
-
-;--------------------------------------------------------------------------------
-;;      Getarcane()
-;;--------------------------------------------------------------------------------
-Func GetArcane()
-	Local $index, $offset, $count, $item[10], $foundobject = 0
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "instability") Then
-			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
-		EndIf
-	WEnd
-EndFunc   ;==>GetArcane
 
 ;;--------------------------------------------------------------------------------
 ; Function:                     EmergencyStopCheck()
@@ -3368,30 +3194,26 @@ EndFunc   ;==>enoughtPotions
 ; Description:    Take Bonus shrine
 ;;--------------------------------------------------------------------------------
 Func shrine($name, $offset, $Guid)
+	Local $begin = TimerInit()
+	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+		If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
+			If TimerDiff($begin) > 4000 Then
+				_log('shrine is banned because time out')
+				Return False
+			Else
+				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+				MouseMove($Coords[0], $Coords[1], 3)
+			EndIf
+		EndIf
+		If TimerDiff($begin) > 6000 Then
+			_log('Fake shrine')
+			Return False
+		EndIf
+		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
 
-        Local $begin = TimerInit()
-        While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
-
-                If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
-                        If TimerDiff($begin) > 4000 Then
-                                _log('shrine is banned because time out')
-                                Return False
-                                ExitLoop
-                        Else
-                                $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                                MouseMove($Coords[0], $Coords[1], 3)
-                        EndIf
-                EndIf
-	    If TimerDiff($begin) > 6000 Then
-            _log('Fake shrine')
-            Return false
-        EndIf
-                Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-        WEnd
-
-		$CheckTakeShrineTaken += 1;on compte les CheckTakeShrine qu'on prend
-
-	EndFunc   ;==>shrine
+	$CheckTakeShrineTaken += 1 ;on compte les CheckTakeShrine qu'on prend
+EndFunc   ;==>shrine
 
 
 Func Coffre($item)
@@ -3406,7 +3228,6 @@ Func Coffre($item)
             If TimerDiff($begin) > 6000 Then
                 _log('Coffre is banned because time out')
                 Return False
-                ExitLoop
             Else
                 $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
                 MouseMove($Coords[0], $Coords[1], 3)
@@ -3427,67 +3248,67 @@ EndFunc   ;==>shrine
 
 Func Health($name, $offset, $Guid)
 
-         $life = GetLifep()
-         Local $timeForHealth = TimerInit()
-         While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+	$life = GetLifep()
+	Local $timeForHealth = TimerInit()
+	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
 
-                 Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                 If $distance >= 8 Then
-                         If $life < ($LifeForHealth / 100) Then
-                                 If TimerDiff($timeForHealth) > 2000 Then
-                                         _log('health is banned because time out')
-                                 Return False
-                         Else
-                                 $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                                 MouseMove($Coords[0], $Coords[1], 3)
-                                 EndIf
-                         ElseIf $life = 1 Then
-                                 _log('Health globe ignore (already full life)')
-                                 Return True
-                         Endif
-                 ElseIf $distance < 3 Then
-                         _log('Health globe taken (distance=' & $distance & ')')
-                         Return True
-                 EndIf
+		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+		If $distance >= 8 Then
+			If $life < ($LifeForHealth / 100) Then
+				If TimerDiff($timeForHealth) > 2000 Then
+					_log('health is banned because time out')
+					Return False
+				Else
+					$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+					MouseMove($Coords[0], $Coords[1], 3)
+				EndIf
+			ElseIf $life = 1 Then
+				_log('Health globe ignore (already full life)')
+				Return True
+			Endif
+		ElseIf $distance < 3 Then
+			_log('Health globe taken (distance=' & $distance & ')')
+			Return True
+		EndIf
 
-                 If TimerDiff($timeForHealth) > 3000 Then
-                         _log('Fake health')
-                         Return False
-                 EndIf
+		If TimerDiff($timeForHealth) > 3000 Then
+			_log('Fake health')
+			Return False
+		EndIf
 
-                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-         WEnd
+		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
 
- EndFunc   ;==>health
+EndFunc   ;==>health
 
- Func Power($name, $offset, $Guid)
+Func Power($name, $offset, $Guid)
 
-         Local $timeForPower = TimerInit()
-         While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+	Local $timeForPower = TimerInit()
+		While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
 
-                 Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                 If $distance >= 8 Then
-                           If TimerDiff($timeForPower) > 2000 Then
-                                  _log('Power globe is banned because time out')
-                                  Return False
-                           Else
-                                  $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                                  MouseMove($Coords[0], $Coords[1], 3)
-                           EndIf
-                 ElseIf $distance < 3 Then
-                    _log('Power globe taken (distance=' & $distance & ')')
-                    Return True
-                 EndIf
+		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+			If $distance >= 8 Then
+				If TimerDiff($timeForPower) > 2000 Then
+				_log('Power globe is banned because time out')
+				Return False
+			Else
+				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+				MouseMove($Coords[0], $Coords[1], 3)
+			EndIf
+		ElseIf $distance < 3 Then
+			_log('Power globe taken (distance=' & $distance & ')')
+			Return True
+		EndIf
 
-                 If TimerDiff($timeForPower) > 3000 Then
-                    _log('Fake power globe')
-                    Return False
-                 EndIf
+		If TimerDiff($timeForPower) > 3000 Then
+			_log('Fake power globe')
+			Return False
+		EndIf
 
-                 Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-         WEnd
+		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
 
- EndFunc   ;==>power
+EndFunc   ;==>power
 
 ;;--------------------------------------------------------------------------------
 ; Function:                     Die2Fast()
@@ -3649,8 +3470,8 @@ Func launch_spell($i)
 EndFunc   ;==>launch_spell
 
 Func GetResource($idAttrib, $resource)
-   if $resource<>"" then
-   Switch $resource
+	If $resource <> "" Then
+		Switch $resource
 			Case "spirit"
 				$source = 0x3000
 				$MaximumSource = $MaximumSpirit
@@ -3670,10 +3491,10 @@ Func GetResource($idAttrib, $resource)
 				$MaximumSource = $MaximumDiscipline
 				$source = 0x6000
 		EndSwitch
-Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Cur[0], $source)), $d3, "float")/$MaximumSource
-else
-   return 1
-   endif
+		Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Cur[0], $source)), $d3, "float")/$MaximumSource
+	Else
+		Return 1
+	EndIf
 EndFunc ;==>GetResource
 
 Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
@@ -4263,7 +4084,7 @@ Func GetActorFromId($id)
 		Return $group3 + $group1 + $group4
 	#ce
 
-	Local $index, $offset, $count, $item[10]
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 			;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])

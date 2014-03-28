@@ -64,7 +64,7 @@ EndFunc   ;==>MonsterListing
 
 Func Testing_IterateObjetcsList()
 
-	Local $index, $offset, $count, $item[10]
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
 
 	While iterateObjectsList($index, $offset, $count, $item)
@@ -91,7 +91,7 @@ Func Testing()
 
 ;_checkbackpacksize()
 #cs
-	Local $index, $offset, $count, $item[10]
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
 
 	GLOBAL $ItemRefresh = false

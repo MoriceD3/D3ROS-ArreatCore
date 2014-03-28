@@ -1,5 +1,7 @@
 #include-once
 
+#include "settings.au3"
+
 #RequireAdmin
 
 Global $FILETIME = "dword;dword"    ;Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTC).
@@ -27,6 +29,20 @@ Func consoleLog($text, $level = 0)
 
 	ConsoleWrite($start & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
 EndFunc   ;==> consoleLog
+
+Func _log($text, $forceDebug = False)
+   $texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
+   If $forceDebug or $debugBot Then
+      $file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
+      If $file = -1 Then
+         ConsoleWrite("!Log file error, can not be opened !")
+      Else
+         FileWrite($file, $texte_write)
+      EndIf
+      FileClose($file)
+   EndIf
+   ConsoleWrite($texte_write)
+EndFunc   ;==>_log
 
 Func Format_Number($str)
 	$str = _StringReverse($str) ; renversement de la chaîne pour la traîtée à l'envers

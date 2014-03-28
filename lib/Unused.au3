@@ -283,6 +283,28 @@ Func handle_banlist($coords_ban)
 
 EndFunc   ;==>handle_banlist
 
+;;--------------------------------------------------------------------------------
+;;     Find MP MF handicap
+;;	   Get MF handicap and deduce game MP from it
+;;
+;;--------------------------------------------------------------------------------
+Func GetMonsterPow()
+	$MfCap = (IterateActorAtribs($_MyGuid, $Atrib_Magic_Find_Handicap) * 10)
+	$MP = Round($MfCap, 0)
+	_log("Power monster : " & $MP)
+EndFunc   ;==>GetMonsterPow
+
+;;--------------------------------------------------------------------------------
+; Function:			IsInArea($area)
+; Description:		Check where we are
+; Can not work !
+;;--------------------------------------------------------------------------------
+Func IsInArea($area)
+	$area = GetLevelAreaId()
+	_log("Area " & $area)
+	Return $area = GetLevelAreaId()
+EndFunc   ;==>IsInArea
+
 Func xml_to_item($name, $stats)
 	$rules_name = "(?i){c:[a-z0-9]*}([a-z0-9éèêëîïìâàäûüùöôòÿ" & @CRLF & " \+ \% \- \’ \' ]*){/c}"
 	$rules_stats = "(?i){c:[a-z0-9]*}([a-z0-9éèêëîïìâàäûüùöôòÿ" & @CRLF & " \+ \% \- \’ \' ]*){/c}"
@@ -781,7 +803,88 @@ Func GetMonsterPow2()
 	;_log("Power monster : " & $GetMonsterPow2)
 EndFunc   ;==>GetMonsterPow2
 #ce
+;;--------------------------------------------------------------------------------
+;;      Getfury()
+;;--------------------------------------------------------------------------------
+Func GetFury()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "furyBall_liquid") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetFury
+;;
 
+;--------------------------------------------------------------------------------
+;;      Gethatred()
+;;--------------------------------------------------------------------------------
+Func GetHatred()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "hatred") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetHatred
+;;
+
+;--------------------------------------------------------------------------------
+;;      Getdisc()
+;;--------------------------------------------------------------------------------
+Func GetDisc()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "discipline") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetDisc
+;;
+
+;--------------------------------------------------------------------------------
+;;      Getspirit()
+;;--------------------------------------------------------------------------------
+Func GetSpirit()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "Monk_Spirit") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetSpirit
+;;
+
+;--------------------------------------------------------------------------------
+;;      Getmana()
+;;--------------------------------------------------------------------------------
+Func GetMana()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "mana") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetMana
+;;
+
+;--------------------------------------------------------------------------------
+;;      Getarcane()
+;;--------------------------------------------------------------------------------
+Func GetArcane()
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], "instability") Then
+			Return _MemoryRead($item[8] + 0x40C, $d3, 'float')
+		EndIf
+	WEnd
+EndFunc   ;==>GetArcane
 ;;--------------------------------------------------------------------------------
 ;;      Stop()
 ;;--------------------------------------------------------------------------------

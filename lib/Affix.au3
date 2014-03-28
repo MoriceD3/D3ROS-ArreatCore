@@ -18,10 +18,8 @@ Func IterateFilterAffixV2()
 	$CurrentLoc = GetCurrentPos()
 	$pv_affix = getlifep()
 
-	for $i=0 to $count
-		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
-
-		If GetItemFromList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
+	For $i = 0 To $count
+		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 			$range = GetAffixRange($item, $pv_affix)
 			If $range <> -1 Then
 				ReDim $item_affix_2D[$z + 1][$TableSizeGuidStruct + 1]
@@ -33,19 +31,17 @@ Func IterateFilterAffixV2()
 
 				$z += 1
 			EndIf
-
 		EndIf
-		$iterateObjectsStruct = ""
 	Next
 
 	$iterateObjectsListStruct = ""
 
 	If $z = 0 Then
 		Return False
-    Else
+	Else
 		_ArraySort($item_affix_2D, 0, 0, 0, 9)
 		Return $item_affix_2D
-    EndIf
+	EndIf
 
 EndFunc  ;==> IterateFilterAffixV2()
 
