@@ -109,6 +109,8 @@ sleep=1000
 370.439208984375, 370.965881347656, 1.33544921875,1,25
 send={SPACE}
 sleep=500
+send={ENTER}
+sleep=1000
 endsave()
 specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
 setherosaxez=10
