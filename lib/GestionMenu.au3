@@ -25,6 +25,12 @@ Func SelectGameType($SelectGameType, $auto)
 			Case 3
 				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct3PtSauve
+			Case 232
+				$Hero_Axe_Z = $Act2_Hero_Axe_Z
+				$File_Sequence = $SequenceFileAct232
+			Case 283
+				$Hero_Axe_Z = $Act2_Hero_Axe_Z
+				$File_Sequence = $SequenceFileAct283
 			Case 333
 				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct333
@@ -49,26 +55,26 @@ Func SelectGameType($SelectGameType, $auto)
 		Sleep(Random(300, 400, 1))
 		_Log("Game Settings")
 		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu") ;_randomclick(125, 320) ; tap paramètre de la partie
-		Sleep(Random(700, 800, 1)) 
-		
+		Sleep(Random(700, 800, 1))
+
 		If IsGameSettingsOpened() Then
-		   
+
 		   ;Selection de la difficulte et de la puissance des monstres
 		   If ($Totalruns = 1) And ($TypedeBot = 1) Then
 			  SelectDifficultyMonsterPower()
 		   EndIf
-		   
+
 		   _Log("Choose a New Quest")
 		   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton");_randomclick(395, 371) ; tap changer
 		   Sleep(Random(700, 800, 1))
-		   
+
 		   ;Selection de la quête
 		   If IsQuestOpened() Then
 
 			  ;Selection de la scrollbar
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.QuestMenu.NavigationMenuList._scrollbar.thumb")
 			  Sleep(Random(600, 800, 1))
-			  
+
 			  ;valeur de test ok 27 ... mini pour balayer toutes les quêtes 26
 			  For $i = 1 To Random(27, 28, 1) Step 1
 				 MouseWheel("up")
@@ -77,9 +83,10 @@ Func SelectGameType($SelectGameType, $auto)
 			  Next
 
 			  ;selection d'une quete pour fermer les sous quetes
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
-			  Sleep(50)
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+			  Sleep(700)
+			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+			  Sleep(500)
 
 			  Switch $SelectGameType
 				   Case 1;selection de la quête 10.1 act 1
@@ -88,14 +95,14 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 1 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 				   Case 2;selection de la quête 8.3
 
@@ -105,12 +112,12 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
-					  Next				 
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Next
+					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 				   Case 3;selection de la quête 7.3
 
@@ -120,22 +127,52 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
+				   Case 232;Act 2 quête 3 sous quête 2 --> Tuer Maghda
+
+					  For $i = 1 To 11 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  For $i = 1 To 2 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, -40, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
+				   Case 283;Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
+
+					  For $i = 1 To 16 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  For $i = 1 To 2 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 				   Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
 
 					  For $i = 1 To 22 Step 1
 						 MouseWheel("down")
 						 Sleep(150)
-					  Next				
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Next
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
@@ -147,15 +184,15 @@ Func SelectGameType($SelectGameType, $auto)
 					  For $i = 1 To 25 Step 1
 						 MouseWheel("down")
 						 Sleep(150)
-					  Next				
+					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 1 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed62")
+					  ClickUIMode(0, 0, -17, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed62")
 
 				   Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
 
@@ -165,20 +202,20 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
-				
+
 					  For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
-					  Next				 
-					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Next
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 			  EndSwitch
-			  
+
 			  ;Bp choisir la quete
 			  Sleep(Random(300, 400, 1))
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton");_randomclick(336, 430) Tap OK 'Choose a new quest'
 			  Sleep(Random(300, 400, 1))
-			  
+
 			  ; Bp validation de la quête
 			  If IsQuestChangeUiOpened() Then
 				 _log("Détection de changement quête")
@@ -209,6 +246,12 @@ Func SelectQuest()
 			$Hero_Axe_Z = $Act3_Hero_Axe_Z
 			$File_Sequence = $SequenceFileAct3
 		EndIf
+	EndIf
+	If ($Choix_Act_Run = 232) Then
+		SelectGameType(232, True)
+	EndIf
+	If ($Choix_Act_Run = 283) Then
+		SelectGameType(283, True)
 	EndIf
 	If ($Choix_Act_Run = 333) Then
 		SelectGameType(333, True)
@@ -320,7 +363,7 @@ Func SelectHero()
 	Sleep(Random(600, 800, 1))
 
     If IsMenuHeroSelectOpened() Then
-	   
+
 	   ;positionnement sur la scrollbar
 	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar")
 	   Sleep(Random(600, 800, 1))
@@ -347,27 +390,27 @@ Func SelectHero()
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
 			Case 7
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
-			Case 8			
+			Case 8
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40")
-		
+
 			Case 9
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
-		
+
 			Case 10
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
-			   Next	
+			   Next
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
-	
+
 	   EndSwitch
 	   Sleep(Random(600, 800, 1))
 
@@ -385,7 +428,7 @@ Func SelectDifficultyMonsterPower()
 	Sleep(Random(600, 800, 1))
 
     If IsGameDifficultyOpened() Then
-	
+
 	   Switch $difficulte
 			Case 1 ;Normal
 			    ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Difficulty_0")
@@ -403,32 +446,32 @@ Func SelectDifficultyMonsterPower()
 
 	   ;Selection de la barre du menu des difficulté de Tourment
 	   If $difficulte = 5 Then
-	   
+
 		  Switch $PuisMonstre
 			   Case 1
-				   ClickUISlider(-130, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, -130, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 			   Case 2
-				   ClickUISlider(-80, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, -80, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 			   Case 3
-				   ClickUISlider(-30, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, -30, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 			   Case 4
-				   ClickUISlider(20, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, 20, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 			   Case 5
-				   ClickUISlider(70, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, 70, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 			   Case 6
-				   ClickUISlider(120, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
+				   ClickUIMode(1, 120, 0, "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.Details.Slider.MaxSlider.trackDown")
 		  EndSwitch
 
 		  Sleep(Random(600, 800, 1))
 	   EndIf
-	
+
 	   ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"); tap OK Difficulty
 	   Sleep(Random(900, 1000, 1))
     EndIf
 EndFunc   ;==>SelectDifficultyMonsterPower
 
 
-Func ClickUISlider($i, $name, $bucket=-1)
+Func ClickUIMode($mode, $x, $y, $name, $bucket=-1)
 
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
@@ -448,39 +491,39 @@ Func ClickUISlider($i, $name, $bucket=-1)
 		sleep(500)
 	WEnd
 
-	Dim $Point2 = GetUIRectangle($Point[0] + $i, $Point[1], $Point[2] + $i, $Point[3])
+	Dim $Point2 = GetUIRectangle($Point[0] + $x, $Point[1] + $y, $Point[2] + $x, $Point[3] + $y)
 
-	MouseClick("left", ($Point2[0] + $Point2[2] / 2) , $Point2[1] + $Point2[3] / 2)
-    MouseDown("left")
-	Sleep(300)
-	MouseUp("left")
-	Sleep(50)
-	
+	Switch $mode
+		 Case 0
+			MouseClick("left", ($Point2[0] + $Point2[2] / 2) , $Point2[1] + $Point2[3] / 2)
+
+		 Case 1
+			MouseClick("left", ($Point2[0] + $Point2[2] / 2) , $Point2[1] + $Point2[3] / 2)
+			MouseDown("left")
+			Sleep(300)
+			MouseUp("left")
+			Sleep(50)
+    EndSwitch
+
 EndFunc  ;====> ClickUISlider
 
 
 Func IsQuestChangeUiOpened()
-    $QuestChangelookfor = "Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList"
-    Return fastcheckuiitemvisible($QuestChangelookfor, 1, 2022)
+    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 2022)
 EndFunc   ;==>IsQuestChangeUiOpened OK
- 
+
 Func IsGameSettingsOpened()
-    $GameSettingslookfor = "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton"
-    Return fastcheckuiitemvisible($GameSettingslookfor, 1, 954)
+    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton", 1, 954)
 EndFunc   ;==>IsGameSettingsOpened
- 
+
 Func IsQuestOpened()
-    $Questlookfor = "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton"
-    Return fastcheckuiitemvisible($Questlookfor, 1, 663)
+    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton", 1, 663)
 EndFunc   ;==>IsQuestOpened
 
 Func IsGameDifficultyOpened()
-    $GameDifficultylookfor = "Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"
-    Return fastcheckuiitemvisible($GameDifficultylookfor, 1, 253)
+    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton", 1, 253)
 EndFunc   ;==>IsGameDifficultyOpened
 
 Func IsMenuHeroSelectOpened()
-    $MenuHeroSelectlookfor = "Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton"
-    Return fastcheckuiitemvisible($MenuHeroSelectlookfor, 1, 1022)
+    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton", 1, 1022)
 EndFunc   ;==>IsMenuHeroSelectOpened
- 

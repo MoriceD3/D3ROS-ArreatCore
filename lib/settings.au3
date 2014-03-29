@@ -224,6 +224,14 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
 			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
 
+		Case 232 ; Act 2 quête 3 sous quête 2 --> tuez Maghda
+			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
+			$SequenceFileAct232 = IniRead($profilFile, "Run info", "SequenceFileAct232", $SequenceFileAct232)
+
+		Case 283 ; Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
+			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
+			$SequenceFileAct283 = IniRead($profilFile, "Run info", "SequenceFileAct283", $SequenceFileAct283)
+		
 		Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
 			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct333 = IniRead($profilFile, "Run info", "SequenceFileAct333", $SequenceFileAct333)
