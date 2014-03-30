@@ -466,9 +466,14 @@ Func sequence()
 						SendSequence($array_sequence)
 						$array_sequence = ArrayInit($array_sequence)
 						_log("Enclenchement d'un _townportal() line : " & $i + 1)
-						if Not _TownPortalnew() Then
-							$GameFailed=1
-							Return False
+						If Not _checkdisconnect() Then
+						   If Not _TownPortalnew(25) Then
+							  $GameFailed = 1
+							  Return False
+						   EndIf
+						Else
+						   $GameFailed = 1
+						   Return False
 						EndIf
 
 						$line = ""
@@ -645,7 +650,7 @@ Func sequence()
 						SafePortBack()
 					ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportback() detected
 						Sleep(500)
-						buffinit() ; on Buff avant de prendre le portal ;git 4
+						buffinit() ; on Buff avant de prendre le portal
 						_Log("enclenchement auto du buffinit()")
 
 						Sleep(500)

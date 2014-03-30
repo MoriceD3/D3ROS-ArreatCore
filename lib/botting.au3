@@ -109,11 +109,8 @@ Func _botting()
 		While _onloginscreen() = False And _ingame() = False
 			_log("Ingame False")
 			If _checkdisconnect() Then
-				$disconnectcount += 1
 				_log("Disconnected dc4")
-				Sleep(1000)
-				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
-				Sleep(1000)
+				ReConnect()
 				While Not (_onloginscreen() Or _inmenu())
 					Sleep(Random(10000, 15000))
 				WEnd
@@ -149,11 +146,7 @@ Func _botting()
 				_leavegame()
 			Else
 				_log("Disconnected dc2")
-				$disconnectcount += 1
-				Sleep(1000)
-				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
-				sleep(50)
-				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
+				ReConnect()
 			EndIf
 
 			If _playerdead() Then
@@ -165,15 +158,12 @@ Func _botting()
 		_log('loop _inmenu() = False And _onloginscreen()')
 
 		While _inmenu() = False And _onloginscreen() = False
-			Sleep(10)
-			If  _checkdisconnect() Then ; update 8.2d
-				Sleep(1000)
-				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
-				sleep(50)
-				ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
-			else
-			;continue
-			endif ; fin update 8.2d
+			If  _checkdisconnect() Then
+				_log("Disconnected dc3")
+				ReConnect()
+			Else
+			    Sleep(10)
+			Endif
 		WEnd
 
 	WEnd

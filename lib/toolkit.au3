@@ -2920,6 +2920,33 @@ Func _logind3()
 	EndIf
 EndFunc   ;==>_logind3
 
+Func ReConnect()
+
+   _log("ReConnect")
+
+   Local $Try_Connect = 0
+   While _checkdisconnect() And $Try_Connect < 3
+	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022)
+	  sleep(1000)
+	  $Try_Connect += 1
+   WEnd
+
+   While Not (_onloginscreen() Or _inmenu())
+	  Sleep(500)
+   WEnd
+
+   Sleep(2000)
+
+   Local $Try_Connect = 0
+   While _checkdisconnect() And $Try_Connect < 3
+	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022)
+	  sleep(1000)
+	  $Try_Connect += 1
+   WEnd
+
+   $disconnectcount += 1
+
+EndFunc ;;==> ReConnect
 
 ;;--------------------------------------------------------------------------------
 ;;      _leavegame()
@@ -4100,33 +4127,35 @@ EndFunc   ;==>GetActorFromId
 
 Func GoToTown()
 
-		_log("start loop _onloginscreen() = False And _intown() = False And _playerdead() = False")
+    _log("start loop _onloginscreen() = False And _intown() = False And _playerdead() = False")
 
+	If _checkdisconnect() Then
+	   _log("Disconnected dc1.a")
+	   ReConnect()
+	   Return False
+    EndIf
+	
 	Local $nbTriesTownPortal = 0
-	While (_intown() = False And _inmenu() = False)
+	While Not (_intown() And _inmenu())
 		$nbTriesTownPortal += 1
 
 		If $nbTriesTownPortal < 3 Then
-			if NOT _TownPortalnew(10) Then
+			If NOT _TownPortalnew(10) Then
 				$nbTriesTownPortal = 3
 			EndIf
 		Else
 			_leaveGame()
 			$nbTriesTownPortal = 0
 			Sleep(10000)
-			While _inmenu() = False
+			While Not _inmenu()
 				Sleep(10)
 			WEnd
 			ExitLoop
 		EndIf
 
 		If _checkdisconnect() Then
-			_log("Disconnected dc1")
-			$disconnectcount += 1
-			Sleep(1000)
-			ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
-			sleep(50)
-			ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022);pacht 8.2e
+			_log("Disconnected dc1.b")
+			ReConnect()
 			Sleep(1000)
 			While Not (_onloginscreen() Or _inmenu())
 				Sleep(Random(80000, 15000))
