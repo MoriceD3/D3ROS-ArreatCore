@@ -4148,6 +4148,7 @@ Func GoToTown()
 				$nbTriesTownPortal = 3
 			EndIf
 		Else
+			Attack()
 			_leaveGame()
 			$nbTriesTownPortal = 0
 			Sleep(10000)
