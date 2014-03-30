@@ -1,5 +1,4 @@
 MonsterList=FallenGrunt_A|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|TriuneSummoner_C|caOut_StingingWinds_Barricade_A|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|CaOut_Oasis_Barrel_Breakable_A|DuneDervish|TriuneVesselActivated_C|Triune_Berserker_B|
-specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
 AutoBuff=True
 attackrange=55
 revive=false
@@ -38,5 +37,8 @@ sleep=2000
 113.796684265137, 159.900695800781, 0.196385934948921,1,25
 85.9291458129883, 161.317276000977, 0.100001432001591,1,25
 111.826393127441, 160.280517578125, 0.300248026847839,1,25
+endsave()
+specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
+sleep=500
 _townportal()
 sleep=500
