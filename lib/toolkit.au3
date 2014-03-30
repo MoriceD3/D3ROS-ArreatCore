@@ -2117,6 +2117,7 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 			If $killtimeout > 2 Or $grabtimeout > 2 Then
 				_log("_checkdisconnect Cuz :If $killtimeout > 2 or $grabtimeout > 2 Then")
 				If _checkdisconnect() Or _playerdead() Then
+					$KillOrGrab_TimeOut = 1
 					$GameFailed = 1
 				EndIf
 			EndIf
@@ -2132,6 +2133,7 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 		;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
 		If $killtimeout > 2 Or $grabtimeout > 2 Then
 			If _checkdisconnect() Or _playerdead() Then
+				$KillOrGrab_TimeOut = 1
 				$GameFailed = 1
 			EndIf
 		EndIf
@@ -2178,6 +2180,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 											If $killtimeout > 2 Or $grabtimeout > 2 Then
 													If _checkdisconnect() Or _playerdead() Then
 															_log('_checkdisconnect A or player D')
+															$KillOrGrab_TimeOut = 1
 															$GameFailed = 1
 													EndIf
 											EndIf
@@ -2220,7 +2223,8 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
                                 If $killtimeout > 2 Or $grabtimeout > 2 Then
                                         If _checkdisconnect() Or _playerdead() Then
                                                 _log('_checkdisconnect A or player D')
-                                                $GameFailed = 1
+                                                $KillOrGrab_TimeOut = 1
+												$GameFailed = 1
                                         EndIf
                                 EndIf
 
@@ -2252,7 +2256,7 @@ Func Attack()
 		Return
 	EndIf
 
-	If _playerdead() Or ($GameFailed = 1) Then
+	If _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
 		$GameFailed = 1
 		_log("Return Cuz : If _playerdead or gamefailed ")
 		Return
@@ -2269,7 +2273,7 @@ Func Attack()
 			_log("ExitLoop cause of player_revive")
 			ExitLoop
 		EndIf
-		If _playerdead() Or ($GameFailed = 1) Then
+		If _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
 			$GameFailed = 1
 			_log("Return Cuz : If _playerdead or gamefailed ")
 			ExitLoop
@@ -5026,11 +5030,13 @@ EndFunc ; ==> CheckZoneBeforeTP()
 
 Func _TownPortalnew($mode=0)
 
-    If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
+	If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
 
 	Local $compt = 0
 
 	While Not _intown() And _ingame() And Not _playerdead() ; "playerdead" quand on meurt, je les vue souvent vouloir tp
+
+		$Execute_TownPortalnew = True
 
 		Local $try = 0
 		Local $TPtimer = 0
@@ -5046,16 +5052,16 @@ Func _TownPortalnew($mode=0)
 			ExitLoop
 		EndIf
 
-		_Log("enclenche attack")
+		_Log("enclenche attack during TownPortalnew")
 		$grabskip = 1
 		Attack()
 		$grabskip = 0
 
 		Sleep(100)
 
-		If _playerdead() = False Then
+		If Not _playerdead() Then
 
-			CheckZoneBeforeTP();toujours en test pour les affix
+			CheckZoneBeforeTP()
 
 			_Log("on enclenche le TP")
 			Sleep(250)
@@ -5069,7 +5075,7 @@ Func _TownPortalnew($mode=0)
 
 			$Current_area = GetLevelAreaId()
 
-			If Detect_UI_error($MODE_INVENTORY_FULL) = False And $GameFailed = 0 Then
+			If Not Detect_UI_error($MODE_INVENTORY_FULL) Then
 				_Log("enclenchement fastCheckui de la barre de loading")
 
 			    While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
@@ -5086,12 +5092,12 @@ Func _TownPortalnew($mode=0)
 					Sleep(100)
 					TimerDiff($Attacktimer)
 
-					If _playerdead() = True Or $GameFailed = 1 Then
+					If _playerdead() Or $GameFailed Then
 						ExitLoop
 					EndIf
 			    WEnd
-			Else ; si INVENTORY FULL ou GameFailed
-				_Log("enclenchement fastCheckui de la barre de loading, INVENTORY FULL Or GAMEFAILED")
+			Else ; si INVENTORY FULL
+				_Log("enclenchement fastCheckui de la barre de loading, INVENTORY FULL")
 
 				While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
 					If $compt_while = 0 Then
@@ -5115,7 +5121,7 @@ Func _TownPortalnew($mode=0)
 			EndIf
 
 			If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
-				While Not _intown() And $try < 6
+				While Not _intown() And $try < 7
 					 _Log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
 					 $try += 1
 					 Sleep(1000)
@@ -5127,6 +5133,7 @@ Func _TownPortalnew($mode=0)
 
 			If $Current_area <> GetLevelAreaId() Then
 				_Log("Changement d'arreat, on quite la boucle")
+				$PortBack = True
 				ExitLoop
 			EndIf
 
@@ -5150,7 +5157,7 @@ Func _TownPortalnew($mode=0)
 
 	_Log("On a renvoyer true, quite bien la fonction")
 
-	$PortBack = True
+	$Execute_TownPortalnew = False
 	Return True
 EndFunc   ;==>_TownPortalnew
 

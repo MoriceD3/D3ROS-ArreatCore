@@ -73,10 +73,12 @@ Global $PauseRepasCounter = 0
 Global $tempsPauseGame 	  = 0
 Global $tempsPauserepas   = 0
 
+Global $Execute_TownPortalnew 	= False
 Global $Execute_TpRepairAndBack = False ; correction double tp inventaire plein
 Global $Execute_StashAndRepair  = False
 Global $PortBack 	   			= False
 Global $FailOpen_BookOfCain 	= 0
+Global $KillOrGrab_TimeOut		= 0
 
 Global $Hero_Axe_Z = 10
 Global $TableBannedActors = [0]

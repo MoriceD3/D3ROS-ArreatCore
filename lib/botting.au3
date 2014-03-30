@@ -25,6 +25,7 @@ Func _dorun()
 	$GameFailed = 0
 	$SkippedMove = 0
 	$PortBack = False
+	$KillOrGrab_TimeOut = 0
 
 	StatsDisplay()
 
