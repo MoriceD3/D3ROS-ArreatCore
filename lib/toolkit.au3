@@ -4598,7 +4598,7 @@ Func SafePortStart()
 	$tptry = 0
 	$tpcheck = 0
 
-	While $tpcheck = 0 And $tptry <= 1
+	While $tpcheck = 0 And $tptry < 5
 		_log("try n°" & $tptry + 1 & " hearthPortal")
 		InteractByActorName('hearthPortal')
 		$Newarea = GetLevelAreaId()
@@ -4640,7 +4640,7 @@ Func SafePortBack()
 	Local $HearthPortalTry = 0
 	Local $NewAreaOk = 0
 
-	While $NewAreaOk = 0 And $HearthPortalTry <= 2 ; on tente 3 fois de prendre le portal
+	While $NewAreaOk = 0 And $HearthPortalTry < 5
 		_Log("try n°" & $HearthPortalTry + 1 & " hearthPortal")
 		InteractByActorName('hearthPortal')
 		$Newarea = GetLevelAreaId()
