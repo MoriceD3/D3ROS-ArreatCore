@@ -4140,7 +4140,7 @@ Func GoToTown()
     EndIf
 	
 	Local $nbTriesTownPortal = 0
-	While Not _intown() And Not _inmenu())
+	While Not _intown() And Not _inmenu()
 		$nbTriesTownPortal += 1
 
 		If $nbTriesTownPortal < 3 Then
