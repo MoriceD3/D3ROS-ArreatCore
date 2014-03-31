@@ -140,30 +140,35 @@ Global $tab_aff2[15][2]=[ _
                                                 ]
 Global $gestion_affixe 		= False
 Global $gestion_affixe_loot = False
+
+; Range affix
 Global $range_arcane = 25
-Global $range_peste = 18
-Global $range_profa = 13
-Global $range_lave = 13
 Global $range_arm = 15
-Global $range_mine = 13
 Global $range_explo = 18
 Global $range_ice = 20
-Global $range_spore = 20
-Global $range_proj = 25
-Global $range_poison = 18
+Global $range_lave = 13
 Global $range_lightning = 22
+Global $range_mine = 13
+Global $range_peste = 18
+Global $range_poison = 18
+Global $range_profa = 13
+Global $range_proj = 25
+Global $range_spore = 20
+
+; Life affix
 Global $life_arcane = 100
+Global $life_arm = 100
+Global $life_explo = 100
+Global $life_ice = 100
+Global $life_lave = 100
+Global $life_lightning = 100
+Global $life_mine = 100
 Global $life_peste = 100
+Global $life_poison = 100
 Global $life_profa = 100
 Global $life_proj = 100
-Global $life_ice = 100
-Global $life_poison = 100
-Global $life_explo = 100
-Global $life_lave = 100
-Global $life_mine = 100
-Global $life_arm = 100
 Global $life_spore = 100
-Global $life_lightning = 100
+
 Global $maff_timer = timerinit()
 Global $timer_ignore_reset = timerinit()
 Global $energy_mini = 0
@@ -231,7 +236,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 		Case 283 ; Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
 			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
 			$SequenceFileAct283 = IniRead($profilFile, "Run info", "SequenceFileAct283", $SequenceFileAct283)
-		
+
 		Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
 			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct333 = IniRead($profilFile, "Run info", "SequenceFileAct333", $SequenceFileAct333)
@@ -453,17 +458,18 @@ Func InitSkillHeros($skillHeros)
 	$Gest_affixe_ByClass = Trim(StringLower($Dummy)) == "true"
 
 	$life_arcane = IniRead($skillHeros, "Run info", "Life_Arcane", $life_arcane)
+	$life_arm = IniRead($skillHeros, "Run info", "Life_Arm", $life_arm)
+	$life_explo = IniRead($skillHeros, "Run info", "Life_Explo", $life_explo)
+	$life_ice = IniRead($skillHeros, "Run info", "Life_Ice", $life_ice)
+	$life_lave = IniRead($skillHeros, "Run info", "Life_Lave", $life_lave)
+	$life_lightning = IniRead($skillHeros, "Run info", "Life_Lightning", $life_lightning)
+	$life_mine = IniRead($skillHeros, "Run info", "Life_Mine", $life_mine)
 	$life_peste = IniRead($skillHeros, "Run info", "Life_Peste", $life_peste)
+	$life_poison = IniRead($skillHeros, "Run info", "Life_Poison", $life_poison)
 	$life_profa = IniRead($skillHeros, "Run info", "Life_Profa", $life_profa)
 	$life_proj = IniRead($skillHeros, "Run info", "Life_Proj", $life_proj)
-	$life_ice = IniRead($skillHeros, "Run info", "Life_Ice", $life_ice)
-	$life_poison = IniRead($skillHeros, "Run info", "Life_Poison", $life_poison)
-	$life_explo = IniRead($skillHeros, "Run info", "Life_Explo", $life_explo)
-	$life_lave = IniRead($skillHeros, "Run info", "Life_Lave", $life_lave)
-	$life_mine = IniRead($skillHeros, "Run info", "Life_Mine", $life_mine)
-	$life_arm = IniRead($skillHeros, "Run info", "Life_Arm", $life_arm)
 	$life_spore = IniRead($skillHeros, "Run info", "Life_Spore", $life_spore)
-	$life_lightning = IniRead($skillHeros, "Run info", "Life_Lightning", $life_lightning)
+
 
 ;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
 ;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)
