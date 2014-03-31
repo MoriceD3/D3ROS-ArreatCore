@@ -297,21 +297,27 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = StringSplit($Dummy, "|")
 	For $i = 1 To UBound($Dummy) - 1
 		If IsNumber(Int($Dummy[$i])) Then
-			$ItemToKeep[Int($Dummy[$i])] = True
+			If Int($Dummy[$i]) > 0 And Int($Dummy[$i]) < 10 Then
+				$ItemToKeep[Int($Dummy[$i])] = True
+			EndIf
 		EndIf
 	Next
 	$Dummy = IniRead($profilFile, "Run info", "QualiteItemSalvage", "")
 	$Dummy = StringSplit($Dummy, "|")
 	For $i = 1 To UBound($Dummy) - 1
 		If IsNumber(Int($Dummy[$i])) Then
-			$ItemToSalvage[Int($Dummy[$i])] = True
+			If Int($Dummy[$i]) > 0 And Int($Dummy[$i]) < 10 Then
+				$ItemToSalvage[Int($Dummy[$i])] = True
+			EndIf
 		EndIf
 	Next
 	$Dummy = IniRead($profilFile, "Run info", "QualiteItemSell", "")
 	$Dummy = StringSplit($Dummy, "|")
 	For $i = 1 To UBound($Dummy) - 1
 		If IsNumber(Int($Dummy[$i])) Then
-			$ItemToSell[Int($Dummy[$i])] = True
+			If Int($Dummy[$i]) > 0 And Int($Dummy[$i]) < 10 Then
+				$ItemToSell[Int($Dummy[$i])] = True
+			EndIf
 		EndIf
 	Next
 
