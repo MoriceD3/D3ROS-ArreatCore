@@ -3140,7 +3140,10 @@ EndFunc   ;==>_randomclick
 
 Func setChararacter($nameChar)
 	$splitName = StringSplit($nameChar, "_")
-	$nameCharacter = $splitName[1]
+	$nameCharacter = Trim($splitName[1])
+	If $nameCharacter= "X1" Then
+		$nameCharacter = Trim($splitName[2])
+	Endif
 	;_log($nameCharacter)
 EndFunc   ;==>setChararacter
 
@@ -3484,6 +3487,9 @@ Func GetResource($idAttrib, $resource)
 			Case "discipline"
 				$MaximumSource = $MaximumDiscipline
 				$source = 0x6000
+			Case "wrath"
+				$MaximumSource = $MaximumWrath
+				$source = 0x7000
 		EndSwitch
 		Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Cur[0], $source)), $d3, "float")/$MaximumSource
 	Else
@@ -3542,6 +3548,10 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 			Case "discipline"
 				$MaximumSource = $MaximumDiscipline
 ;~ 				$source = 0x6000
+			;Case "wrath"
+			; TODO : Trouver pourquoi engendre un crash Autoit ....
+			;	$MaximumSource = $MaximumWrath
+;~ 				$source = 0x7000
 			Case Else
 				$MaximumSource = 15000
 ;~ 				$source = 5000
@@ -3660,7 +3670,6 @@ switch $action_spell
 				EndIf
 
 				If  $action_spell = 1  and IterateFilterZoneV2($dist) Then
-				   _log("mauvais click droit")
 					launch_spell($i)
 					$buff_table[10] = TimerInit()
 				EndIf
@@ -4708,40 +4717,47 @@ Func _checkbackpacksize() ;ok pour v 2.0
 EndFunc   ;==>_checkbackpacksize
 
 Func Auto_spell_init()
-	If StringLower(Trim($nameCharacter)) = "monk" Then
+	If $nameCharacter = "monk" Then
 		Dim $tab_skill_temp = $Monk_skill_Table
 		if $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = False
 			$Gestion_affixe = False
 			_log("Monk detected, Gest Affix disabled")
 		EndIf
-	ElseIf StringLower(Trim($nameCharacter)) = "barbarian" Then
+	ElseIf $nameCharacter = "barbarian" Then
 		Dim $tab_skill_temp = $Barbarian_Skill_Table
 		if $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = False
 			$Gestion_affixe = False
 			_log("Barbarian detected, Gest Affix disabled")
 		EndIf
-	ElseIf StringLower(Trim($nameCharacter)) = "witchdoctor" Then
+	ElseIf $nameCharacter = "witchdoctor" Then
 		Dim $tab_skill_temp = $WitchDoctor_Skill_Table
 		if $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = True
 			$Gestion_affixe = True
 			_log("WitchDoctor detected, Gest Affix Enabled")
 		EndIf
-	ElseIf StringLower(Trim($nameCharacter)) = "demonhunter" Then
+	ElseIf $nameCharacter = "demonhunter" Then
 		Dim $tab_skill_temp = $DemonHunter_skill_Table
 		if $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = True
 			$Gestion_affixe = True
 			_log("DemonHunter detected, Gest Affix Enabled")
 		EndIf
-	ElseIf StringLower(Trim($nameCharacter)) = "wizard" Then
+	ElseIf $nameCharacter = "wizard" Then
 		Dim $tab_skill_temp = $Wizard_skill_Table
 		if $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = True
 			$Gestion_affixe = True
 			_log("Wizard detected, Gest Affix Enabled")
+		EndIf
+	ElseIf $nameCharacter = "crusader" Then
+		Dim $tab_skill_temp = $Crusader_skill_Table
+		if $Gest_affixe_ByClass Then
+			$Gestion_affixe_loot = True
+			$Gestion_affixe = True
+			_log("Crusader detected, Gest Affix Enabled")
 		EndIf
 	Else
 		_log("PAS DE CLASS DETECT")
@@ -5133,33 +5149,35 @@ EndFunc   ;==>_TownPortalnew
 
 Func GetMaxResource($idAttrib, $classe)
 
-   Switch $classe
-   Case "monk"
-    $source = 0x3000
-    $MaximumSpirit=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-    _log("Ressource Maximum : " & $MaximumSpirit)
-   Case "barbarian"
-    $source = 0x2000
-    $MaximumFury=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-    _log("Ressource Maximum : " & $MaximumFury)
-   Case "wizard"
-    $source = 0x1000
-    $MaximumArcane=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-    _log("Ressource Maximum : " & $MaximumArcane)
-   Case "witchdoctor"
-    $source = 0
-    $MaximumMana=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-    _log("Ressource Maximum : " & $MaximumMana)
-   Case "demonhunter"
-    $source = 0x5000
-    $MaximumHatred=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-       $source = 0x6000
-    $MaximumDiscipline=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
-      _log("Ressource Maximum : " & $MaximumHatred)
-      _log("Ressource Maximum : " & $MaximumDiscipline)
-
-  EndSwitch
-
+	Switch $classe
+	Case "monk"
+		$source = 0x3000
+		$MaximumSpirit=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumSpirit)
+	Case "barbarian"
+		$source = 0x2000
+		$MaximumFury=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumFury)
+	Case "wizard"
+		$source = 0x1000
+		$MaximumArcane=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumArcane)
+	Case "witchdoctor"
+		$source = 0
+		$MaximumMana=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumMana)
+	Case "demonhunter"
+		$source = 0x5000
+		$MaximumHatred=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		$source = 0x6000
+		$MaximumDiscipline=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumHatred)
+		_log("Ressource Maximum : " & $MaximumDiscipline)
+	Case "crusader"
+		$source = 0x7000
+		$MaximumWrath=_memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resource_Max_Total[0], $source)), $d3, "float")
+		_log("Ressource Maximum : " & $MaximumWrath)
+	EndSwitch
 EndFunc ;==>GetMaxResource
 
 Func Take_BookOfCain()

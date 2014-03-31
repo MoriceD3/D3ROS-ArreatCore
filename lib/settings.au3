@@ -92,6 +92,7 @@ Global $MaximumSpirit = 100
 Global $MaximumFury = 100
 Global $MaximumArcane = 100
 Global $MaximumMana = 100
+Global $MaximumWrath  = 100
 
 Global $Devmode = True
 Global $UsePath = False
