@@ -31,6 +31,10 @@ Global $ItemRefresh = True
 Global $MonsterPriority = False
 Global $Unidentified = False
 ; recyclage
+
+Global $ItemToKeep[9] = [False, False, False, False, False, False, False, False, False, True]
+Global $ItemToSalvage[9] = [False, False, False, False, False, False, False, False, False, False]
+Global $ItemToSell[9] = [False, False, False, False, False, False, False, False, False, False]
 Global $Recycle = False
 Global $QualityRecycle = 9
 ; fonction pause x games
