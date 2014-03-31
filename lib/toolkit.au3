@@ -822,7 +822,6 @@ EndFunc
 
 Func FilterBackpack()
 
-	;;;$Uni_manuel = false ; pacht 1.08
 	Local $__ACDACTOR = triBackPack(IterateBackpack(0))
 	Local $iMax = UBound($__ACDACTOR)
 
@@ -835,83 +834,34 @@ Func FilterBackpack()
 		Sleep(100)
 
 		CheckWindowD3Size()
-        ;_checkbackpacksize()
 
 		If Not $Unidentified Then
 			Take_BookOfCain()
-		;;;Else
-			;;;$Uni_manuel = true ; pacht 1.08
 		EndIf
 
 		For $i = 0 To $iMax - 1 ;c'est ici que l'on parcour (tours a tours) l'ensemble des items contenut dans notres bag
 
 			$ACD = GetACDOffsetByACDGUID($__ACDACTOR[$i][0])
 			$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr")
-			$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level) ;on definit la quality de l'item traiter ici
-			If ($quality = 9) Then
-				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
-				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
-			ElseIf ($quality = 6) Then
-				$nbRares += 0 ; on definit les rares
-			EndIf
+			$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level) ;on definit la quality de l'item traiter ici*
 
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
-			;;;If $Uni_manuel = true Then ; pacht 1.08
-				;;;If $quality >= 6 And _MemoryRead($__ACDACTOR[$i][7] + 0x164, $d3, 'int') > 0 And ($itemDestination <> "Stash" Or trim(StringLower($Unidentified)) = "false") Then ; pacht 1.08
-				;Ici on verifie que la qualité est bien superieur a 6 et que l'item as besoin d'etre identifier, si l'item doit aller dans le stash ou si on definit Unidentified a false
-				;Il faudra modifier/ajouter quelque chose ici pour gerer les uni sur les oranges et modifier le nom de la variable Unidentified !
+			If ($quality >= 9) Then
+				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
+				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
+			ElseIf ($quality >= 6 And $itemDestination = "Stash") Then
+				$nbRares += 1 ; on definit les rares
+			EndIf	
 
-
-	;				InventoryMove($__ACDACTOR[$i][3], $__ACDACTOR[$i][4]) ;met la souris sur l'item
-
-	;				If IterateActorAtribs($__ACDACTOR[$i][0], $Atrib_Item_Quality_Level) > 8 Then ;verifie la quality de l'item pour connaitre le temps necessaire a l'identification de ce dernier
-	;					Sleep(Random(250, 400))
-	;					MouseClick("Right")
-	;					Sleep(Random(4000, 4500))
-	;				Else
-	;					Sleep(Random(250, 400))
-	;					MouseClick("Right")
-	;					Sleep(Random(1000, 1500))
-	;				EndIf
-
-				;;;EndIf
-			;;;EndIf
-
-			$return[$i][0] = $__ACDACTOR[$i][3] ;definit la collone de l'item
-			$return[$i][1] = $__ACDACTOR[$i][4] ;definit la ligne de l'item
-			$return[$i][3] = $quality
-
-			;;;If $itemDestination = "Stash_Filtre" And trim(StringLower($Unidentified)) = "false" Then ;Si c'est un item à filtrer et que l'on a definit Unidentified sur false (il faudra juste changer le nom de la variable Unidentifier); pacht 1.08
-			If $itemDestination = "Stash_Filtre" Then ;Si c'est un item à filtrer
-				If checkFiltreFromtable($GrabListTab, $__ACDACTOR[$i][1], $CurrentIdAttrib) Then ;on lance le filtre sur l'item
-					_log('valide')
-					$return[$i][2] = "Stash"
-					$nbRares += 1 ; on conte les rares qu'on met au coffre
-				Else
-					$return[$i][2] = "Trash"
-					_log('invalide')
-				EndIf
-
-			Else
-				$return[$i][2] = $itemDestination ;row
-			EndIf
+			$return[$i][0] = $__ACDACTOR[$i][3] ; definit la collone de l'item
+			$return[$i][1] = $__ACDACTOR[$i][4] ; definit la ligne de l'item
+			$return[$i][2] = $itemDestination ; action
+			$return[$i][3] = $quality ; quality
 
 		Next
 
-		If $Recycle Then
-			For $i = 0 To UBound($return) - 1
-				If $return[$i][2] = "Trash" And $return[$i][3] < $QualityRecycle Then ; si QualityRecycle = 9 on recycle jaune,bleu,blanc,-si 6 bleu,blanc , -si 3 blanc et on vend le reste
-					$return[$i][2] = "Recycle"
-				EndIf
-			Next
-		EndIf
-
-
 		Send($KeyCloseWindows) ; make sure we close everything
-
-
-
 		Return $return
 	EndIf
 	Return False
@@ -1569,7 +1519,7 @@ Func GetACDOffsetByACDGUID($Guid)
 	$group3 = _memoryread(_memoryread($ptr3 + 0x120, $d3, "int"), $d3, "int")
 	$group4 = 0x2f8 * BitAND($index, $group2)
 	Return $group3 + $group1 + $group4
-	_log("index : " & $index& " bitshift : " & $bitshift & " group1 : " & $group1 & " group 2 : " & $group2 & " group 3 : " & $group3 & " group4 : " & $group4)
+	;_log("index : " & $index& " bitshift : " & $bitshift & " group1 : " & $group1 & " group 2 : " & $group2 & " group 3 : " & $group3 & " group4 : " & $group4)
 EndFunc   ;==>GetACDOffsetByACDGUID
 
 Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
@@ -2140,13 +2090,13 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 	EndIf
 EndFunc   ;==>handle_Mob
 
- Func Checkqual($_GUID)
+Func Checkqual($_GUID)
 	; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
 	$ACD = GetACDOffsetByACDGUID($_GUID)
 	$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
 	$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
 	Return $quality
-EndFunc   ;==>CheckItem
+EndFunc   ;==>Checkqual
 
 Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
         $grabit = False
@@ -2164,7 +2114,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 			If IsArray($item_aff_verif) and $gestion_affixe_loot Then
 			   if is_zone_safe($item[2],$item[3],$item[4],$item_aff_verif) or Checkqual($item[0])=9 then
 							$itemDestination = CheckItem($item[0], $item[1])
-							If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or ($itemDestination == "Inventory" And $takepot = True) Then
+							If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
 									; this loot is interesting
 									$foundobject = 1
 									If Grabit($item[1], $item[8]) = False Then
@@ -2207,7 +2157,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 
 
-                If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or ($itemDestination == "Inventory" And $takepot = True) Then
+                If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
                         ; this loot is interesting
                         $foundobject = 1
 
@@ -2515,65 +2465,71 @@ EndFunc   ;==>GetIlvlFromACD
 ;;================================================================================
 ; Function:                     CheckItem
 ; Description:          This will check a single item and tell if we keep it or not
-;                                       This function will be the core of the item filtering
+;                       This function will be the core of the item filtering
+;
+; $_MODE :
+; - 0 : On floor
+; - 1 : In backpack
 ;
 ; Return:                       Trash
-;                                       Stash
-;                                       Salvage
-;                                       Inventory
+;                               Stash
+;                               Salvage
+;                               Inventory
+;								Sell
 ;==================================================================================
 Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 	; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
-	_log("checkitem -> " & $_NAME)
+	_log("CheckItem -> " & $_NAME)
 
 	If checkFromList($Potions, $_NAME) Then
-		_log($_NAME & " ==> It's a pot")
+		_log("CheckItem : Potion")
 		Return "Inventory"
 	ElseIf checkFromList($grablist, $_NAME) Then
+		_log("CheckItem : In grablist")
 		Return "Stash"
 	EndIf
 
 
 	If Not Checkstartlist_regex($Ban_ItemACDCheckList, $_NAME) Then
-
-		;_log("Pas Trash")
-
 		$ACD = GetACDOffsetByACDGUID($_GUID)
 		$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
 		$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
 
-
-		If $quality >= $QualityLevel Then ;filter the magic and higher
-			_log($_NAME & " ==> It's the quality level >" & $QualityLevel)
+		If $ItemToKeep[$quality] Then ; Item to keep
+			_log("CheckItem : Quality in keepItem (" & $quality & ")")
 			Return "Stash"
 		EndIf
 
-
 		If checkFromtable($GrabListTab, $_NAME, $quality) Then
 			If checkIlvlFromtable($GrabListTab, $ACD, $_NAME) Then
-
-				If $_MODE = 0 Then
-				   If Not $FilterItemGround Then ; si true applique le filtre sur les item au sol,false on applique pas
-					  _Log($_NAME & " ==> It's a rare in our list ")
-					  Return "Stash"
-				   Else
-					  _log($_NAME & " ==> It's a rare in our list We have to check the stats")
-
-					  If checkFiltreFromtable($GrabListTab, $_NAME, $CurrentIdAttrib) Then
-						 Return "Stash"
-					  Endif
-				   EndIf
-
-				Else
-					_log($_NAME & " ==> It's a rare in our list for filterbackpack")
-					Return "Stash_filtre"
-				EndIf
-
+				If checkFiltreFromtable($GrabListTab, $_NAME, $CurrentIdAttrib) Then
+					_log("CheckItem : Stats are in grablist")
+					Return "Stash"
+				Endif
 			EndIf
+		EndIf
+
+		If $ItemToSalvage[$quality] Then ; Item to salvage
+			_log("CheckItem : Quality in salvageItem (" & $quality & ")")
+			Return "Salvage"
+		EndIf
+
+		If $ItemToSell[$quality] Then ; Item to salvage
+			_log("CheckItem : Quality in sellItem (" & $quality & ")")
+			Return "Sell"
 		EndIf
 	EndIf
 
-	_log($_NAME & " ==> Trash item")
+	If ($_MODE = 1) Then
+		If $UnknownItemAction = "salvage" Then
+			_log("CheckItem : Default action to Salvage")
+			Return "Salvage"
+		ElseIf $UnknownItemAction = "sell" Then
+			_log("CheckItem : Default action to Sell")
+			Return "Sell"
+		EndIf
+	EndIf
+	_log("CheckItem : Trash")
 	Return "Trash"
 EndFunc   ;==>CheckItem
 
@@ -4267,7 +4223,6 @@ Func StashAndRepair()
 				$stashtry += 1
 				InteractByActorName("Player_Shared_Stash")
 				Sleep(Random(100, 200))
-
 			Else
 				Send("{PRINTSCREEN}")
 				Sleep(200)
@@ -4275,7 +4230,6 @@ Func StashAndRepair()
 				WinSetOnTop("Diablo III", "", 0)
 				MsgBox(0, "Impossible d'ouvrir le stash :", "SVP, veuillez reporter ce problème sur le forum. Erreur : s001 ")
 				Terminate()
-
 			EndIf
 		WEnd
 		$tabfull = 0
@@ -4313,7 +4267,6 @@ Func StashAndRepair()
 			EndIf
 		Next
 
-
 		Sleep(Random(50, 100))
 		Send($KeyCloseWindows)
 		Sleep(Random(100, 150))
@@ -4333,7 +4286,7 @@ Func StashAndRepair()
 	Sleep(Random(500, 1000))
 
     ;recyclage
-	$ToRecycle = _ArrayFindAll($items, "Recycle", 0, 0, 0, 1, 2)
+	$ToRecycle = _ArrayFindAll($items, "Salvage", 0, 0, 0, 1, 2)
 	If $ToRecycle <> -1 Then ; si item a recyclé
 
 	   MoveTo($MOVETO_SMITH)
@@ -4363,7 +4316,8 @@ Func StashAndRepair()
 	   WEnd
 
 	   $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
-	   If $ToTrash = -1 Then ; si pas items a aller vendre on répare au forgeron
+	   $ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
+	   If $ToTrash = -1 And $ToSell = -1 Then ; si pas items a aller vendre on répare au forgeron
 		  Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
 
 		  ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
@@ -4407,59 +4361,69 @@ Func StashAndRepair()
 	   Sleep(Random(100, 200))
 	   Sleep(Random(500, 1000))
 
-	   If $ToTrash <> -1 Then  ;si item a vendre
-		  MoveTo($MOVETO_SMITH)
-	   EndIf
+	   MoveTo($MOVETO_SMITH)
 
     EndIf ; fin recyclage
 
-	Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
 	BuyPotion()
 
     If Not $Repair Then
-	   Repair()
-    EndIf
 
-	Local $GoldAfterRepaire = GetGold();on mesure l'or apres
-	$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation et potion
+		Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
+		Repair()
+		Local $GoldAfterRepaire = GetGold();on mesure l'or apres
+		$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation et potion
 
-	;Trash
-    $ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+		;Trash
+		$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
+		$ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
 
-    If not @error Then
+	    If $ToTrash <> -1 Or $ToSell <> -1 Then
 
-	   Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
+		   Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
 
-	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
+		   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
 
-	   CheckWindowD3Size()
+		   CheckWindowD3Size()
 
-	   For $i = 0 To UBound($ToTrash) - 1
-		  InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
-		  Sleep(Random(100, 500))
-		  $ItemToSell = $ItemToSell + 1
-		  MouseClick('Right')
-		  Sleep(Random(100, 200))
-	   Next
+		   For $i = 0 To UBound($ToTrash) - 1
+			  InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
+			  Sleep(Random(100, 500))
+			  $ItemToSell = $ItemToSell + 1
+			  MouseClick('Right')
+			  Sleep(Random(100, 200))
+		   Next
+   		   For $i = 0 To UBound($ToSell) - 1
+			  InventoryMove($items[$ToSell[$i]][0], $items[$ToSell[$i]][1])
+			  Sleep(Random(100, 500))
+			  $ItemToSell = $ItemToSell + 1
+			  MouseClick('Right')
+			  Sleep(Random(100, 200))
+		   Next
 
-	   Sleep(Random(100, 200))
-	   Send($KeyCloseWindows)
-	   Sleep(Random(100, 200))
+		   Sleep(Random(100, 200))
+		   Send($KeyCloseWindows)
+		   Sleep(Random(100, 200))
 
-	   Local $GoldAfterSell = GetGold(); on mesure l'or apres
-	   $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
+		   Local $GoldAfterSell = GetGold(); on mesure l'or apres
+		   $GoldBySale += $GoldAfterSell - $GoldBeforeSell;on compte l'or par vent
 
-	   ;****************************************************************
-	   If NOT Verif_Attrib_GlobalStuff() Then
-		  _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
-		  antiidle()
-	   EndIf
-	   ;****************************************************************
+		   ;****************************************************************
+		   If NOT Verif_Attrib_GlobalStuff() Then
+			  _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - vendeur)!!!!!")
+			  antiidle()
+		   EndIf
+		   ;****************************************************************
+	    EndIf
+
+		MoveTo($MOVETO_REPAIR_VENDOR)
     EndIf
 
     Sleep(Random(100, 200))
     Send($KeyCloseWindows)
     Sleep(Random(100, 200))
+
+	MoveTo($MOVETO_PORTAL)
 
 	$Execute_StashAndRepair = False
 
@@ -5203,30 +5167,31 @@ Func Take_BookOfCain()
 
 	MoveTo($MOVETO_BOOKOFCAIN)
 
-    InteractByActorName("All_Book_Of_Cain")
+	InteractByActorName("All_Book_Of_Cain")
 
-    While NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) AND NOT Detect_UI_error($MODE_NO_IDENTIFIED_ITEM)
-            ;_log("Ui : " & fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1512) & " Error : " &  fastcheckuiitemvisible("Root.TopLayer.error_notify.error_text", 1, 1185))
-            _log("tour boucle")
-            If NOT fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
-			   If Not _checkdisconnect() Then
-				  InteractByActorName("All_Book_Of_Cain")
-			   Else
-			      _Log("Failed to open Book Of Cain")
-				  $FailOpen_BookOfCain = 1
-				  Return False
-			   EndIf
-            EndIf
-    WEnd
-    While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-            sleep(50)
-    Wend
+	While Not fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) And Not Detect_UI_error($MODE_NO_IDENTIFIED_ITEM)
+		_log("Tour boucle : Take_BookOfCain")
+		If Not fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068) Then
+			If Not _checkdisconnect() Then
+				InteractByActorName("All_Book_Of_Cain")
+			Else
+				_Log("Failed to open Book Of Cain")
+				$FailOpen_BookOfCain = 1
+				Return False
+			EndIf
+		EndIf
+	WEnd
+	While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+		sleep(50)
+	Wend
+
+	MoveTo($MOVETO_BOOKOFCAIN)
 EndFunc
 
 Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act avant d'interagir
     GetAct()
 
-	If _checkInventoryopen() = True Then
+	If _checkInventoryopen() Then
 		Send($KeyInventory)
 		Sleep(150)
 	EndIf
@@ -5235,48 +5200,48 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 		 Case $MOVETO_SMITH ; Smith
 			Switch $Act
 			   Case 1
-					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 25)
+					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
 			   Case 2 To 4
 					 ;do nothing act 3 and 4
 			EndSwitch
 		 Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
 				Case 1
-					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 25)
+					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 60)
 				Case 2 to 4
 					;do nothing act 2, 3 and 4
 			EndSwitch
 		Case $MOVETO_REPAIR_VENDOR
 			Switch $Act
 	        Case 1
-	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 25)
+	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
 	        Case 2 To 4
 	                ;do nothing act 3-4
 	    Case $MOVETO_BOOKOFCAIN
 	    	Switch $Act
 				Case 1
-					MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 25)
+					MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
 				Case 2
 					;do nothing act 2
 				Case 3 To 4
-					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 25)
+					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
 			EndSwitch
 	    Case $MOVETO_PORTAL
 	    	Switch $Act
 				Case 1 ; act 1
-					MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 25)
-					MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 25)
-					MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 25)
+					MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
+					MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
+					MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
 				Case 2 ; act 2
 					;mtp a definir
 				Case 3 ; act 3
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
+					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
 				Case 4 ; act 4
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
+					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
 			EndSwitch
 		EndSwitch
 	EndSwitch

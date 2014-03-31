@@ -30,13 +30,11 @@ Global $MonsterRefresh = True
 Global $ItemRefresh = True
 Global $MonsterPriority = False
 Global $Unidentified = False
-; recyclage
-
-Global $ItemToKeep[9] = [False, False, False, False, False, False, False, False, False, True]
-Global $ItemToSalvage[9] = [False, False, False, False, False, False, False, False, False, False]
-Global $ItemToSell[9] = [False, False, False, False, False, False, False, False, False, False]
-Global $Recycle = False
-Global $QualityRecycle = 9
+; gestion items
+Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False, False, False]
+Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
+Global $ItemToSell[10] = [False, False, False, False, False, False, False, False, False, False]
+Global $UnknownItemAction = "Sell"
 ; fonction pause x games
 Global $BreakTime = 360
 Global $Breakafterxxgames = Round(Random(4, 8))
@@ -45,7 +43,6 @@ Global $TakeABreak = False
 Global $tab_grablist[1][2]
 Global $PartieSolo = True
 
-Global $FilterItemGround = False
 Global $profilFile = "settings/settings.ini"
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
@@ -59,7 +56,7 @@ Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|Bo
 Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest"
 Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $grabListFile = ""
-Global $Potions = "healthPotion_Console"
+Global $Potions = "healthPotion_Console|Bottomless_"
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
 Global $d3pass = ""
@@ -81,7 +78,6 @@ Global $KeyInventory = "i"
 Global $KeyPotions = "q"
 Global $KeyPortal = "t"
 Global $TakeShrines = False
-
 
 ; PauseToSurviveHC
 Global $HCSecurity = False
@@ -308,16 +304,32 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			EndSwitch
 	EndSwitch
 
-	$QualityLevel = IniRead($profilFile, "Run info", "QualiteItem", $QualityLevel)
+	$Dummy = IniRead($profilFile, "Run info", "QualiteItemKeep", "9")
+	$Dummy = StringSplit($Dummy, "|")
+	For $i = 1 To UBound($Dummy) - 1
+		If IsNumber(Int($Dummy[$i])) Then
+			$ItemToKeep[Int($Dummy[$i])] = True
+		EndIf
+	Next
+	$Dummy = IniRead($profilFile, "Run info", "QualiteItemSalvage", "")
+	$Dummy = StringSplit($Dummy, "|")
+	For $i = 1 To UBound($Dummy) - 1
+		If IsNumber(Int($Dummy[$i])) Then
+			$ItemToSalvage[Int($Dummy[$i])] = True
+		EndIf
+	Next
+	$Dummy = IniRead($profilFile, "Run info", "QualiteItemSell", "")
+	$Dummy = StringSplit($Dummy, "|")
+	For $i = 1 To UBound($Dummy) - 1
+		If IsNumber(Int($Dummy[$i])) Then
+			$ItemToSell[Int($Dummy[$i])] = True
+		EndIf
+	Next
+
+	$UnknownItemAction = IniRead($profilFile, "Run info", "UnknownItemAction", $UnknownItemAction)
 	$Dummy = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
 	$Unidentified = Trim(StringLower($Dummy)) == "true"
 
-	;recyclage
-	$Dummy = IniRead($profilFile, "Run info", "Recycle", $Recycle)
-	$Recycle = Trim(StringLower($Dummy)) == "true"
-	$QualityRecycle = IniRead($profilFile, "Run info", "QualityRecycle", $QualityRecycle)
-	$Dummy = IniRead($profilFile, "Run info", "FilterItemGround", $FilterItemGround)
-	$FilterItemGround = Trim(StringLower($Dummy)) == "true"
 	; fonction pause x games
 	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
 	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
