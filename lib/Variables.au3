@@ -130,7 +130,7 @@ Global $Table_Monster  		   = [0]
 Global $Table_Decor  		   = [0]
 Global $Table_BanAffix         = [0]
 Global $Table_SpecialMonster   = [0]
-Global $List_BanItemStartName  = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister"
+Global $List_BanItemStartName  = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main"
 Global $Table_BanItemStartName = [0]
 
 Global $Byte_Full_Inventory[2]
