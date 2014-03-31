@@ -213,40 +213,31 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	Switch $Choix_Act_Run
 		Case 0
-			$Hero_Axe_Z = IniRead($profilFile, "Run info", "Hero_Axe_Z", $Hero_Axe_Z)
 			$File_Sequence = IniRead($profilFile, "Run info", "SequenceFile", $File_Sequence)
 
 		Case 1
-			$Act1_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act1_Hero_Axe_Z", $Act1_Hero_Axe_Z)
 			$SequenceFileAct1 = IniRead($profilFile, "Run info", "SequenceFileAct1", $SequenceFileAct1)
 
 		Case 2
-			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
 			$SequenceFileAct2 = IniRead($profilFile, "Run info", "SequenceFileAct2", $SequenceFileAct2)
 
 		Case 3
-			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
 			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
 
 		Case 232 ; Act 2 quête 3 sous quête 2 --> tuez Maghda
-			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
 			$SequenceFileAct232 = IniRead($profilFile, "Run info", "SequenceFileAct232", $SequenceFileAct232)
 
 		Case 283 ; Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
-			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
 			$SequenceFileAct283 = IniRead($profilFile, "Run info", "SequenceFileAct283", $SequenceFileAct283)
 
 		Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
-			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct333 = IniRead($profilFile, "Run info", "SequenceFileAct333", $SequenceFileAct333)
 
 		Case 362 ; Act 3 quête 6 sous quête 2 --> Tuez le briseur de siège
-			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct362 = IniRead($profilFile, "Run info", "SequenceFileAct362", $SequenceFileAct362)
 
 		Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
-			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$SequenceFileAct373 = IniRead($profilFile, "Run info", "SequenceFileAct373", $SequenceFileAct373)
 
 		Case -1
@@ -254,9 +245,6 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			$SequenceFileAct2 = IniRead($profilFile, "Run info", "SequenceFileAct2", $SequenceFileAct2)
 			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
 			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
-			$Act1_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act1_Hero_Axe_Z", $Act1_Hero_Axe_Z)
-			$Act2_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act2_Hero_Axe_Z", $Act2_Hero_Axe_Z)
-			$Act3_Hero_Axe_Z = IniRead($profilFile, "Run info", "Act3_Hero_Axe_Z", $Act3_Hero_Axe_Z)
 			$Dummy = IniRead($profilFile, "Run info", "Sequence_Aleatoire", $Sequence_Aleatoire)
 			$Sequence_Aleatoire = Trim(StringLower($Dummy)) == "true"
 			$NbreRunChangSeqAlea = IniRead($profilFile, "Run info", "NbreRunChangSeqAlea", $NbreRunChangSeqAlea)

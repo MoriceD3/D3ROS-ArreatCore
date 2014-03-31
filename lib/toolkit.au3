@@ -1859,30 +1859,38 @@ Func TriObjectMonster($item)
 EndFunc   ;==>TriObjectMonster
 
 Func UpdateObjectsList($item)
+	Local $temp[$TableSizeGuidStruct]
 	For $i = 0 To UBound($item) - 1
-		Dim $buff_item[4]
-		Local $pos = DllStructCreate("byte[180];float;float;float;byte[4];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
-		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $item[$i][8], 'ptr', DllStructGetPtr($pos), 'int', DllStructGetSize($pos), 'int', '')
-		$item[$i][2] = DllStructGetData($pos, 6)
-		$item[$i][3] = DllStructGetData($pos, 7)
-		$item[$i][4] = DllStructGetData($pos, 8)
-		$item[$i][9] = getDistance($item[$i][2], $item[$i][3], $item[$i][4]) ; Distance
-		$pos = ""
+		$iterateObjectsListStruct = ArrayStruct($GuidStruct, 1)
+		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $item[$i][8], 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+		GetItemFromObjectsList($temp, $iterateObjectsListStruct, $item[$i][8], 0, False)
+
+		$item[$i][2] = $temp[2]
+		$item[$i][3] = $temp[3]
+		$item[$i][4] = $temp[4]
+		$item[$i][9] = $temp[9] ; Distance
+		$item[$i][10] = $temp[10]
+		$item[$i][11] = $temp[11]
+		$item[$i][12] = $temp[12]
 	Next
 	Return $item
 EndFunc   ;==>UpdateObjectsList
 
 Func UpdateObjectsPos($offset)
-	Local $obj_pos[4]
+	Local $obj_pos[4], $item[$TableSizeGuidStruct]
 
-	Local $pos = DllStructCreate("byte[180];float;float;float;byte[4];float;float;float") ;b4 Vec3 Pos1 Struct CRActor
-	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($pos), 'int', DllStructGetSize($pos), 'int', '')
-	$obj_pos[0] = DllStructGetData($pos, 6)
-	$obj_pos[1] = DllStructGetData($pos, 7)
-	$obj_pos[2] = DllStructGetData($pos, 8)
-	$obj_pos[3] = getDistance($obj_pos[0], $obj_pos[1], $obj_pos[2]) ; Distance
-	$pos = ""
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, 0, False)
+
+	$obj_pos[0] = $item[10]
+	$obj_pos[1] = $item[11]
+	$obj_pos[2] = $item[12]
+	$obj_pos[3] = $item[9] ; Distance
 	Return $obj_pos
+
 EndFunc   ;==>UpdateObjectsPos
 
 Func Is_Shrine(ByRef $item)
@@ -1944,8 +1952,6 @@ Func Is_Interact(ByRef $item, $IgnoreList)
 		Case (($item[0] = 0xFFFFFFFF) Or ($item[0] = "")) ; Mauvais Item
 			Return False
 		Case ($item[9] > $g_range And $item[9] > $a_range) ; Trop loin
-			Return False
-		Case Abs($Current_Hero_Z - $item[12]) > $Hero_Axe_Z ; Mauvaise axe Z
 			Return False
 		Case (StringInStr($IgnoreList, $item[8]) <> 0) ; Objet ignoré
 			Return False
@@ -2334,7 +2340,6 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 					_log("Leave KillMob Cause of Dist Verif : " & $pos[3] & " - " & $dist_verif)
 					ExitLoop
 				EndIf
-				;If $Pos[3] > $Hero_Axe_Z Then ExitLoop
 
                 $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
                 MouseMove($Coords[0], $Coords[1], 3)
@@ -2679,16 +2684,16 @@ Func OpenWp(ByRef $item)
 	Local $maxtry = 0
 	If Not _playerdead() Then
 		_log($item[1] & " distance : " & $item[9])
-		While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
-			$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
+		While getDistance($item[10], $item[11], $item[12]) > 40 And $maxtry <= 15
+			$Coords = FromD3toScreenCoords($item[10], $item[11], $item[12])
 			;_log("Dans LE while")
 			MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 			$maxtry += 1
 			_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1])
 			Sleep(500)
 		WEnd
-		Interact($item[2], $item[3], $item[4])
-		Sleep(100)
+		Interact($item[10], $item[11], $item[12])
+		Sleep(500)
 	EndIf
 
 EndFunc   ;==>OpenWp
@@ -2752,14 +2757,13 @@ Func TakeWPV2($WPNumber = 0)
 		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
 	EndIf
 
-	$WayPointEntity = "Waypoint"
 	$WayPointFound = False
 
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $maxRange = 80
 	startIterateObjectsList($index, $offset, $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 
-		If StringInStr($item[1], $WayPointEntity) Then
+		If StringInStr($item[1], "Waypoint") Then
 			_log("WayPoint Found, Try with MaxRange")
 			If $item[9] < $maxRange Then
 				_log("WayPoint OK, MaxRange OK")

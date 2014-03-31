@@ -17,28 +17,20 @@ Func SelectGameType($SelectGameType, $auto)
 	If $auto Then
 		Switch $SelectGameType
 			Case 1
-				$Hero_Axe_Z = $Act1_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct1
 			Case 2
-				$Hero_Axe_Z = $Act2_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct2
 			Case 3
-				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct3PtSauve
 			Case 232
-				$Hero_Axe_Z = $Act2_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct232
 			Case 283
-				$Hero_Axe_Z = $Act2_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct283
 			Case 333
-				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct333
 			Case 362
-				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct362
 			Case 373
-				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct373
 		EndSwitch
 	EndIf
@@ -243,7 +235,6 @@ Func SelectQuest()
 			SelectGameType(3, True)
 		EndIf
 		If ($Totalruns = 2) Then
-			$Hero_Axe_Z = $Act3_Hero_Axe_Z
 			$File_Sequence = $SequenceFileAct3
 		EndIf
 	EndIf
@@ -346,7 +337,6 @@ Func SelectQuest()
 			_FileWriteToLine($fileLog, $numLigneFichier, "Act " & $Act_Encour & ": " & $NombreRun_Encour & "/" & $NombreDeRun, 1)
 		Else
 			If ($Act_Encour = 3) And ($NombreRun_Encour = 1) Then
-				$Hero_Axe_Z = $Act3_Hero_Axe_Z
 				$File_Sequence = $SequenceFileAct3
 			EndIf
 			$NombreRun_Encour = $NombreRun_Encour + 1

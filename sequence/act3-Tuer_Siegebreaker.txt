@@ -45,7 +45,6 @@ sleep=500
 send={ENTER}
 sleep=6000
 offsetlist()
-setherosaxez=15.5
 specialml=SiegebreakerDemon
 345.655883789063, 361.885864257813, 0.100000128149986,1,25
 333.703308105469, 358.345428466797, 0.100000120699406,1,25
@@ -65,5 +64,4 @@ _townportal()
 sleep=500
 endsave()
 specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
-setherosaxez=10
 sleep=500

@@ -57,13 +57,11 @@ TakeWP=10
 214.342926025391, 720.735534667969, -31.5130805969238,1,25
 181.943405151367, 723.930114746094, -47.8554992675781,1,25
 endsave()
-setherosaxez=5
 sleep=500
 InteractByActorName=Boss_Portal_Azmodan
 sleep=1000
 endsave()
 offsetlist()
-setherosaxez=15
 usepath=false
 704.611450195313, 709.017028808594, 80.0999984741211,1,25
 689.465942382813, 692.027282714844, 80.0999984741211,1,25
@@ -113,7 +111,6 @@ send={ENTER}
 sleep=1000
 endsave()
 specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
-setherosaxez=10
 sleep=500
 _townportal()
 sleep=500

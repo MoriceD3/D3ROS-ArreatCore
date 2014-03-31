@@ -17,7 +17,6 @@ InteractByActorName=Boss_Portal_Blacksoulstone
 sleep=3000
 endsave()
 offsetlist()
-setherosaxez=35
 specialml=ZoltunKulle|sandMonster_A_Eternal_Guardian_ZoltBoss
 185.564636230469, 113.60865020752, 0.99992424249649,1,25
 170.074737548828, 128.326507568359, 0.100001819431782,1,25

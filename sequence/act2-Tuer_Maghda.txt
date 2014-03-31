@@ -2,7 +2,6 @@ MonsterList=FallenGrunt_A|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_
 specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
 AutoBuff=True
 attackrange=40
-setherosaxez=50
 TakeWP=4
 Sleep=500
 1394.80212402344, 1116.14111328125, 184.49137878418,1,25
@@ -94,7 +93,6 @@ sleep=1000
 endsave()
 offsetlist()
 specialml=Maghda
-setherosaxez=15.5
 attackrange=65
 usepath=false
 269.5625, 199.048904418945, 0.100000001490116,1,25

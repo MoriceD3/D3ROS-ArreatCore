@@ -241,13 +241,6 @@ Func SpecialML($String)
 	EndIf
 EndFunc   ;==>SpecialMonsterList
 
-Func SetHeroAxeZ($String)
-  If Not $String = "" Then
-    $Hero_Axe_Z =Number($String)
-    _log("Modification de la valeur Z du heros : " & $Hero_Axe_Z)
-  EndIf
-EndFunc;==>setHerosAxeZ
-
 Func Trim($String)
 	Return StringReplace($String, " ", "", 0, 2)
 EndFunc   ;==>Trim
@@ -312,40 +305,34 @@ Func traitement_read_str($txt)
 	Dim $txt_arr_final[1]
 	Local $compt = 0
 
+	ReDim $txt_arr[UBound(StringSplit($txt, "|", 2))]
+	$txt_arr = StringSplit($txt, "|", 2)
 
-	If (StringInStr($txt, "|", 2)) Then
-		ReDim $txt_arr[UBound(StringSplit($txt, "|", 2))]
-		$txt_arr = StringSplit($txt, "|", 2)
+	For $i = 0 To UBound($txt_arr) - 1
 
-		For $i = 0 To UBound($txt_arr) - 1
-
-			If StringRegExp($txt_arr[$i], '\[([0-9]{1,3})/([0-9]{1,3})\]') = 1 Then ;patern random chance
-				$arr_traitement_random_inclut = StringRegExp($txt_arr[$i], '\[([0-9]{1,3})/([0-9]{1,3})\]', 2)
-				$num = Random(1, $arr_traitement_random_inclut[2], 1)
-				If $num <= $arr_traitement_random_inclut[1] Then
-					$txt_arr[$i] = StringReplace($txt_arr[$i], $arr_traitement_random_inclut[0], "", 0, 2)
-				Else
-					$txt_arr[$i] = ""
-				EndIf
+		If StringRegExp($txt_arr[$i], '\[([0-9]{1,3})/([0-9]{1,3})\]') = 1 Then ;patern random chance
+			$arr_traitement_random_inclut = StringRegExp($txt_arr[$i], '\[([0-9]{1,3})/([0-9]{1,3})\]', 2)
+			$num = Random(1, $arr_traitement_random_inclut[2], 1)
+			If $num <= $arr_traitement_random_inclut[1] Then
+				$txt_arr[$i] = StringReplace($txt_arr[$i], $arr_traitement_random_inclut[0], "", 0, 2)
+			Else
+				$txt_arr[$i] = ""
 			EndIf
+		EndIf
 
-			If StringRegExp($txt_arr[$i], '\[([0-9]{1,3})-([0-9]{1,3})\]') = 1 Then ;patern random number
-				$arr_traitement_num = StringRegExp($txt_arr[$i], '\[([0-9]{1,3})-([0-9]{1,3})\]', 2)
-				$num = Random($arr_traitement_num[1], $arr_traitement_num[2], 1)
-				$txt_arr[$i] = StringReplace($txt_arr[$i], $arr_traitement_num[0], "", 0, 2) & $num
-			EndIf
+		If StringRegExp($txt_arr[$i], '\[([0-9]{1,3})-([0-9]{1,3})\]') = 1 Then ;patern random number
+			$arr_traitement_num = StringRegExp($txt_arr[$i], '\[([0-9]{1,3})-([0-9]{1,3})\]', 2)
+			$num = Random($arr_traitement_num[1], $arr_traitement_num[2], 1)
+			$txt_arr[$i] = StringReplace($txt_arr[$i], $arr_traitement_num[0], "", 0, 2) & $num
+		EndIf
 
-			If Not $txt_arr[$i] = "" Then
-				$compt += 1
-				ReDim $txt_arr_final[$compt]
-				$txt_arr_final[$compt - 1] = $txt_arr[$i]
-			EndIf
+		If Not $txt_arr[$i] = "" Then
+			$compt += 1
+			ReDim $txt_arr_final[$compt]
+			$txt_arr_final[$compt - 1] = $txt_arr[$i]
+		EndIf
 
-		Next
-
-	Else
-		$txt_arr_final[0] = $txt
-	EndIf
+	Next
 
 	Return $txt_arr_final
 EndFunc   ;==>traitement_read_str
@@ -511,12 +498,6 @@ Func sequence()
 					$line = StringReplace($line, "specialml=", "", 0, 2)
 					_log("Enclenchement d'un SpecialMonsterList line : " & $i + 1)
 					SpecialML($line)
-					$line = ""
-					$definition = 1
-				ElseIf StringInStr($line, "setherosaxez=", 2) Then; Définition l'axe Z détecté
-					$line = StringReplace($line, "setherosaxez=", "", 0, 2)
-					_Log("Detection de la modification de l'axe Z du heros line : " & $i + 1)
-					SetHeroAxeZ($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "banlist=", 2) Then; BanList detected

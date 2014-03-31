@@ -13,8 +13,8 @@ Global $_MyCharType = 0
 Global  $GrabListTab, $allSNOitems, $grablist
 
 ; Variable global pour Automatisation des séquences
-Global  $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3,$Act1_Hero_Axe_Z,$Act2_Hero_Axe_Z
-Global	$Act3_Hero_Axe_Z,$Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog,$numLigneFichier
+Global  $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3
+Global	$Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog,$numLigneFichier
 Global	$NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
 Global	$ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 Global	$ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea,$SequenceFileAct3PtSauve,$SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct232,$SequenceFileAct283
@@ -80,7 +80,6 @@ Global $PortBack 	   			= False
 Global $FailOpen_BookOfCain 	= 0
 Global $KillOrGrab_TimeOut		= 0
 
-Global $Hero_Axe_Z = 10
 Global $TableBannedActors = [0]
 Global $Count_ACD = 0
 Global $GetACD

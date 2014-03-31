@@ -8,7 +8,6 @@ sleep=1500
 InteractByActorName=Boss_Portal_Gluttony
 sleep=2500
 offsetlist()
-setherosaxez=15.5
 specialml=Gluttony
 569.472290039063, 359.180694580078, 0.642825782299042,1,25
 537.378540039063, 358.843780517578, 0.100000068545341,1,25
@@ -52,5 +51,4 @@ send={SPACE}
 sleep=5000
 endsave()
 specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
-setherosaxez=10
 sleep=500
