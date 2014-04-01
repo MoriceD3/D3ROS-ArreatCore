@@ -2759,7 +2759,7 @@ Func TakeWPV2($WPNumber = 0)
 
 	$WayPointFound = False
 
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $maxRange = 80
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $maxRange = 130
 	startIterateObjectsList($index, $offset, $count)
 	While iterateObjectsList($index, $offset, $count, $item)
 
@@ -2781,12 +2781,12 @@ Func TakeWPV2($WPNumber = 0)
 		OpenWp($item)
 		Sleep(750)
 		Local $wptry = 0
-		While _checkWPopen() = False And _playerdead() = False
+		While Not _checkWPopen() And Not _playerdead()
 			If $wptry <= 6 Then
 				_log('Fail to open wp')
 				$wptry += 1
 				OpenWp($item)
-				Sleep(500)
+				Sleep(750)
 			EndIf
 			If $wptry > 6 Then
 				$GameFailed = 1
