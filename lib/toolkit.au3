@@ -52,7 +52,7 @@ Opt("SendKeyDownDelay", Random(10, 20))
 Opt("WinTitleMatchMode", -1)
 SetPrivilege("SeDebugPrivilege", 1)
 Global $ProcessID = WinGetProcess("[CLASS:D3 Main Window Class]", "")
-Local $d3 = _MemoryOpen($ProcessID)
+$d3 = _MemoryOpen($ProcessID)
 If @error Then
 	WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 	MsgBox(4096, "ERROR", "Failed to open memory for process;" & $ProcessID)
@@ -396,7 +396,7 @@ EndFunc   ;==>GetLevelAreaId
 Func GetAct()
 	If $Act = 0 Then
 		$arealist = FileRead("lib\area.txt")
-		$area = GetLevelAreaId()
+		Local $area = GetLevelAreaId()
 
 		_log(" We are in map : " & $area)
 		Local $pattern = "([\w'-]{5,80})\t\W\t" & $area
@@ -415,7 +415,7 @@ Func GetAct()
 			EndIf
 			;  _log("We are in map : " & $area &" " & $asResult[0])
 
-			;set our vendor aaccording to the act we are in as we know it.
+			;set our vendor according to the act we are in as we know it.
 			Switch $Act
 				Case 1
 					Global $RepairVendor = "UniqueVendor_miner_InTown"
@@ -895,7 +895,7 @@ EndFunc   ;==>_filter2attrib
 Func LocateMyToon()
 	$count_locatemytoon = 0
 	$idarea = 0
-	Global $TableBannedActors = [0]
+	Global $Table_BannedActors = [0]
 
 	If _ingame() Then
 
@@ -966,48 +966,6 @@ Func LocateMyToon()
 	EndIF
 
 EndFunc   ;==>LocateMyToon
-
-;SetItemLootLevel()
-;
-;Will set the items quality to be looted
-Func SetItemLootLevel()
-	$QualityLevel = StringSplit($QualityLevel, "|")
-	For $i = 1 to UBound($QualityLevel) -1
-		_log("Our qualitilevel is: " & $QualityLevel[$i])
-	Next
-EndFunc	;==>SetItemLootLevel
-
-;SetSalvageLootLevel()
-;
-;Will set the items qualitys to be salvaged
-Func SetSalvageLootLevel()
-	$SalvageQualiteItem = StringSplit($SalvageQualiteItem, "|")
-	For $i = 1 to UBound($SalvageQualiteItem) -1
-		_log("Our salvagelevel is: " & $SalvageQualiteItem[$i])
-	Next
-EndFunc	;==>SetSalvageLootLevel
-
-
-Func GetACDByGuid($Guid, $_displayInfo = 0)
-	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
-	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
-	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
-	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x148, $d3, "ptr") + 0x0, $d3, "ptr");$_LocalActor_3
-	Global $__ACTOR[$_Count + 1][4]
-	For $i = 0 To $_Count
-		$__ACTOR[$i][1] = _MemoryRead($CurrentOffset, $d3, 'ptr')
-		$__ACTOR[$i][2] = _MemoryRead($CurrentOffset + 0x4, $d3, 'char[64]')
-		$__ACTOR[$i][3] = _MemoryRead($CurrentOffset + $ofs_LocalActor_atribGUID, $d3, 'ptr')
-		$CurrentOffset = $CurrentOffset + $ofs_LocalActor_StrucSize
-		If $__ACTOR[$i][1] = $Guid Then
-			If $_displayInfo = 1 Then _log('Count : "' & $i & '" ' & $__ACTOR[$i][1] & "' '" & $__ACTOR[$i][2] & "' '" & $__ACTOR[$i][3] & "'" )
-			Global $GetACD = $i
-			Return True
-		EndIf
-	Next
-	_log("Get ACD By Guid was failed")
-EndFunc   ;==>GetACDByGuid
 
 Func startIterateLocalActor(ByRef $index, ByRef $offset, ByRef $count)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
@@ -1324,10 +1282,6 @@ Func GetCurrentPos()
 	$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
 	$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
 	$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
-
-	$Current_Hero_X = $return[0]
-	$Current_Hero_Y = $return[1]
-	$Current_Hero_Z = $return[2]
 
 	Return $return
 EndFunc  ;==>GetCurrentPos
@@ -2291,7 +2245,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
         $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
         MouseMove($Coords[0], $Coords[1], 3)
 
-        $elite = DetectElite($Guid)
+        Local $elite = DetectElite($Guid)
         ;loop the attack until the mob is dead
 
 		If $elite Then $CptElite += 1;on compte les elite
@@ -5368,14 +5322,14 @@ Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque 
 EndFunc    ;==>PauseToSurviveHC
 
 Func BanActor($actor)
-	$TableBannedActors[0] += 1
-	ReDim $TableBannedActors[$TableBannedActors[0] + 1]
-	$TableBannedActors[$TableBannedActors[0]] = $actor
+	$Table_BannedActors[0] += 1
+	ReDim $Table_BannedActors[$Table_BannedActors[0] + 1]
+	$Table_BannedActors[$Table_BannedActors[0]] = $actor
 EndFunc
 
 Func IsBannedActor($actor)
-	For $i = 1 To $TableBannedActors[0]
-		If $TableBannedActors[$i] = $actor Then
+	For $i = 1 To $Table_BannedActors[0]
+		If $Table_BannedActors[$i] = $actor Then
 			return True
 		EndIf
 	Next

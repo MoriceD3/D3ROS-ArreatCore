@@ -264,6 +264,47 @@ Func LevelAreaConstants()
 	Global $PvPArena = 0x4d9c
 EndFunc   ;==>LevelAreaConstants
 
+;SetItemLootLevel()
+;
+;Will set the items quality to be looted
+Func SetItemLootLevel()
+	$QualityLevel = StringSplit($QualityLevel, "|")
+	For $i = 1 to UBound($QualityLevel) -1
+		_log("Our qualitilevel is: " & $QualityLevel[$i])
+	Next
+EndFunc	;==>SetItemLootLevel
+
+;SetSalvageLootLevel()
+;
+;Will set the items qualitys to be salvaged
+Func SetSalvageLootLevel()
+	$SalvageQualiteItem = StringSplit($SalvageQualiteItem, "|")
+	For $i = 1 to UBound($SalvageQualiteItem) -1
+		_log("Our salvagelevel is: " & $SalvageQualiteItem[$i])
+	Next
+EndFunc	;==>SetSalvageLootLevel
+
+Func GetACDByGuid($Guid, $_displayInfo = 0)
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
+	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
+	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x148, $d3, "ptr") + 0x0, $d3, "ptr");$_LocalActor_3
+	Global $__ACTOR[$_Count + 1][4]
+	For $i = 0 To $_Count
+		$__ACTOR[$i][1] = _MemoryRead($CurrentOffset, $d3, 'ptr')
+		$__ACTOR[$i][2] = _MemoryRead($CurrentOffset + 0x4, $d3, 'char[64]')
+		$__ACTOR[$i][3] = _MemoryRead($CurrentOffset + $ofs_LocalActor_atribGUID, $d3, 'ptr')
+		$CurrentOffset = $CurrentOffset + $ofs_LocalActor_StrucSize
+		If $__ACTOR[$i][1] = $Guid Then
+			If $_displayInfo = 1 Then _log('Count : "' & $i & '" ' & $__ACTOR[$i][1] & "' '" & $__ACTOR[$i][2] & "' '" & $__ACTOR[$i][3] & "'" )
+			Global $GetACD = $i
+			Return True
+		EndIf
+	Next
+	_log("Get ACD By Guid was failed")
+EndFunc   ;==>GetACDByGuid
+
 Func handle_banlist($coords_ban)
 	If StringInStr($handle_banlist1, $coords_ban) = false Then
 		_log("banlist 1 -> " & $coords_ban)

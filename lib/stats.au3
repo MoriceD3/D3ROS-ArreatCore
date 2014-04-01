@@ -121,8 +121,7 @@ Func StatsDisplay()
 			;Xpmoyen=0
         Else
 			;;;$dif_timer_stat_moyen = $dif_timer_stat / ($Totalruns - 1)
-			$dif_timer_stat_moyen = $dif_timer_stat_game / ($Totalruns - 1);on recalcule le temps moyen d'un run par rapport au temps de jeu
-			$timer_stat_run_moyen = formatTime($dif_timer_stat_moyen)
+			$timer_stat_run_moyen = formatTime($dif_timer_stat_game / ($Totalruns - 1));on recalcule le temps moyen d'un run par rapport au temps de jeu
         EndIf
 
 
