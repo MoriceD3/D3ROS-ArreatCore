@@ -5121,7 +5121,6 @@ Func _TownPortalnew($mode=0)
 
 			If $Current_area <> GetLevelAreaId() Then
 				_Log("Changement d'arreat, on quite la boucle")
-				$PortBack = True
 				ExitLoop
 			EndIf
 
@@ -5143,6 +5142,10 @@ Func _TownPortalnew($mode=0)
 		Return False
 	EndIf
 
+	If _intown() Then
+	   $PortBack = True
+	EndIf
+	
 	_Log("On a renvoyer true, quite bien la fonction")
 
 	$Execute_TownPortalnew = False
