@@ -51,13 +51,13 @@ Global Const $ITEM_TYPE_LOOT    = 6
 Global Const $ITEM_TYPE_DECOR   = 7
 Global Const $ITEM_TYPE_RACK    = 8
 
-
-Global $range_shrine = 50
+; Range Item
+Global $range_shrine = 40
 Global $range_health = 35
 Global $range_power  = 35
 Global $range_decor  = 18
-Global $range_chest  = 50
-Global $range_rack  = 50
+Global $range_chest  = 40
+Global $range_rack 	 = 40
 
 ; MoveTo
 Global Const $MOVETO_SMITH 		   = 1
@@ -73,9 +73,11 @@ Global $PauseRepasCounter = 0
 Global $tempsPauseGame 	  = 0
 Global $tempsPauserepas   = 0
 
+; fonction en execution
 Global $Execute_TownPortalnew 	= False
-Global $Execute_TpRepairAndBack = False ; correction double tp inventaire plein
+Global $Execute_TpRepairAndBack = False
 Global $Execute_StashAndRepair  = False
+
 Global $PortBack 	   			= False
 Global $FailOpen_BookOfCain 	= 0
 Global $KillOrGrab_TimeOut		= 0
