@@ -401,7 +401,7 @@ Global $Monk_skill_Table[26][8] = [ _
 Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Punish, "Crusader_Punish", 0, "attack", "", "", "", ""], _
                         [$X1_Crusader_ShieldBash2, "Crusader_ShieldBash2", 0, "attack", 30, "wrath", "", 45], _
-                        [$X1_Crusader_Slash, "Crusader_Slash", 0, "attack", "", "", "", 0], _
+                        [$X1_Crusader_Slash, "Crusader_Slash", 0, "physical", "", "", "", 10], _
                         [$X1_Crusader_ShieldGlare, "Crusader_ShieldGlare", 12000, "attack", 0, "", "", 20], _
                         [$X1_Crusader_SweepAttack, "Crusader_SweepAttack", 0, "attack", 20, "wrath", "", 15], _
                         [$X1_Crusader_IronSkin, "Crusader_IronSkin", 30000, "buff&elite", 0, "", 60, ""], _
@@ -410,10 +410,10 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_BlessedHammer, "Crusader_BlessedHammer", "", "attack", 10, "wrath", "", 30], _
                         [$X1_Crusader_SteedCharge, "Crusader_SteedCharge", 25000, "move", "", "", "", ""], _
                         [$X1_Crusader_LawsOfValor2, "Crusader_LawsOfValor", 45000, "buff&elite", "", "", 100, ""], _
-                        [$X1_Crusader_Justice, "Crusader_Justice", "", "Attack", "", "", "", ""], _
+                        [$X1_Crusader_Justice, "Crusader_Justice", "", "physical", "", "", "", ""], _
                         [$X1_Crusader_Consecration, "Crusader_Consecration", 30000, "elite", 0, "wrath", 100, 15], _
                         [$X1_Crusader_LawsOfJustice2, "Crusader_LawsOfJustice", 45000, "buff", "", "", 100, ""], _
-                        [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "attack", 25, "wrath", 100, 35], _
+                        [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "zone", 25, "wrath", 100, 35], _
                         [$X1_Crusader_BlessedShield, "Crusader_BlessedShield", "", "attack", 20, "wrath", 100, 45], _
                         [$X1_Crusader_Condemn, "Crusader_Condemn", 15000, "zone", "", "", "", 10], _
                         [$X1_Crusader_Judgment, "Crusader_Judgment", 5000, "elite", "", "", 100, 35], _
@@ -421,7 +421,7 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_AkaratsChampion, "Crusader_AkaratsChampion", 90000, "elite", "", "", 100, 45], _
                         [$X1_Crusader_FistOfTheHeavens, "Crusader_FistOfTheHeavens", 0, "attack", 30, "wrath", 100, 45], _
                         [$x1_Crusader_Phalanx3, "Crusader_Phalanx3", 0, "attack", 30, "wrath", 100, 45], _
-                        [$X1_Crusader_HeavensFury3, "Crusader_HeavensFury3", 20000, "attack", 0, "", 100, 15], _
+                        [$X1_Crusader_HeavensFury3, "Crusader_HeavensFury3", 20000, "attack", 0, "", 100, 45], _
                         [$X1_Crusader_Bombardment, "Crusader_Bombardment", 60000, "elite", "", "", 100, 45] _
                     ]
 
