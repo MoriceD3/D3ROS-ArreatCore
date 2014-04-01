@@ -40,9 +40,9 @@ TakeWP=5
 sleep=2000
 InteractByActorName=Boss_Portal_Siegebreaker
 sleep=3000
-send={SPACE}
+closewindows()
 sleep=500
-send={ENTER}
+closeconfirm()
 sleep=6000
 offsetlist()
 specialml=SiegebreakerDemon

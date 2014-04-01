@@ -15,9 +15,9 @@ specialml=Gluttony
 475.929351806641, 357.758666992188, 0.100000128149986,1,25
 442.299682617188, 358.797546386719, 0.100000120699406,1,25
 sleep=1500
-send={SPACE}
+closewindows()
 sleep=500
-send={ENTER}
+closeconfirm()
 sleep=5000
 432.900482177734, 359.853668212891, 0.100000120699406,1,25
 407.018737792969, 357.655609130859, -0.0354028865695,1,25
@@ -40,14 +40,14 @@ sleep=5000
 395.886199951172, 372.83154296875, 0.214711636304855,1,25
 409.511810302734, 365.473693847656, -0.19952529668808,1,25
 399.108795166016, 346.999359130859, -0.199523150920868,1,25
-send={SPACE}
+closewindows()
 _townportal()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=5000
 endsave()
 specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber

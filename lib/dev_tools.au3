@@ -210,8 +210,8 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;EndIf
 
 ;_log("Finish")
-;ListUi(1)
-$items = FilterBackpack()
+ListUi(1)
+;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###

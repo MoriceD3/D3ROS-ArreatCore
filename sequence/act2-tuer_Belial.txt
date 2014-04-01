@@ -49,11 +49,11 @@ usepath=false
 3563.87890625, 1407.74182128906, 258.943542480469,1,25
 3564.048828125, 1359.98889160156, 259.138732910156,1,25
 sleep=2500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=3500
 InteractByActorName=g_Portal_ArchTall_Orange
 InteractByActorName=g_Portal_ArchTall_Orange
@@ -91,19 +91,19 @@ specialml=Kamyr
 244.539398193359, 559.377197265625, 7.37380313873291,1,25
 244.539398193359, 559.377197265625, 7.37380313873291,1,25
 sleep=2500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=500
-send={SPACE}
+closewindows()
 sleep=3500
 endsave()
 InteractByActorName=Boss_Portal_Belial
 InteractByActorName=Boss_Portal_Belial
 sleep=1500
-send={SPACE}
+closewindows()
 sleep=500
-send={ENTER}
+closeconfirm()
 sleep=1000
 offsetlist()
 usepath=false
@@ -133,9 +133,9 @@ specialml=Belial
 797.2021484375, 796.012145996094, 0.100000835955143,1,25
 797.2021484375, 796.012145996094, 0.100000835955143,1,25
 sleep=1000
-send={SPACE}
+closewindows()
 sleep=500
-send={ENTER}
+closeconfirm()
 sleep=1000
 798.685485839844, 796.992309570313, 0.100000955164433,1,25
 798.685485839844, 796.992309570313, 0.100000955164433,1,25
@@ -149,7 +149,7 @@ sleep=1000
 804.469482421875, 795.482299804688, 0.100000753998756,1,25
 804.330139160156, 794.150756835938, 0.100000701844692,1,25
 sleep=1000
-send={SPACE}
+closewindows()
 sleep=9500
 specialml=Belial|a2dun_Cald_Belial_Room_A_Breakable_section_|a2dun_Cald_Belial_Room_A_Breakable_phys_|a2dun_Cald_Belial_Room_A_Breakable_Center_1st_Hit|a2dun_Cald_Belial_Room_A_Breakable_Center_2nd_Hit
 798.685485839844, 796.992309570313, 0.100000955164433,1,25
@@ -166,9 +166,9 @@ specialml=Belial|a2dun_Cald_Belial_Room_A_Breakable_section_|a2dun_Cald_Belial_R
 sleep=5000
 InteractByActorName=Belial_BSS_soul
 sleep=1000
-send={SPACE}
+closewindows()
 sleep=500
-send={ENTER}
+closeconfirm()
 sleep=1000
 817.446655273438, 792.63134765625, 0.100000068545341,1,25
 809.83203125, 803.097106933594, 0.100000061094761,1,25
