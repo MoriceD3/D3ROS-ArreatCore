@@ -4378,7 +4378,10 @@ Func StashAndRepair()
 
     EndIf ; fin recyclage
 
+	Local $GoldBeforeBuyPotion = GetGold();on mesure l'or avant l' achats de potion
 	BuyPotion()
+	Local $GoldAfterBuyPotion = GetGold();on mesure l'or apres
+	$GoldByRepaire += $GoldBeforeBuyPotion - $GoldAfterBuyPotion ;on compte le cout des potion inclus da la stast GoldByRepaire
 
     If Not $Repair Then
 
