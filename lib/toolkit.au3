@@ -2333,7 +2333,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
                 _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
 
-                $dist_verif = GetDistance($test_iterateallobjectslist2[0][2], $test_iterateallobjectslist2[0][3], $test_iterateallobjectslist2[0][4])
+                $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
                 Dim $pos = UpdateObjectsPos($offset)
 
 				If $pos[3] > $dist_verif + 5 Then
