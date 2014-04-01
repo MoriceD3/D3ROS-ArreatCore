@@ -47,66 +47,96 @@ EndFunc  ;==> IterateFilterAffixV2()
 
 Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
 	; TODO : Vérifier les ranges
-
+	Local $range = -1
+	Local $life = 100
 	Select
 		Case $item[9] > 50
 			Return -1
 		Case IsItemInTable($Table_BanAffix, $item[1])
 			Return -1
-		Case StringInStr($item[1], "bomb_buildup") And ($pv <= $Life_explo / 100)
-			Return $range_explo
-		Case (StringInStr($item[1], "Corpulent_") And ($pv <= $Life_explo / 100) And (Trim($nameCharacter) = "demonhunter" Or Trim($nameCharacter) = "witchdoctor" Or Trim($nameCharacter) = "wizard"))
-			Return $range_explo
-		Case StringInStr($item[1], "demonmine_C") And ($pv <= $Life_mine / 100)
-			Return $range_mine
-		Case StringInStr($item[1], "Corpulent_suicide_blood") And ($pv <= $Life_explo / 100)
-			Return $range_explo
-		Case StringInStr($item[1], "creepMobArm") And ($pv <= $Life_arm / 100)
-			Return $range_arm
-		Case StringInStr($item[1], "woodWraith_explosion") And ($pv <= $Life_spore / 100)
-			Return $range_spore
-		Case StringInStr($item[1], "WoodWraith_sporeCloud_emitter") And ($pv <= $Life_spore / 100)
-			Return $range_spore
-		Case StringInStr($item[1], "sandwasp_projectile") And ($pv <= $Life_proj / 100)
-			Return $range_proj
-		Case StringInStr($item[1], "succubus_bloodStar_projectile") And ($pv <= $Life_proj / 100)
-			Return $range_proj
-		Case StringInStr($item[1], "Crater_DemonClawBomb") And ($pv <= $Life_mine / 100)
-			Return $range_mine
-		Case StringInStr($item[1], "Molten_deathExplosion") And ($pv <= $Life_explo / 100)
-			Return $range_explo
-		Case StringInStr($item[1], "Molten_deathStart") And ($pv <= $Life_explo / 100)
-			Return $range_explo
-		Case StringInStr($item[1], "iceClusters") And ($pv <= $Life_ice / 100)
-			Return $range_ice
-		Case StringInStr($item[1], "Orbiter_Projectile") And ($pv <= $Life_lightning / 100)
-			Return $range_lightning
-		Case StringInStr($item[1], "Thunderstorm_Impact") And ($pv <= $Life_lightning / 100)
-			Return $range_lightning
-		Case StringInStr($item[1], "CorpseBomber_projectile") And ($pv <= $Life_poison / 100)
-			Return $range_poison
-		Case StringInStr($item[1], "CorpseBomber_bomb_start") And ($pv <= $Life_poison / 100)
-			Return $range_poison
-		Case StringInStr($item[1], "Battlefield_demonic_forge") And ($pv <= $Life_lave / 100)
-			Return $range_lave
-		Case StringInStr($item[1], "frozenPulse") And ($pv <= $Life_ice / 100)
-			Return $range_ice
-		Case StringInStr($item[1], "spore") And ($pv <= $Life_spore / 100)
-			Return $range_spore
-		Case StringInStr($item[1], "ArcaneEnchanted_petsweep") And ($pv <= $Life_arcane / 100)
-			Return $range_arcane
-		Case StringInStr($item[1], "Desecrator") And ($pv <= $Life_profa / 100)
-			Return $range_profa
-		Case StringInStr($item[1], "Plagued_endCloud") And ($pv <= $Life_peste / 100)
-			Return $range_peste
-		Case StringInStr($item[1], "Poison") And ($pv <= $Life_poison / 100)
-			Return $range_poison
-		Case StringInStr($item[1], "molten_trail") And ($pv <= $Life_lave / 100)
-			Return $range_lave
+		Case StringInStr($item[1], "bomb_buildup")
+			$range = $range_explo
+			$life  = $Life_explo
+		Case StringInStr($item[1], "demonmine_C")
+			$range = $range_mine
+			$life  = $Life_mine
+		Case StringInStr($item[1], "Corpulent_suicide_blood")
+			$range = $range_explo
+			$life  = $Life_explo
+		Case StringInStr($item[1], "creepMobArm")
+			$range = $range_arm
+			$life  = $Life_arm
+		Case StringInStr($item[1], "woodWraith_explosion")
+			$range = $range_spore
+			$life  = $Life_spore
+		Case StringInStr($item[1], "WoodWraith_sporeCloud_emitter")
+			$range = $range_spore
+			$life  = $Life_spore
+		Case StringInStr($item[1], "sandwasp_projectile")
+			$range = $range_proj
+			$life  = $Life_proj
+		Case StringInStr($item[1], "succubus_bloodStar_projectile")
+			$range = $range_proj
+			$life  = $Life_proj
+		Case StringInStr($item[1], "Crater_DemonClawBomb")
+			$range = $range_mine
+			$life  = $Life_mine
+		Case StringInStr($item[1], "Molten_deathExplosion")
+			$range = $range_explo
+			$life  = $Life_explo
+		Case StringInStr($item[1], "Molten_deathStart")
+			$range = $range_explo
+			$life  = $Life_explo
+		Case StringInStr($item[1], "iceClusters")
+			$range = $range_ice
+			$life  = $Life_ice
+		Case StringInStr($item[1], "Orbiter_Projectile")
+			$range = $range_lightning
+			$life  = $Life_lightning
+		Case StringInStr($item[1], "Thunderstorm_Impact")
+			$range = $range_lightning
+			$life  = $Life_lightning
+		Case StringInStr($item[1], "CorpseBomber_projectile")
+			$range = $range_poison
+			$life  = $Life_poison
+		Case StringInStr($item[1], "CorpseBomber_bomb_start")
+			$range = $range_poison
+			$life  = $Life_poison
+		Case StringInStr($item[1], "Battlefield_demonic_forge")
+			$range = $range_lave
+			$life  = $Life_lave
+		Case StringInStr($item[1], "frozenPulse")
+			$range = $range_ice
+			$life  = $Life_ice
+		Case StringInStr($item[1], "spore")
+			$range = $range_spore
+			$life  = $Life_spore
+		Case StringInStr($item[1], "ArcaneEnchanted_petsweep")
+			$range = $range_arcane
+			$life  = $Life_arcane
+		Case StringInStr($item[1], "Desecrator")
+			$range = $range_profa
+			$life  = $Life_profa
+		Case StringInStr($item[1], "Plagued_endCloud")
+			$range = $range_peste
+			$life  = $Life_peste
+		Case StringInStr($item[1], "Poison")
+			$range = $range_poison
+			$life  = $Life_poison
+		Case StringInStr($item[1], "molten_trail")
+			$range = $range_lave
+			$life  = $Life_lave
+		Case (StringInStr($item[1], "Corpulent_") And ($nameCharacter = "demonhunter" Or $nameCharacter = "witchdoctor" Or $nameCharacter = "wizard"))
+			$range = $range_explo
+			$life  = $Life_explo
 		Case Else
 			Return -1
 	EndSelect
-
+	If ($pv <= $life / 100) Then
+		Return $range
+	Else
+		Return -1
+	EndIf
 EndFunc ;==>GetAffixRange   ;==>Is_Affix
 
 

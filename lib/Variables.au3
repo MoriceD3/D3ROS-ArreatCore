@@ -34,7 +34,7 @@ Global $ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea,$SequenceFileAct3PtSauve,$SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct232,$SequenceFileAct283
 
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
-Global	$Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
+Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
 
 ; check ui error
 Global Const $MODE_INVENTORY_FULL 		= 0

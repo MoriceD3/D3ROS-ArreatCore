@@ -13,7 +13,6 @@ If $checkx64 = 1 Then
 	Terminate()
 EndIf
 
-
 $icon = @ScriptDir & "\lib\ico\icon.ico"
 TraySetIcon($icon)
 
