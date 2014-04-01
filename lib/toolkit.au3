@@ -5179,14 +5179,14 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	EndIf
 
 	Switch $BeforeInteract
-		 Case $MOVETO_SMITH ; Smith
+		Case $MOVETO_SMITH ; Smith
 			Switch $Act
 			   Case 1
 					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
 			   Case 2 To 4
 					 ;do nothing act 3 and 4
 			EndSwitch
-		 Case $MOVETO_POTION_VENDOR ; Potion_Vendor
+		Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
 				Case 1
 					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 60)
@@ -5199,6 +5199,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
 	        Case 2 To 4
 	                ;do nothing act 3-4
+	        EndSwitch
 	    Case $MOVETO_BOOKOFCAIN
 	    	Switch $Act
 				Case 1
@@ -5225,9 +5226,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
 					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
 			EndSwitch
-		EndSwitch
 	EndSwitch
-
 	Sleep(100)
 EndFunc   ;==>MoveTo
 
