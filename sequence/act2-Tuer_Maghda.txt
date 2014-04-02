@@ -1,6 +1,7 @@
 MonsterList=FallenGrunt_A|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|Barricade|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Goblin|uber_|Uber|DuneDervish|TriuneVesselActivated_C|TriuneCultist_C|TriuneCultist_D
 specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
 AutoBuff=True
+revive=false
 attackrange=40
 TakeWP=4
 Sleep=500
@@ -87,10 +88,13 @@ endsave()
 921.317260742188, 1253.88073730469, 196.870666503906,1,25
 909.919494628906, 1235.74304199219, 196.870666503906,1,25
 892.298034667969, 1213.17736816406, 196.870666503906,1,25
-sleep=1500
-InteractByActorName=Boss_Portal_Maghda
+endsave()
+sleep=500
+InteractBossPortal=Boss_Portal_Maghda
 sleep=1000
 endsave()
+UsePath=false
+attackrange=65
 offsetlist()
 specialml=Maghda
 attackrange=65
@@ -116,5 +120,16 @@ sleep=3200
 194.583984375, 196.626403808594, 0.100000008940697,1,25
 191.370986938477, 185.11018371582, 0.100000008940697,1,25
 189.380798339844, 206.072296142578, 0.100000001490116,1,25
+181.541290283203, 205.649597167969, 0.0999999940395355,1,25
+179.180206298828, 197.801391601563, 0.0999999940395355,1,25
+200.689361572266, 196.062210083008, 0.100000001490116,1,25
+203.40251159668, 206.598693847656, 0.100000008940697,1,25
+188.276550292969, 213.653472900391, 0.100000001490116,1,25
+182.996185302734, 196.16242980957, 0.100000001490116,1,25
+198.43782043457, 191.339279174805, 0.0999999940395355,1,25
+193.295791625977, 207.409378051758, 0.0999999940395355,1,25
 _townportal()
-sleep=1000
+sleep=2000
+endsave()
+specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
+sleep=500

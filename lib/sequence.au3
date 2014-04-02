@@ -18,6 +18,8 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			Sleep($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "interactbyactorname" Then
 			InteractByActorName($arr_sequence[$index][2])
+		ElseIf $arr_sequence[$index][1] = "InteractBossPortal" Then
+			InteractBossPortal($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
 			BuffInit()
 		ElseIf $arr_sequence[$index][1] = "unbuff" Then
@@ -590,6 +592,18 @@ Func sequence()
 							$array_sequence[UBound($array_sequence) - 1][1] = "interactbyactorname"
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 						EndIf
+					ElseIf StringInStr($line, "InteractBossPortal=", 2) Then ;InteractBossPortals detected
+						$line = StringReplace($line, "InteractBossPortal=", "", 0, 2)
+						If $sequence_save = 0 Then
+							_log("Enclenchement d'un InteractBossPortal direct line : " & $i + 1)
+							InteractBossPortal($line)
+						Else
+							_log("mise en array d'un InteractBossPortal() line : " & $i + 1)
+							$array_sequence = ArrayUp($array_sequence)
+							$array_sequence[UBound($array_sequence) - 1][0] = 1
+							$array_sequence[UBound($array_sequence) - 1][1] = "InteractBossPortal"
+							$array_sequence[UBound($array_sequence) - 1][2] = $line
+						EndIf
 					ElseIf StringInStr($line, "buffinit()", 2) Then ;buffinit detected
 						If $sequence_save = 0 Then
 							buffinit()
@@ -676,6 +690,43 @@ Func sequence()
 		unbuff()
 	Next
 EndFunc   ;==>sequence
+
+
+Func InteractBossPortal($NameBossPortal)
+
+ Local $Curentarea = GetLevelAreaId()
+ Local $BossPortalTry = 0
+ Local $NewAreaOk = 0
+
+ While $NewAreaOk = 0 And $BossPortalTry < 5
+	_Log("try n°" & $BossPortalTry + 1 & " Boss Portal")
+
+	InteractByActorName($NameBossPortal)
+    $Newarea = GetLevelAreaId()
+
+    Local $areatry = 0
+    While $Newarea = $Curentarea And $areatry <= 10
+	   $Newarea = GetLevelAreaId()
+	   Sleep(500)
+	   $areatry += 1
+    WEnd
+
+    If $Newarea <> $Curentarea Then
+	   $NewAreaOk = 1
+    Else
+	   $BossPortalTry += 1
+    EndIf
+ WEnd
+
+ If $Newarea <> $Curentarea Then
+    _log('Succesfully Boss Portal Try')
+
+ Else
+    _log('We failed Boss Portal Try')
+    $GameFailed = 1
+ EndIf
+
+EndFunc   ;==> InteractBossPortal
 
 ;***************** CMD ************
 ;
