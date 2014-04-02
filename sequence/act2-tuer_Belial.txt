@@ -7,7 +7,7 @@ revive=false
 288.147491455078, 267.484558105469, 0.100003823637962,1,25
 251.446884155273, 254.832702636719, -0.248414322733879,1,25
 206.633972167969, 251.037673950195, -6.02314710617065,1,25
-InteractByActorName=g_Portal_ArchTall_Orange_IconDoor
+InteractBossPortal=g_Portal_ArchTall_Orange_IconDoor
 sleep=1000
 endsave()
 offsetlist()
@@ -55,8 +55,7 @@ closewindows()
 sleep=500
 closewindows()
 sleep=3500
-InteractByActorName=g_Portal_ArchTall_Orange
-InteractByActorName=g_Portal_ArchTall_Orange
+InteractBossPortal=g_Portal_ArchTall_Orange
 sleep=1000
 endsave()
 offsetlist()
@@ -98,8 +97,7 @@ sleep=500
 closewindows()
 sleep=3500
 endsave()
-InteractByActorName=Boss_Portal_Belial
-InteractByActorName=Boss_Portal_Belial
+InteractBossPortal=Boss_Portal_Belial
 sleep=1500
 closewindows()
 sleep=500
