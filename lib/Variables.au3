@@ -151,6 +151,7 @@ Global $Table_BanAffix         = [0]
 Global $Table_SpecialMonster   = [0]
 Global $Table_BanItemStartName = [0]
 Global $Table_BannedActors 	   = [0]
+Global $Table_PriorityMonster  = [0]
 
 ;statistique
 Global $CheckTakeShrineTaken = 0

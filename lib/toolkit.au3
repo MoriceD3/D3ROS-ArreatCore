@@ -2014,18 +2014,17 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 	; we have a monster
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-
+	Local $result = 0
 	;_log("Current Hp -> " & GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) & " Is Invulnerable -> " & GetAttribute($CurrentIdAttrib, $Atrib_Invulnerable))
 
 	If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 And GetAttribute($CurrentIdAttrib, $Atrib_Invulnerable) = 0 Then
-
-		$foundobject = 1
-		If KillMob($item[1], $item[8], $item[0],$test_iterateallobjectslist) = False Then
+		$result = KillMob($item[1], $item[8], $item[0],$test_iterateallobjectslist)
+		If $result = 0 Then
 			;_log("Ban monster -> " & $item[1])
 			$IgnoreList = $IgnoreList & $item[8] ; BanActor($item[1])
 
 			If $killtimeout > 2 Or $grabtimeout > 2 Then
-				_log("_checkdisconnect Cuz :If $killtimeout > 2 or $grabtimeout > 2 Then")
+				_log("_checkdisconnect Cuz : If $killtimeout > 2 or $grabtimeout > 2 Then")
 				If _checkdisconnect() Or _playerdead() Then
 					$KillOrGrab_TimeOut = 1
 					$GameFailed = 1
@@ -2037,7 +2036,7 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 		;	$test_iterateallobjectslist = $buff_array
 		;EndIf
 	Else
-		_log('ignoring ' & $item[1])
+		_log('No HP or Invulnerable : Ignoring ' & $item[1])
 		; TODO : Check if should BanActor
 		$IgnoreList = $IgnoreList & $item[8]
 		;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
@@ -2048,6 +2047,7 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 			EndIf
 		EndIf
 	EndIf
+	return $result
 EndFunc   ;==>handle_Mob
 
 Func Checkqual($_GUID)
@@ -2177,6 +2177,8 @@ Func Attack()
 	Local $OldActor = ""
 
 	Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
+	Local $LastResult = 0
+	Local $skipped = 0
 
 	While IsArray($test_iterateallobjectslist)
 		If _playerdead_revive() Then
@@ -2189,23 +2191,33 @@ Func Attack()
 			ExitLoop
 		EndIf
 
-		For $i = 0 To $TableSizeGuidStruct
-			$item[$i] = $test_iterateallobjectslist[0][$i]
-		Next
+		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
+			_log("First mob skipped since same as last try")
+			$skipped += 1
+			For $i = 0 To $TableSizeGuidStruct
+				$item[$i] = $test_iterateallobjectslist[1][$i]
+			Next
+		Else
+			$skipped = 0
+			For $i = 0 To $TableSizeGuidStruct
+				$item[$i] = $test_iterateallobjectslist[0][$i]
+			Next
+		EndIf
 
-		If $OldActor = $item[1] Then
+		If $OldActor = $item[1] And ($LastResult <> 2 Or $skipped > 4) Then
 			BanActor($item[1])
-			_log("Ban Actor Cause of second passage")
+			_log("Ban " &  $item[1] & " : Second passage")
 			ExitLoop
 		Else
-			$OldActor  = $item[1]
+			$OldActor = $item[1]
 		EndIF
 
+		$LastResult = 0
 		Select
 			   Case $item[13] = $ITEM_TYPE_LOOT
 				 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
 			   Case $item[13] = $ITEM_TYPE_MOB
-				 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				 $LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
 			   Case $item[13] = $ITEM_TYPE_SHRINE
 				 handle_Shrine($item)
 			   Case $item[13] = $ITEM_TYPE_CHEST
@@ -2214,7 +2226,7 @@ Func Attack()
 				 handle_Coffre($item)
 			   Case $item[13] = $ITEM_TYPE_DECOR
 			   	 ; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
-				 handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				 $LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
 			   Case $item[13] = $ITEM_TYPE_HEALTH
 				 handle_Health($item)
 			   Case $item[13] = $ITEM_TYPE_POWER
@@ -2236,88 +2248,124 @@ EndFunc   ;==>DetectElite
 ;;--------------------------------------------------------------------------------
 
 Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
-        $return = True
-        $begin = TimerInit()
+    $return = 1
+    $begin = TimerInit()
 
+    Dim $pos = UpdateObjectsPos($offset)
+
+    $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+    MouseMove($Coords[0], $Coords[1], 3)
+
+    Local $elite = DetectElite($Guid)
+    Local $piorityMonster = IsItemInTable($Table_PriorityMonster, $Name)
+
+    Local $killTimeoutValue = $a_time
+    Local $noHitTimeout = 3000
+
+    If $piorityMonster Then
+    	; Monstre prioritaire on augmente les timeouts
+		$killTimeoutValue = $killTimeoutValue * 3
+		$noHitTimeout = $noHitTimeout * 2
+	ElseIf $elite Then 
+		$CptElite += 1 ; on compte les elite
+		If $ChaseElite Then
+			; Monstre elite et chaseelite on augmente les timeouts
+			$killTimeoutValue = $killTimeoutValue * 2
+			$noHitTimeout = $noHitTimeout * 1.5
+		EndIf
+	EndIf
+
+	;loop the attack until the mob is dead
+    _log("Attacking : " & $Name & "; Type : " & $elite);
+
+    Local $maxhipi = Round(IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur))
+    Local $timerinit = TimerInit()
+    Local $timetokill
+    Local $dps
+    Local $varTemp
+
+    Local $currentTargetHp = IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur)
+	Local $timerHit = TimerInit()
+    While $currentTargetHp > 0
+
+        $myposs_aff = GetCurrentPos()
+
+        $targetHp = IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur)
+
+        If $targetHp <> $currentTargetHp Then
+        	$timerHit = TimerInit()
+        Else
+	        If TimerDiff($timerHit) > $noHitTimeout Then
+	        	_log("Pas de DPS pendant " & Round($noHitTimeout / 1000) & " secondes on passe au mob suivant")
+	        	$return = 2
+	            ExitLoop
+	        EndIf
+        EndIf
+		
+		$currentTargetHp = $targetHp
+
+        If _playerdead_revive() Then
+            $return = 2
+            ExitLoop
+        EndIf
 
         Dim $pos = UpdateObjectsPos($offset)
 
-        $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
-        MouseMove($Coords[0], $Coords[1], 3)
-
-        Local $elite = DetectElite($Guid)
-        ;loop the attack until the mob is dead
-
-		If $elite Then $CptElite += 1;on compte les elite
-
-        _log("Attacking : " & $Name & "; Type : " & $elite);
-
-
-        Local $maxhipi = Round(IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur))
-        Local $timerinit = TimerInit()
-        Local $timetokill
-        Local $dps
-        Local $varTemp
-
-        While IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur) > 0
-
-
-
-                $myposs_aff = GetCurrentPos()
-
-                If _playerdead_revive() Then
-                        $return = False
-                        ExitLoop
-                EndIf
-                Dim $pos = UpdateObjectsPos($offset)
-
-                If $gestion_affixe Then maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
-                For $a = 0 To UBound($test_iterateallobjectslist2) - 1
-
-                        $CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
-                        $CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-
-                        If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 Then
-                                Dim $dist_maj = UpdateObjectsPos($test_iterateallobjectslist2[$a][8])
-                                $test_iterateallobjectslist2[$a][9] = $dist_maj[3]
-                        Else
-                                $test_iterateallobjectslist2[$a][9] = 10000
-                        EndIf
-                Next
-
-                _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
-
-                $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
-                Dim $pos = UpdateObjectsPos($offset)
-
-				If $pos[3] > $dist_verif + 5 Then
-					_log("Leave KillMob Cause of Dist Verif : " & $pos[3] & " - " & $dist_verif)
-					ExitLoop
-				EndIf
-
-                $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
-                MouseMove($Coords[0], $Coords[1], 3)
-                GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
-                If TimerDiff($begin) > $a_time Then
-                        $killtimeout += 1
-                        ; after this time, the mob should be dead, otherwise he is probly unkillable
-                        $return = False
-                        ExitLoop
-                EndIf
-        WEnd
-
-        $varTemp=IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur)
-
-        If (IsNumber($varTemp) And $varTemp>0) Then
-                        $maxhipi = $maxhipi - $varTemp
+        If $gestion_affixe Then 
+        	maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
         EndIf
 
-        $timetokill = Round(TimerDiff($timerinit) / 1000, 2)
-        $dps = Round($maxhipi / $timetokill)
-        $AverageDps=Ceiling( ($AverageDps*($NbMobsKilled-1) + $dps ) / $NbMobsKilled)
-        $NbMobsKilled+=1
+        If ($elite >= 1 And $ChaseElite) Or (IsItemInTable($Table_PriorityMonster, $Name)) Then
+        	Dim $pos = UpdateObjectsPos($offset)
+        Else
+	        For $a = 0 To UBound($test_iterateallobjectslist2) - 1
+	            $CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
+	            $CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	            If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 Then
+	            	Dim $dist_maj = UpdateObjectsPos($test_iterateallobjectslist2[$a][8])
+	                $test_iterateallobjectslist2[$a][9] = $dist_maj[3]
+	            Else
+	                $test_iterateallobjectslist2[$a][9] = 10000
+	            EndIf
+	        Next
 
-        Return $return
+	        _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
+
+	        $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
+	        
+	        Dim $pos = UpdateObjectsPos($offset)
+
+			If $pos[3] > $dist_verif + 5 Then
+				_log("Leave KillMob Cause of Dist Verif : " & $pos[3] & " - " & $dist_verif)
+				$return = 2
+				ExitLoop
+			EndIf
+		EndIf
+
+        $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+        MouseMove($Coords[0], $Coords[1], 3)
+        GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
+        If TimerDiff($begin) > $killTimeoutValue Then
+            $killtimeout += 1
+            _log("Kill timeout (" & $killTimeoutValue & ") for : " & $Name)
+            ; after this time, the mob should be dead, otherwise he is probly unkillable
+            $return = 0
+            ExitLoop
+        EndIf
+    WEnd
+
+    $varTemp = IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur)
+
+    If (IsNumber($varTemp) And $varTemp > 0) Then
+        $maxhipi = $maxhipi - $varTemp
+    EndIf
+
+    $timetokill = Round(TimerDiff($timerinit) / 1000, 2)
+    $dps = Round($maxhipi / $timetokill)
+    $AverageDps = Ceiling( ($AverageDps*($NbMobsKilled-1) + $dps ) / $NbMobsKilled)
+    $NbMobsKilled += 1
+
+    Return $return
 EndFunc   ;==>KillMob
 
 ;;--------------------------------------------------------------------------------
