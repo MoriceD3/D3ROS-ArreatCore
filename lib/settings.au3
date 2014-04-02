@@ -300,8 +300,6 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 					$grabListFile = IniRead($profilFile, "Run info", "grabListTourment", $grabListFile)
 				Case 2
 					$grabListFile = IniRead($profilFile, "Run info", "grabListTourmentXP", $grabListFile)
-				Case 3
-					$grabListFile = IniRead($profilFile, "Run info", "grabListTourmentRecycle", $grabListFile)
 			EndSwitch
 	EndSwitch
 
