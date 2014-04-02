@@ -26,12 +26,16 @@ Func SelectGameType($SelectGameType, $auto)
 				$File_Sequence = $SequenceFileAct232
 			Case 283
 				$File_Sequence = $SequenceFileAct283
+			Case 299
+			    $File_Sequence = $SequenceFileAct299
 			Case 333
 				$File_Sequence = $SequenceFileAct333
 			Case 362
 				$File_Sequence = $SequenceFileAct362
 			Case 373
 				$File_Sequence = $SequenceFileAct373
+			Case 411
+			    $File_Sequence = $SequenceFileAct411
 		EndSwitch
 	EndIf
 
@@ -156,6 +160,17 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
+				   Case 299;Act 2 quête 10 sous quête 1 --> Tuer Belial
+
+					  For $i = 1 To 18 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  ClickUIMode(0, 0, 50, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
 				   Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
 
 					  For $i = 1 To 22 Step 1
@@ -201,6 +216,17 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
+				   Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
+
+					  For $i = 1 To 27 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, 45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  ClickUIMode(0, 0, 90, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
 			  EndSwitch
 
 			  ;Bp choisir la quete
@@ -244,6 +270,9 @@ Func SelectQuest()
 	If ($Choix_Act_Run = 283) Then
 		SelectGameType(283, True)
 	EndIf
+	If ($Choix_Act_Run = 299) Then
+		SelectGameType(299, True)
+	EndIf
 	If ($Choix_Act_Run = 333) Then
 		SelectGameType(333, True)
 	EndIf
@@ -252,6 +281,9 @@ Func SelectQuest()
 	EndIf
 	If ($Choix_Act_Run = 373) Then
 		SelectGameType(373, True)
+	EndIf
+	If ($Choix_Act_Run = 411) Then
+		SelectGameType(411, True)
 	EndIf
 
 	;Selection de la quete en automatique et enchainement des actes

@@ -232,6 +232,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 		Case 283 ; Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
 			$SequenceFileAct283 = IniRead($profilFile, "Run info", "SequenceFileAct283", $SequenceFileAct283)
 
+		Case 299 ; Act 2 quête 10 sous quête 1 --> Tuer Belial
+			$SequenceFileAct299 = IniRead($profilFile, "Run info", "SequenceFileAct299", $SequenceFileAct299)
+
 		Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
 			$SequenceFileAct333 = IniRead($profilFile, "Run info", "SequenceFileAct333", $SequenceFileAct333)
 
@@ -240,6 +243,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 		Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
 			$SequenceFileAct373 = IniRead($profilFile, "Run info", "SequenceFileAct373", $SequenceFileAct373)
+
+		Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
+			$SequenceFileAct411 = IniRead($profilFile, "Run info", "SequenceFileAct411", $SequenceFileAct411)
 
 		Case -1
 			$SequenceFileAct1 = IniRead($profilFile, "Run info", "SequenceFileAct1", $SequenceFileAct1)
@@ -470,7 +476,7 @@ Func InitSkillHeros($skillHeros)
 	Else
 		$List_BanAffix = "poison_humanoid|" &  $List_BanAffix
 	EndIf
-	
+
 	$Dummy = IniRead($skillHeros, "Run info", "Gest_affixe_ByClass", $Gest_affixe_ByClass)
 	$Gest_affixe_ByClass = Trim(StringLower($Dummy)) == "true"
 

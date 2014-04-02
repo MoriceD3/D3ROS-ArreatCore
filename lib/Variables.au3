@@ -27,11 +27,12 @@ Global $Byte_NoItem_Identify[2]
 Global $GrabListTab, $grablist
 
 ; Variable globale pour Automatisation des séquences
-Global $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3
+Global $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3,$SequenceFileAct3PtSauve
 Global $Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog,$numLigneFichier
 Global $NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
 Global $ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea,$SequenceFileAct3PtSauve,$SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct232,$SequenceFileAct283
+Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea
+Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct411,$SequenceFileAct299
 
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
 Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
@@ -101,7 +102,7 @@ Global $nameCharacter
 Global $maxhp
 
 ; Acte en cours
-Global $Act = 0 
+Global $Act = 0
 
 ; Variables pour le déplacement
 Global Const $PI 	= 3.141593
