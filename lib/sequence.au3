@@ -694,38 +694,37 @@ EndFunc   ;==>sequence
 
 Func InteractBossPortal($NameBossPortal)
 
- Local $Curentarea = GetLevelAreaId()
- Local $BossPortalTry = 0
- Local $NewAreaOk = 0
-
- While $NewAreaOk = 0 And $BossPortalTry < 5
-	_Log("try n°" & $BossPortalTry + 1 & " Boss Portal")
-
-	InteractByActorName($NameBossPortal)
-    $Newarea = GetLevelAreaId()
-
-    Local $areatry = 0
-    While $Newarea = $Curentarea And $areatry <= 10
-	   $Newarea = GetLevelAreaId()
-	   Sleep(500)
-	   $areatry += 1
+	Local $Curentarea = GetLevelAreaId()
+	Local $Newarea = $Curentarea
+	Local $BossPortalTry = 0
+	Local $NewAreaOk = 0
+	
+	While $NewAreaOk = 0 And $BossPortalTry < 5
+	   
+	   _Log("try n°" & $BossPortalTry + 1 & " Boss Portal")
+	   InteractByActorName($NameBossPortal)
+	   
+	   Local $areatry = 0
+	   While $Newarea = $Curentarea And $areatry <= 10
+		  $Newarea = GetLevelAreaId()
+		  Sleep(500)
+		  $areatry += 1
+	   WEnd
+	   
+	   If $Newarea <> $Curentarea Then
+		  $NewAreaOk = 1
+	   Else
+		  $BossPortalTry += 1
+	   EndIf
+	  
     WEnd
-
-    If $Newarea <> $Curentarea Then
-	   $NewAreaOk = 1
+	
+	If $Newarea <> $Curentarea Then
+	   _log('Succesfully Boss Portal Try')
     Else
-	   $BossPortalTry += 1
+	   _log('We failed Boss Portal Try')
+	   $GameFailed = 1
     EndIf
- WEnd
-
- If $Newarea <> $Curentarea Then
-    _log('Succesfully Boss Portal Try')
-
- Else
-    _log('We failed Boss Portal Try')
-    $GameFailed = 1
- EndIf
-
 EndFunc   ;==> InteractBossPortal
 
 ;***************** CMD ************
