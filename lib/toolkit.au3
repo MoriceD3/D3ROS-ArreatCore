@@ -852,7 +852,7 @@ Func FilterBackpack()
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality >= 6 And $itemDestination = "Stash") Then
 				$nbRares += 1 ; on definit les rares
-			EndIf	
+			EndIf
 
 			$return[$i][0] = $__ACDACTOR[$i][3] ; definit la collone de l'item
 			$return[$i][1] = $__ACDACTOR[$i][4] ; definit la ligne de l'item
@@ -977,15 +977,15 @@ Func startIterateLocalActor(ByRef $index, ByRef $offset, ByRef $count)
 EndFunc   ;==>startIterateLocalActor
 
 Func iterateLocalActorList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
-	
-	If $index > $count Then 
+
+	If $index > $count Then
 		Return False
 	EndIf
 
 	Local $iterateLocalActorListStruct = DllStructCreate("ptr;char[64];byte[" & Int($ofs_LocalActor_atribGUID) - 68 & "];ptr")
-	
+
 	$index += 1
-	
+
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateLocalActorListStruct), 'int', DllStructGetSize($iterateLocalActorListStruct), 'int', '')
 	$item[0] = DllStructGetData($iterateLocalActorListStruct, 1)
 	$item[1] = DllStructGetData($iterateLocalActorListStruct, 2)
@@ -1480,7 +1480,7 @@ Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 	If $count = 65535 Then
 		Return False
 	EndIf
-	
+
 	If $index > $count + 1 Then
 		Return False
 	EndIf
@@ -1853,7 +1853,7 @@ Func Is_Shrine(ByRef $item)
 			Return False
 		Case $item[9] > $range_shrine
 			Return False
-		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection"))
+		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Frenzied") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Fortune"))
 			Return True
 		Case Else
 			Return False
@@ -2266,7 +2266,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
     	; Monstre prioritaire on augmente les timeouts
 		$killTimeoutValue = $killTimeoutValue * 3
 		$noHitTimeout = $noHitTimeout * 2
-	ElseIf $elite Then 
+	ElseIf $elite Then
 		$CptElite += 1 ; on compte les elite
 		If $ChaseElite Then
 			; Monstre elite et chaseelite on augmente les timeouts
@@ -2301,7 +2301,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 	            ExitLoop
 	        EndIf
         EndIf
-		
+
 		$currentTargetHp = $targetHp
 
         If _playerdead_revive() Then
@@ -2311,7 +2311,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
         Dim $pos = UpdateObjectsPos($offset)
 
-        If $gestion_affixe Then 
+        If $gestion_affixe Then
         	maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
         EndIf
 
@@ -2332,7 +2332,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 	        _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
 
 	        $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
-	        
+
 	        Dim $pos = UpdateObjectsPos($offset)
 
 			If $pos[3] > $dist_verif + 5 Then
@@ -4109,7 +4109,7 @@ Func GoToTown()
 	   ReConnect()
 	   Return False
     EndIf
-	
+
 	Local $nbTriesTownPortal = 0
 	While Not _intown() And Not _inmenu()
 		$nbTriesTownPortal += 1
@@ -5147,7 +5147,7 @@ Func _TownPortalnew($mode=0)
 	If _intown() Then
 	   $PortBack = True
 	EndIf
-	
+
 	_Log("On a renvoyer true, quite bien la fonction")
 
 	$Execute_TownPortalnew = False
