@@ -1,12 +1,4 @@
-TakeWP=2
-sleep=500
-357.018920898438, 319.118957519531, 1.49171483516693,1,25
-357.018920898438, 319.118957519531, 1.49171483516693,1,25
-355.073516845703, 295.09765625, 3.15568923950195,1,25
-InteractByActorName=g_Portal_ArchTall_Blue
-sleep=1000
-offsetlist()
-MonsterList=crowd_angelDemonImpact_angelTrail|crowd_coreEliteDemon_podRocket_near|crowd_angelDemonImpact_angelTrail|crowd_angelDemonImpact_angelTrail_thicker|crowd_demonAttack_battle|BileCrawler_A|a4dun_spire_tealFall|MastaBlasta_Rider_A|demonFlyer_C_bomber|gibClusters_frost_humanoid|gibClusters_frost_humanoid_fat|Succubus_B|gibClusters_fire_humanoid|crowd_coreEliteDemon_podRocket_|BigRed_death_skeleton|CoreEliteDemon_A|BigRed_A|BileCrawler_A|MastaBlasta_Rider_A|MastaBlasta_Steed_A
+MonsterList=crowd_angelDemonImpact_angelTrail|crowd_coreEliteDemon_podRocket_near|crowd_angelDemonImpact_angelTrail|crowd_angelDemonImpact_angelTrail_thicker|crowd_demonAttack_battle|BileCrawler_A|a4dun_spire_tealFall|MastaBlasta_Rider_A|demonFlyer_C_bomber|gibClusters_frost_humanoid|gibClusters_frost_humanoid_fat|monsterAffix_Vortex_model|Succubus_B|gibClusters_fire_humanoid|crowd_coreEliteDemon_podRocket_|BigRed_death_skeleton|CoreEliteDemon_A|BigRed_A
 BanList=
 ChestList=_Garden_Chest
 RackList=_Props_Weaponrack_A|chestArmor_norm_base_flippy
@@ -14,6 +6,7 @@ DecorList=_Props_Barrel_A|_Props_Barrel_C|_Props_Barrel_B|_spire_AngelCorpse_Bar
 AutoBuff=True
 usepath=false
 revive=false
+sleep=500
 981.453002929688, 1220.71313476563, -14.75,1,25
 981.453002929688, 1220.71313476563, -14.75,1,25
 950.693725585938, 1191.53564453125, -14.7499980926514,1,25
@@ -184,7 +177,7 @@ sleep=500
 361.450439453125, 322.829528808594, 0.114988014101982,1,25
 sleep=1000
 InteractByActorName=Hope
-sleep=3000
+sleep=5000
 InteractByActorName=Hope
 sleep=500
 closewindows()
@@ -194,5 +187,6 @@ sleep=500
 closewindows()
 sleep=500
 closewindows()
-sleep=1500
+sleep=2000
+send={ESCAPE}
 _Townportal()
