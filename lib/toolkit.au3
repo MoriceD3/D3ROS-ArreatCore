@@ -2204,7 +2204,7 @@ Func Attack()
 			Next
 		EndIf
 
-		If $OldActor = $item[1] And ($LastResult <> 2 Or $skipped > 4) Then
+		If ($OldActor = $item[1]) And ($LastResult <> 2 Or $skipped > 4) Then
 			BanActor($item[1])
 			_log("Ban " &  $item[1] & " : Second passage")
 			ExitLoop
@@ -2276,7 +2276,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 	EndIf
 
 	;loop the attack until the mob is dead
-    _log("Attacking : " & $Name & "; Type : " & $elite);
+    _log("Attacking : " & $Name & " (Type : " & $elite & ")");
 
     Local $maxhipi = Round(IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur))
     Local $timerinit = TimerInit()
@@ -2286,6 +2286,11 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
     Local $currentTargetHp = IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur)
 	Local $timerHit = TimerInit()
+
+	If $currentTargetHp = 0 Then
+		_log($Name & " : No life -> skipping")
+	EndIf
+
     While $currentTargetHp > 0
 
         $myposs_aff = GetCurrentPos()
@@ -2296,7 +2301,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
         	$timerHit = TimerInit()
         Else
 	        If TimerDiff($timerHit) > $noHitTimeout Then
-	        	_log("Pas de DPS pendant " & Round($noHitTimeout / 1000) & " secondes on passe au mob suivant")
+	        	_log($Name & " : Pas de DPS pendant " & Round($noHitTimeout / 1000) & " secondes on passe au mob suivant")
 	        	$return = 2
 	            ExitLoop
 	        EndIf
@@ -2306,12 +2311,12 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
         If _playerdead_revive() Then
             $return = 2
+            _log($Name & " : Player was dead")
             ExitLoop
         EndIf
 
-        Dim $pos = UpdateObjectsPos($offset)
-
-        If $gestion_affixe Then 
+        If $gestion_affixe Then
+        	Dim $pos = UpdateObjectsPos($offset)
         	maffmove($myposs_aff[0], $myposs_aff[1], $myposs_aff[2], $pos[0], $pos[1])
         EndIf
 
@@ -2336,7 +2341,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 	        Dim $pos = UpdateObjectsPos($offset)
 
 			If $pos[3] > $dist_verif + 5 Then
-				_log("Leave KillMob Cause of Dist Verif : " & $pos[3] & " - " & $dist_verif)
+				_log($Name & " : Leave because of Dist Verif : " & $pos[3] & " - " & $dist_verif)
 				$return = 2
 				ExitLoop
 			EndIf
@@ -2347,7 +2352,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
         GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
         If TimerDiff($begin) > $killTimeoutValue Then
             $killtimeout += 1
-            _log("Kill timeout (" & $killTimeoutValue & ") for : " & $Name)
+            _log($Name & " : Kill timeout (" & Round($killTimeoutValue / 1000) & " secs)")
             ; after this time, the mob should be dead, otherwise he is probly unkillable
             $return = 0
             ExitLoop
@@ -2361,7 +2366,12 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
     EndIf
 
     $timetokill = Round(TimerDiff($timerinit) / 1000, 2)
-    $dps = Round($maxhipi / $timetokill)
+ 	$dps = Round($maxhipi / $timetokill)
+
+ 	If $return = 1 Then
+    	_Log($Name & " : Killed in " & $timetokill & " secs (Dps : " & Round($dps / 1000) & "k)")
+    EndIf
+
     $AverageDps = Ceiling( ($AverageDps*($NbMobsKilled-1) + $dps ) / $NbMobsKilled)
     $NbMobsKilled += 1
 
@@ -3510,56 +3520,43 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 	PauseToSurviveHC() ; pause HCSecurity
 
 	For $i = 0 To 5
-
 		Dim $buff_table[11]
-
-			Switch $i
-
-	case 0
-		$buff_table = $Skill1
-	case 1
-		$buff_table = $Skill2
-	case 2
-		$buff_table = $Skill3
-	case 3
-		$buff_table = $Skill4
-	case 4
-		$buff_table = $Skill5
-	case 5
-		$buff_table = $Skill6
-	Endswitch
-
-
+		
+		Switch $i
+			Case 0
+				$buff_table = $Skill1
+			Case 1
+				$buff_table = $Skill2
+			Case 2
+				$buff_table = $Skill3
+			Case 3
+				$buff_table = $Skill4
+			Case 4
+				$buff_table = $Skill5
+			Case 5
+				$buff_table = $Skill6
+		Endswitch
 
 		Switch $buff_table[5]
 			Case "spirit"
-;~ 				$source = 0x3000
 				$MaximumSource = $MaximumSpirit
 			Case "fury"
-;~ 				$source = 0x2000
 				$MaximumSource = $MaximumFury
 			Case "arcane"
-;~ 				$source = 0x1000
 				$MaximumSource = $MaximumArcane
 			Case "mana"
-;~ 				$source = 0
 				$MaximumSource = $MaximumMana
 			Case "hatred"
-;~ 				$source = 0x5000
 				$MaximumSource = $MaximumHatred
 			Case "discipline"
 				$MaximumSource = $MaximumDiscipline
-;~ 				$source = 0x6000
-			;Case "wrath"
-			; TODO : Trouver pourquoi engendre un crash Autoit ....
-			;	$MaximumSource = $MaximumWrath
-;~ 				$source = 0x7000
+			Case "wrath"
+				$MaximumSource = $MaximumWrath
 			Case Else
 				$MaximumSource = 15000
-;~ 				$source = 5000
 		EndSwitch
 
-$source= GetResource( $_MyGuid, $buff_table[5])
+		$source = GetResource($_MyGuid, $buff_table[5])
 
 		If $buff_table[0] And ($source > $buff_table[4] / $MaximumSource Or $buff_table[5] = "") And (TimerDiff($buff_table[10]) > $buff_table[2] or $buff_table[2]="") Then ;skill Activé
 
@@ -3896,160 +3893,125 @@ endswitch
 EndFunc   ;==>GestSpellcast
 
 Func GestSpellInit()
+	For $i = 0 To 5
 
-		For $i = 0 To 5
+		Dim $buff_table[11]
+		Dim $buff_conf_table[6]
 
-			Dim $buff_table[11]
-			Dim $buff_conf_table[6]
-
-			If $i = 0 Then
+		Switch $i
+			Case 0 
 				$buff_conf_table = $Skill_conf1
 				$buff_table = $Skill1
-			ElseIf $i = 1 Then
+			Case 1
 				$buff_conf_table = $Skill_conf2
 				$buff_table = $Skill2
-			ElseIf $i = 2 Then
+			Case 2
 				$buff_conf_table = $Skill_conf3
 				$buff_table = $Skill3
-			ElseIf $i = 3 Then
+			Case 3
 				$buff_conf_table = $Skill_conf4
 				$buff_table = $Skill4
-			ElseIf $i = 4 Then
+			Case 4
 				$buff_conf_table = $Skill_conf5
 				$buff_table = $Skill5
-			ElseIf $i = 5 Then
+			Case 5
 				$buff_conf_table = $Skill_conf6
 				$buff_table = $Skill6
+		EndSwitch
+
+		If Not $buff_conf_table[0] Or $buff_conf_table[0] = "false" Then
+			$buff_table[0] = False
+		Else
+			$buff_table[0] = True
+		EndIf
+
+		If $buff_table[0] Then ;Si skill actived
+			If Not trim($buff_conf_table[1]) = "" Then ;Delay
+				$buff_table[2] = $buff_conf_table[1]
 			EndIf
-
-
-			If Not $buff_conf_table[0] Or $buff_conf_table[0] = "false" Then
-				$buff_table[0] = False
-			Else
-				$buff_table[0] = True
+			If Not trim($buff_conf_table[2]) = "" Then ;Type
+				$buff_table[3] = $buff_conf_table[2]
 			EndIf
+			If Not trim($buff_conf_table[3]) = "" Then ;EnergyNeeds
+				$buff_table[4] = $buff_conf_table[3]
+			EndIf
+			If Not trim($buff_conf_table[4]) = "" Then ;Trigger Life
+				$buff_table[7] = $buff_conf_table[4]
+			EndIf
+			If Not trim($buff_conf_table[5]) = "" Then ;Trigger Distance
+				$buff_table[8] = $buff_conf_table[5]
+			EndIf
+		EndIF
 
-			If $buff_table[0] Then ;Si skill actived
+		Local $type = 1
+		Select
+			Case $buff_table[3] = "life"
+				$type = 0
+			Case $buff_table[3] = "attack"
+				$type = 1
+			Case $buff_table[3] = "physical"
+				$type = 2
+			Case $buff_table[3] = "elite"
+				$type = 3
+			Case $buff_table[3] = "buff"
+				$type = 4
+			Case $buff_table[3] = "zone"
+				$type = 5
+			Case StringInStr($buff_table[3], "zone") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+				$type = 6
+			Case $buff_table[3] = "move"
+				$type = 7
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "attack")
+				$type = 8
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
+				$type = 9
+			Case StringInStr($buff_table[3], "move") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
+				$type = 10
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+				$type = 11
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "move")
+				$type = 12
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+				$type = 13
+			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+				$type = 14
+			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+				$type = 15
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
+				$type = 16
+			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
+				$type = 17
+			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
+				$type = 18
+			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
+				$type = 19
+			Case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+				$type = 20
+			Case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+				$type = 21
+			Case $buff_table[3] = "buff_permanent"
+				$type = 22
+			Case $buff_table[3] = "canalisation"
+				$type = 23
+		EndSelect
 
-				if NOT trim($buff_conf_table[1]) = "" Then ;Delay
-					$buff_table[2] = $buff_conf_table[1]
-				EndIf
+		$buff_table[3] = $type
 
-				if NOT trim($buff_conf_table[2]) = "" Then ;Type
-					$buff_table[3] = $buff_conf_table[2]
-				EndIf
-
-				if NOT trim($buff_conf_table[3]) = "" Then ;EnergyNeeds
-					$buff_table[4] = $buff_conf_table[3]
-				EndIf
-
-				if NOT trim($buff_conf_table[4]) = "" Then ;Trigger Life
-					$buff_table[7] = $buff_conf_table[4]
-				EndIf
-
-				if NOT trim($buff_conf_table[5]) = "" Then ;Trigger Distance
-					$buff_table[8] = $buff_conf_table[5]
-				EndIf
-
-			EndIF
-
-   Select
-
-		case $buff_table[3] = "life"
-				$type=0
-
-			case $buff_table[3] = "attack"
-				$type=1
-
-
-			case $buff_table[3] = "physical"
-				$type=2
-
-			case $buff_table[3] = "elite"
-				$type=3
-
-
-
-			case $buff_table[3] = "buff"
-				$type=4
-
-
-			case $buff_table[3] = "zone"
-			   $type=5
-
-
-			case StringInStr($buff_table[3], "zone") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
-			   $type=6
-
-			case $buff_table[3] = "move"
-				$type=7
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "attack")
-				$type=8
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
-				$type=9
-
-			case StringInStr($buff_table[3], "move") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
-				$type=10
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
-				$type=11
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "move")
-				$type=12
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
-				$type=13
-
-			case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
-				$type=14
-
-			case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
-				$type=15
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
-				$type=16
-
-			case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
-				$type=17
-
-			case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
-				$type=18
-
-			case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
-				$type=19
-
-			case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
-				$type=20
-
-			case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
-				$type=21
-
-			case $buff_table[3]="buff_permanent"
-				$type=22
-
-			case $buff_table[3]="canalisation"
-				$type=23
-			Endselect
-
-		$buff_table[3]=$type
-
-			If $i = 0 Then
+		Switch $i
+			Case 0
 				$Skill1 = $buff_table
-			ElseIf $i = 1 Then
+			Case 1
 				$Skill2 = $buff_table
-			ElseIf $i = 2 Then
+			Case 2
 				$Skill3 = $buff_table
-			ElseIf $i = 3 Then
+			Case 3
 				$Skill4 = $buff_table
-			ElseIf $i = 4 Then
+			Case 4
 				$Skill5 = $buff_table
-			ElseIf $i = 5 Then
+			Case 5
 				$Skill6 = $buff_table
-			EndIf
-		Next
-
+		EndSwitch
+	Next
 EndFunc   ;==>GestSpellInit
 
 ;;================================================================================
