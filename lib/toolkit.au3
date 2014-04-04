@@ -2817,7 +2817,7 @@ Func TakeWPV2($WPNumber = 0)
 		EndIf
 
 		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
+		While $Newarea = $Curentarea And $areatry < 25 ; on attend d'avoir une nouvelle Area environ 12 sec
 			$Newarea = GetLevelAreaId()
 			Sleep(500)
 			$areatry += 1
