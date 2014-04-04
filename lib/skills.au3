@@ -463,7 +463,7 @@ Global $Barbarian_Skill_Table[22][8] = [ _
 						[$Barbarian_Frenzy,"Barbarian_Frenzy",0,"physical","","","",""], _
 						[$Barbarian_SeismicSlam,"Barbarian_SeismicSlam",0,"attack",30,"fury","",""], _
 						[$Barbarian_Revenge,"Barbarian_Revenge",0,"attack","","",80,15], _
-						[$X1_Barbarian_WeaponThrow,"Barbarian_WeaponThrow",0,"attack",10,"fury","",""], _
+						[$X1_Barbarian_WeaponThrow,"Barbarian_WeaponThrow",0,"attack",0,"fury","",""], _
 						[$Barbarian_Sprint,"Barbarian_Sprint",2000,"move",20,"fury","",""], _
 						[$Barbarian_ThreateningShout,"Barbarian_ThreateningShout",10000,"attack","","","",25], _
 						[$Barbarian_Earthquake,"Barbarian_Earthquake",120000,"attack&elite",50,"fury","",18], _
@@ -471,10 +471,10 @@ Global $Barbarian_Skill_Table[22][8] = [ _
 						[$Barbarian_FuriousCharge,"Barbarian_FuriousCharge",10000,"attack","","","",""], _
 						[$Barbarian_IgnorePain,"Barbarian_IgnorePain",30000,"life","","",60,""], _
 						[$Barbarian_BattleRage,"Barbarian_BattleRage",40000,"buff",20,"fury","",""], _
-						[$Barbarian_CallOfTheAncients,"Barbarian_CallOfTheAncients",120000,"attack&elite",50,"fury","",50], _
+						[$Barbarian_CallOfTheAncients,"Barbarian_CallOfTheAncients",120000,"attack&elite",0,"fury","",50], _
 						[$Barbarian_Overpower,"Barbarian_Overpower",12000,"attack","0","fury","",9], _
-						[$X1_Barbarian_WarCry_v2,"Barbarian_WarCry",21000,"buff_permanent","","","",""], _
-						[$Barbarian_WrathOfTheBerserker,"Barbarian_WrathOfTheBerserker",120000,"attack&elite","","fury","",40] _
+						[$X1_Barbarian_WarCry_v2,"Barbarian_WarCry",20000,"buff_permanent","","","",""], _
+						[$Barbarian_WrathOfTheBerserker,"Barbarian_WrathOfTheBerserker",120000,"attack&elite",0,"fury","",40] _
 							]
 
 Global $DemonHunter_skill_Table[24][8] = [ _
