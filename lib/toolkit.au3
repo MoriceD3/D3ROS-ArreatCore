@@ -2020,34 +2020,17 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 	If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 And GetAttribute($CurrentIdAttrib, $Atrib_Invulnerable) = 0 Then
 		$result = KillMob($item[1], $item[8], $item[0],$test_iterateallobjectslist)
 		If $result = 0 Then
-			;_log("Ban monster -> " & $item[1])
-			$IgnoreList = $IgnoreList & $item[8] ; BanActor($item[1])
-
-			If $killtimeout > 2 Or $grabtimeout > 2 Then
-				_log("_checkdisconnect Cuz : If $killtimeout > 2 or $grabtimeout > 2 Then")
-				If _checkdisconnect() Or _playerdead() Then
-					$KillOrGrab_TimeOut = 1
-					$GameFailed = 1
-				EndIf
-			EndIf
+			$IgnoreList = $IgnoreList & $item[8]
 		EndIf
-		;If $MonsterRefresh Then
-		;	Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-		;	$test_iterateallobjectslist = $buff_array
-		;EndIf
 	Else
 		_log('No HP or Invulnerable : Ignoring ' & $item[1])
-		; TODO : Check if should BanActor
 		$IgnoreList = $IgnoreList & $item[8]
-		;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-		If $killtimeout > 2 Or $grabtimeout > 2 Then
-			If _checkdisconnect() Or _playerdead() Then
-				$KillOrGrab_TimeOut = 1
-				$GameFailed = 1
-			EndIf
-		EndIf
 	EndIf
-	return $result
+	If _checkdisconnect() Or _playerdead() Then
+		$KillOrGrab_TimeOut = 1
+		$GameFailed = 1
+	EndIf
+	Return $result
 EndFunc   ;==>handle_Mob
 
 Func Checkqual($_GUID)
@@ -2166,9 +2149,9 @@ Func Attack()
 		Return
 	EndIf
 
-	If _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
+	If _checkdisconnect() Or _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
 		$GameFailed = 1
-		_log("Return Cuz : If _playerdead or gamefailed ")
+		_log("Return Cuz : If _playerdead or gamefailed or disconnect")
 		Return
 	EndIf
 
@@ -2185,9 +2168,9 @@ Func Attack()
 			_log("ExitLoop cause of player_revive")
 			ExitLoop
 		EndIf
-		If _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
+		If _checkdisconnect() Or _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
 			$GameFailed = 1
-			_log("Return Cuz : If _playerdead or gamefailed ")
+			_log("Return Cuz : If _playerdead or gamefailed or disconnect")
 			ExitLoop
 		EndIf
 
