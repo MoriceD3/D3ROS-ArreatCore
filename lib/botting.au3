@@ -84,7 +84,12 @@ Func _botting()
 		If _onloginscreen() Then
 			_log("LOGIN")
 			_logind3()
-			Sleep(Random(60000, 120000))
+			
+			Local $WaitingTime
+			While Not _inmenu() And $WaitingTime < 155
+			   Sleep(500)
+			   $WaitingTime +=1
+			WEnd
 		EndIf
 
 		; Si Choix_Act_Run <> 0 le bot passe en mode automatique
