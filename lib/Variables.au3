@@ -32,7 +32,7 @@ Global $Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog
 Global $NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
 Global $ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea
-Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct411,$SequenceFileAct299
+Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct374,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct411,$SequenceFileAct299
 
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
 Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
