@@ -2180,6 +2180,12 @@ Func Attack()
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[1][$i]
 			Next
+		ElseIf $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor Then
+			$skipped += 1
+			_log("Mob was skipped (attempt : " & $skipped & ")")
+			For $i = 0 To $TableSizeGuidStruct
+				$item[$i] = $test_iterateallobjectslist[0][$i]
+			Next
 		Else
 			$skipped = 0
 			For $i = 0 To $TableSizeGuidStruct
