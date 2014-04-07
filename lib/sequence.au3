@@ -61,7 +61,7 @@ EndFunc   ;==>_playerdead_revive
 Func init_sequence()
 	$nb_die_t = 0
 	$rdn_die_t = $ResLife + Random(-1, 1, 1)
-	_log("New sequence, max death allowed :" & $rdn_die_t)
+	_log("New sequence, max death allowed :" & $rdn_die_t, $LOG_LEVEL_DEBUG)
 EndFunc   ;==>init_sequence
 
 Func revive(ByRef $path)
@@ -77,7 +77,7 @@ Func revive(ByRef $path)
 		MouseUp($MouseMoveClick)
 		$nb_die_t = $nb_die_t + 1
 		$Res_compt = $Res_compt + 1
-		_log("You are dead, max :" & $rdn_die_t - $nb_die_t & " more death allowed")
+		_log("You are dead, max : " & $rdn_die_t - $nb_die_t & " more death allowed", $LOG_LEVEL_WARNING)
 
 		If Not $PartieSolo Then WriteMe($WRITE_ME_DEATH) ; TChat
 
@@ -86,20 +86,20 @@ Func revive(ByRef $path)
 			if NOT _checkRepair() Then
 				if fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
-					_log("Res At Corp")
+					_log("Res At Corp", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(6000, 7000))
 					buffinit()
 					Return 1
 				Else ;On ne peut pas revive sur le corp
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint", 820)
-					_log("Res At LAst CheckPoint")
+					_log("Res At Last CheckPoint", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(750, 1000))
 					bloc_sequence($path, 1)
 					Return 2 ;on res
 				EndIf
 			EndIF
 		Else
-			_log("You have reached the max number of revive : " & $rdn_die_t & " Or your stuff is destroy")
+			_log("You have reached the max number of revive : " & $rdn_die_t & " Or your stuff is destroyed", $LOG_LEVEL_WARNING)
 			Sleep(Random(5000, 6000))
 			ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_in_town", 496)
 			sleep(4000)
@@ -110,7 +110,7 @@ Func revive(ByRef $path)
 EndFunc   ;==>revive
 
 Func reverse_arr(ByRef $arr_MTP)
-	_log("taille de l'array reverse : " & UBound($arr_MTP))
+	_log("Taille de l'array reverse : " & UBound($arr_MTP))
 	Dim $arr_reverse[UBound($arr_MTP)][6]
 	Local $compt_x = 0
 	Local $compt_i = 0
@@ -118,7 +118,7 @@ Func reverse_arr(ByRef $arr_MTP)
 	If $reverse = 1 Then
 		Local $reverse_rnd = Random(0, 1, 1)
 		If ($reverse_rnd = 1) Then
-			_log("reverse array")
+			_log("Reverse array")
 			For $i = UBound($arr_MTP) To 1 Step -1
 				For $x = 0 To 5
 					$arr_reverse[$compt_i][$compt_x] = $arr_MTP[$i - 1][$x]
@@ -165,7 +165,7 @@ Func bloc_sequence(ByRef $arr_MTP, $revive = 0)
 			Next
 		EndIf
 	Else
-		_log("Invalid sequence array argument")
+		_log("Invalid sequence array argument", $LOG_LEVEL_ERROR)
 	EndIf
 EndFunc   ;==>bloc_sequence
 
@@ -179,7 +179,7 @@ Func SendSequence(ByRef $arr_sequence)
 		If $autobuff Then
 			Sleep(500)
 			unbuff()
-			_log("enclenchement auto du unbuff()")
+			_log("Enclenchement auto du unbuff()", $LOG_LEVEL_DEBUG)
 		EndIf
 	EndIf
 	$sequence_save = 0
@@ -202,7 +202,7 @@ EndFunc   ;==>ArrayInit
 Func attackRange($String)
     If Not $String = "" Then
         $a_range =Round($String)
-        _log("Modification de la valeur attackRange : " & $a_range)
+        _log("Modification de la valeur attackRange : " & $a_range, $LOG_LEVEL_VERBOSE)
     EndIf
 EndFunc ;==>valeur attackRange
 
@@ -210,7 +210,7 @@ Func SpecialML($String)
 	If Not $String = "" Then
 		$List_SpecialMonster = $String
 		LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster) ; Chargement de la nouvelle table
-		_log("Remplacement de la SpecialMonsterlist : " & $List_SpecialMonster)
+		_log("Remplacement de la SpecialMonsterlist : " & $List_SpecialMonster, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>SpecialMonsterList
 
@@ -222,7 +222,7 @@ Func MonsterList($String)
 	If Not $String = "" Then
 		$List_Monster = $String
 		LoadTableFromString($Table_Monster, $List_Monster) ; Chargement de la nouvelle table
-		_log("Remplacement de la MonsterList : " & $List_Monster)
+		_log("Remplacement de la MonsterList : " & $List_Monster, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>MonsterList
 
@@ -230,7 +230,7 @@ Func BanList($String)
 	If Not $String = "" Then
 		$List_BanMonster = $List_BanMonster & "|" & $String
 		LoadTableFromString($Table_BanMonster, $List_BanMonster) ; Chargement de la nouvelle table
-		_log("Ajout d'une nouvelle BanList : " & $List_BanMonster)
+		_log("Ajout d'une nouvelle BanList : " & $List_BanMonster, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>BanList
 
@@ -238,7 +238,7 @@ Func ChestList($String)
 	If Not $String = "" Then
 		$List_Coffre = $String
 		LoadTableFromString($Table_Coffre, $List_Coffre) ; Chargement de la nouvelle table
-		_log("Remplacement de la ChestList : " & $List_Coffre)
+		_log("Remplacement de la ChestList : " & $List_Coffre, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>ChestList
 
@@ -246,7 +246,7 @@ Func RackList($String)
 	If Not $String = "" Then
 		$List_Rack = $String
 		LoadTableFromString($Table_Rack, $List_Rack) ; Chargement de la nouvelle table
-		_log("Remplacement de la RackList : " & $List_Rack)
+		_log("Remplacement de la RackList : " & $List_Rack, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>RackList
 
@@ -254,14 +254,14 @@ Func DecorList($String)
 	If Not $String = "" Then
 		$List_Decor = $String
 		LoadTableFromString($Table_Decor, $List_Decor) ; Chargement de la nouvelle table
-		_log("Remplacement de la DecorList : " & $List_Decor)
+		_log("Remplacement de la DecorList : " & $List_Decor, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>DecorList
 
 Func MaxGameLength($String)
 	If Not $String = "" Then
 		$maxgamelength = $String
-		_log("Ajout d'un nouveau MaxGameLength : " & $maxgamelength)
+		_log("Ajout d'un nouveau MaxGameLength : " & $maxgamelength, $LOG_LEVEL_VERBOSE)
 	EndIf
 EndFunc   ;==>MaxGameLength
 
@@ -339,7 +339,7 @@ Func sequence()
 			$txttoarray[0] = trim(StringLower(StringReplace($filetoarray[$z], "[CMD]", "", 0, 2)))
 		Else
 			$load_file = "sequence\" & $filetoarray[$z] & ".txt"
-			_log("fichier load : " & $load_file)
+			_log("File loaded : " & $load_file, $LOG_LEVEL_VERBOSE)
 
 			Local $file = FileOpen($load_file, 0)
 			If $file = -1 Then
@@ -383,7 +383,7 @@ Func sequence()
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
-					   _Log("enclenchement auto du buffinit()")
+					   _Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
 					EndIf
 
 					$line = StringReplace($line, "takewp=", "", 0, 2)
@@ -392,11 +392,11 @@ Func sequence()
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
 						SendSequence($array_sequence)
 						$array_sequence = ArrayInit($array_sequence)
-						_log("Enclenchement d'un TakeWP(" & $table_wp & "line : " & $i + 1)
+						_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						TakeWPV2($table_wp)
 						$line = ""
 					Else
-						_log("Mise en array d'un TakeWP(" & $table_wp & ") line : " & $i + 1)
+						_log("Mise en array d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
 						$array_sequence[UBound($array_sequence) - 1][0] = 1
 						$array_sequence[UBound($array_sequence) - 1][1] = "takewp"
@@ -408,7 +408,7 @@ Func sequence()
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
 						SendSequence($array_sequence)
 						$array_sequence = ArrayInit($array_sequence)
-						_log("Enclenchement d'un _townportal() line : " & $i + 1)
+						_log("Enclenchement d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						If Not _checkdisconnect() Then
 						   If Not _TownPortalnew(25) Then
 							  $GameFailed = 1
@@ -420,7 +420,7 @@ Func sequence()
 						EndIf
 						$line = ""
 					Else
-						_log("mise en array d'un _townportal() line : " & $i + 1)
+						_log("Mise en array d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
 						$array_sequence[UBound($array_sequence) - 1][0] = 1
 						$array_sequence[UBound($array_sequence) - 1][1] = "_townportal"
@@ -431,55 +431,55 @@ Func sequence()
 					SendSequence($array_sequence)
 					$array_sequence = ArrayInit($array_sequence)
 					$line = ""
-					_log("Enclenchement d'un endsave() line : " & $i + 1)
+					_log("Enclenchement d'un endsave() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 				EndIf
 				;*********************************************************************************************
 				;******************************CMD DE DEFINITION**********************************************
 				If StringInStr($line, "monsterlist=", 2) Then; MonsterList detected
 					$line = StringReplace($line, "monsterlist=", "", 0, 2)
-					_log("Enclenchement d'un monsterlist line : " & $i + 1)
+					_log("Enclenchement d'un monsterlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					MonsterList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "specialml=", 2) Then; SpecialMonsterList detected
 					$line = StringReplace($line, "specialml=", "", 0, 2)
-					_log("Enclenchement d'un SpecialMonsterList line : " & $i + 1)
+					_log("Enclenchement d'un SpecialMonsterList line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					SpecialML($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "BanList=", 2) Then; BanList detected
 					$line = StringReplace($line, "banlist=", "", 0, 2)
-					_log("Enclenchement d'un Banlist() line : " & $i + 1)
+					_log("Enclenchement d'un Banlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					BanList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "decorlist=", 2) Then; Decorlist detected
 					$line = StringReplace($line, "decorlist=", "", 0, 2)
-					_log("Enclenchement d'un Decorlist() line : " & $i + 1)
+					_log("Enclenchement d'un Decorlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					DecorList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "chestlist=", 2) Then; Chestlist detected
 					$line = StringReplace($line, "chestlist=", "", 0, 2)
-					_log("Enclenchement d'un Chestlist() line : " & $i + 1)
+					_log("Enclenchement d'un Chestlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					ChestList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "RackList=", 2) Then; Racklist detected
 					$line = StringReplace($line, "racklist=", "", 0, 2)
-					_log("Enclenchement d'un Racklist() line : " & $i + 1)
+					_log("Enclenchement d'un Racklist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					RackList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
 					$line = StringReplace($line, "maxgamelength=", "", 0, 2)
 					MaxGameLength($line)
-					_log("Enclenchemen d'un MaxGameLengt() Line : " & $i + 1)
+					_log("Enclenchemen d'un MaxGameLengt() Line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
 					$line = StringReplace($line, "attackrange=", "", 0, 2)
-					_log("Detection de la modification de l'attackRange line : " & $i + 1)
+					_log("Detection de la modification de l'attackRange line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					attackRange($line)
 					$line = ""
 					$definition = 1
@@ -487,10 +487,10 @@ Func sequence()
 					$line = StringReplace($line, "autobuff=", "", 0, 2)
 					If $line = "true" Then
 						$autobuff = True
-						_log("autobuff definit sur true line : " & $i + 1)
+						_log("Autobuff definit sur true line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					Else
 						$autobuff = False
-						_log("autobuff definit sur false line : " & $i + 1)
+						_log("Autobuff definit sur false line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = ""
 					$definition = 1
@@ -498,7 +498,7 @@ Func sequence()
 					$line = StringReplace($line, "reverse=", "", 0, 2)
 					If $line = "true" Then
 						$reverse = 1
-						_log("Reverse mod line : " & $i + 1)
+						_log("Reverse mod line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = ""
 					$definition = 1
@@ -507,10 +507,10 @@ Func sequence()
 					If $old_ResActivated Then
 						If $line = "true" Then
 							$ResActivated = True
-							_log("Turn revive mod to On line : " & $i + 1)
+							_log("Turn revive mod to On line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
 							$ResActivated = False
-							_log("Turn revive mod to Off line")
+							_log("Turn revive mod to Off line", $LOG_LEVEL_DEBUG)
 						EndIf
 						$line = ""
 						$definition = 1
@@ -520,10 +520,10 @@ Func sequence()
 					If $old_UsePath Then
 						If $line = "true" Then
 							$UsePath = True
-							_log("Turn UsePath mod to On line : " & $i + 1)
+							_log("Turn UsePath mod to On line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
 							$UsePath = False
-							_log("Turn UsePath mod to Off line")
+							_log("Turn UsePath mod to Off line", $LOG_LEVEL_DEBUG)
 						EndIf
 						$line = ""
 						$definition = 1
@@ -533,10 +533,10 @@ Func sequence()
 					If $old_TakeShrines Then
 						If $line = "true" Then
 							$TakeShrines = True
-							_log("Turn TakeShrines mod to On line : " & $i + 1)
+							_log("Turn TakeShrines mod to On line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
 							$TakeShrines = False
-							_log("Turn TakeShrines mod to Off line")
+							_log("Turn TakeShrines mod to Off line", $LOG_LEVEL_DEBUG)
 						EndIf
 						$line = ""
 						$definition = 1
@@ -549,9 +549,9 @@ Func sequence()
 						$line = StringReplace($line, "sleep=", "", 0, 2)
 						If $sequence_save = 0 Then
 							Sleep($line)
-							_log("Enclenchement d'un sleep direct line : " & $i + 1)
+							_log("Enclenchement d'un sleep direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array d'un sleep line : " & $i + 1)
+							_log("Mise en array d'un sleep line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "sleep"
@@ -562,9 +562,9 @@ Func sequence()
 							While Not offsetlist()
 								Sleep(40)
 							WEnd
-							_log("Enclecnhement d'un offsetlist line : " & $i + 1)
+							_log("Enclecnhement d'un offsetlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array d'un offsetlist line : " & $i + 1)
+							_log("Mise en array d'un offsetlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
@@ -575,7 +575,7 @@ Func sequence()
 					ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportstart() detected
 						Sleep(500)
 						buffinit() ; on Buff avant de prendre le portal
-						_Log("enclenchement auto du buffinit()")
+						_Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
 						Sleep(500)
 						SafePortStart()
 					ElseIf StringInStr($line, "nobloc()", 2) Then ;nobloc detected
@@ -584,9 +584,9 @@ Func sequence()
 						$line = StringReplace($line, "interactbyactorname=", "", 0, 2)
 						If $sequence_save = 0 Then
 							InteractByActorName($line)
-							_log("Enclenchement d'un interact direct line : " & $i + 1)
+							_log("Enclenchement d'un interact direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array d'un interact() line : " & $i + 1)
+							_log("Mise en array d'un interact() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "interactbyactorname"
@@ -595,10 +595,10 @@ Func sequence()
 					ElseIf StringInStr($line, "InteractBossPortal=", 2) Then ;InteractBossPortals detected
 						$line = StringReplace($line, "InteractBossPortal=", "", 0, 2)
 						If $sequence_save = 0 Then
-							_log("Enclenchement d'un InteractBossPortal direct line : " & $i + 1)
+							_log("Enclenchement d'un InteractBossPortal direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							InteractBossPortal($line)
 						Else
-							_log("mise en array d'un InteractBossPortal() line : " & $i + 1)
+							_log("Mise en array d'un InteractBossPortal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "InteractBossPortal"
@@ -607,9 +607,9 @@ Func sequence()
 					ElseIf StringInStr($line, "buffinit()", 2) Then ;buffinit detected
 						If $sequence_save = 0 Then
 							buffinit()
-							_log("Enclenchement d'un buffinit() line : " & $i + 1)
+							_log("Enclenchement d'un buffinit() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array dun buffinit() line : " & $i + 1)
+							_log("Mise en array dun buffinit() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "buffinit"
@@ -617,9 +617,9 @@ Func sequence()
 					ElseIf StringInStr($line, "unbuff()", 2) Then ;unbuff detected
 						If $sequence_save = 0 Then
 							unbuff()
-							_log("Enclenchement d'un unbuf() line : " & $i + 1)
+							_log("Enclenchement d'un unbuf() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array d'un unbuf() line : " & $i + 1)
+							_log("Mise en array d'un unbuf() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "unbuff"
@@ -627,9 +627,9 @@ Func sequence()
 					ElseIf StringInStr($line, "closewindows()", 2) Then ;closewindows detected
 						If $sequence_save = 0 Then
 							Send($KeyCloseWindows)
-							_log("Enclenchement d'un closewindows() line : " & $i + 1)
+							_log("Enclenchement d'un closewindows() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("Mise en array d'un closewindows() line : " & $i + 1)
+							_log("Mise en array d'un closewindows() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "closewindows"
@@ -637,9 +637,9 @@ Func sequence()
 					ElseIf StringInStr($line, "closeconfirm()", 2) Then ;closcloseconfirmwindows detected
 						If $sequence_save = 0 Then
 							ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
-							_log("Enclenchement d'un closeconfirm() line : " & $i + 1)
+							_log("Enclenchement d'un closeconfirm() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("Mise en array d'un closeconfirm() line : " & $i + 1)
+							_log("Mise en array d'un closeconfirm() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "closeconfirm"
@@ -648,9 +648,9 @@ Func sequence()
 						$line = StringReplace($line, "send=", "", 0, 2)
 						If $sequence_save = 0 Then
 							Send($line)
-							_log("Enclenchement d'un send direct line : " & $i + 1)
+							_log("Enclenchement d'un send direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("mise en array d'un send() line : " & $i + 1)
+							_log("Mise en array d'un send() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "send"
@@ -668,7 +668,7 @@ Func sequence()
 								$array_sequence[UBound($array_sequence) - 1][4] = $table_mtp[3]
 								$array_sequence[UBound($array_sequence) - 1][5] = $table_mtp[4]
 							Else
-								_log("Unknow or invalide cmd on line : " & $i + 1 & " -> " & $line)
+								_log("Unknow or invalide cmd on line : " & $i + 1 & " -> " & $line, $LOG_LEVEL_ERROR)
 							EndIf
 						EndIf
 					EndIf
@@ -701,7 +701,7 @@ Func InteractBossPortal($NameBossPortal)
 	
 	While $NewAreaOk = 0 And $BossPortalTry < 5
 	   
-	   _Log("try n°" & $BossPortalTry + 1 & " Boss Portal")
+	   _Log("Try n°" & $BossPortalTry + 1 & " Boss Portal", $LOG_LEVEL_DEBUG)
 	   InteractByActorName($NameBossPortal)
 	   
 	   Local $areatry = 0
@@ -720,9 +720,9 @@ Func InteractBossPortal($NameBossPortal)
     WEnd
 	
 	If $Newarea <> $Curentarea Then
-	   _log('Succesfully Boss Portal Try')
+	   _log('Succesfully Boss Portal Try', $LOG_LEVEL_VERBOSE)
     Else
-	   _log('We failed Boss Portal Try')
+	   _log('We failed Boss Portal Try', $LOG_LEVEL_ERROR)
 	   $GameFailed = 1
     EndIf
 EndFunc   ;==> InteractBossPortal

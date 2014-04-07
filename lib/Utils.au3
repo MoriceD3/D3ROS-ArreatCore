@@ -30,8 +30,23 @@ Func consoleLog($text, $level = 0)
 	ConsoleWrite($start & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF)
 EndFunc   ;==> consoleLog
 
-Func _log($text, $forceDebug = False)
-   $texte_write = @MDAY & "/" & @MON & "/" & @YEAR & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
+Func _log($text, $level = $LOG_LEVEL_NONE, $forceDebug = False)
+   
+   Switch $level
+       Case $LOG_LEVEL_VERBOSE
+           $start = "+>"
+       Case $LOG_LEVEL_WARNING
+           $start = "->"
+      Case $LOG_LEVEL_DEBUG
+           $start = ">>"
+       Case $LOG_LEVEL_ERROR
+           $start = "!>"
+       Case Else
+           $start = " >"
+   EndSwitch
+
+   $texte_write = $start & @MDAY & "/" & @MON & " " & @HOUR & ":" & @MIN & ":" & @SEC & " | " & $text & @CRLF
+
    If $forceDebug or $debugBot Then
       $file = FileOpen(@ScriptDir & "\log\" & $fichierlog, 1)
       If $file = -1 Then

@@ -1,7 +1,7 @@
 #include-once
 
 Func _dorun()
-	_log("======== new run ==========")
+	_log("======== new run ==========", $LOG_LEVEL_VERBOSE)
 
 	Local $hTimer = TimerInit()
 	While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
@@ -30,17 +30,13 @@ Func _dorun()
 	StatsDisplay()
 
 	If Not $hotkeycheck Then
-		_log("CheckHotkeys init")
 		CheckHotkeys()
-		_log("Auto_Spell_init init")
 		Auto_spell_init()
-		_log("GestSpellInit")
 		GestSpellInit()
-		_log("LoadAttribGlobalStuff init")
 		Load_Attrib_GlobalStuff()
 
 		$maxhp = GetAttribute($_MyGuid, $Atrib_Hitpoints_Max_Total) ; dirty placement
-		_log("Max HP : " & $maxhp)
+		_log("Max HP : " & $maxhp, $LOG_LEVEL_VERBOSE)
 		GetMaxResource($_MyGuid, $namecharacter)
 		Send($KeyPortal)
 		Sleep(500)
@@ -67,22 +63,22 @@ Func _dorun()
 	init_sequence()
 
 	sequence()
-	_log("End Run. Gamefailed : " & $GameFailed)
+	_log("End Run. Gamefailed : " & $GameFailed, $LOG_LEVEL_VERBOSE)
 	Return True
 EndFunc   ;==>_dorun
 
 Func _botting()
-	_log("Start Botting")
+	_log("Start Botting", $LOG_LEVEL_VERBOSE)
 	$bottingtime = TimerInit()
 
 	AdlibRegister("Die2Fast", 1200000)
 	While 1
-		_log("new main loop")
+		_log("New main loop", $LOG_LEVEL_DEBUG)
 
 		offsetlist()
 
 		If _onloginscreen() Then
-			_log("LOGIN")
+			_log("LOGIN", $LOG_LEVEL_WARNING)
 			_logind3()
 			
 			Local $WaitingTime
@@ -113,9 +109,9 @@ Func _botting()
 		EndIf
 
 		While _onloginscreen() = False And _ingame() = False
-			_log("Ingame False")
+			_log("Ingame False", $LOG_LEVEL_WARNING)
 			If _checkdisconnect() Then
-				_log("Disconnected dc4")
+				_log("Disconnected dc4", $LOG_LEVEL_WARNING)
 				ReConnect()
 				While Not (_onloginscreen() Or _inmenu())
 					Sleep(Random(10000, 15000))
@@ -151,7 +147,7 @@ Func _botting()
 			If Not _checkdisconnect() Then
 				_leavegame()
 			Else
-				_log("Disconnected dc2")
+				_log("Disconnected dc2", $LOG_LEVEL_WARNING)
 				ReConnect()
 			EndIf
 
@@ -165,7 +161,7 @@ Func _botting()
 
 		While _inmenu() = False And _onloginscreen() = False
 			If  _checkdisconnect() Then
-				_log("Disconnected dc3")
+				_log("Disconnected dc3", $LOG_LEVEL_WARNING)
 				ReConnect()
 			Else
 			    Sleep(10)
@@ -178,7 +174,7 @@ EndFunc   ;==>_botting
 Func CheckAndDefineSize()
 	if $SizeWindows = 0 Then
 		$SizeWindows = WinGetClientSize("[CLASS:D3 Main Window Class]")
-		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1])
+		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1], $LOG_LEVEL_DEBUG)
 	EndIF
 
 	if $PointFinal[0] = 0 AND $PointFinal[1] = 0 AND $PointFinal[2] = 0 AND $PointFinal[3] = 0 Then
@@ -203,7 +199,7 @@ Func CheckAndDefineSize()
 		$PointFinal[2] = $PointCheckBox[0] - $PointFinal[1]
 		$PointFinal[3] = $PointParagon[1] - $PointFinal[0]
 
-		_log("Zone Clickable -> Y[0] : " & $PointFinal[0] & " - X[1] : " & $PointFinal[1] & " - Width[2] : " & $PointFinal[2] & " - Height[3] : " & $PointFinal[3])
+		_log("Zone Clickable -> Y[0] : " & $PointFinal[0] & " - X[1] : " & $PointFinal[1] & " - Width[2] : " & $PointFinal[2] & " - Height[3] : " & $PointFinal[3], $LOG_LEVEL_DEBUG)
 	EndIF
 EndFunc
 
@@ -245,6 +241,7 @@ EndFunc
 ;;     Check KeyTo avoid sell of equiped stuff
 ;;--------------------------------------------------------------------------------
 Func CheckHotkeys()
+	_log("CheckHotkeys", $LOG_LEVEL_DEBUG)
 	Sleep(2000)
 	Send($KeyInventory)
 	Sleep(500)
@@ -261,7 +258,7 @@ Func CheckHotkeys()
 		MsgBox(0, "Mauvais Hotkey", "La touche pour fermer les fenêtres doit être : " & $KeyCloseWindows & @CRLF)
 		Terminate()
 	EndIf
-	_log("Check des touches OK")
+	_log("Check des touches OK", $LOG_LEVEL_VERBOSE)
 	$hotkeycheck = True
 EndFunc   ;==>CheckHotkeys
 
