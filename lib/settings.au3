@@ -57,8 +57,8 @@ Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_
 Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|BonePile"
 Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest"
 Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
+Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
 Global $grabListFile = ""
-Global $Potions = "healthPotion_Console|Bottomless_"
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
 Global $d3pass = ""
@@ -371,6 +371,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	LoadTableFromString($Table_Decor, $List_Decor)
 	LoadTableFromString($Table_BanAffix, $List_BanAffix)
 	LoadTableFromString($Table_PriorityMonster, $List_PriorityMonster)
+	LoadTableFromString($Table_Potions, $List_Potions)
 
 EndFunc   ;==>LoadConfigs
 

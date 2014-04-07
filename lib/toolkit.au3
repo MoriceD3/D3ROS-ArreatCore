@@ -2487,7 +2487,7 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 	; _log("guid: "&$_GUID &" name: "& $_NAME & " qual: "&IterateActorAtribs($_GUID, $Atrib_Item_Quality_Level))
 	_log("CheckItem -> " & $_NAME)
 
-	If checkFromList($Potions, $_NAME) Then
+	If IsItemInTable($Table_Potions, $_NAME) Then
 		_log("CheckItem : Potion")
 		Return "Inventory"
 	ElseIf checkFromList($grablist, $_NAME) Then
