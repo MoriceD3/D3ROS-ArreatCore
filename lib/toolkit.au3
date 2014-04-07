@@ -2080,12 +2080,12 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 									EndIf
 
-									If $ItemRefresh Then
-											Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-											$test_iterateallobjectslist = $buff_array
-									EndIf
+									;If $ItemRefresh Then
+									;		Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
+									;		$test_iterateallobjectslist = $buff_array
+									;EndIf
 							Else
-									If checkFromList($List_Monster, $item[1]) = False Then
+									If Not IsItemInTable($Table_Monster, $item[1])Then
 											_log("Ban Item -> " & $item[1] & " Reason checkFromList To False (With affix)")
 											BanActor($item[1])
 											;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
@@ -2123,12 +2123,12 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
                         EndIf
 
-                        If $ItemRefresh Then
-                                Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-                                $test_iterateallobjectslist = $buff_array
-                        EndIf
+                        ;If $ItemRefresh Then
+                        ;        Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
+                        ;        $test_iterateallobjectslist = $buff_array
+                        ;EndIf
                 Else
-                        If checkFromList($List_Monster, $item[1]) = False Then
+                        If Not IsItemInTable($Table_Monster, $item[1]) Then
 								_log("Ban Item -> " & $item[1] & " Reason checkFromList To False")
 								BanActor($item[1])
 
@@ -5336,6 +5336,12 @@ EndFunc
 
 Func LoadTableFromString(ByRef $Table, ByRef $string)
 	$Table = StringSplit($string, "|")
+EndFunc
+
+Func AddItemToTable(ByRef $table, $item)
+	$table[0] += 1
+	ReDim $table[$table[0] + 1]
+	$table[$table[0]] = $item
 EndFunc
 
 Func IsItemInTable(ByRef $table, ByRef $itemName)
