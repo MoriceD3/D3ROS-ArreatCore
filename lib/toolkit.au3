@@ -211,7 +211,7 @@ EndFunc
 Func fastcheckuiitemactived($valuetocheckfor, $bucket)
 	$uiOfs = GetOfsFastUI($valuetocheckfor, $bucket)
 	$Enabled = Mod(_memoryread($uiOfs + 0xc5c, $d3, "int"), 2)
-	_log($Enabled)
+	_log("fastcheckuiitemactived : " & $valuetocheckfor & " : " & $Enabled)
 	if $Enabled = 1 Then
 		return True
 	Else
@@ -298,20 +298,20 @@ Func CheckTextvalueUI($bucket, $valuetocheckfor, $textcheck)
 	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
 
 	$UiPtr = _memoryread($BuckitOfs + ($bucket * 0x4), $d3, "ptr")
-	while $UiPtr <> 0
+	While $UiPtr <> 0
 
 		$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
 		$Visible = BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
-		if $Visible = 4 Then
+		If $Visible = 4 Then
 			$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
-			_log("CheckTextvalueUI : " & $valuetocheckfor & " | Name : " & $Name , $LOG_LEVEL_DEBUG)
+			_log("CheckTextvalueUI : " & $valuetocheckfor & " | Name : " & StringLeft($Name, StringLen($valuetocheckfor))  & " ", $LOG_LEVEL_DEBUG)
 			If StringInStr($name, $valuetocheckfor) Then
 				$text = BinaryToString(_memoryread(_memoryread($nPtr + $Ofs_UI_Text, $d3, "ptr"),$d3, "byte[1024]"), 4)
-				_log("Text : " & $text & " | Textcheck : " & $textcheck , $LOG_LEVEL_DEBUG)
+				_log("Textcheck : " & $textcheck  & " | Text : " &  StringLeft($text, StringLen($textcheck))  & " ", $LOG_LEVEL_DEBUG)
 				If StringInStr($text, $textcheck) Then
-					return true
+					Return true
 				Else
-					return false
+					Return false
 				EndIF
 			Endif
 		EndIf
@@ -319,8 +319,6 @@ Func CheckTextvalueUI($bucket, $valuetocheckfor, $textcheck)
 	WEnd
 	Return false
 EndFunc
-
-
 
 Func _playerdead()
 	$return = fastcheckuiitemvisible("Root.NormalLayer.deathmenu_dialog", 1, 793)
@@ -1938,48 +1936,60 @@ Func Is_Power(ByRef $item)
 EndFunc   ;==>Is_Power
 
 Func handle_Power(ByRef $item)
+	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		If Power($item[1], $item[8], $item[0]) = False Then
+		$result = Power($item[1], $item[8], $item[0])
+		If $result = 0 Then
 			_log("Ban power -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
 	EndIf
+	Return $result
 EndFunc   ;==>handle_Power
 
 Func handle_Health(ByRef $item)
+	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		If Health($item[1], $item[8], $item[0]) = False Then
+		$result = Health($item[1], $item[8], $item[0])
+		If $result = 0 Then
 			_log("Ban health -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
 	EndIf
+	Return $result
 EndFunc   ;==>handle_Health
 
 Func handle_Coffre(ByRef $item)
+	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
-		If Coffre($item) = False Then
+		$result = Coffre($item) 
+		If $result = 0 Then
 			_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
 	EndIf
+	return $result
 EndFunc
 
 
 Func handle_Shrine(ByRef $item)
+	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		If shrine($item[1], $item[8], $item[0]) = False Then
+		$result = Shrine($item[1], $item[8], $item[0])
+		If $result = 0 Then
 			_log("Ban shrine -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
 	EndIf
+	Return $result
 EndFunc   ;==>handle_Shrine
 
 
@@ -2026,68 +2036,35 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 	EndIf
 
 	$itemDestination = CheckItem($item[0], $item[1])
-
-	If IsArray($item_aff_verif) and $gestion_affixe_loot Then
-		If is_zone_safe($item[2],$item[3],$item[4],$item_aff_verif) Or Checkqual($item[0]) = 9 Then
-			If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
-				; this loot is interesting
-				$foundobject = 1
-				If Grabit($item[1], $item[8]) = False Then
-						_log("Ban Item -> " & $item[1] & " Reason Grabit To False (With affix)", $LOG_LEVEL_DEBUG)
-						BanActor($item[1])
-						;_log('ignoring ' & $item[1])
-						;$IgnoreList = $IgnoreList & $item[8]
-						;handle_banlist($item[2]&"-"&$item[3]&"-"&$item[4])
-						;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-						;If $killtimeout > 2 Or $grabtimeout > 2 Then
-						;	If _checkdisconnect() Or _playerdead() Then
-						;			_log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
-						;			$GameFailed = 1
-						;	EndIf
-						;EndIf
-				EndIf
-				;If $ItemRefresh Then
-				;		Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-				;		$test_iterateallobjectslist = $buff_array
-				;EndIf
-			Else
-				If Not IsItemInTable($Table_Monster, $item[1])Then
-					_log("Ban Item -> " & $item[1] & " Reason not in Table_Monster (With affix)", $LOG_LEVEL_DEBUG)
+	$result = 0
+	
+	If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
+		; this loot is interesting
+		If IsArray($item_aff_verif) and $gestion_affixe_loot Then
+			If is_zone_safe($item[2],$item[3],$item[4],$item_aff_verif) Or Checkqual($item[0]) = 9 Then
+				$result = Grabit($item[1], $item[8])
+				If $result = 0 Then
+					_log("Ban Item -> " & $item[1] & " Reason : Grabit To False (With affix)", $LOG_LEVEL_DEBUG)
 					BanActor($item[1])
-					;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
-					;_log('ignoring ' & $item[8] & " : " & $item[1] & " :::::" &$IgnoreItemList)
 				EndIf
+			Else
+				_log("Item : " & $item[1] & " in affix zone, skipping")
+				$result = 2
 			EndIf
+		Else
+            $result = Grabit($item[1], $item[8])
+            If $result = 0 Then
+				_log("Ban Item -> " & $item[1] & " Reason : Grabit To False", $LOG_LEVEL_DEBUG)
+				BanActor($item[1])
+            EndIf
 		EndIf
 	Else
-	    If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
-            ; this loot is interesting
-            $foundobject = 1
-            If Grabit($item[1], $item[8]) = False Then
-					_log("Ban Item -> " & $item[1] & " Reason Grabit To False", $LOG_LEVEL_DEBUG)
-					BanActor($item[1])
-					;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-                    ;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-                    ;If $killtimeout > 2 Or $grabtimeout > 2 Then
-                    ;        If _checkdisconnect() Or _playerdead() Then
-                    ;                _log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
-					;				$GameFailed = 1
-                    ;        EndIf
-                    ;EndIf
-            EndIf
-            ;If $ItemRefresh Then
-            ;        Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
-            ;        $test_iterateallobjectslist = $buff_array
-            ;EndIf
-	    Else
-	        If Not IsItemInTable($Table_Monster, $item[1]) Then
-					_log("Ban Item -> " & $item[1] & " Reason not in Table_Monster", $LOG_LEVEL_DEBUG)
-					BanActor($item[1])
-					;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
-	                ;_log('ignoring ' & $item[8] & " : " & $item[1] & " :::::" &$IgnoreItemList)
-	        EndIf
-	    EndIf
+		If Not IsItemInTable($Table_Monster, $item[1])Then
+			_log("Ban Item -> " & $item[1] & " Reason : not in Table_Monster (With affix)", $LOG_LEVEL_DEBUG)
+			BanActor($item[1])
+		EndIf
 	EndIf
+	Return $result
  EndFunc   ;==>handle_Loot
 
 ;;--------------------------------------------------------------------------------
@@ -2112,6 +2089,9 @@ Func Attack()
 	Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 	Local $LastResult = 0
 	Local $skipped = 0
+	Local $totalSkipped = 0
+	Local $shouldWait = False
+	Local $wasLoot = False
 
 	While IsArray($test_iterateallobjectslist)
 		If _playerdead_revive() Then
@@ -2126,25 +2106,40 @@ Func Attack()
 		EndIf
 
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
-			_log("Attack : First mob skipped since same as last try", $LOG_LEVEL_DEBUG)
+			_log("Attack : First Item skipped since same as last try", $LOG_LEVEL_DEBUG)
 			$skipped += 1
+			$totalSkipped += 1
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[1][$i]
 			Next
+			If $wasLoot And $item[13] <> $ITEM_TYPE_MOB Then
+				; Last item was a loot skipped for affix, and next action is not a mob so wait a little in case multiple items in affix
+				_log("Attack : Small wait because potential multiple item in affix", $LOG_LEVEL_DEBUG)
+				Sleep(350)
+			EndIf
 		ElseIf $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor Then
 			$skipped += 1
-			_log("Attack : Mob was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
+			$totalSkipped += 1
+			_log("Attack : Item was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
 		Else
-			$skipped = 0
+			If $LastResult <> 2 Then
+				$totalSkipped = 0
+			Else
+				$totalSkipped += 1
+			EndIf
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
 		EndIf
 
-		If ($OldActor = $item[1]) And ($LastResult <> 2 Or $skipped > 4) Then
+		If ($totalSkipped > 6) Then
+			BanActor($item[1])
+			_log("Attack : Ban " &  $item[1] & " too many skips", $LOG_LEVEL_DEBUG)
+			ExitLoop
+		ElseIf ($OldActor = $item[1]) And ($LastResult <> 2 Or $skipped > 2) Then
 			BanActor($item[1])
 			_log("Attack : Ban " &  $item[1] & " : Second passage", $LOG_LEVEL_DEBUG)
 			ExitLoop
@@ -2152,26 +2147,51 @@ Func Attack()
 			$OldActor = $item[1]
 		EndIF
 
+		$oldResult = $LastResult
+		$oldWait = $shouldWait 
 		$LastResult = 0
+		$shouldWait = False
+		$wasLoot = False
 		Select
-			   Case $item[13] = $ITEM_TYPE_LOOT
-				 handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
-			   Case $item[13] = $ITEM_TYPE_MOB
-				 $LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
-			   Case $item[13] = $ITEM_TYPE_SHRINE
-				 handle_Shrine($item)
-			   Case $item[13] = $ITEM_TYPE_CHEST
-				 handle_Coffre($item)
-			   Case $item[13] = $ITEM_TYPE_RACK
-				 handle_Coffre($item)
-			   Case $item[13] = $ITEM_TYPE_DECOR
-			   	 ; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
-				 $LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
-			   Case $item[13] = $ITEM_TYPE_HEALTH
-				 handle_Health($item)
-			   Case $item[13] = $ITEM_TYPE_POWER
-				 handle_Power($item)
+			Case $item[13] = $ITEM_TYPE_LOOT
+				$LastResult = handle_Loot($item, $IgnoreList, $test_iterateallobjectslist)
+				$wasLoot = True
+				If ($LastResult = 2) Then
+					$shouldWait = True
+				EndIf
+			Case $item[13] = $ITEM_TYPE_MOB
+				$LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				$shouldWait = True
+			Case $item[13] = $ITEM_TYPE_SHRINE
+				$LastResult = handle_Shrine($item)
+			Case $item[13] = $ITEM_TYPE_CHEST
+				$LastResult = handle_Coffre($item)
+				$shouldWait = True
+			Case $item[13] = $ITEM_TYPE_RACK
+				$LastResult = handle_Coffre($item)
+				$shouldWait = True
+			Case $item[13] = $ITEM_TYPE_DECOR
+				; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
+				$LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+			Case $item[13] = $ITEM_TYPE_HEALTH
+				$LastResult = handle_Health($item)
+				If ($oldResult = 1 And $oldWait) Then
+					$LastResult = 1
+					$shouldWait = True
+				EndIf
+			Case $item[13] = $ITEM_TYPE_POWER
+				$LastResult = handle_Power($item)
 		EndSelect
+
+		If $shouldWait And UBound($test_iterateallobjectslist) = 1 And ($LastResult = 1 Or ($wasLoot And $lastResult = 2)) Then
+			If $LastResult = 1 Then
+  				_log("Attack : No more items and last result = 1 with shouldWait -> Waiting 1 sec and checking for loots")
+				Sleep(1000)
+			Else
+  				_log("Attack : No more items and last loot in retry for affix with shouldWait -> Waiting 1,5 sec and checking for loots")
+				Sleep(1500)
+			EndIf
+		EndIf
 
 		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 
@@ -2324,8 +2344,8 @@ EndFunc   ;==>KillMob
 Func Grabit($name, $offset)
 	Local $OriginalOffsetValue = _MemoryRead($offset + 0x0, $d3, 'ptr')
 	$begin = TimerInit()
+	$moveTimer = TimerInit()
 	Dim $CoordVerif[3]
-
 
 	_log("Grabbing : " & ($name), $LOG_LEVEL_DEBUG) ;FOR DEBUGGING
 
@@ -2340,61 +2360,67 @@ Func Grabit($name, $offset)
 	Else
 		Interact($pos[0], $pos[1], $pos[2])
 	EndIf
+
+	Local $dist = $pos[3]
+
 	While _MemoryRead($offset + 0x0, $d3, 'ptr') = $OriginalOffsetValue
 		If _MemoryRead($offset + 0x0, $d3, 'ptr') = 0xFFFFFFFF Then
-			ExitLoop
+			Return 0
 		EndIf
 
 		If _playerdead_revive() Then
-			$return = False
-			ExitLoop
+			Return 0
 		EndIf
 		GestSpellcast(0, 2, 0)
 
 		If TimerDiff($begin) > $g_time Then
 			$grabtimeout += 1
 			; After this time we should already had the item
-			Return False
+			Return 0
 		EndIf
 
 		If $grabskip = 1 Then
-			Return False
-			ExitLoop
+			Return 0
 		EndIf
 
 		Dim $pos = UpdateObjectsPos($offset)
 
+		; TODO : Use MoveToPos to try to find another path !
+		If (Round($dist,1) = Round($pos[3],1)) Then
+			If TimerDiff($moveTimer) > 2000 Then
+				_log("Leaving Grabit() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+				Return 2
+			EndIf
+		Else
+			$moveTimer = TimerInit()
+		EndIf
+
 		If (StringInStr($name, "gold")) Then
-
-
 			$Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
 
 			;Check if the coord X y z havn't changed.
 			If ($CoordVerif[0] <> $pos[0] Or $CoordVerif[1] <> $pos[1] Or $CoordVerif[2] <> $pos[2]) Then
-				_log("Fake GOLD")
-				Return False
+				_log("Leaving Grabit() : Fake GOLD")
+				Return 0
 			Else
 				MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 			EndIf
 		Else
-
 			;_log($pos[0] & " - " & $pos[1] & " - " & $pos[2])
 			Interact($pos[0], $pos[1], $pos[2])
-
 
 			;If _inventoryfull() Then
 			If Detect_UI_error($MODE_INVENTORY_FULL) And Not $Execute_TpRepairAndBack Then ; $Execute_TpRepairAndBack = 0,car on ne veut pas y rentrer plus d'une fois "correction double tp inventaire plein"
 				$Execute_TpRepairAndBack = True
 				Unbuff()
-					TpRepairAndBack()
+				TpRepairAndBack()
 				Buffinit()
 				$Execute_TpRepairAndBack = False
 			EndIf
-
 		EndIf
-		Sleep(50)
+		Sleep(100)
 	WEnd
-	Return True
+	Return 1
 EndFunc   ;==>Grabit
 
 Func GetIlvlFromACD($_ACDid)
@@ -3081,56 +3107,82 @@ EndFunc   ;==>enoughtPotions
 ; Function:                     Shrine()
 ; Description:    Take Bonus shrine
 ;;--------------------------------------------------------------------------------
-Func shrine($name, $offset, $Guid)
+Func Shrine($name, $offset, $Guid)
+
 	Local $begin = TimerInit()
-	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
-		If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
-			If TimerDiff($begin) > 4000 Then
-				_log('Shrine is banned because time out', $LOG_LEVEL_WARNING)
-				Return False
-			Else
-				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-				MouseMove($Coords[0], $Coords[1], 3)
+    Local $moveTimer = TimerInit()
+    Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+
+	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And Not _playerdead()
+		
+		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+		; TODO : Use MoveToPos to try to find another path !
+		If (Round($dist2, 1) = Round($dist, 1)) Then
+			If TimerDiff($moveTimer) > 2000 Then
+				_log("Leaving Shrine() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+				Return 2
 			EndIf
+		Else
+			$moveTimer = TimerInit()
 		EndIf
+
+		$dist = $dist2
+
+		If $dist >= 8 Then
+			$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+			MouseMove($Coords[0], $Coords[1], 3)
+		EndIf
+
 		If TimerDiff($begin) > 6000 Then
-			_log('Fake shrine', $LOG_LEVEL_WARNING)
-			Return False
+			_log('Leaving Shrine() : timeout', $LOG_LEVEL_WARNING)
+			Return 0
 		EndIf
 		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
 	WEnd
 
 	$CheckTakeShrineTaken += 1 ;on compte les CheckTakeShrine qu'on prend
+	Return 1
 EndFunc   ;==>shrine
 
 
 Func Coffre($item)
+
 	$name = $item[1]
 	$offset = $item[8]
 	$Guid = $item[0]
 
     Local $begin = TimerInit()
-    While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And _playerdead() = False
+    Local $moveTimer = TimerInit()
+    Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 
-        If getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float')) >= 8 Then
-            If TimerDiff($begin) > 6000 Then
-                _log('Coffre is banned because time out', $LOG_LEVEL_WARNING)
-                Return False
-            Else
-                $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-                MouseMove($Coords[0], $Coords[1], 3)
-            EndIf
+    While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And Not _playerdead()
+		
+		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+		; TODO : Use MoveToPos to try to find another path !
+		If (Round($dist2, 1) = Round($dist, 1)) Then
+			If TimerDiff($moveTimer) > 2000 Then
+				_log("Leaving Coffre() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+				Return 2
+			EndIf
+		Else
+			$moveTimer = TimerInit()
+		EndIf
+
+		$dist = $dist2
+        If $dist >= 8 Then
+            $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+            MouseMove($Coords[0], $Coords[1], 3)
         EndIf
-		If TimerDiff($begin) > 80000 Then
-	        _log('Fake Actionnable', $LOG_LEVEL_WARNING)
-	        Return false
+		If TimerDiff($begin) > 8000 Then
+	        _log('Leaving Coffre() : timeout', $LOG_LEVEL_WARNING)
+	        Return 0
 	    EndIf
         Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+        Sleep(150)
 	WEnd
 
 	$CoffreTaken += 1;on compte les coffres qu'on ouvre
-	; TODO : Do that correctly !
-	sleep(800)
+	Return 1
 EndFunc   ;==>shrine
 
 
@@ -3145,28 +3197,28 @@ Func Health($name, $offset, $Guid)
 			If $life < ($LifeForHealth / 100) Then
 				If TimerDiff($timeForHealth) > 2000 Then
 					_log('health is banned because time out', $LOG_LEVEL_WARNING)
-					Return False
+					Return 0
 				Else
 					$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 					MouseMove($Coords[0], $Coords[1], 3)
 				EndIf
 			ElseIf $life = 1 Then
 				_log('Health globe ignore (already full life)', $LOG_LEVEL_VERBOSE)
-				Return True
+				Return 0
 			Endif
-		ElseIf $distance < 3 Then
+		ElseIf $distance < 2 Then
 			_log('Health globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
-			Return True
+			Return 1
 		EndIf
 
 		If TimerDiff($timeForHealth) > 3000 Then
 			_log('Fake health', $LOG_LEVEL_WARNING)
-			Return False
+			Return 0
 		EndIf
 
 		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
 	WEnd
-
+	Return 1
 EndFunc   ;==>health
 
 Func Power($name, $offset, $Guid)
@@ -3178,24 +3230,24 @@ Func Power($name, $offset, $Guid)
 			If $distance >= 8 Then
 				If TimerDiff($timeForPower) > 2000 Then
 				_log('Power globe is banned because time out', $LOG_LEVEL_WARNING)
-				Return False
+				Return 0
 			Else
 				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 				MouseMove($Coords[0], $Coords[1], 3)
 			EndIf
-		ElseIf $distance < 3 Then
+		ElseIf $distance < 2 Then
 			_log('Power globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
-			Return True
+			Return 1
 		EndIf
 
 		If TimerDiff($timeForPower) > 3000 Then
 			_log('Fake power globe', $LOG_LEVEL_WARNING)
-			Return False
+			Return 0
 		EndIf
 
 		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
 	WEnd
-
+	Return 1
 EndFunc   ;==>power
 
 ;;--------------------------------------------------------------------------------
