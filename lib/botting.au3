@@ -1,7 +1,7 @@
 #include-once
 
 Func _dorun()
-	_log("======== new run ==========", $LOG_LEVEL_VERBOSE)
+	_log("*** Starting new run", $LOG_LEVEL_VERBOSE)
 
 	Local $hTimer = TimerInit()
 	While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
@@ -25,7 +25,6 @@ Func _dorun()
 	$GameFailed = 0
 	$SkippedMove = 0
 	$PortBack = False
-	$KillOrGrab_TimeOut = 0
 
 	StatsDisplay()
 
@@ -89,7 +88,7 @@ Func _botting()
 		EndIf
 
 		; Si Choix_Act_Run <> 0 le bot passe en mode automatique
-		If $Choix_Act_Run <> 0 And _onloginscreen() = False Then
+		If $Choix_Act_Run <> 0 And Not _onloginscreen() Then
 			If _ingame() = true and $TypedeBot < 2 Then ;si en jeu lors du lancement auto
 				WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 				MsgBox(0, "ERREUR", "Vous devez être dans le menu pour lancer un run en auto !")
@@ -98,17 +97,17 @@ Func _botting()
 			SelectQuest()
 		EndIf
 
-		If _inmenu() And _onloginscreen() = False Then
+		If _inmenu() And Not _onloginscreen() Then
 			If Not $PartieSolo And $Totalruns > 1 Then
 			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
 				WriteMe($WRITE_ME_RESTART_GAME) ; TChat
 			EndIf
-
+			_log("We are in menu : Resuming game", $LOG_LEVEL_VERBOSE)
 			$DeathCountToggle = True
 			_resumegame()
 		EndIf
 
-		While _onloginscreen() = False And _ingame() = False
+		While Not _onloginscreen() And Not _ingame()
 			_log("Ingame False", $LOG_LEVEL_WARNING)
 			If _checkdisconnect() Then
 				_log("Disconnected dc4", $LOG_LEVEL_WARNING)
@@ -121,25 +120,24 @@ Func _botting()
 			_resumegame()
 		WEnd
 
-		If _onloginscreen() = False And _playerdead() = False And _ingame() = True Then
+		If Not _onloginscreen() And Not _playerdead() And _ingame() Then
 			$timermaxgamelength = TimerInit()
 			If _dorun() = True Then
 				$Try_ResumeGame = 0
 				$Try_Logind3 = 0
-				$BreakCounter += 1;on ce met a compter les games avant la pause
+				$BreakCounter += 1 ;on se met a compter les games avant la pause
 				$games += 1
 				$gamecounter += 1
 			EndIf
 		EndIf
 
-
-		If _onloginscreen() = False And _intown() = False And _playerdead() = False Then
+		If Not _onloginscreen() And Not _intown() And Not _playerdead() Then
+			_log("Return to town after run", $LOG_LEVEL_VERBOSE)
 			GoToTown()
 		EndIf
 
-		_log("start GoToTown from main 2")
-		If _intown() Or _playerdead() And _onloginscreen() = False Then
-			If _playerdead() = False And $games >= ($repairafterxxgames + Random(-2, 2, 1)) Then
+		If (_intown() Or _playerdead()) And Not _onloginscreen() Then
+			If Not _playerdead() And $games >= ($repairafterxxgames + Random(-2, 2, 1)) Then
 				StashAndRepair()
 				$games = 0
 			EndIf
@@ -157,14 +155,13 @@ Func _botting()
 		EndIf
 
 		Sleep(1000)
-		_log('loop _inmenu() = False And _onloginscreen()')
-
-		While _inmenu() = False And _onloginscreen() = False
-			If  _checkdisconnect() Then
+		_log('End of run looping : Not _inmenu() And Not _onloginscreen()')
+		While Not _inmenu() And Not _onloginscreen()
+			If _checkdisconnect() Then
 				_log("Disconnected dc3", $LOG_LEVEL_WARNING)
 				ReConnect()
 			Else
-			    Sleep(10)
+			    Sleep(100)
 			Endif
 		WEnd
 

@@ -95,7 +95,6 @@ Global $Execute_StashAndRepair  = False
 
 Global $PortBack 	   			= False
 Global $FailOpen_BookOfCain 	= 0
-Global $KillOrGrab_TimeOut		= 0
 
 ; Informations sur le personnage
 Global $nameCharacter

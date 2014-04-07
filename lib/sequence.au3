@@ -365,8 +365,8 @@ Func sequence()
 
 		For $i = 0 To UBound($txttoarray) - 1
 			If $GameFailed = 1 Then
+				_log("Game failed exiting sequence()", $LOG_LEVEL_WARNING)
 				ExitLoop
-
 			EndIf
 
 			$error = 0
@@ -688,6 +688,9 @@ Func sequence()
 		$UsePath = $old_UsePath
 		$TakeShrines = $old_TakeShrines
 		unbuff()
+		If $GameFailed = 1 Then
+			ExitLoop
+		EndIf
 	Next
 EndFunc   ;==>sequence
 

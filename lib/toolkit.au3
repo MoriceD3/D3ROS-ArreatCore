@@ -101,7 +101,7 @@ Func FindActor($name, $maxRange = 400)
 
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
-	_log("FindActor : " & $name & "in " & $count & " item(s)", $LOG_LEVEL_DEBUG)
+	_log("FindActor : " & $name & " in " & $count & " item(s)", $LOG_LEVEL_DEBUG)
 	While iterateObjectsList($index, $offset, $count, $item)
 		If StringInStr($item[1], $name) And $item[9] < $maxRange Then
 			Return True
@@ -1999,10 +1999,12 @@ Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslis
 		_log('No HP or Invulnerable : Ignoring ' & $item[1], $LOG_LEVEL_NONE)
 		$IgnoreList = $IgnoreList & $item[8]
 	EndIf
-	If _checkdisconnect() Or _playerdead() Then
-		$KillOrGrab_TimeOut = 1
-		$GameFailed = 1
-	EndIf
+;	If $killtimeout > 2 Or $grabtimeout > 2 Then
+;		If _checkdisconnect() Or _playerdead() Then
+;			_log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
+;			$GameFailed = 1
+;		EndIf
+;	EndIf
 	Return $result
 EndFunc   ;==>handle_Mob
 
@@ -2037,13 +2039,12 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 						;$IgnoreList = $IgnoreList & $item[8]
 						;handle_banlist($item[2]&"-"&$item[3]&"-"&$item[4])
 						;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-						If $killtimeout > 2 Or $grabtimeout > 2 Then
-							If _checkdisconnect() Or _playerdead() Then
-									_log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
-									$KillOrGrab_TimeOut = 1
-									$GameFailed = 1
-							EndIf
-						EndIf
+						;If $killtimeout > 2 Or $grabtimeout > 2 Then
+						;	If _checkdisconnect() Or _playerdead() Then
+						;			_log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
+						;			$GameFailed = 1
+						;	EndIf
+						;EndIf
 				EndIf
 				;If $ItemRefresh Then
 				;		Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
@@ -2054,7 +2055,6 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 					_log("Ban Item -> " & $item[1] & " Reason not in Table_Monster (With affix)", $LOG_LEVEL_DEBUG)
 					BanActor($item[1])
 					;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
-
 					;_log('ignoring ' & $item[8] & " : " & $item[1] & " :::::" &$IgnoreItemList)
 				EndIf
 			EndIf
@@ -2068,13 +2068,12 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 					BanActor($item[1])
 					;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
                     ;_log("Grabtimeout : " & $grabtimeout & " killtimeout: "& $killtimeout)
-                    If $killtimeout > 2 Or $grabtimeout > 2 Then
-                            If _checkdisconnect() Or _playerdead() Then
-                                    _log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
-                                    $KillOrGrab_TimeOut = 1
-									$GameFailed = 1
-                            EndIf
-                    EndIf
+                    ;If $killtimeout > 2 Or $grabtimeout > 2 Then
+                    ;        If _checkdisconnect() Or _playerdead() Then
+                    ;                _log('_checkdisconnect A or player D', $LOG_LEVEL_WARNING)
+					;				$GameFailed = 1
+                    ;        EndIf
+                    ;EndIf
             EndIf
             ;If $ItemRefresh Then
             ;        Dim $buff_array = UpdateArrayAttack($test_iterateallobjectslist, $IgnoreList, 1)
@@ -2100,9 +2099,9 @@ Func Attack()
 		Return
 	EndIf
 
-	If _checkdisconnect() Or _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
+	If _checkdisconnect() Or _playerdead() Or ($GameFailed And Not $Execute_TownPortalnew) Then
 		$GameFailed = 1
-		_log("Return Cuz : If _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
+		_log("Attack : Return because _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
 		Return
 	EndIf
 
@@ -2116,24 +2115,25 @@ Func Attack()
 
 	While IsArray($test_iterateallobjectslist)
 		If _playerdead_revive() Then
-			_log("ExitLoop cause of player_revive", $LOG_LEVEL_WARNING)
+			_log("Attack : ExitLoop cause of player_revive", $LOG_LEVEL_WARNING)
 			ExitLoop
 		EndIf
-		If _checkdisconnect() Or _playerdead() Or $KillOrGrab_TimeOut Or ($GameFailed And Not $Execute_TownPortalnew) Then
+
+		If _checkdisconnect() Or _playerdead() Or ($GameFailed And Not $Execute_TownPortalnew) Then
 			$GameFailed = 1
-			_log("Return Cuz : If _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
+			_log("Attack : Return because _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
 			ExitLoop
 		EndIf
 
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
-			_log("First mob skipped since same as last try", $LOG_LEVEL_DEBUG)
+			_log("Attack : First mob skipped since same as last try", $LOG_LEVEL_DEBUG)
 			$skipped += 1
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[1][$i]
 			Next
 		ElseIf $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor Then
 			$skipped += 1
-			_log("Mob was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
+			_log("Attack : Mob was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
@@ -2146,7 +2146,7 @@ Func Attack()
 
 		If ($OldActor = $item[1]) And ($LastResult <> 2 Or $skipped > 4) Then
 			BanActor($item[1])
-			_log("Ban " &  $item[1] & " : Second passage", $LOG_LEVEL_DEBUG)
+			_log("Attack : Ban " &  $item[1] & " : Second passage", $LOG_LEVEL_DEBUG)
 			ExitLoop
 		Else
 			$OldActor = $item[1]
@@ -2727,7 +2727,7 @@ Func _resumegame()
 	Sleep(Random(500, 1000, 1));pacht 8.2e
 	If $Try_ResumeGame > 2 Then
 		Local $wait_aftertoomanytry = Random(($Try_ResumeGame * 2) * 60000, ($Try_ResumeGame * 2) * 120000, 1)
-		_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry, $LOG_LEVEL_VERBOSE)
+		_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry, $LOG_LEVEL_WARNING)
 		Sleep($wait_aftertoomanytry)
 	EndIf
 
@@ -2777,7 +2777,7 @@ EndFunc   ;==>_logind3
 
 Func ReConnect()
 
-   _log("ReConnect", $LOG_LEVEL_VERBOSE)
+   _log("ReConnect", $LOG_LEVEL_WARNING)
 
    Local $Try_Connect = 0
    While _checkdisconnect() And $Try_Connect < 3
