@@ -216,6 +216,21 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
+				   Case 374 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam, Iskatu et Rakanoth
+
+					  For $i = 1 To 26 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  For $i = 1 To 2 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
 				   Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
 
 					  For $i = 1 To 27 Step 1
@@ -281,6 +296,9 @@ Func SelectQuest()
 	EndIf
 	If ($Choix_Act_Run = 373) Then
 		SelectGameType(373, True)
+	EndIf
+	If ($Choix_Act_Run = 374) Then
+		SelectGameType(374, True)
 	EndIf
 	If ($Choix_Act_Run = 411) Then
 		SelectGameType(411, True)

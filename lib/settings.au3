@@ -246,6 +246,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 		Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
 			$SequenceFileAct373 = IniRead($profilFile, "Run info", "SequenceFileAct373", $SequenceFileAct373)
 
+		Case 374 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam, Iskatu et Rakanoth
+			$SequenceFileAct374 = IniRead($profilFile, "Run info", "SequenceFileAct374", $SequenceFileAct374)
+
 		Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
 			$SequenceFileAct411 = IniRead($profilFile, "Run info", "SequenceFileAct411", $SequenceFileAct411)
 
