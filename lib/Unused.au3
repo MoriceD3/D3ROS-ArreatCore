@@ -264,6 +264,52 @@ Func LevelAreaConstants()
 	Global $PvPArena = 0x4d9c
 EndFunc   ;==>LevelAreaConstants
 
+;;--------------------------------------------------------------------------------
+;;      checkFromList()
+;;--------------------------------------------------------------------------------
+Func checkFromList($list, $compare, $delimiter = '|')
+	Local $arrayList = StringSplit($list, $delimiter)
+	For $i = 1 To $arrayList[0]
+		If StringInStr($compare, $arrayList[$i]) Then
+			Return 1
+		EndIf
+	Next
+	Return 0
+EndFunc   ;==>checkFromList
+
+Func Checkendstr_regex($compare, $_NAME)
+	If StringRegExp($_NAME, "(?i)$" & $compare & "$") = 1 Then
+		Return True
+	EndIf
+EndFunc   ;==>Checkendstr_regex
+
+Func Checkstartstr_regex($compare, $_NAME)
+	If StringRegExp($_NAME, "(?i)^" & $compare & "") = 1 Then
+		Return True
+	EndIf
+EndFunc   ;==>Checkstartstr_regex
+
+Func Checkstartlist_regex($compare, $_NAME)
+	Dim $tab_temp = StringSplit($compare, "|", 2)
+	$count = UBound($tab_temp)
+	For $i = 0 To $count - 1
+		If StringRegExp($_NAME, "(?i)^" & $tab_temp[$i] & "") = 1 Then
+			Return True
+		EndIf
+	Next
+	Return False
+EndFunc   ;==>Checkstartlist_regex
+
+Func Checkendlist_regex($compare, $_NAME)
+	Dim $tab_temp = StringSplit($compare, "|", 2)
+	$count = UBound($tab_temp)
+	For $i = 0 To $count - 1
+		If StringRegExp($_NAME, "(?i)" & $tab_temp[$i] & "$") = 1 Then
+			Return True
+		EndIf
+	Next
+	Return False
+EndFunc   ;==>Checkendlist_regex
 ;SetItemLootLevel()
 ;
 ;Will set the items quality to be looted

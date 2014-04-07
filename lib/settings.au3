@@ -368,6 +368,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	LoadTableFromString($Table_Monster, $List_Monster)
 	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
 	LoadTableFromString($Table_BanItemStartName, $List_BanItemStartName)
+	LoadTableFromString($Table_BanItemACDCheckList, $List_BanItemACDCheckList)
 	LoadTableFromString($Table_Decor, $List_Decor)
 	LoadTableFromString($Table_BanAffix, $List_BanAffix)
 	LoadTableFromString($Table_PriorityMonster, $List_PriorityMonster)
@@ -376,8 +377,6 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 EndFunc   ;==>LoadConfigs
 
 Func InitSkillHeros($skillHeros)
-	;$grabListFile = IniRead($profilFile, "Run info", "grabListFile", $grabListFile)
-
 	; pre-buff
 	$Dummy = IniRead($skillHeros, "Run info", "SpellPreBuff1", $PreBuff1)
 	$PreBuff1 = Trim(StringLower($Dummy)) == "true"
@@ -395,7 +394,6 @@ Func InitSkillHeros($skillHeros)
 	$PreBuff4 = Trim(StringLower($Dummy)) == "true"
 	$delaiBuff4 = IniRead($skillHeros, "Run info", "SpellPreBuffDelay4", $delaiBuff4)
 
-
 	;; Spells
 	$Skill_conf1[0] = IniRead($skillHeros, "Run info", "SpellOnLeft", $Skill_conf1[0])
 	$Skill_conf1[1] = IniRead($skillHeros, "Run info", "SpellDelayLeft", $Skill_conf1[1])
@@ -404,14 +402,12 @@ Func InitSkillHeros($skillHeros)
 	$Skill_conf1[4] = IniRead($skillHeros, "Run info", "SpellLifeLeft", $Skill_conf1[4])
 	$Skill_conf1[5] = IniRead($skillHeros, "Run info", "SpellDistanceLeft", $Skill_conf1[5])
 
-
 	$Skill_conf2[0] = IniRead($skillHeros, "Run info", "SpellOnRight", $Skill_conf2[0])
 	$Skill_conf2[1] = IniRead($skillHeros, "Run info", "SpellDelayRight", $Skill_conf2[1])
 	$Skill_conf2[2] = IniRead($skillHeros, "Run info", "SpellTypeRight", $Skill_conf2[2])
 	$Skill_conf2[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeedsRight", $Skill_conf2[3])
 	$Skill_conf2[4] = IniRead($skillHeros, "Run info", "SpellLifeRight", $Skill_conf2[4])
 	$Skill_conf2[5] = IniRead($skillHeros, "Run info", "SpellDistanceRight", $Skill_conf2[5])
-
 
 	$Skill_conf3[0] = IniRead($skillHeros, "Run info", "SpellOn1", $Skill_conf3[0])
 	$Skill_conf3[1] = IniRead($skillHeros, "Run info", "SpellDelay1", $Skill_conf3[1])
@@ -420,14 +416,12 @@ Func InitSkillHeros($skillHeros)
 	$Skill_conf3[4] = IniRead($skillHeros, "Run info", "SpellLife1", $Skill_conf3[4])
 	$Skill_conf3[5] = IniRead($skillHeros, "Run info", "SpellDistance1", $Skill_conf3[5])
 
-
 	$Skill_conf4[0] = IniRead($skillHeros, "Run info", "SpellOn2", $Skill_conf4[0])
 	$Skill_conf4[1] = IniRead($skillHeros, "Run info", "SpellDelay2", $Skill_conf4[1])
 	$Skill_conf4[2] = IniRead($skillHeros, "Run info", "SpellType2", $Skill_conf4[2])
 	$Skill_conf4[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds2", $Skill_conf4[3])
 	$Skill_conf4[4] = IniRead($skillHeros, "Run info", "SpellLife2", $Skill_conf4[4])
 	$Skill_conf4[5] = IniRead($skillHeros, "Run info", "SpellDistance2", $Skill_conf4[5])
-
 
 	$Skill_conf5[0] = IniRead($skillHeros, "Run info", "SpellOn3", $Skill_conf5[0])
 	$Skill_conf5[1] = IniRead($skillHeros, "Run info", "SpellDelay3", $Skill_conf5[1])
@@ -436,14 +430,12 @@ Func InitSkillHeros($skillHeros)
 	$Skill_conf5[4] = IniRead($skillHeros, "Run info", "SpellLife3", $Skill_conf5[4])
 	$Skill_conf5[5] = IniRead($skillHeros, "Run info", "SpellDistance3", $Skill_conf5[5])
 
-
 	$Skill_conf6[0] = IniRead($skillHeros, "Run info", "SpellOn4", $Skill_conf6[0])
 	$Skill_conf6[1] = IniRead($skillHeros, "Run info", "SpellDelay4", $Skill_conf6[1])
 	$Skill_conf6[2] = IniRead($skillHeros, "Run info", "SpellType4", $Skill_conf6[2])
 	$Skill_conf6[3] = IniRead($skillHeros, "Run info", "SpellEnergyNeeds4", $Skill_conf6[3])
 	$Skill_conf6[4] = IniRead($skillHeros, "Run info", "SpellLife4", $Skill_conf6[4])
 	$Skill_conf6[5] = IniRead($skillHeros, "Run info", "SpellDistance4", $Skill_conf6[5])
-
 
 	; Routines
 	$LifeForPotion = IniRead($skillHeros, "Run info", "LifeForPotion", $LifeForPotion)
@@ -502,14 +494,6 @@ Func InitSkillHeros($skillHeros)
 	$life_proj = IniRead($skillHeros, "Run info", "Life_Proj", $life_proj)
 	$life_spore = IniRead($skillHeros, "Run info", "Life_Spore", $life_spore)
 
-
-;~ 	$MaximumHatred = IniRead($profilFile, "Run info", "MaximumHatred", $MaximumHatred)
-;~ 	$MaximumDiscipline = IniRead($profilFile, "Run info", "MaximumDiscipline", $MaximumDiscipline)
-;~ 	$MaximumSpirit = IniRead($profilFile, "Run info", "MaximumSpirit", $MaximumSpirit)
-;~ 	$MaximumFury = IniRead($profilFile, "Run info", "MaximumFury", $MaximumFury)
-;~ 	$MaximumArcane = IniRead($profilFile, "Run info", "MaximumArcane", $MaximumArcane)
-;~ 	$MaximumMana = IniRead($profilFile, "Run info", "MaximumMana", $MaximumMana)
-
 	$Dummy = StringLower(IniRead($skillHeros, "Run info", "UsePath", $UsePath))
 	$UsePath = Trim(StringLower($Dummy)) == "true"
 	$Dummy = StringLower(IniRead($skillHeros, "Run info", "ResActivated", $ResActivated))
@@ -521,33 +505,11 @@ Func InitSkillHeros($skillHeros)
 	$HCSecurity = Trim(StringLower($Dummy)) == "true"
 	$MinHCLife = IniRead($skillHeros, "Run info", "MinHCLife", $MinHCLife)
 
-	#cs
-	If $RightClickSpellEnergy <> "" And $RightClickSpellEnergy <> "discipline" And $RightClickSpellEnergy <> "hatred" And $RightClickSpellEnergy <> "spirit" And $RightClickSpellEnergy <> "arcane" And $RightClickSpellEnergy <> "mana" And $RightClickSpellEnergy <> "fury" Then
-		MsgBox(0, "Erreur non de variable", "La variable '$RightClickSpellEnergy' initialisé dans le setting.ini est mal écrite")
-		Terminate()
-	EndIf
-	If $EnergySpell1 <> "" And $EnergySpell1 <> "discipline" And $EnergySpell1 <> "hatred" And $EnergySpell1 <> "spirit" And $EnergySpell1 <> "arcane" And $EnergySpell1 <> "mana" And $EnergySpell1 <> "fury" Then
-		MsgBox(0, "Erreur non de variable", "La variable '$EnergySpell1' initialisé dans le setting.ini est mal écrite")
-		Terminate()
-	EndIf
-	If $EnergySpell2 <> "" And $EnergySpell2 <> "discipline" And $EnergySpell2 <> "hatred" And $EnergySpell2 <> "spirit" And $EnergySpell2 <> "arcane" And $EnergySpell2 <> "mana" And $EnergySpell2 <> "fury" Then
-		MsgBox(0, "Erreur non de variable", "La variable '$EnergySpell2' initialisé dans le setting.ini est mal écrite")
-		Terminate()
-	EndIf
-	If $EnergySpell3 <> "" And $EnergySpell3 <> "discipline" And $EnergySpell3 <> "hatred" And $EnergySpell3 <> "spirit" And $EnergySpell3 <> "arcane" And $EnergySpell3 <> "mana" And $EnergySpell3 <> "fury" Then
-		MsgBox(0, "Erreur non de variable", "La variable '$EnergySpell3' initialisé dans le setting.ini est mal écrite")
-		Terminate()
-	EndIf
-	If $EnergySpell4 <> "" And $EnergySpell4 <> "discipline" And $EnergySpell4 <> "hatred" And $EnergySpell4 <> "spirit" And $EnergySpell4 <> "arcane" And $EnergySpell4 <> "mana" And $EnergySpell4 <> "fury" Then
-		MsgBox(0, "Erreur non de variable", "La variable '$EnergySpell4' initialisé dans le setting.ini est mal écrite")
-		Terminate()
-	EndIf
-	#ce
 EndFunc   ;==>InitSkillHeros
 
  Func Init_GrabListTab()
 
-	Dim $tab_temp = StringSplit($grablist, "|", 2)
+	Dim $tab_temp = StringSplit($List_grablist, "|", 2)
 
 	Local $rules_ilvl = '(?i)\[ilvl:([0-9]{1,2})\]'
 	Local $rules_quality = '(?i)\[q:([0-9]{1,2})\]'
@@ -632,7 +594,6 @@ EndFunc   ;==>Init_GrabListTab
 
 Func Init_grablistFile($grabListPath = "grablist/")
 	Dim $txttoarray[1]
-	;local $load_file = ""
 	Local $compt_line = 0
 
 	Local $file = FileOpen($grabListPath &  $grabListFile, 0)
@@ -655,31 +616,28 @@ Func Init_grablistFile($grabListPath = "grablist/")
 
 	FileClose($file)
 
-	Global $grablist = ""
+	$List_grablist = ""
 	Local $compt = 0
 
 	For $i = 0 To UBound($txttoarray) - 1
 		If StringInStr($txttoarray[$i], "=", 0) Then
 			$var_temp = StringSplit($txttoarray[$i], "=", 2)
-
 			$var_temp[0] = trim($var_temp[0])
-
 			ReDim $tab_grablist[$compt + 1][2]
-
 			$tab_grablist[$compt][0] = $var_temp[0]
 			$tab_grablist[$compt][1] = $var_temp[1]
-
 			Assign($var_temp[0], $var_temp[1], 2)
 			$compt += 1
 		Else
-
-			If $grablist = "" Then
-				$grablist = $txttoarray[$i]
+			If $List_grablist = "" Then
+				$List_grablist = $txttoarray[$i]
 			Else
-				$grablist = $grablist & "|" & $txttoarray[$i]
+				$List_grablist = $List_grablist & "|" & $txttoarray[$i]
 			EndIf
-
 		EndIf
 	Next
+
+	$temp = $List_grablist
+	LoadTableFromString($Table_Grablist, $temp)
 
 EndFunc   ;==>Init_grablistFile

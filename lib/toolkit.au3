@@ -2086,7 +2086,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 									;EndIf
 							Else
 									If Not IsItemInTable($Table_Monster, $item[1])Then
-											_log("Ban Item -> " & $item[1] & " Reason checkFromList To False (With affix)")
+											_log("Ban Item -> " & $item[1] & " Reason Table_Monster To False (With affix)")
 											BanActor($item[1])
 											;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
 
@@ -2129,7 +2129,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
                         ;EndIf
                 Else
                         If Not IsItemInTable($Table_Monster, $item[1]) Then
-								_log("Ban Item -> " & $item[1] & " Reason checkFromList To False")
+								_log("Ban Item -> " & $item[1] & " Reason Table_Monster To False")
 								BanActor($item[1])
 
 								;$IgnoreItemList = $IgnoreItemList & $item[1] & "-"
@@ -2490,13 +2490,12 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 	If IsItemInTable($Table_Potions, $_NAME) Then
 		_log("CheckItem : Potion")
 		Return "Inventory"
-	ElseIf checkFromList($grablist, $_NAME) Then
+	ElseIf IsItemInTable($Table_grablist, $_NAME) Then
 		_log("CheckItem : In grablist")
 		Return "Stash"
 	EndIf
 
-
-	If Not Checkstartlist_regex($Ban_ItemACDCheckList, $_NAME) Then
+	If Not IsItemStartInTable($Table_BanItemACDCheckList, $_NAME) Then
 		$ACD = GetACDOffsetByACDGUID($_GUID)
 		$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
 		$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
@@ -2541,11 +2540,6 @@ EndFunc   ;==>CheckItem
 
 Func InventoryMove($col = 0, $row = 0);pacht 8.2e
 
-	;$Coords = UiRatio(530 + ($col * 27), 338 + ($row * 27))
-	;MouseMove($Coords[0], $Coords[1], 2)
-	;MouseClick("right", $XCoordinate, $YCoordinate)
-
-
 	$result = GetOfsFastUI("Root.NormalLayer.inventory_dialog_mainPage.timer slot 0 x0 y0", 1509)
 	Dim $Point = GetPositionUI($result)
 	Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
@@ -2561,72 +2555,17 @@ Func InventoryMove($col = 0, $row = 0);pacht 8.2e
 
 	MouseMove($XCoordinate, $YCoordinate, 2)
 
-
 EndFunc   ;==>InventoryMove
 
 ;;--------------------------------------------------------------------------------
 ;;      checkForPotion()
 ;;--------------------------------------------------------------------------------
 Func checkForPotion()
-
-	$life = GetLifep()
-	$diff = TimerDiff($timeforpotion)
-	If $life < $LifeForPotion / 100 And $diff > 1500 Then
+	If GetLifep() < $LifeForPotion / 100 And TimerDiff($timeforpotion) > 1500 Then
 		Send($KeyPotions)
 		$timeforpotion = TimerInit()
 	EndIf
-
 EndFunc   ;==>checkForPotion
-
-;;--------------------------------------------------------------------------------
-;;      checkFromList()
-;;--------------------------------------------------------------------------------
-Func checkFromList($list, $compare, $delimiter = '|')
-	Local $arrayList = StringSplit($list, $delimiter)
-	For $i = 1 To $arrayList[0]
-		If StringInStr($compare, $arrayList[$i]) Then
-			Return 1
-		EndIf
-	Next
-	Return 0
-EndFunc   ;==>checkFromList
-
-
-Func Checkstartlist_regex($compare, $_NAME)
-	Dim $tab_temp = StringSplit($compare, "|", 2)
-	$count = UBound($tab_temp)
-	For $i = 0 To $count - 1
-		If StringRegExp($_NAME, "(?i)^" & $tab_temp[$i] & "") = 1 Then
-			Return True
-		EndIf
-	Next
-	Return False
-EndFunc   ;==>Checkstartlist_regex
-
-Func Checkendlist_regex($compare, $_NAME)
-	Dim $tab_temp = StringSplit($compare, "|", 2)
-	$count = UBound($tab_temp)
-	For $i = 0 To $count - 1
-		If StringRegExp($_NAME, "(?i)" & $tab_temp[$i] & "$") = 1 Then
-			Return True
-		EndIf
-	Next
-	Return False
-EndFunc   ;==>Checkendlist_regex
-
-
-Func Checkendstr_regex($compare, $_NAME)
-	If StringRegExp($_NAME, "(?i)$" & $compare & "$") = 1 Then
-		Return True
-	EndIf
-EndFunc   ;==>Checkendstr_regex
-
-Func Checkstartstr_regex($compare, $_NAME)
-	If StringRegExp($_NAME, "(?i)^" & $compare & "") = 1 Then
-		Return True
-	EndIf
-EndFunc   ;==>Checkstartstr_regex
-
 
 Func checkFromTable($table, $compare, $quality)
 	For $i = 0 To UBound($table) - 1

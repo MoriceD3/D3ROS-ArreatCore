@@ -24,7 +24,7 @@ Global $Byte_Boss_TpDeny[2]
 Global $Byte_NoItem_Identify[2]
 
 ;Variables gestion grablist
-Global $GrabListTab, $grablist
+Global $GrabListTab, $List_grablist
 
 ; Variable globale pour Automatisation des séquences
 Global $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3,$SequenceFileAct3PtSauve
@@ -137,22 +137,23 @@ Global $fichierlog  = "log-" & @YEAR & "_" & @MDAY & "_" & @MON & "_" & @HOUR & 
 Global $fichierstat = "stat_" & @YEAR & "_" & @MON & "_" & @MDAY & "-" & @HOUR & "h" & @MIN & ".txt"
 
 ; Listes interne
-Global $Ban_endstrItemList     = "_projectile"
-Global $Ban_ItemACDCheckList   = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
-Global $List_BanItemStartName  = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A"
+Global $List_BanItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
+Global $List_BanItemStartName    = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A"
 
 ; Tables de gestions des listes
-Global $Table_Coffre 		   = [0]
-Global $Table_Rack 			   = [0]
-Global $Table_BanMonster  	   = [0]
-Global $Table_Monster  		   = [0]
-Global $Table_Decor  		   = [0]
-Global $Table_BanAffix         = [0]
-Global $Table_SpecialMonster   = [0]
-Global $Table_BanItemStartName = [0]
-Global $Table_BannedActors 	   = [0]
-Global $Table_PriorityMonster  = [0]
-Global $Table_Potions 		   = [0]
+Global $Table_Coffre 		      = [0]
+Global $Table_Rack 			      = [0]
+Global $Table_BanMonster  	      = [0]
+Global $Table_Monster  		      = [0]
+Global $Table_Decor  		      = [0]
+Global $Table_BanAffix            = [0]
+Global $Table_SpecialMonster      = [0]
+Global $Table_BanItemStartName    = [0]
+Global $Table_BanItemACDCheckList = [0]
+Global $Table_BannedActors 	      = [0]
+Global $Table_PriorityMonster     = [0]
+Global $Table_Potions 		      = [0]
+Global $Table_Grablist 		      = [0]
 
 ;statistique
 Global $CheckTakeShrineTaken = 0
