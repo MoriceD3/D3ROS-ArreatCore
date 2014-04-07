@@ -5336,6 +5336,7 @@ EndFunc
 
 Func LoadTableFromString(ByRef $Table, ByRef $string)
 	$Table = StringSplit($string, "|")
+	$string = ""
 EndFunc
 
 Func AddItemToTable(ByRef $table, $item)
