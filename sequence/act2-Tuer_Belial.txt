@@ -95,14 +95,15 @@ sleep=500
 closewindows()
 sleep=500
 closewindows()
-sleep=3500
+sleep=5000
 endsave()
 InteractBossPortal=Boss_Portal_Belial
-sleep=1500
+sleep=3000
 closewindows()
 sleep=500
 closeconfirm()
-sleep=1000
+sleep=3000
+endsave()
 offsetlist()
 usepath=false
 specialml=Belial
@@ -148,7 +149,8 @@ sleep=1000
 804.330139160156, 794.150756835938, 0.100000701844692,1,25
 sleep=1000
 closewindows()
-sleep=9500
+sleep=10000
+endsave()
 specialml=Belial|a2dun_Cald_Belial_Room_A_Breakable_section_|a2dun_Cald_Belial_Room_A_Breakable_phys_|a2dun_Cald_Belial_Room_A_Breakable_Center_1st_Hit|a2dun_Cald_Belial_Room_A_Breakable_Center_2nd_Hit
 798.685485839844, 796.992309570313, 0.100000955164433,1,25
 798.685485839844, 796.992309570313, 0.100000955164433,1,25
@@ -163,11 +165,11 @@ specialml=Belial|a2dun_Cald_Belial_Room_A_Breakable_section_|a2dun_Cald_Belial_R
 804.330139160156, 794.150756835938, 0.100000701844692,1,25
 sleep=5000
 InteractByActorName=Belial_BSS_soul
-sleep=1000
+sleep=3000
 closewindows()
 sleep=500
 closeconfirm()
-sleep=1000
+sleep=2000
 817.446655273438, 792.63134765625, 0.100000068545341,1,25
 809.83203125, 803.097106933594, 0.100000061094761,1,25
 809.83203125, 803.097106933594, 0.100000061094761,1,25

@@ -228,6 +228,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			$SequenceFileAct3 = IniRead($profilFile, "Run info", "SequenceFileAct3", $SequenceFileAct3)
 			$SequenceFileAct3PtSauve = IniRead($profilFile, "Run info", "SequenceFileAct3PtSauve", $SequenceFileAct3PtSauve)
 
+		Case 222 ; Act 2 quête 2 sous quête 2 --> tuez Lieutenent Vachem
+			$SequenceFileAct222 = IniRead($profilFile, "Run info", "SequenceFileAct222", $SequenceFileAct222)
+
 		Case 232 ; Act 2 quête 3 sous quête 2 --> tuez Maghda
 			$SequenceFileAct232 = IniRead($profilFile, "Run info", "SequenceFileAct232", $SequenceFileAct232)
 
@@ -249,8 +252,11 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 		Case 374 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam, Iskatu et Rakanoth
 			$SequenceFileAct374 = IniRead($profilFile, "Run info", "SequenceFileAct374", $SequenceFileAct374)
 
-		Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
+		Case 411 ; Act 4 quête 1 sous quête 1 --> Terrasez Iskatu et Rakanoth
 			$SequenceFileAct411 = IniRead($profilFile, "Run info", "SequenceFileAct411", $SequenceFileAct411)
+
+		Case 442 ; Act 4 quête 4 sous quête 2 --> Terrasez Diablo
+			$SequenceFileAct442 = IniRead($profilFile, "Run info", "SequenceFileAct442", $SequenceFileAct442)
 
 		Case -1
 			$SequenceFileAct1 = IniRead($profilFile, "Run info", "SequenceFileAct1", $SequenceFileAct1)

@@ -96,11 +96,11 @@ specialml=Azmodan
 427.061798095703, 408.313720703125, 0.10000067949295,1,25
 sleep=5500
 InteractByActorName=Azmodan_BSS_soul
-sleep=500
+sleep=1500
 closewindows()
 sleep=500
 closeconfirm()
-sleep=1000
+sleep=1500
 398.997680664063, 420.582092285156, 0.100003816187382,1,25
 395.444519042969, 402.178100585938, 0.465489625930786,1,25
 387.29736328125, 379.078552246094, 0.519501209259033,1,25
@@ -114,8 +114,9 @@ specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|L
 sleep=2000
 _townportal()
 sleep=1000
+endsave()
 usepath=false
-sleep=1000
+sleep=2000
 InteractByActorName=a3_rampart_guard_captain_Alt
 sleep=500
 closewindows()
@@ -151,7 +152,7 @@ sleep=500
 closewindows()
 sleep=500
 closeconfirm()
-sleep=1000
+sleep=5000
 offsetlist()
 usepath=false
 152.705184936523, 101.424530029297, 25.1000003814697,1,25
@@ -160,9 +161,9 @@ usepath=false
 125.907043457031, 100.926078796387, 25.1000022888184,1,25
 sleep=500
 InteractByActorName=event47_BigPortal
-sleep=500
+sleep=1000
 closeconfirm()
-sleep=2000
+sleep=3000
 offsetlist()
 usepath=false
 353.159454345703, 865.750244140625, 0.100000008940697,1,25

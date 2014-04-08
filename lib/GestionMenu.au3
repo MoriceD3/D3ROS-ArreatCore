@@ -22,6 +22,8 @@ Func SelectGameType($SelectGameType, $auto)
 				$File_Sequence = $SequenceFileAct2
 			Case 3
 				$File_Sequence = $SequenceFileAct3PtSauve
+			Case 222
+				$File_Sequence = $SequenceFileAct222
 			Case 232
 				$File_Sequence = $SequenceFileAct232
 			Case 283
@@ -34,8 +36,12 @@ Func SelectGameType($SelectGameType, $auto)
 				$File_Sequence = $SequenceFileAct362
 			Case 373
 				$File_Sequence = $SequenceFileAct373
+			Case 374
+				$File_Sequence = $SequenceFileAct374
 			Case 411
 			    $File_Sequence = $SequenceFileAct411
+			Case 442
+			    $File_Sequence = $SequenceFileAct442
 		EndSwitch
 	EndIf
 
@@ -72,7 +78,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  Sleep(Random(600, 800, 1))
 
 			  ;valeur de test ok 27 ... mini pour balayer toutes les quêtes 26
-			  For $i = 1 To Random(27, 28, 1) Step 1
+			  For $i = 1 To Random(40, 41, 1) Step 1
 				 MouseWheel("up")
 				 ;Valeur de test ok 100
 				 Sleep(Random(100, 150, 1))
@@ -129,6 +135,21 @@ Func SelectGameType($SelectGameType, $auto)
 						 Sleep(Random(100, 150, 1))
 					  Next
 					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
+				   Case 222;Act 2 quête 2 sous quête 2 --> Tuer Lieutenent Vachem
+
+					  For $i = 1 To 10 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					  For $i = 1 To 2 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, -45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 				   Case 232;Act 2 quête 3 sous quête 2 --> Tuer Maghda
 
@@ -231,7 +252,7 @@ Func SelectGameType($SelectGameType, $auto)
 					  Next
 					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
-				   Case 411 ; Act 4 quête  sous quête 1 --> Terrasez Iskatu et Rakanoth
+				   Case 411 ; Act 4 quête 1 sous quête 1 --> Terrasez Iskatu et Rakanoth
 
 					  For $i = 1 To 27 Step 1
 						 MouseWheel("down")
@@ -241,6 +262,22 @@ Func SelectGameType($SelectGameType, $auto)
 					  Sleep(Random(600, 800, 1))
 
 					  ClickUIMode(0, 0, 90, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+
+				   Case 442 ; Act 4 quête 4 sous quête 2 --> Terrasez Diablo
+
+					  For $i = 1 To 27 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+					  ClickUIMode(0, 0, 215, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  Sleep(Random(600, 800, 1))
+
+					   For $i = 1 To 1 Step 1
+						 MouseWheel("down")
+						 Sleep(Random(100, 150, 1))
+					  Next
+
+					  ClickUIMode(0, 0, 230, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 			  EndSwitch
 
@@ -279,6 +316,9 @@ Func SelectQuest()
 			$File_Sequence = $SequenceFileAct3
 		EndIf
 	EndIf
+	If ($Choix_Act_Run = 222) Then
+		SelectGameType(222, True)
+	EndIf
 	If ($Choix_Act_Run = 232) Then
 		SelectGameType(232, True)
 	EndIf
@@ -302,6 +342,9 @@ Func SelectQuest()
 	EndIf
 	If ($Choix_Act_Run = 411) Then
 		SelectGameType(411, True)
+    EndIf
+	If ($Choix_Act_Run = 442) Then
+		SelectGameType(442, True)
 	EndIf
 
 	;Selection de la quete en automatique et enchainement des actes

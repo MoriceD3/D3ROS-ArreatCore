@@ -32,7 +32,9 @@ Global $Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog
 Global $NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
 Global $ChainageActe[6][3]=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea
-Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct374,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct411,$SequenceFileAct299
+Global $SequenceFileAct222,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct299
+Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct374
+Global $SequenceFileAct411,$SequenceFileAct442
 
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
 Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
@@ -127,8 +129,8 @@ Global $timedifmaxgamelength = 0
 Global $GameOverTime         = False
 Global $Paused 			     = False
 
-; Ne pas grab lors d'une attaque
-Global $grabskip = 0
+; Ne pas grab lors d'une attaque quand inventaire est full
+Global $Inventory_Is_Full = 0
 
 ; Variables pour log & debug
 Global $DebugMessage
@@ -137,7 +139,7 @@ Global $fichierstat = "stat_" & @YEAR & "_" & @MON & "_" & @MDAY & "-" & @HOUR &
 
 ; Listes interne
 Global $List_BanItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
-Global $List_BanItemStartName    = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A"
+Global $List_BanItemStartName    = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A|Azmodan_BSS_soul|Belial_BSS_soul"
 
 ; Tables de gestions des listes
 Global $Table_Coffre 		      = [0]

@@ -410,7 +410,7 @@ Func sequence()
 						$array_sequence = ArrayInit($array_sequence)
 						_log("Enclenchement d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						If Not _checkdisconnect() Then
-						   If Not _TownPortalnew(25) Then
+						   If Not _TownPortalnew() Then
 							  $GameFailed = 1
 							  Return False
 						   EndIf
