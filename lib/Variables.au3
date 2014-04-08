@@ -36,6 +36,7 @@ Global $ChainageActeEnCour[3],$ColonneEnCour,$NbreRunChangSeqAlea
 Global $SequenceFileAct222,$SequenceFileAct232,$SequenceFileAct283,$SequenceFileAct299
 Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFileAct374
 Global $SequenceFileAct411,$SequenceFileAct442
+Global $SequenceFileAdventure
 
 ;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
 Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList

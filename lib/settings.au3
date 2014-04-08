@@ -215,6 +215,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Choix_Act_Run = IniRead($profilFile, "Run info", "Choix_Act_Run", $Choix_Act_Run)
 
 	Switch $Choix_Act_Run
+		Case -2
+			$SequenceFileAdventure = IniRead($profilFile, "Run info", "SequenceFileAdventure", $SequenceFileAdventure)
+
 		Case 0
 			$File_Sequence = IniRead($profilFile, "Run info", "SequenceFile", $File_Sequence)
 

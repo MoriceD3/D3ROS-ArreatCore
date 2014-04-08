@@ -16,6 +16,8 @@ Func SelectGameType($SelectGameType, $auto)
 	;Automatisation des sequences sur enchainement de run
 	If $auto Then
 		Switch $SelectGameType
+			Case -2
+				$File_Sequence = $SequenceFileAdventure
 			Case 1
 				$File_Sequence = $SequenceFileAct1
 			Case 2
@@ -65,6 +67,19 @@ Func SelectGameType($SelectGameType, $auto)
 		   If ($Totalruns = 1) And ($TypedeBot = 1) Then
 			  SelectDifficultyMonsterPower()
 		   EndIf
+
+			If $SelectGameType <> -2 Then
+				_log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
+		   		ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
+		   		Sleep(1000)
+			Else
+				_log("Passage en mode Aventure", $LOG_LEVEL_DEBUG)
+				ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
+			  	Sleep(Random(600, 800, 1))
+	  			ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
+				Sleep(Random(600, 800, 1))
+				Return
+			EndIf
 
 		   _Log("Choose a New Quest")
 		   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton");_randomclick(395, 371) ; tap changer
@@ -293,7 +308,7 @@ Func SelectGameType($SelectGameType, $auto)
 				 Send("{ENTER}")
 			  EndIf
 			  Sleep(Random(600, 800, 1))
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose");_randomclick(293, 482) ; tap sauvegarder et fermer
+			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809);_randomclick(293, 482) ; tap sauvegarder et fermer
 			  Sleep(Random(600, 800, 1))
 		  EndIf
 	   EndIf
@@ -302,6 +317,9 @@ EndFunc   ;==>SelectGameType
 
 ;Selection de la quete en automatique
 Func SelectQuest()
+	If ($Choix_Act_Run = -2) And ($Totalruns = 1) Then
+		SelectGameType(-2, True)
+	EndIf
 	If ($Choix_Act_Run = 1) And ($Totalruns = 1) Then
 		SelectGameType(1, True)
 	EndIf

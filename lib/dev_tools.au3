@@ -264,8 +264,12 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 
 ;_log("Finish")
 
-_log("Bounty : " & fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward",1,85))
+;_log("Bounty : " & fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward",1,85))
 ;ListUi(1)
+
+ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton" , 1581)
+Sleep(5000)
+ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton" , 199)
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
