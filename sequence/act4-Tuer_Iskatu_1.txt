@@ -6,13 +6,15 @@ revive=false
 sleep=500
 355.404510498047, 715.53271484375, -14.7000007629395,1,25
 356.774627685547, 691.826538085938, -14.7000007629395,1,25
-Sleep=500
+Sleep=1500
 closewindows()
 sleep=500
 closewindows()
 sleep=500
 closewindows()
-sleep=1500
+sleep=500
+closewindows()
+sleep=3000
 InteractByActorName=Tyrael
 sleep=500
 closewindows()
@@ -30,6 +32,7 @@ sleep=500
 354.609527587891, 681.864807128906, -14.7000007629395,1,25
 354.822143554688, 665.88525390625, -13.5165061950684,1,25
 InteractBossPortal=Boss_Portal_1000MonsterFight
+endsave()
 sleep=1000
 closewindows()
 sleep=500
@@ -118,7 +121,7 @@ sleep=500
 323.091369628906, 333.684478759766, 0.100000485777855,1,25
 345.292785644531, 327.720458984375, 0.100000448524952,1,25
 355.169738769531, 323.151672363281, 0.450847029685974,1,25
-sleep=500
+sleep=1500
 InteractByActorName=Fate
 sleep=1000
 closewindows()
@@ -130,7 +133,10 @@ sleep=1000
 357.018920898438, 319.118957519531, 1.49171483516693,1,25
 357.018920898438, 319.118957519531, 1.49171483516693,1,25
 355.073516845703, 295.09765625, 3.15568923950195,1,25
-InteractByActorName=g_Portal_ArchTall_Blue
+endsave()
+specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
+sleep=500
+InteractBossPortal=g_Portal_ArchTall_Blue
 sleep=1000
 offsetlist()
 sleep=500

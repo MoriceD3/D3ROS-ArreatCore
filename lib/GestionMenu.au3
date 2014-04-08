@@ -34,6 +34,8 @@ Func SelectGameType($SelectGameType, $auto)
 				$File_Sequence = $SequenceFileAct362
 			Case 373
 				$File_Sequence = $SequenceFileAct373
+			Case 374
+				$File_Sequence = $SequenceFileAct374
 			Case 411
 			    $File_Sequence = $SequenceFileAct411
 		EndSwitch

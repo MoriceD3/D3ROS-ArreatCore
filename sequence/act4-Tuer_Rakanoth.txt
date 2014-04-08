@@ -131,7 +131,8 @@ sleep=500
 972.951171875, 315.952972412109, 15.1000022888184,1,25
 979.398010253906, 301.769378662109, 17.1091156005859,1,25
 InteractBossPortal=Boss_Portal_Despair
-sleep=1000
+sleep=2000
+endsave()
 offsetlist()
 usepath=false
 specialml=Despair
@@ -175,9 +176,9 @@ sleep=500
 366.069763183594, 377.331024169922, 0.114986449480057,1,25
 360.874633789063, 346.282135009766, 0.114986576139927,1,25
 361.450439453125, 322.829528808594, 0.114988014101982,1,25
-sleep=1000
+sleep=2000
 InteractByActorName=Hope
-sleep=5000
+sleep=7000
 InteractByActorName=Hope
 sleep=500
 closewindows()
@@ -190,3 +191,7 @@ closewindows()
 sleep=2000
 send={ESCAPE}
 _Townportal()
+sleep=500
+endsave()
+specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
+sleep=500
