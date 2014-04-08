@@ -139,23 +139,13 @@ Func UsePath(ByRef $path)
 		EndIf
 		$Coords = FromD3toScreenCoords($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 
-		$Coords_RndX = Random($Coords[0] - 20, $Coords[0] + 20)
-		$Coords_RndY = Random($Coords[1] - 20, $Coords[1] + 20)
+		dim $Coords_Rnd[2]
+		$Coords_Rnd[0] = Random($Coords[0] - 20, $Coords[0] + 20)
+		$Coords_Rnd[1] = Random($Coords[1] - 20, $Coords[1] + 15)
 
-		If $Coords_RndX < 40 Then
-			$Coords_RndX = 40
-		ElseIf $Coords_RndX > 790 Then
-			$Coords_RndX = 790
-		EndIf
+		$Coords_Rnd = Checkclickable($Coords_Rnd)
 
-		If $Coords_RndY < 10 Then
-			$Coords_RndY = 10
-		ElseIf $Coords_RndY > 540 Then
-			$Coords_RndY = 540
-		EndIf
-
-
-		MouseMove($Coords_RndX, $Coords_RndY, 3) ;little randomisation
+		MouseMove($Coords_Rnd[0], $Coords_Rnd[1], 3) ;little randomisation
 		MouseDown($MouseMoveClick)
 
 	WEnd
