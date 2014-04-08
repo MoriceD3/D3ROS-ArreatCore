@@ -129,8 +129,8 @@ Global $timedifmaxgamelength = 0
 Global $GameOverTime         = False
 Global $Paused 			     = False
 
-; Ne pas grab lors d'une attaque
-Global $grabskip = 0
+; Ne pas grab lors d'une attaque quand inventaire est full
+Global $Inventory_Is_Full = 0
 
 ; Variables pour log & debug
 Global $DebugMessage
