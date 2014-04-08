@@ -2233,7 +2233,7 @@ Func Attack()
 
 		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 
-		If $shouldWait And $test_iterateallobjectslist = False And ($LastResult = 1 Or ($wasLoot And $lastResult = 2)) Then
+		If $WaitForLoot And $shouldWait And $test_iterateallobjectslist = False And ($LastResult = 1 Or ($wasLoot And $lastResult = 2)) Then
 			If $LastResult = 1 Then
   				_log("Attack : No more items and last result = 1 with shouldWait -> Waiting 1 sec and checking for loots")
 				Sleep(1000)

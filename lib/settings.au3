@@ -16,7 +16,6 @@ Global $Skill4[11]
 Global $Skill5[11]
 Global $Skill6[11]
 
-
 Global $Skill_conf1[6]
 Global $Skill_conf2[6]
 Global $Skill_conf3[6]
@@ -24,12 +23,12 @@ Global $Skill_conf4[6]
 Global $Skill_conf5[6]
 Global $Skill_conf6[6]
 
-
 Global $MonsterTri = True
 Global $MonsterRefresh = True
 Global $ItemRefresh = True
 Global $MonsterPriority = False
 Global $Unidentified = False
+Global $WaitForLoot = True
 ; gestion items
 Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
@@ -286,6 +285,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "ChaseElite", $ChaseElite)
 	$ChaseElite = Trim(StringLower($Dummy)) == "true"
 
+	$Dummy = IniRead($profilFile, "Run info", "WaitForLoot", $WaitForLoot)
+	$WaitForLoot = Trim(StringLower($Dummy)) == "true"
 
 	$Dummy = IniRead($profilFile, "Run info", "Follower", $Follower)
 	$Follower = Trim(StringLower($Dummy)) == "true"
