@@ -2833,34 +2833,53 @@ EndFunc ;;==> ReConnect
 ;;      _leavegame()
 ;;--------------------------------------------------------------------------------
 Func _leavegame()
+	Local $EScMenu_Is = 0
+	Local $EscMenu_OK = 0
+	Local $Try_Send_Esc = 0
+	Local $Try_Leave = 0
+
 	If _ingame() Then
 		If Not $PartieSolo Then WriteMe($WRITE_ME_QUIT) ; TChat
+
 		_log("Leave Game", $LOG_LEVEL_VERBOSE)
-		Send($KeyCloseWindows) ; to make sure everything is closed
-		sleep(100)
-		Send("{ESCAPE}")
-		Sleep(Random(200, 300, 1))
-		While _escmenu() = False
-			Send("{ESCAPE}")
-			Sleep(Random(200, 300, 1))
-		WEnd
-		;_randomclick(134, 264)
 
-		While NOT fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644);tant que boton exit nest pas la
-			Send("{ESCAPE}")
-			Sleep(500)
-			_log("Menu Open but btn leaveGame Doesnt Exit yet", $LOG_LEVEL_VERBOSE)
-		WEnd
+		While Not $EscMenu_OK And $Try_Send_Esc < 11
+		   _Log("try n° " & $Try_Send_Esc + 1 & " Escape Menu")
+		   Sleep(500)
+		   Send($KeyCloseWindows) ; to make sure everything is closed
+		   sleep(500)
+		   Send("{ESCAPE}")
+		   Sleep(500)
 
-		Local $TryLeave = 0
-		While fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644) And $TryLeave < 5 ;après 4 fois on laisse la main au reste du code,car il y a forcément déco
-			ClickUI("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1644)
-			Sleep(Random(600, 1200, 1))
-			$TryLeave += 1
+		   If _escmenu() Then
+			  $EScMenu_Is = 1
+		   EndIf
+
+		   If $EScMenu_Is Then
+			  $EscMenu_OK = 1
+		   Else
+			  _log("Menu Is Not Open", $LOG_LEVEL_VERBOSE)
+			  $Try_Send_Esc += 1
+		   EndIf
 		WEnd
 
-		Sleep(Random(500, 1000, 1))
-		_log("Leave Game Done", $LOG_LEVEL_VERBOSE)
+		If $EscMenu_OK Then
+		   While _escmenu() And $Try_Leave < 5 ;après 4 fois on laisse la main au reste du code,car il y a forcément déco
+			  ClickUI("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1644)
+			  Sleep(900)
+			  $Try_Leave += 1
+		   WEnd
+
+		   If $Try_Leave < 5 Then
+			  _log("Leave Game Done", $LOG_LEVEL_VERBOSE)
+			  Sleep(1000)
+		   Else
+			  _log("Can Not Leave Game, Because Disconnected", $LOG_LEVEL_WARNING)
+			  Sleep(1000)
+		   EndIf
+	   Else
+		  _log("Can Not Leave Game", $LOG_LEVEL_ERROR);elle seras rattraper par le reste du code,mais elle ne devrait plus causer d'error
+	   EndIf
 	EndIf
 EndFunc   ;==>_leavegame
 
