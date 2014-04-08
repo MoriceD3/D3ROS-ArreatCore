@@ -104,13 +104,13 @@ EndFunc   ;==>MarkPos
 
 
 Func MonsterListing()
-	$Object = IterateObjectList(0)
+	$Object = IterateObjectListV2()
 	$foundtarget = 0
-	_log("monster listing ===========================")
+	_log("monster listing ===========================", $LOG_LEVEL_WARNING)
+	_ArraySort($Object, 0, 0, 0, 9)
 	For $i = 0 To UBound($Object, 1) - 1
-		_ArraySort($Object, 0, 0, 0, 8)
-		If $Object[$i][2] <> -1  Then
-			_log($Object[$i][2])
+		If $Object[$i][1] <> -1  Then
+			_log($Object[$i][1] & " ("  & $Object[$i][9] & ")", $LOG_LEVEL_DEBUG)
 		EndIf
 	Next
 EndFunc   ;==>MonsterListing
@@ -123,17 +123,19 @@ Func Testing_IterateObjetcsList()
 
 	While iterateObjectsList($index, $offset, $count, $item)
 
+		$log = "Object : "
 		For $i = 0 To UBound($item) - 1
-			_log($item[$i])
+			$log = $log & $item[$i] & " / "
 		Next
 
 		$ACD = GetACDOffsetByACDGUID($item[0])
 		$CurrentIdAttrib = _memoryread($ACD + 0x120, $d3, "ptr");
 		$quality = GetAttribute($CurrentIdAttrib, $Atrib_Item_Quality_Level)
 
-		_log('quality : ' & $quality)
-		_log("--------")
-		_log("--------")
+		$log = $log & " quality : " & $quality
+		If $item[2] <> "" Then
+			_log($log, $LOG_LEVEL_DEBUG)
+		EndIf
 	WEnd
 EndFunc   ;==>Testing_IterateObjetcsList
 
