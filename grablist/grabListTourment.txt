@@ -9,7 +9,7 @@ fhelm=CritChance:5 and Sockets:1
 weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Mace
 weapon2h=twoHandedAxe_|Bow_|XBow_|twoHandedMace_|Polearm_|Staff_|twoHandedSword_|combatStaff_
 
-GoldLarge|CraftingMaterials_Flippy_Global|Crafting_Demonic_Reagent|Console_PowerGlobe|CraftingPlan_|Crafting_Tier_|CraftingReagent_Legendary_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|key|Crafting_Looted_Reagent_|Crafting_Magic_|Crafting_AssortedParts_|Crafting_Rare_
+GoldLarge|CraftingMaterials_|Crafting_|Console_PowerGlobe|CraftingPlan_|Crafting_Tier_|CraftingReagent_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|key
 
 weapon1h[q:6][ilvl:60](fweapon)
 weapon2h[q:6][ilvl:60](fweapon2h)
