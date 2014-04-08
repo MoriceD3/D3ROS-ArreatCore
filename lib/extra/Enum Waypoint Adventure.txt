@@ -1,0 +1,65 @@
+Act 1			
+0	Home New Tristram	/	La Nouvelle-Tristram
+1	The Old Ruins	/	Les vielles ruines
+2	Cathedral Level 1	/	Cathédrale niveau 1
+3	Cathedral Level 2	/	Cathédrale niveau 2
+4	Cathedral Level 4	/	Cathédrale niveau 4
+5	The Royal Crypts	/	Les cryptes royales
+6	Weeping hollow	/	Le val Plaintif
+7	Cemetery of the Forsaken	/	Cimetière des Oubliés
+8	Fields of Misery	/	Champs du Malheur
+9	Drawned Temple	/	Temple englouti
+10	The Festering Woods	/	Bois Putride
+11	Wortham Chapel Cellar	/	Cave de la chapelle de Wortham
+12	Caverns of Areaneae	/	Cavernes d'Aranéa
+13	Southern Highlands	/	Hautes-Terres du Sud
+14	Northern Highlands	/	Hautes-Terres du Nord
+15	Halls of Agony Level 1	/	Salles de l'Agonie, niveau 1
+16	Halls of Agony Level 2	/	Salles de l'Agonie, niveau 2
+17	Halls of Agony Level 3	/	Salles de l'Agonie, niveau 3
+			
+Act 2			
+18	Home Hidden camp	/	Campement caché 
+19	Howling plateau	/	Plateau Plaintif
+20	City of caldeum	/	Caldeum
+21	Stinging winds	/	Vents cinglants
+22	Road to Alcarnus	/	Route d'Alcarnus
+23	Dahlgur oasis	/	Oasis de Dahlgur
+24	Desolate sands	/	Sables Désolés
+25	Archives of zoltun khulle	/	Archives de Zoltun Kulle
+			
+Act 3			
+26	Home Bastion’s Keep Stronghold	/	Bastion du donjon de la Redoute
+27	Stonefort	/	Fort-de-Pierre
+28	The Keep Depths Level 1	/	Profondeurs du donjon, niveau 1
+29	The Keep Depths Level 2	/	Profondeurs du donjon, niveau 2
+30	The Keep Depths Level 3	/	Profondeurs du donjon, niveau 3
+31	The Battlefields	/	Champs de bataille
+32	The bridge of Korsikk	/	Pont de Korsikk
+33	Rakkis Crossing	/	Traversée de Rakkis
+34	Arreat Crater Level 1	/	Cratère d'Arreat, niveau 1
+35	Tower of the Dammed Level 1	/	Tour des Damnés, niveau 1
+36	Arreat Crater Level  2	/	Cratère d'Arreat, niveau 2
+37	Tower of the Cursed Level 1	/	Tour des Maudits, niveau 1
+38	The Core of Arreat	/	Le coeur d'Arreat
+			
+Act 4			
+39	Home Bastion’s Keep Stronghold	/	Bastion du donjon de la Redoute
+40	The Diamond Gates	/	Les portes de Diamant
+41	Gardens of hope 1st Tier	/	Jardin de l'Espoir, niveau 1
+42	Gardens of hope 2nd Tier	/	Jardin de l'Espoir, niveau 2
+43	Hell Rift Level 1	/	Faille infernale, niveau 1
+44	The Silver Spire Level 1	/	La cime d'Argent, niveau 1
+45	The Silver Spire Level 2	/	La cime d'Argent, niveau 2
+			
+Act 5			
+46	Home The survivors’ Enclave	/	L'Enclave des survivants
+47	Westmarch Commons	/	Communs d'Ouestmarche
+48	Briathorn Cemetery	/	Cimetière de Briarthorn
+49	Westmarch Heights	/	Hauteurs d'Ouestmarche
+50	Paths of the Drowned	/	Les voies des Noyés
+51	Passage to Corvus	/	Passage vers Corvus
+52	Ruins of Corvus	/	Ruines de Corvus
+53	Pandemonium Fortress Level 1	/	Forteresse de Pandémonium, niveau 1
+54	Pandemonium Fortress Level 2	/	Forteresse de Pandémonium, niveau 2
+55	Battlefields of Eternity	/	Champs de bataille de l'Éternité

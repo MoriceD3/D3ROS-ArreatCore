@@ -1,3 +1,4 @@
+A1_Tristram_Adventure_Mode_Hub	,	332339
 A1_C6_SpiderCave_01_Entrance	,	58278
 A1_C6_SpiderCave_01_Main	,	78572
 A1_C6_SpiderCave_01_Queen	,	62726
@@ -259,3 +260,4 @@ PvP_Test_BlueTeam	,	19878
 PvP_Test_Neutral	,	19879
 PvP_Test_RedTeam	,	19880
 PvPArena	,	19868
+A5todo	,	270011
