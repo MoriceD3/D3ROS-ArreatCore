@@ -1543,4 +1543,4 @@ Global $TableSizeGuidStruct = 13
 ; mobType -> 9 (0-normal, 1-elite, 2-yellow, 3-purple, 4-key_warden)
 ; RadiusDefault -> 11
 ; IdAttrib -> 13
-Global $ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];ptr;ptr;int;byte[68];float;byte[28];ptr;byte[468]"
+Global $ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];int;ptr;int;byte[68];float;byte[28];ptr;byte[468]"

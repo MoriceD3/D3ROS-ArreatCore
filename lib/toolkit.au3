@@ -111,7 +111,7 @@ Func FindActor($name, $maxRange = 400)
 	Return False
 EndFunc   ;==>FindActor
 
-Func ClickUI($name, $bucket = -1)
+Func ClickUI($name, $bucket = -1, $click = 1)
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
 	Else ;bucket given, fast method
@@ -132,7 +132,29 @@ Func ClickUI($name, $bucket = -1)
 
 	Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
 
-	MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
+	If ($Point2[2] < 0) Then 
+		$Point2[2] = 0
+	EndIf
+	If ($Point2[3] < 0) Then 
+		$Point2[3] = 0
+	EndIf
+
+	If $click = 0 Then
+		MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
+	Else
+		MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
+	EndIf
+EndFunc
+
+Func GetPositionUI($ofs)
+	Dim $point[4]
+	$point[0] = _MemoryRead($ofs + 0x4D8, $d3, "float")
+	$point[1] = _MemoryRead($ofs + 0x4DC, $d3, "float")
+	$point[2] = _MemoryRead($ofs + 0x4E0, $d3, "float")
+	$point[3] = _MemoryRead($ofs + 0x4E4, $d3, "float")
+
+	_log("GetPositionUI (" & $ofs & ") x : " & $point[0] & " - y : " & $point[1] & " - r : " & $point[2] & " - b : " & $point[3])
+	Return $point
 EndFunc
 
 Func GetUIRectangle($x, $y, $r, $b)
@@ -256,39 +278,23 @@ Func GetOfsUI($valuetocheckfor, $IsVisible=0)
 	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
 	$UiCount = _memoryread($UiPtr3 + $Ofs_UI_D, $d3, "int")
 
-
-	for $g=0 to $UiCount - 1
+	For $g = 0 To $UiCount - 1
 		$UiPtr = _memoryread($BuckitOfs, $d3, "ptr")
 		while $UiPtr <> 0
 			$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
 			$Visible = BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
-
-			if $Visible = 4 OR $IsVisible = 0 Then
+			If $Visible = 4 Or $IsVisible = 0 Then
 				$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
 				If StringInStr($Name, $valuetocheckfor) Then
-					return $nPtr
-				endif
+					Return $nPtr
+				Endif
 			EndIf
-
 			$UiPtr = _memoryread($UiPtr, $d3, "ptr")
 		WEnd
 		$BuckitOfs = $BuckitOfs + 0x4
 	Next
 
-	return false
-EndFunc
-
-Func GetPositionUI($ofs)
-	Dim $point[4]
-
-	$point[0] = _MemoryRead($ofs + 0x4D8, $d3, "float")
-	$point[1] = _MemoryRead($ofs + 0x4DC, $d3, "float")
-	$point[2] = _MemoryRead($ofs + 0x4E0, $d3, "float")
-	$point[3] = _MemoryRead($ofs + 0x4E4, $d3, "float")
-
-	;_log("x : " & $point[0] & " - y : " & $point[1] & " - r : " & $point[2] & " - b : " & $point[3])
-
-	return $point
+	Return False
 EndFunc
 
 Func CheckTextvalueUI($bucket, $valuetocheckfor, $textcheck)
@@ -331,7 +337,12 @@ Func _playerdead()
 EndFunc   ;==>_playerdead OK
 
 Func _inmenu()
-	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1, 1929)
+	;Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1, 1929)
+	If GameState() = 5 Then
+		Return True
+	Else
+		Return False
+	EndIf
 EndFunc   ;==>_inmenu OK
 
 Func _checkdisconnect()
@@ -351,7 +362,12 @@ Func _escmenu()
 EndFunc   ;==>_escmenu OK
 
 Func _ingame()
-	Return fastcheckuiitemvisible("Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve", 1, 1403)
+	;Return fastcheckuiitemvisible("Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve", 1, 1403)
+	If GameState() = 1 Then
+		Return True
+	Else
+		Return False
+	EndIf
 EndFunc   ;==>_ingame OK
 Func _checkSalvageopen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button", 1, 629)
@@ -383,49 +399,48 @@ EndFunc   ;==>GetLevelAreaId
 ;;     Find which Act we are in
 ;;--------------------------------------------------------------------------------
 Func GetAct()
-	If $Act = 0 Then
-		$arealist = FileRead("lib\area.txt")
-		Local $area = GetLevelAreaId()
 
-		_log("We are in map : " & $area, $LOG_LEVEL_VERBOSE)
-		Local $pattern = "([\w'-]{5,80})\t\W\t" & $area
-		$asResult = StringRegExp($arealist, $pattern, 1)
-		If @error == 0 Then
-			Global $MyArea = $asResult[0]
+	$arealist = FileRead("lib\area.txt")
+	Local $area = GetLevelAreaId()
 
-			If StringInStr($MyArea, "a1") Then
-				$Act = 1
-			ElseIf StringInStr($MyArea, "a2") Then
-				$Act = 2
-			ElseIf StringInStr($MyArea, "a3") Then
-				$Act = 3
-			ElseIf StringInStr($MyArea, "a4") Then
-				$Act = 4
-			EndIf
-			;  _log("We are in map : " & $area &" " & $asResult[0])
+	_log("We are in map : " & $area, $LOG_LEVEL_VERBOSE)
+	Local $pattern = "([\w'-]{5,80})\t\W\t" & $area
+	$asResult = StringRegExp($arealist, $pattern, 1)
+	If @error == 0 Then
+		Global $MyArea = $asResult[0]
 
-			;set our vendor according to the act we are in as we know it.
-			Switch $Act
-				Case 1
-					Global $RepairVendor = "UniqueVendor_miner_InTown"
-					Global $PotionVendor = "UniqueVendor_Collector_InTown"
-
-				Case 2
-					Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
-					Global $PotionVendor = "UniqueVendor_Peddler_InTown"
-
-				Case 3
-					Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
-					Global $PotionVendor = "UniqueVendor_Collector_InTown"
-
-				Case 4
-					Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
-					Global $PotionVendor = "UniqueVendor_Collector_InTown"
-
-			EndSwitch
-			_log("Our Current Act is : " & $Act & " ---> So our vendor is : " & $RepairVendor, $LOG_LEVEL_DEBUG)
-
+		If StringInStr($MyArea, "a1") Then
+			$Act = 1
+		ElseIf StringInStr($MyArea, "a2") Then
+			$Act = 2
+		ElseIf StringInStr($MyArea, "a3") Then
+			$Act = 3
+		ElseIf StringInStr($MyArea, "a4") Then
+			$Act = 4
+		ElseIf StringInStr($MyArea, "a5") Then
+			$Act = 5
 		EndIf
+
+		;set our vendor according to the act we are in as we know it.
+		Switch $Act
+			Case 1
+				Global $RepairVendor = "UniqueVendor_miner_InTown"
+				Global $PotionVendor = "UniqueVendor_Collector_InTown"
+			Case 2
+				Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
+				Global $PotionVendor = "UniqueVendor_Peddler_InTown"
+			Case 3
+				Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
+				Global $PotionVendor = "UniqueVendor_Collector_InTown"
+			Case 4
+				Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
+				Global $PotionVendor = "UniqueVendor_Collector_InTown"
+			Case 5
+				Global $RepairVendor = "X1_A5_UniqueVendor_InnKeeper" ; act 5
+				Global $PotionVendor = "X1_A5_UniqueVendor_InnKeeper"
+		EndSwitch
+		_log("Our Current Act is : " & $Act & " ---> So our vendor is : " & $RepairVendor, $LOG_LEVEL_DEBUG)
+
 	EndIf
 EndFunc   ;==>GetAct
 
@@ -550,7 +565,7 @@ Func Load_Attrib_GlobalStuff()
 		EndIf
 	Next
 
-	$Check_ArmorTotal = GetAttribute($_myguid, $Atrib_Armor_Item_Total)
+	$Check_ArmorTotal = GetAttributeSelf($Atrib_Armor_Item_Total)
 
 	_log("$Check_HandLeft_Seed -> " & $Check_HandLeft_Seed, $LOG_LEVEL_DEBUG)
 	_log("$Check_HandRight_Seed -> " & $Check_HandRight_Seed, $LOG_LEVEL_DEBUG)
@@ -587,7 +602,7 @@ Func Verif_Attrib_GlobalStuff()
 				EndIf
 			EndIf
 		Next
-		$ArmorTotal = GetAttribute($_myguid, $Atrib_Armor_Item_Total)
+		$ArmorTotal = GetAttributeSelf($Atrib_Armor_Item_Total)
 
 		if $HandLeft_Seed <> $Check_HandLeft_Seed Then
 			If $HandLeft_Seed = 0 AND $Check_HandLeft_Seed <> 0 Then
@@ -893,6 +908,7 @@ Func LocateMyToon()
 				$name_by_acd = _MemoryRead($ACD + 0x4, $d3, 'char[64]')
 
 				$_MyGuid = _memoryread($ACD + 0x120, $d3, "ptr")
+				$My_FastAttributeGroup = GetFAG($_MyGuid)
 				$_MyACDWorld = _memoryread($ACD + 0x108, $d3, "ptr")
 
 				If NOT trim($_NAME) = ""  Then
@@ -1413,13 +1429,17 @@ EndFunc   ;==>InteractByActorName
 ;;      GetLifep()
 ;;--------------------------------------------------------------------------------
 Func GetLifep()
-	$curhp = GetAttribute($_MyGuid, $Atrib_Hitpoints_Cur)
+	$curhp = GetAttributeSelf($Atrib_Hitpoints_Cur)
 	Return ($curhp / $maxhp)
 EndFunc   ;==>GetLifep
 
 Func GetAttribute($idAttrib, $attrib)
 	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($attrib[0], 0xFFFFF000)), $d3, $attrib[1])
 EndFunc   ;==>GetAttribute
+
+Func GetAttributeSelf($attrib)
+	Return _memoryread(GetAttributeOfsSelf($My_FastAttributeGroup, BitOR($attrib[0], 0xFFFFF000)), $d3, $attrib[1])
+EndFunc ;==> GetAttributeSelf
 
 Func Resistance($idAttrib, $resistance)
 	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Resistance[0], BitShift($resistance, -12))), $d3, "float")
@@ -1541,6 +1561,9 @@ Func IterateCACD(ByRef $ItemCRactor)
 					$ItemCRactor[$y][14] = DllStructGetData($ACDActorStruct, 9) ;mobtype
 					$ItemCRactor[$y][15] = DllStructGetData($ACDActorStruct, 11) ;Radius
 					$ItemCRactor[$y][16] = DllStructGetData($ACDActorStruct, 13) ;ID_ATTRIB
+					$ItemCRactor[$y][17] = _memoryread($CurrentOffset + $i * 0x2f8 + 0x180, $d3, "int")
+					$ItemCRactor[$y][18] = _memoryread($CurrentOffset + $i * 0x2f8 + 0x184, $d3, "int")
+					$ItemCRactor[$y][19] = _memoryread($CurrentOffset + $i * 0x2f8 + 0x188, $d3, "float")
 					ExitLoop
 				EndIf
 			Next
@@ -1551,7 +1574,6 @@ Func IterateCACD(ByRef $ItemCRactor)
 	$iterateACDActorStruct = ""
 return $__ACDACTOR
 EndFunc   ;==>IterateBackpack
-
 
 Func IterateFilterAttackV4($IgnoreList)
 
@@ -1803,7 +1825,7 @@ Func UpdateObjectsList($item)
 EndFunc   ;==>UpdateObjectsList
 
 Func UpdateObjectsPos($offset)
-	Local $obj_pos[4], $item[$TableSizeGuidStruct]
+	Local $obj_pos[7], $item[$TableSizeGuidStruct]
 
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
@@ -1814,6 +1836,9 @@ Func UpdateObjectsPos($offset)
 	$obj_pos[1] = $item[11]
 	$obj_pos[2] = $item[12]
 	$obj_pos[3] = $item[9] ; Distance
+	$obj_pos[4] = $item[2]
+	$obj_pos[5] = $item[3]
+	$obj_pos[6] = $item[4]
 	Return $obj_pos
 
 EndFunc   ;==>UpdateObjectsPos
@@ -1967,11 +1992,30 @@ Func handle_Coffre(ByRef $item)
 	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-	If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
-		$result = Coffre($item) 
-		If $result = 0 Then
-			_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
-			BanActor($item[1])
+
+	If StringInStr($item[1],"x1_Global_Chest_CursedChest") then
+		_log("Handling cursed chest")
+		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+			$result = Shrine($item[1], $item[8], $item[0])
+			If $result = 0 Then
+				_log("Ban Cursed chest -> " & $item[1])
+				BanActor($item[1])
+				;sleep(1000)
+				;_log("waiting 1 s")
+			EndIf
+			If ($result = 1) Or ($result = 2 And $item[9] < 2) Then
+				sleep(1000)
+				_log("Cursed Chest : Waiting 1 s")
+				Send($KeyCloseWindows)
+			EndIf
+		EndIf
+	Else
+		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
+			$result = Coffre($item) 
+			If $result = 0 Then
+				_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
+				BanActor($item[1])
+			EndIf
 		EndIf
 	EndIf
 	return $result
@@ -2082,6 +2126,8 @@ Func Attack()
 		Return
 	EndIf
 
+	Send($KeyCloseWindows)
+
 	Local $IgnoreList = ""
 	Local $item[$TableSizeGuidStruct + 1]
 	Local $OldActor = ""
@@ -2094,6 +2140,8 @@ Func Attack()
 	Local $wasLoot = False
 
 	While IsArray($test_iterateallobjectslist)
+
+		;TODO : Check if quest windows is visible and close windows !
 		If _playerdead_revive() Then
 			_log("Attack : ExitLoop cause of player_revive", $LOG_LEVEL_WARNING)
 			ExitLoop
@@ -2145,7 +2193,7 @@ Func Attack()
 			ExitLoop
 		Else
 			$OldActor = $item[1]
-		EndIF
+		EndIf
 
 		$oldResult = $LastResult
 		$oldWait = $shouldWait 
@@ -2183,7 +2231,9 @@ Func Attack()
 				$LastResult = handle_Power($item)
 		EndSelect
 
-		If $shouldWait And UBound($test_iterateallobjectslist) = 1 And ($LastResult = 1 Or ($wasLoot And $lastResult = 2)) Then
+		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
+
+		If $shouldWait And $test_iterateallobjectslist = False And ($LastResult = 1 Or ($wasLoot And $lastResult = 2)) Then
 			If $LastResult = 1 Then
   				_log("Attack : No more items and last result = 1 with shouldWait -> Waiting 1 sec and checking for loots")
 				Sleep(1000)
@@ -2191,10 +2241,9 @@ Func Attack()
   				_log("Attack : No more items and last loot in retry for affix with shouldWait -> Waiting 1,5 sec and checking for loots")
 				Sleep(1500)
 			EndIf
+
+			Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 		EndIf
-
-		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
-
 	WEnd
 
 EndFunc   ;==>Attack
@@ -2213,7 +2262,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
     Dim $pos = UpdateObjectsPos($offset)
 
-    $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+    $Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
     MouseMove($Coords[0], $Coords[1], 3)
 
     Local $elite = DetectElite($Guid)
@@ -2307,7 +2356,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 			EndIf
 		EndIf
 
-        $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+        $Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
         MouseMove($Coords[0], $Coords[1], 3)
         GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
         If TimerDiff($begin) > $killTimeoutValue Then
@@ -2351,18 +2400,19 @@ Func Grabit($name, $offset)
 
 	Dim $pos = UpdateObjectsPos($offset)
 
-	If (StringInStr($name, "gold")) Then
-		$Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
-		$CoordVerif[0] = $pos[0]
-		$CoordVerif[1] = $pos[1]
-		$CoordVerif[2] = $pos[2]
+	If (StringInStr($name, "gold") Or StringInStr($name, "_Console")) Then
+		$Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
+		$CoordVerif[0] = $pos[4]
+		$CoordVerif[1] = $pos[5]
+		$CoordVerif[2] = $pos[6]
 		MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 	Else
 		If $Inventory_Is_Full Then
-			_Log("Grabit : --Grab deactivate because your inventory is full--", $LOG_LEVEL_VERBOSE)
+			_Log("Grabit : Deactivate because your inventory is full", $LOG_LEVEL_VERBOSE)
 			Return 0
 		EndIf
-		Interact($pos[0], $pos[1], $pos[2])
+		; TODO : Verify if not 0 1 2
+		Interact($pos[4], $pos[5], $pos[6])
 	EndIf
 
 	Local $dist = $pos[3]
@@ -2387,27 +2437,27 @@ Func Grabit($name, $offset)
 
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist,1) = Round($pos[3],1)) Then
-			If TimerDiff($moveTimer) > 2000 Then
-				_log("Leaving Grabit() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+			If TimerDiff($moveTimer) > 1500 Then
+				_log("Leaving Grabit() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
 				Return 2
 			EndIf
 		Else
 			$moveTimer = TimerInit()
 		EndIf
 
-		If (StringInStr($name, "gold")) Then
-			$Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+		If (StringInStr($name, "gold") Or StringInStr($name, "_Console")) Then
+			$Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
 
 			;Check if the coord X y z havn't changed.
-			If ($CoordVerif[0] <> $pos[0] Or $CoordVerif[1] <> $pos[1] Or $CoordVerif[2] <> $pos[2]) Then
+			If ($CoordVerif[0] <> $pos[4] Or $CoordVerif[1] <> $pos[5] Or $CoordVerif[2] <> $pos[6]) Then
 				_log("Leaving Grabit() : Fake GOLD")
 				Return 0
 			Else
 				MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 5)
 			EndIf
 		Else
-			;_log($pos[0] & " - " & $pos[1] & " - " & $pos[2])
-			Interact($pos[0], $pos[1], $pos[2])
+			; TODO : Verify if not 0 1 2
+			Interact($pos[4], $pos[5], $pos[6])
 
 			;If _inventoryfull() Then
 			If Detect_UI_error($MODE_INVENTORY_FULL) And Not $Execute_TpRepairAndBack Then ; $Execute_TpRepairAndBack = 0,car on ne veut pas y rentrer plus d'une fois "correction double tp inventaire plein"
@@ -2615,6 +2665,126 @@ Func OpenWp(ByRef $item)
 
 EndFunc   ;==>OpenWp
 
+Func GiveBucketWp($num)
+	$bucket = ""
+	Switch $num
+		Case 0
+			$bucket = "1363"
+		Case 1
+			$bucket = "378"
+		Case 2
+			$bucket = "995"
+		Case 3
+			$bucket = "1450"
+		Case 4
+			$bucket = "61"
+		Case 5
+			$bucket = "1562"
+		Case 6
+			$bucket = "265"
+		Case 7
+			$bucket = "1581"
+		Case 8
+			$bucket = "597"
+		Case 9
+			$bucket = "1310"
+		Case 10
+			$bucket = "883"
+		Case 11
+			$bucket = "612"
+		Case 12
+			$bucket = "980"
+		Case 13
+			$bucket = "49"
+		Case 14
+			$bucket = "1808"
+		Case 15
+			$bucket = "441"
+		Case 16
+			$bucket = "4"
+		Case 17
+			$bucket = "1538"
+		Case 18
+			$bucket = "1472" ;home act2
+		Case 19
+			$bucket = "536"
+		Case 20
+			$bucket = "667"
+		Case 21
+			$bucket = "1766"
+		Case 22
+			$bucket = "689"
+		Case 23
+			$bucket = "501"
+		Case 24
+			$bucket = "1249"
+		Case 25
+			$bucket = "28"
+		Case 26
+			$bucket = "421" ; HOME Act 3
+		Case 27
+			$bucket = "1745"
+		Case 28
+			$bucket = "539"
+		Case 29
+			$bucket = "1711"
+		Case 30
+			$bucket = "898"
+		Case 31
+			$bucket = "1317"
+		Case 32
+			$bucket = "945"
+		Case 33
+			$bucket = "364"
+		Case 34
+			$bucket = "923"
+		Case 35
+			$bucket = "503"
+		Case 36
+			$bucket = "631"
+		Case 37
+			$bucket = "613"
+		Case 38
+			$bucket = "1477"
+		Case 39
+			$bucket = "565" ;Home Act 4
+		Case 40
+			$bucket = "1664"
+		Case 41
+			$bucket = "1697"
+		Case 42
+			$bucket = "431"
+		Case 43
+			$bucket = "1045"
+		Case 44
+			$bucket = "1185"
+		Case 45
+			$bucket = "61"
+		Case 46
+			$bucket = "1113" ;Home act 5
+		Case 47
+			$bucket = "369"
+		Case 48
+			$bucket = "850"
+		Case 49
+			$bucket = "1062"
+		Case 50
+			$bucket = "162"
+		Case 51
+			$bucket = "348"
+		Case 52
+			$bucket = "785"
+		Case 53
+			$bucket = "192"
+		Case 54
+			$bucket = "820"
+		Case 55
+			$bucket = "1"
+	EndSwitch
+	_log("GiveBucketWp : " & $num & " -> " & $bucket, $LOG_LEVEL_DEBUG)
+	Return $bucket
+EndFunc
+
 Func GetBucketForWP($WPNumber)
 	Switch $WPNumber
 		Case 0
@@ -2654,9 +2824,12 @@ Func GetBucketForWP($WPNumber)
 	EndSwitch
 EndFunc
 
-Func TakeWPV2($WPNumber = 0)
+; $Mode : 0 pour Campagne et 1 pour aventure
+Func TakeWPV2($WPNumber = 0, $Mode = 0)
     Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
+
+    Attack()
 
 	If $GameFailed = 1 Then
 		Return False
@@ -2665,14 +2838,6 @@ Func TakeWPV2($WPNumber = 0)
 	While Not offsetlist()
 		Sleep(10)
 	WEnd
-
-	Local $BucketUI = GetBucketForWP($WPNumber)
-
-	If $WPNumber = 0 Then
-		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
-	Else
-		$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
-	EndIf
 
 	$WayPointFound = False
 
@@ -2690,12 +2855,12 @@ Func TakeWPV2($WPNumber = 0)
 				_log("WayPoint OK, MaxRange FALSE", $LOG_LEVEL_WARNING)
 			EndIF
 		EndIf
-
 	WEnd
 
 	If $WayPointFound Then
 		_Log("WP Found", $LOG_LEVEL_VERBOSE)
 		OpenWp($item)
+
 		Sleep(750)
 		Local $wptry = 0
 		While Not _checkWPopen() And Not _playerdead()
@@ -2708,9 +2873,34 @@ Func TakeWPV2($WPNumber = 0)
 			If $wptry > 6 Then
 				$GameFailed = 1
 				_log('Failed to open wp after 6 try', $LOG_LEVEL_ERROR)
-				return false
+				Return False
 			EndIf
 		WEnd
+
+		If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
+			; We are in adventure mode
+			If $mode = 0 Then
+				_log("We are in adventure mode and tries to open a campain waypoint !", $LOG_LEVEL_ERROR)
+				$GameFailed = 1;
+				Return False
+			EndIf
+			VerifAct($WPNumber)
+			$BucketUI = GiveBucketWp($WPNumber)
+			$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Interest"
+		Else
+			; We are in campain mode
+			If $mode = 1 Then
+				_log("We are in campain mode and tries to open an adventure waypoint !", $LOG_LEVEL_ERROR)
+				$GameFailed = 1;
+				Return False
+			EndIf
+			$BucketUI = GetBucketForWP($WPNumber)
+			If $WPNumber = 0 Then
+				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
+			Else
+				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
+			EndIf
+		EndIf
 
 		sleep(500)
 		_log("clicking wp UI", $LOG_LEVEL_VERBOSE)
@@ -2734,42 +2924,136 @@ Func TakeWPV2($WPNumber = 0)
 			Sleep(10)
 		WEnd
 
-		$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
+		$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
 
-		return true
+		Return True
 	Else
-		_log("WP Not Found", $LOG_LEVEL_ERROR)
-		$GameFailed = 1
-		_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
-		return False
-	EndIF
+		If TakeWpByKey($WPNumber) Then
+			Sleep(500)
+			While Not offsetlist()
+				Sleep(10)
+			WEnd
+			$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
+			Return True
+		Else
+			_log("WP Not Found", $LOG_LEVEL_ERROR)
+			$GameFailed = 1
+			_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
+			Return False
+		EndIf
+	EndIf
+	Return False
 EndFunc
+
+Func TakeWpByKey($num, $try = 0)
+
+	If $try > 6 Then
+		$GameFailed = 1
+		_log("TakeWpByKey : Too many tries", $LOG_LEVEL_ERROR)
+		Return False
+	EndIf
+
+	$compt_while = 0
+	$compt_wait = 0
+
+	Attack()
+
+	Local $Curentarea = GetLevelAreaId()
+    Local $Newarea = $Curentarea
+
+	_log("clicking wp UI")
+
+	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
+		Send("M")
+		sleep(100)
+	WEnd
+
+	VerifAct($num)
+	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
+	Sleep(100)
+
+	$timer = timerinit()
+
+	While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+		If $compt_while = 0 Then
+			_log("enclenchement du timer")
+			$timer = timerinit()
+		EndIf
+		Sleep(100)
+		$compt_while += 1
+	WEnd
+
+	If TimerDiff($timer) > 3700 Then
+		While GetLevelAreaId() = $Curentarea And $compt_wait < 6
+			_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
+			$compt_wait += 1
+			sleep(1000)
+		WEnd
+	EndIf
+
+	If GetLevelAreaId() <> $Curentarea Then
+		_log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
+		Return true
+	Else
+		_log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
+		TakeWpByKey($num, $try + 1)
+	EndIf
+Endfunc
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
 ;;--------------------------------------------------------------------------------
 Func _resumegame()
-	_log("Resume Game", $LOG_LEVEL_VERBOSE)
-	Sleep(Random(500, 1000, 1));pacht 8.2e
-	If $Try_ResumeGame > 2 Then
-		Local $wait_aftertoomanytry = Random(($Try_ResumeGame * 2) * 60000, ($Try_ResumeGame * 2) * 120000, 1)
-		_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry, $LOG_LEVEL_WARNING)
-		Sleep($wait_aftertoomanytry)
+	If Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929) Then
+		Sleep(500)
+		Return
 	EndIf
 
-	If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
-		Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
-		_Log("Break Time after xx games -> Sleep " & (formatTime($wait_BreakTimeafterxxgames)), $LOG_LEVEL_DEBUG)
-		Sleep($wait_BreakTimeafterxxgames)
-		$BreakCounter = 0;on remet le compteur a 0
-		$BreakTimeCounter += 1;on compte les pause effectuer
-		$tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
+	$menu_rdy = 0
+
+	If GameState() = 0 Then
+		Sleep(500)
+		_log("ResumeGame Disabled since we are on loading screen")
+		Return False
 	EndIf
 
-	ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton")
+	If GameState() = 5 Then
+		$menu_rdy = 1
+	EndIf
 
-	$Try_ResumeGame += 1
-	Sleep(7000)
+	If Not $Follower Then
+		While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
+			_log("Wait Other Follower")
+			sleep(500)
+		WEnd
+	EndIf
+
+	If $Follower Then
+		While GameState() = 5
+			_log("Wait Party Leader")
+			sleep(500)
+		WEnd
+	Else
+		_log("Resume Game")
+		Sleep(Random(500, 1000, 1))
+		If $Try_ResumeGame > 8 Then
+			Local $wait_aftertoomanytry = Random(($Try_ResumeGame * 2) * 60000, ($Try_ResumeGame * 2) * 120000, 1)
+			_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry)
+			Sleep($wait_aftertoomanytry)
+		EndIf
+		;_randomclick(135, 285)
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
+		$Try_ResumeGame += 1
+	EndIf
+
+	If GameState() = 0 And $menu_rdy = 1 Then
+		While not GameState() = 1
+			Sleep(100)
+		WEnd
+	EndIf
+
+	Sleep(1000)
+
 EndFunc   ;==>_resumegame 2.0
 
 Func _logind3()
@@ -3137,8 +3421,8 @@ Func Shrine($name, $offset, $Guid)
 		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
-			If TimerDiff($moveTimer) > 2000 Then
-				_log("Leaving Shrine() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+			If TimerDiff($moveTimer) > 1500 Then
+				_log("Leaving Shrine() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
 				Return 2
 			EndIf
 		Else
@@ -3179,8 +3463,8 @@ Func Coffre($item)
 		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
-			If TimerDiff($moveTimer) > 2000 Then
-				_log("Leaving Coffre() : no move since " & Round(TimerDiff($moveTimer) / 1000) & " secs", $LOG_LEVEL_WARNING)
+			If TimerDiff($moveTimer) > 1500 Then
+				_log("Leaving Coffre() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
 				Return 2
 			EndIf
 		Else
@@ -3201,6 +3485,12 @@ Func Coffre($item)
 	WEnd
 
 	$CoffreTaken += 1;on compte les coffres qu'on ouvre
+
+	If StringInStr($name , "Global_Chest") Then
+		_log("Coffre() : Wait a litle, it's a demonic chest")
+		Sleep(1200)
+	EndIf
+
 	Return 1
 EndFunc   ;==>shrine
 
@@ -3329,6 +3619,36 @@ Func GetAttributeOfs($idAttrib, $attrib)
 	Return -1
 
 EndFunc   ;==>GetAttributeOfs
+
+Func GetAttributeOfsSelf($FAG, $attrib)
+
+	$IndexMask = BitXOR($attrib, BitShift($attrib ,12))
+	$ptr1 = _memoryread($FAG + 0x4, $d3, "int")
+
+	$AttribEntry = 0
+	If BitAnd($ptr1, 4) = 4 Then
+		$AttribFormula = _memoryread($FAG + 0xc, $d3, "ptr")
+		$ArrayBasePtr =  _memoryread($AttribFormula + 0x10, $d3, "int")
+		$Limit = _memoryread($AttribFormula, $d3, "int")
+		$AttribEntry = _memoryread($ArrayBasePtr + 4 * BitAND($IndexMask, $Limit), $d3, "int")
+	Else
+		$AttribEntry = _memoryread($FAG + 0x20 + 4 * BitAND($IndexMask + 3, 0xFF), $d3, "int") ; Ou 2c et pas de +3
+	EndIF
+
+	If $AttribEntry <> 0 Then
+		While _memoryread($AttribEntry + 0x4, $d3, "ptr") <> $attrib
+			$AttribEntry = _memoryread($AttribEntry, $d3, "ptr")
+			If $AttribEntry = 0 Then
+				;_log("AttribEntry = 0")
+				Return -1
+			EndIf
+		WEnd
+		Return $AttribEntry + 8
+	EndIf
+
+	Return -1
+
+EndFunc   ;==>GetAttributeOfsSelf
 
 Func GetAttributeInt($idAttrib, $attrib)
 	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($attrib, 0xFFFFF000)), $d3, "int")
@@ -3985,31 +4305,30 @@ EndFunc   ;==>GetPlayerOffset
 ; Function:                     GetActorFromId
 ; Note(s):
 ;==================================================================================
-Func GetActorFromId($id)
+Func GetActorFromId($id, $maxtry=0)
 
-	#cs
-		$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-		$ptr2 = _memoryread($ptr1 + 0x920, $d3, "int")
-		$sid = BitAND($id, 0xFFFF)
+	$maxtry += 1
 
-		$bitshift = _memoryread($ptr2 + 0x164, $d3, "int") ;0x18c
-		$group1 = 4 * BitShift($sid, $bitshift)
-		$group2 = BitShift(1, -$bitshift) - 1
-		$group3 = _memoryread(_memoryread($ptr2 + 0x120, $d3, "int"), $d3, "int") ;Ofs de la liste des actors
-		$group4 = 0x44c * BitAND($sid, $group2) ;0x42c
+	If $maxtry >= 1000 Then ;Recursivity Protection, Max 1000
+		Return 0
+	EndIf
 
-		Return $group3 + $group1 + $group4
-	#ce
-
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	Local $index, $offset, $count, $item[10]
 	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-			;_log("Ofs : " & $item[8]  & " - "  & $item[1] & " - Data 1 : " & $item[5] & " - Data 2 : " & $item[6] & " - Guid : " & $item[0])
-			if $item[0] = $id then
-				Return $item[8]
-			EndIf
-	WEnd
 
+	If $count > 500 Then
+		Sleep(200)
+		Return GetActorFromId($id, $maxtry)
+	EndIf
+
+	Dim $TableActor = IterateObjectListV2()
+
+	For $i = 0 to UBound($TableActor) - 1
+		If $TableActor[$i][0] = $id then
+			Return $TableActor[$i][8]
+		EndIf
+	Next
+	Return 0
 EndFunc   ;==>GetActorFromId
 
 Func GoToTown()
@@ -4106,6 +4425,8 @@ EndFunc
 Func StashAndRepair()
 
 	_log("Func StashAndRepair")
+
+	getAct()
 
 	Local $Repair = 0
 	$Execute_StashAndRepair = True
@@ -4671,11 +4992,16 @@ Func Auto_spell_init()
 		EndIf
 	ElseIf $nameCharacter = "crusader" Then
 		Dim $tab_skill_temp = $Crusader_skill_Table
-		if $Gest_affixe_ByClass Then
+		If $Gest_affixe_ByClass Then
 			$Gestion_affixe_loot = True
 			$Gestion_affixe = True
 			_log("Crusader detected, Gest Affix Enabled", $LOG_LEVEL_VERBOSE)
-		EndIf
+			If $List_BanAffix = "" Then
+				_log("No ban list, banning sucubbus projectile by default", $LOG_LEVEL_VERBOSE)
+				$List_BanAffix = "succubus_bloodStar_projectile"
+				LoadTableFromString($Table_BanAffix, $List_BanAffix)
+			EndIf
+ 		EndIf
 	Else
 		_log("PAS DE CLASS DETECT", $LOG_LEVEL_ERROR)
 	EndIf
@@ -4776,66 +5102,92 @@ EndFunc
 
 Func Detect_Str_full_inventory()
 
-	_log("Please Wait, initialising UI language detection", $LOG_LEVEL_VERBOSE)
+	Local $stringread = GetTextUI(731,'Root.TopLayer.error_notify.error_text')
+	$stringreference = StringLeft ( $stringread, 15 )
+	$stringreferencefromfile = ""
+	_log("Stringreference : " & $stringreference, $LOG_LEVEL_DEBUG)
 
-	$pattern_Full_Inventory = "\x50\x69\x63\x6B\x75\x70\x5F\x4E\x6F\x53\x75\x69\x74\x61\x62\x6C\x65\x53\x6C\x6F\x74" ;Pickup_NoSuitableSlot
-	$Mask_Full_Inventory = "xxxxxxxxxxxxxxxxxxxxx"
+	If FileExists ("lib/extra/langdetect") Then
+		_log("Loading string file")
+		$Byte_Full_Inventory[0] = FileReadLine("lib/extra/langdetect", 1)
+		$Byte_Full_Stash[0] = FileReadLine("lib/extra/langdetect", 2)
+		$Byte_Boss_TpDeny[0] = FileReadLine("lib/extra/langdetect", 3)
+		$Byte_NoItem_Identify[0] = FileReadLine("lib/extra/langdetect", 4)
+		$stringreferencefromfile = FileReadLine("lib/extra/langdetect", 5)
+	Endif
 
-	$pattern_Not_Enough_Room = "49\x41\x52\x5F\x4E\x6F\x74\x45\x6E\x6F\x75\x67\x68\x52\x6F\x6F\x6D" ;IAR_NotEnoughRoom
-	$Mask_Not_Enough_Room = "xxxxxxxxxxxxxxxxx"
+	_log("Comparing string : " & $stringreferencefromfile  & " / " & $stringreference )
+	If $stringreference = $stringreferencefromfile Then
+		_log("Lang loaded detected", $LOG_LEVEL_DEBUG)
+		_log("Ui full -> " & $Byte_Full_Inventory[0], $LOG_LEVEL_DEBUG)
+		_log("Ui Stash -> " & $Byte_Full_Stash[0], $LOG_LEVEL_DEBUG)
+		_log("Ui TP -> " & $Byte_Boss_TpDeny[0], $LOG_LEVEL_DEBUG)
+		_log("Ui Id -> " & $Byte_NoItem_Identify[0], $LOG_LEVEL_DEBUG)
+	Else
+		_log("Game Lang different from langdetect file")
+		FileDelete ("lib/extra/langdetect")
 
-	$pattern_Power_Unusable_During_Boss_Encounter = "\x50\x6F\x77\x65\x72\x55\x6E\x75\x73\x61\x62\x6C\x65\x44\x75\x72\x69\x6E\x67\x42\x6F\x73\x73\x45\x6E\x63\x6F\x75\x6E\x74\x65\x72" ;PowerUnusableDuringBossEncounter
-	$Mask_Power_Unusable_During_Boss_Encounter = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+		_log("Please Wait, initialising UI language detection", $LOG_LEVEL_VERBOSE)
 
-	$pattern_Identify_All_Item = "\x49\x64\x65\x6E\x74\x69\x66\x79\x41\x6C\x6C\x4E\x6F\x49\x74\x65\x6D\x73" ;IdentifyAllNoItems
-	$Mask_Identify_All_Item = "xxxxxxxxxxxxxxxxxx"
+		$pattern_Full_Inventory = "\x50\x69\x63\x6B\x75\x70\x5F\x4E\x6F\x53\x75\x69\x74\x61\x62\x6C\x65\x53\x6C\x6F\x74" ;Pickup_NoSuitableSlot
+		$Mask_Full_Inventory = "xxxxxxxxxxxxxxxxxxxxx"
 
-	$ofs_Full_Inventory = _MemoryScanEx($d3, $pattern_Full_Inventory, $Mask_Full_Inventory, true, 0x02000000, 0x2fffffff)
+		$pattern_Not_Enough_Room = "49\x41\x52\x5F\x4E\x6F\x74\x45\x6E\x6F\x75\x67\x68\x52\x6F\x6F\x6D" ;IAR_NotEnoughRoom
+		$Mask_Not_Enough_Room = "xxxxxxxxxxxxxxxxx"
 
-	$ofs_decal_min = $ofs_Full_Inventory - 0x2710
-	$ofs_decal_max = $ofs_Full_Inventory + 0x2710
+		$pattern_Power_Unusable_During_Boss_Encounter = "\x50\x6F\x77\x65\x72\x55\x6E\x75\x73\x61\x62\x6C\x65\x44\x75\x72\x69\x6E\x67\x42\x6F\x73\x73\x45\x6E\x63\x6F\x75\x6E\x74\x65\x72" ;PowerUnusableDuringBossEncounter
+		$Mask_Power_Unusable_During_Boss_Encounter = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-	$ofs_Not_Enough_Room = _MemoryScanEx($d3, $pattern_Not_Enough_Room, $Mask_Not_Enough_Room, true, $ofs_decal_min, $ofs_decal_max)
-	$ofs_Power_Unusable_During_Boss_Encouter = _MemoryScanEx($d3, $pattern_Power_Unusable_During_Boss_Encounter, $Mask_Power_Unusable_During_Boss_Encounter, true, $ofs_decal_min, $ofs_decal_max)
-	$ofs_Identify_All_Item = _MemoryScanEx($d3, $pattern_Identify_All_Item, $Mask_Identify_All_Item, true, $ofs_decal_min, $ofs_decal_max)
+		$pattern_Identify_All_Item = "\x49\x64\x65\x6E\x74\x69\x66\x79\x41\x6C\x6C\x4E\x6F\x49\x74\x65\x6D\x73" ;IdentifyAllNoItems
+		$Mask_Identify_All_Item = "xxxxxxxxxxxxxxxxxx"
 
-	while(_memoryread($ofs_Full_Inventory, $d3, "byte") = 0)
-		$ofs_Full_Inventory += 0x1
-	WEnd
+		$ofs_Full_Inventory = _MemoryScanEx($d3, $pattern_Full_Inventory, $Mask_Full_Inventory, true, 0x02000000, 0x2fffffff)
 
-	while(_memoryread($ofs_Not_Enough_Room, $d3, "byte") = 0)
-		$ofs_Not_Enough_Room += 0x1
-	WEnd
+		$ofs_decal_min = $ofs_Full_Inventory - 0x2710
+		$ofs_decal_max = $ofs_Full_Inventory + 0x2710
 
-	while(_memoryread($ofs_Power_Unusable_During_Boss_Encouter, $d3, "byte") = 0)
-		$ofs_Power_Unusable_During_Boss_Encouter += 0x1
-	WEnd
+		$ofs_Not_Enough_Room = _MemoryScanEx($d3, $pattern_Not_Enough_Room, $Mask_Not_Enough_Room, true, $ofs_decal_min, $ofs_decal_max)
+		$ofs_Power_Unusable_During_Boss_Encouter = _MemoryScanEx($d3, $pattern_Power_Unusable_During_Boss_Encounter, $Mask_Power_Unusable_During_Boss_Encounter, true, $ofs_decal_min, $ofs_decal_max)
+		$ofs_Identify_All_Item = _MemoryScanEx($d3, $pattern_Identify_All_Item, $Mask_Identify_All_Item, true, $ofs_decal_min, $ofs_decal_max)
 
-	while(_memoryread($ofs_Identify_All_Item, $d3, "byte") = 0)
-		$ofs_Identify_All_Item += 0x1
-	WEnd
+		while(_memoryread($ofs_Full_Inventory, $d3, "byte") = 0)
+			$ofs_Full_Inventory += 0x1
+		WEnd
 
-	$BuffStr = _MemoryRead($ofs_Full_Inventory, $d3, "char[255]")
-	$Byte_Full_Inventory[0] = BinaryToString($BuffStr, 4)
-	$Byte_Full_Inventory[1] = stringLen($BuffStr)
+		while(_memoryread($ofs_Not_Enough_Room, $d3, "byte") = 0)
+			$ofs_Not_Enough_Room += 0x1
+		WEnd
 
-	$BuffStr = _MemoryRead($ofs_Not_Enough_Room, $d3, "char[255]")
-	$Byte_Full_Stash[0] = BinaryToString($BuffStr, 4)
-	$Byte_Full_Stash[1] = stringLen($BuffStr)
+		while(_memoryread($ofs_Power_Unusable_During_Boss_Encouter, $d3, "byte") = 0)
+			$ofs_Power_Unusable_During_Boss_Encouter += 0x1
+		WEnd
 
-	$BuffStr = _MemoryRead($ofs_Power_Unusable_During_Boss_Encouter, $d3, "char[255]")
-	$Byte_Boss_TpDeny[0] = BinaryToString($BuffStr, 4)
-	$Byte_Boss_TpDeny[1] = stringLen($BuffStr)
+		while(_memoryread($ofs_Identify_All_Item, $d3, "byte") = 0)
+			$ofs_Identify_All_Item += 0x1
+		WEnd
 
-	$BuffStr = _MemoryRead($ofs_Identify_All_Item, $d3, "char[255]")
-	$Byte_NoItem_Identify[0] = BinaryToString($BuffStr,4)
-	$Byte_NoItem_Identify[1] = stringLen($BuffStr)
+		$BuffStr = _MemoryRead($ofs_Full_Inventory, $d3, "char[255]")
+		$Byte_Full_Inventory[0] = BinaryToString($BuffStr, 4)
+		$Byte_Full_Inventory[1] = stringLen($BuffStr)
 
-	_log($ofs_Full_Inventory & " -> " & $Byte_Full_Inventory[0], $LOG_LEVEL_DEBUG)
-	_log($ofs_Not_Enough_Room & " -> " & $Byte_Full_Stash[0], $LOG_LEVEL_DEBUG)
-	_log($ofs_Power_Unusable_During_Boss_Encouter & " -> " & $Byte_Boss_TpDeny[0], $LOG_LEVEL_DEBUG)
-	_log($ofs_Identify_All_Item & " -> " & $Byte_NoItem_Identify[0], $LOG_LEVEL_DEBUG)
+		$BuffStr = _MemoryRead($ofs_Not_Enough_Room, $d3, "char[255]")
+		$Byte_Full_Stash[0] = BinaryToString($BuffStr, 4)
+		$Byte_Full_Stash[1] = stringLen($BuffStr)
 
+		$BuffStr = _MemoryRead($ofs_Power_Unusable_During_Boss_Encouter, $d3, "char[255]")
+		$Byte_Boss_TpDeny[0] = BinaryToString($BuffStr, 4)
+		$Byte_Boss_TpDeny[1] = stringLen($BuffStr)
+
+		$BuffStr = _MemoryRead($ofs_Identify_All_Item, $d3, "char[255]")
+		$Byte_NoItem_Identify[0] = BinaryToString($BuffStr,4)
+		$Byte_NoItem_Identify[1] = stringLen($BuffStr)
+
+		_log($ofs_Full_Inventory & " -> " & $Byte_Full_Inventory[0], $LOG_LEVEL_DEBUG)
+		_log($ofs_Not_Enough_Room & " -> " & $Byte_Full_Stash[0], $LOG_LEVEL_DEBUG)
+		_log($ofs_Power_Unusable_During_Boss_Encouter & " -> " & $Byte_Boss_TpDeny[0], $LOG_LEVEL_DEBUG)
+		_log($ofs_Identify_All_Item & " -> " & $Byte_NoItem_Identify[0], $LOG_LEVEL_DEBUG)
+		FileWrite ("lib/extra/langdetect", $Byte_Full_Inventory[0] & @CRLF & $Byte_Full_Stash[0] & @CRLF & $Byte_Boss_TpDeny[0] & @CRLF & $Byte_NoItem_Identify[0]& @CRLF & $stringreference)
+	EndIf
 EndFunc
 
 Func _MemoryScanEx($ah_Handle, $pattern, $mask , $after = False, $iv_addrStart = 0x00400000, $iv_addrEnd = 0x00FFFFFF, $step = 51200)
@@ -4876,33 +5228,6 @@ Func _MemoryScanEx($ah_Handle, $pattern, $mask , $after = False, $iv_addrStart =
     Next
     Return -3
 EndFunc   ;==>_MemoryScanEx
-
-
-Func GetLocalPlayer()
-	;Global $ObjManStorage = 0x7CC ;0x794
-	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x9a4, $d3, 'int') ;0x94C/934
-	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x88c, $d3, 'int')
-
-	if $v0 <> 0 AND _MemoryRead($v0, $d3, 'int') <> -1 AND $v1 <> 0 Then
-		return 0xD0D0 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
-	Else
-		return 0
-	EndIf
-EndFunc
-
-Func GetActivePlayerSkill($index)
-	$Local_player = GetLocalPlayer()
-	If $local_player <> 0 Then
-		return _MemoryRead($local_player + (0xBC + $index * 0x10), $d3, 'int')
-	Else
-		return 0
-	EndIf
-EndFunc
-
-Func GoToTown_Portal()
-
-
-EndFunc
 
 Func CheckZoneBeforeTP()
 
@@ -5131,10 +5456,13 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	Switch $BeforeInteract
 		Case $MOVETO_SMITH ; Smith
 			Switch $Act
-			   Case 1
-					 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
-			   Case 2 To 4
-					 ;do nothing act 3 and 4
+				Case 1
+					MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
+				Case 2 To 4
+					;do nothing act 3 and 4
+				Case 5
+					MoveToPos(551.606567382813, 506.932373046875, 2.76036787033081, 0, 60)
+					Sleep(Random(100, 200))
 			EndSwitch
 		Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
@@ -5158,6 +5486,8 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 					;do nothing act 2
 				Case 3 To 4
 					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
+				Case 5
+					MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
 			EndSwitch
 	    Case $MOVETO_PORTAL
 	    	Switch $Act
@@ -5256,6 +5586,74 @@ Func BuyPotion()
 
 EndFunc    ;==>BuyPotion
 
+Func VerifAct($num)
+	$CurrentAct = GetNumActByWPUI()
+	$ActRequired = GetNumActByWPNumber($num)
+
+	If $CurrentAct = $ActRequired Then
+		Return True
+	Else
+		SwitchAct($ActRequired)
+	EndIF
+EndFunc
+
+Func SwitchAct($num)
+	Switch $num
+		Case 1
+			$bucket = 725
+		Case 2
+			$bucket = 407
+		Case 3
+			$bucket = 844
+		Case 4
+			$bucket = 817
+		Case 5
+			$bucket = 1713
+	EndSwitch
+	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.Zoom.ZoomOut", 942)
+	Sleep(500)
+	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.WorldMap.Act" & $num & "Open.LayoutRoot.Name", $bucket)
+	Sleep(500)
+EndFunc
+
+Func GetNumActByWPUI()
+	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Interest", 1, 1363) Then
+		_log("Act1 Detected")
+		Return 1
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 18.LayoutRoot.Interest", 1, 1472) Then
+		_log("Act2 Detected")
+		Return 2
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 26.LayoutRoot.Interest", 1, 421) Then
+		_log("Act3 Detected")
+		Return 3
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 39.LayoutRoot.Interest", 1, 565) Then
+		_log("Act4 Detected")
+		Return 4
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 46.LayoutRoot.Interest", 1, 1113) Then
+		_log("Act5 Detected")
+		Return 5
+	EndIf
+EndFunc
+
+Func GetNumActByWPNumber($num)
+	if $num <= 17 Then
+		_log("Act1 Required")
+		Return 1
+	ElseIf $num <= 25 Then
+		_log("Act2 Required")
+		Return 2
+	ElseIf $num <= 38 Then
+		_log("Act3 Required")
+		Return 3
+	ElseIf $num <= 45 Then
+		_log("Act4 Required")
+		Return 4
+	Else
+		_log("Act5 Required")
+		Return 5
+	EndIf
+EndFunc
+
 Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque la vie de votre personnage descend en dessous d'un seuil fixé
 
 	If $HCSecurity And GetLifep() <= $MinHCLife/100 Then
@@ -5269,6 +5667,13 @@ Func PauseToSurviveHC() ; fonction qui permet de mettre le jeu en Pause lorsque 
 	EndIf
 
 EndFunc    ;==>PauseToSurviveHC
+
+Func GameState()
+	;1 // In Game
+	;0 // Loading Screen
+	;5 // Menu
+	return _memoryRead(_memoryRead($ofs_objectmanager ,$d3, "ptr") + 0x900, $d3, "ptr")
+Endfunc
 
 Func BanActor($actor)
 	$Table_BannedActors[0] += 1
@@ -5312,4 +5717,25 @@ Func IsItemStartInTable(ByRef $table, ByRef $itemName)
 		EndIf
 	Next
 	Return False
+EndFunc
+
+Func GetLocalPlayer()
+	;Global $ObjManStorage = 0x7CC ;0x794
+	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x9a4, $d3, 'int') ;0x94C/934
+	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x88c, $d3, 'int')
+
+	if $v0 <> 0 AND _MemoryRead($v0, $d3, 'int') <> -1 AND $v1 <> 0 Then
+		return 0xD138 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
+	Else
+		return 0
+	EndIf
+EndFunc
+
+Func GetActivePlayerSkill($index)
+	$Local_player = GetLocalPlayer()
+	If $local_player <> 0 Then
+		return _MemoryRead($local_player + (0xBC + $index * 0x10), $d3, 'int')
+	Else
+		return 0
+	EndIf
 EndFunc

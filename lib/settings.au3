@@ -44,6 +44,7 @@ Global $tab_grablist[1][2]
 Global $PartieSolo = True
 
 Global $profilFile = "settings/settings.ini"
+Global $Follower = False
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
@@ -55,7 +56,7 @@ Global $List_PriorityMonster = "Goblin|Uber"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion|"
 Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|BonePile"
-Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest"
+Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|x1_Global_Chest_SpeedKill|x1_Global_Chest_CursedChest|a3dun_Crater_ST_Chest"
 Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
 Global $grabListFile = ""
@@ -285,6 +286,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "ChaseElite", $ChaseElite)
 	$ChaseElite = Trim(StringLower($Dummy)) == "true"
 
+
+	$Dummy = IniRead($profilFile, "Run info", "Follower", $Follower)
+	$Follower = Trim(StringLower($Dummy)) == "true"
 
 	;Selection de la difficulte et du pm des monstres
 	$difficulte = IniRead($profilFile, "Run info", "difficulte", $difficulte)

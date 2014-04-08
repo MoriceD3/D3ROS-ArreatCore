@@ -38,11 +38,11 @@ Func StatsDisplay()
         If $Totalruns = 1 Then
 			$GOLDINI = $GOLD
 			$begin_timer_stat = TimerInit()
-			$GF = Ceiling(GetAttribute($_MyGuid, $Atrib_Gold_Find) * 100)
-			$MF = Ceiling(GetAttribute($_MyGuid, $Atrib_Magic_Find) * 100)
-			$PR = GetAttribute($_MyGuid, $Atrib_Gold_PickUp_Radius)
-			$MS = (GetAttribute($_MyGuid, $Atrib_Movement_Scalar_Capped_Total) - 1) * 100
-			$EBP = Ceiling(GetAttribute($_MyGuid, $Atrib_Experience_Bonus_Percent) * 100)
+			$GF = Ceiling(GetAttributeSelf($Atrib_Gold_Find) * 100)
+			$MF = Ceiling(GetAttributeSelf($Atrib_Magic_Find) * 100)
+			$PR = GetAttributeSelf($Atrib_Gold_PickUp_Radius)
+			$MS = (GetAttributeSelf($Atrib_Movement_Scalar_Capped_Total) - 1) * 100
+			$EBP = Ceiling(GetAttributeSelf($Atrib_Experience_Bonus_Percent) * 100)
 		Else
 			$GOLDInthepocket = $GOLD - $GOLDINI
 			$GOLDMOY = $GOLDInthepocket / ($Totalruns - 1)
@@ -66,8 +66,8 @@ Func StatsDisplay()
 
         If $Totalruns = 1 Then
 
-			$NiveauParagon = GetAttribute($_MyGuid, $Atrib_Alt_Level)
-			$ExperienceNextLevel = GetAttribute($_MyGuid, $Atrib_Alt_Experience_Next_Lo)
+			$NiveauParagon = GetAttributeSelf($Atrib_Alt_Level)
+			$ExperienceNextLevel = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
 			$Expencours = $level[$NiveauParagon + 1] - $ExperienceNextLevel
 			$Xp_Run = 0
 			$Xp_Total = 0
@@ -79,18 +79,14 @@ Func StatsDisplay()
 
         Else
 			;calcul de l'xp du run
-			If $NiveauParagon = GetAttribute($_MyGuid, $Atrib_Alt_Level) Then; verification de level up (égalité => pas de level up
-
-				  $Xp_Run = ($level[GetAttribute($_MyGuid, $Atrib_Alt_Level) + 1] - GetAttribute($_MyGuid, $Atrib_Alt_Experience_Next_Lo)) - $Expencours;experience run n - experience run n-1
-
+			If $NiveauParagon = GetAttributeSelf($Atrib_Alt_Level) Then; verification de level up (égalité => pas de level up
+				  $Xp_Run = ($level[GetAttributeSelf($Atrib_Alt_Level) + 1] - GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)) - $Expencours;experience run n - experience run n-1
 			EndIf
 
-			$Expencours = $level[GetAttribute($_MyGuid, $Atrib_Alt_Level) + 1] - GetAttribute($_MyGuid, $Atrib_Alt_Experience_Next_Lo)
+			$Expencours = $level[GetAttributeSelf($Atrib_Alt_Level) + 1] - GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
 
-			If $NiveauParagon <> GetAttribute($_MyGuid, $Atrib_Alt_Level) Then
-
+			If $NiveauParagon <> GetAttributeSelf($Atrib_Alt_Level) Then
 				  $Xp_Run = $ExperienceNextLevel + $Expencours
-
 			EndIf
 
 			$Xp_Total = $Xp_Total + $Xp_Run
@@ -99,8 +95,8 @@ Func StatsDisplay()
 			$Xp_Moy_Hrsgame = $Xp_Total * 3600000 / $dif_timer_stat_game;on calcule l'xp/heure en temps de jeu
 			$Xp_Moy_HrsPerte = ($Xp_Moy_Hrsgame - $Xp_Moy_Hrs);on calcule la perte due aux pauses
 			$Xp_Moy_HrsPerte_Ratio = ($Xp_Moy_HrsPerte / $Xp_Moy_Hrsgame * 100);ratio de la perte xp/heure due aux pauses
-			$NiveauParagon = GetAttribute($_MyGuid, $Atrib_Alt_Level)
-			$ExperienceNextLevel = GetAttribute($_MyGuid, $Atrib_Alt_Experience_Next_Lo)
+			$NiveauParagon = GetAttributeSelf($Atrib_Alt_Level)
+			$ExperienceNextLevel = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
 
 			;calcul temps avant prochain niveau
 			$Xp_Moy_Sec = $Xp_Total * 1000 / $dif_timer_stat

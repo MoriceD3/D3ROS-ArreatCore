@@ -262,7 +262,363 @@ Func LevelAreaConstants()
 	Global $PvP_Test_Neutral = 0x4da7
 	Global $PvP_Test_RedTeam = 0x4da8
 	Global $PvPArena = 0x4d9c
+	Global $A5todo = 0x41ebb
 EndFunc   ;==>LevelAreaConstants
+
+
+Dim $RecordCave[1][9] ;0 -> Name // 1, 2, 3 -> Pos (head)// 4, 5, 6 -> Pos (foot) // 7 -> id word // 8 -> Explorer
+
+Func IsCave($name)
+	if StringInStr($name, "portal") Then
+		return true
+	EndIf
+	return false
+EndFunc
+
+Func GetCave()
+
+	$Cave = IterateCave()
+
+		if isarray($Cave) Then
+			for $i=0 to Ubound($Cave) - 1
+				$exist = false
+
+				for $y=0 to Ubound($RecordCave) - 1
+					if $RecordCave[$y][6] = $Cave[$i][6] AND $RecordCave[$y][7] = $Cave[$i][7] AND $RecordCave[$y][8] = $Cave[$i][8] Then
+						$exist = true
+						exitloop
+					EndIf
+				Next
+
+				if NOT $exist Then
+					ReDim $RecordCave[UBound($RecordCave)+1][9]
+					for $z=0 to 6
+						$RecordCave[UBound($RecordCave)-1][$z] = $Cave[$i][$z]
+					Next
+
+				EndIf
+
+			Next
+		EndIf
+
+EndFunc
+
+Func StructACDByIdACD($idacd)
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
+	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
+	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x120, $d3, "ptr") + 0x0, $d3, "ptr")
+
+	$iterateACDActorStruct = ArrayStruct($ACDStruct, $_Count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $CurrentOffset, 'ptr', DllStructGetPtr($iterateACDActorStruct), 'int', DllStructGetSize($iterateACDActorStruct), 'int', '')
+
+	For $i = 0 To $_Count
+		$ACDActorStruct = GetElement($iterateACDActorStruct, $i, $ACDStruct)
+
+		If DllStructGetData($ACDActorStruct, 1) = $idacd Then
+			Dim $AcdStruct[8]
+			$result = DllStructGetData($ACDActorStruct, 13)
+
+			$AcdStruct[0] = DllStructGetData($ACDActorStruct, 1)
+			$AcdStruct[1] = DllStructGetData($ACDActorStruct, 2)
+			$AcdStruct[2] = DllStructGetData($ACDActorStruct, 4)
+			$AcdStruct[3] = DllStructGetData($ACDActorStruct, 5)
+			$AcdStruct[4] = DllStructGetData($ACDActorStruct, 7)
+			$AcdStruct[5] = DllStructGetData($ACDActorStruct, 8)
+			$AcdStruct[6] = DllStructGetData($ACDActorStruct, 9)
+			$AcdStruct[7] = DllStructGetData($ACDActorStruct, 13)
+
+			_log("StructACDByIdACD : " & DllStructGetData($ACDActorStruct, 2))
+			$iterateACDActorStruct = ""
+			$ACDActorStruct = ""
+			Return $result
+		EndIf
+		$ACDActorStruct = ""
+	Next
+	$iterateACDActorStruct = ""
+	Return 0
+EndFunc
+
+Func Is_PlayerRdy($isblocking = 0)
+
+	if GameState() = 1 Then
+		$Local_player = GetLocalPlayer()
+		if $Local_player <> 0 Then
+			$Id_Acd = _memoryRead($Local_player + 0x4, $d3, "ptr")
+			_log("Id_Acd -> " & $Id_Acd)
+			if $Id_Acd <> 0xFFFFFFFF Then
+				;$Id_Attrib = StructACDByIdACD($Id_Acd)
+				$OfsAcd = GetACDOffsetByACDGUID($Id_Acd)
+				_log("Id_Attrib -> " & $OfsAcd)
+				$Id_Attrib = _memoryRead($OfsAcd+0x120, $d3, "ptr")
+				_log("Id_Attrib -> " & $Id_Attrib)
+				if $Id_Attrib <> 0 Then
+					$HiddenAttr = GetAttribute($Id_Attrib, $Atrib_Hidden)
+					_log("HiddenAttr -> " & $HiddenAttr)
+					if $HiddenAttr = 0 Then
+						$Pseudo = _memoryRead($Local_player + 0xBEC8, $d3, "char[98]")
+					EndIf
+					return true
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+
+	return false
+EndFunc
+
+Func TakeWPV3($num)
+
+	Attack()
+
+	Local $Curentarea = GetLevelAreaId()
+    Local $Newarea = $Curentarea
+
+	if $GameFailed = 1 Then return False
+	While Not offsetlist()
+		Sleep(10)
+	WEnd
+
+	$WayPointEntity = "Waypoint"
+	$WayPointFound = False
+
+	Local $index, $offset, $count, $item[10], $maxRange = 80
+		startIterateObjectsList($index, $offset, $count)
+		While iterateObjectsList($index, $offset, $count, $item)
+
+			If StringInStr($item[1], $WayPointEntity) Then
+				_log("WayPoint Found, Try with MaxRange")
+				If $item[9] < $maxRange Then
+					_log("WayPoint OK, MaxRange OK")
+					$WayPointFound = true
+					ExitLoop
+				Else
+					_log("WayPoint OK, MaxRange FALSE")
+				EndIF
+			EndIf
+
+		WEnd
+
+		_log("WayPoint -> " & $WayPointFound)
+
+		if $WayPointFound Then
+
+			_Log("WP Found")
+			OpenWp($item)
+			Sleep(750)
+			Local $wptry = 0
+			While _checkWPopen() = False And _playerdead() = False
+				If $wptry <= 6 Then
+					_log('Fail to open wp')
+					$wptry += 1
+					OpenWp($item)
+					Sleep(500)
+				else
+					$gamefailed = 1
+					return false
+				EndIf
+			WEnd
+
+
+			While _checkWPopen() = False And _playerdead() = False And _checkdisconnect() = False
+				Send("M")
+				sleep(10)
+			WEnd
+
+			if _playerdead() or _checkdisconnect() Then
+				$gamefailed = 1
+				return false
+			EndIf
+
+			VerifAct($num)
+			ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
+			sleep(100)
+
+			Local $areatry = 0
+			  While $Newarea = $Curentarea And $areatry < 13 ; on attend d'avoir une nouvelle Area environ 6 sec
+				$Newarea = GetLevelAreaId()
+				Sleep(500)
+				$areatry += 1
+			  WEnd
+
+			Sleep(500)
+
+			if _playerdead() Then
+				$GameFailed = 1
+				return false
+			EndIf
+
+		Else
+			_log("WP NOT FOUND, START WITH KEY 'M'")
+			TakeWpByKey($num)
+		EndIf
+
+
+			While Not offsetlist()
+				Sleep(10)
+			WEnd
+			$SkippedMove = 0 ;reset ouur skipped move count cuz we should be in brand new area
+
+			return true
+
+
+
+EndFunc
+
+Func IterateCave()
+
+	Local $index, $offset, $count, $item
+	startIterateObjectsList($index, $offset, $count)
+	Local $z = 0
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	;$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF AND IsCave(DllStructGetData($iterateObjectsStruct, 2)) Then
+
+			$z += 1
+
+			if $z = 1 Then
+				Dim $item[1][9]
+			Else
+				Redim $item[$z][9]
+			EndIf
+
+			$item[$z-1][0] = DllStructGetData($iterateObjectsStruct, 2) ;Name
+			$item[$z-1][1] = DllStructGetData($iterateObjectsStruct, 6) ;X Head
+			$item[$z-1][2] = DllStructGetData($iterateObjectsStruct, 7) ;Y Head
+			$item[$z-1][3] = DllStructGetData($iterateObjectsStruct, 8) ;Z Head
+			$item[$z-1][4] = DllStructGetData($iterateObjectsStruct, 10) ;X Foot
+			$item[$z-1][5] = DllStructGetData($iterateObjectsStruct, 11) ;Y Foot
+			$item[$z-1][6] = DllStructGetData($iterateObjectsStruct, 12) ;Z Foot
+
+		EndIf
+		$iterateObjectsStruct = ""
+		Next
+
+	$iterateObjectsListStruct = ""
+
+	return $item
+
+EndFunc
+
+Func IterateCACDV2()
+
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
+	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
+	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x120, $d3, "ptr") + 0x0, $d3, "ptr")
+	Local $item2D[1][17], $count=0
+
+	$iterateACDActorStruct = ArrayStruct($ACDStruct, $_Count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $CurrentOffset, 'ptr', DllStructGetPtr($iterateACDActorStruct), 'int', DllStructGetSize($iterateACDActorStruct), 'int', '')
+
+	For $i = 0 To $_Count
+		$ACDActorStruct = GetElement($iterateACDActorStruct, $i, $ACDStruct)
+
+		If DllStructGetData($ACDActorStruct, 1) <> -1 Then
+			$count += 1
+			;_log(DllStructGetData($ACDActorStruct, 2))
+			$found = false
+			$buff = DllStructGetData($ACDActorStruct, 1) ;ID_ACD
+			Redim $item2D[$count][17]
+			_log($CurrentOffset + ($i*0x2f8) &  " - name -> " & DllStructGetData($ACDActorStruct, 2) & " - " & DllStructGetData($ACDActorStruct, 7) )
+			$item2D[$count-1][13] = $buff ;ID_ACD
+			$item2D[$count-1][14] = DllStructGetData($ACDActorStruct, 5) ;ID_SNO
+			$item2D[$count-1][15] = DllStructGetData($ACDActorStruct, 7) ;GB_TYPE
+			$item2D[$count-1][16] = DllStructGetData($ACDActorStruct, 8) ;ID_GB
+			$item2D[$count-1][17] = DllStructGetData($ACDActorStruct, 9) ;mobtype
+			$item2D[$count-1][18] = DllStructGetData($ACDActorStruct, 11) ;Radius
+			$item2D[$count-1][19] = DllStructGetData($ACDActorStruct, 13) ;ID_ATTRIB
+		Endif
+		$ACDActorStruct = ""
+	Next
+	$iterateACDActorStruct = ""
+
+	Return $item2D
+EndFunc
+
+Func IterateFilterAttackv5()
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Dim $item_buff_2D[1][21]
+	Local $z = 0
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	dim $item[$TableSizeGuidStruct]
+
+	$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
+			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y Head
+			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z Head
+			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+
+			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+			ReDim $item_buff_2D[$z + 1][21]
+
+			For $x = 0 To $TableSizeGuidStruct - 1
+				$item_buff_2D[$z][$x] = $item[$x]
+			Next
+			$z += 1
+
+			IterateCACD($item_buff_2D)
+		EndIf
+		$iterateObjectsStruct = ""
+		Next
+
+	$iterateObjectsListStruct = ""
+
+	return $item_buff_2D
+EndFunc
+
+Func GetLocalPlayer()
+	;Global $ObjManStorage = 0x7CC ;0x794
+	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x9a4, $d3, 'int') ;0x94C/934
+	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x88c, $d3, 'int')
+
+	if $v0 <> 0 AND _MemoryRead($v0, $d3, 'int') <> -1 AND $v1 <> 0 Then
+		return 0xD0D0 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
+	Else
+		return 0
+	EndIf
+EndFunc
+
+Func GetActivePlayerSkill($index)
+	$Local_player = GetLocalPlayer()
+	If $local_player <> 0 Then
+		return _MemoryRead($local_player + (0xBC + $index * 0x10), $d3, 'int')
+	Else
+		return 0
+	EndIf
+EndFunc
+
+Func GoToTown_Portal()
+
+
+EndFunc
 
 ;;--------------------------------------------------------------------------------
 ;;      checkFromList()
@@ -598,11 +954,10 @@ Func MapItemWithLvl($items, $snowithlvl, $indexForBGID)
 EndFunc   ;==>MapItemWithLvl
 
 Func IsTeleport()
-	if _memoryRead( _memoryRead($_Myoffset + 0x1a4, $d3, "ptr") + 0x18, $d3, "int") = 31 Then
-		return true
+	If mod(_memoryRead( _memoryRead($_Myoffset + 0x1a4, $d3, "ptr") + 0x18, $d3, "int"), 2) = 0 Then
+		Return True
 	EndIf
-
-	return false
+	Return False
 EndFunc
 
 ;;--------------------------------------------------------------------------------

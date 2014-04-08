@@ -12,6 +12,59 @@ HotKeySet("{F4}", "Testing_IterateObjetcsList")
 HotKeySet("{F8}", "MarkPos")
 HotKeySet("{F11}", "MonsterListing")
 
+Func IterateObjectListV2()
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Dim $item_buff_2D[1][$TableSizeGuidStruct]
+	Local $z = 0
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	dim $item[$TableSizeGuidStruct]
+
+	$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+			$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+			$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+			$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
+			$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y Head
+			$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z Head
+			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+
+			$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+
+					ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
+
+					For $x = 0 To $TableSizeGuidStruct - 1
+						$item_buff_2D[$z][$x] = $item[$x]
+					Next
+					$z += 1
+
+
+		EndIf
+		$iterateObjectsStruct = ""
+		Next
+
+	$iterateObjectsListStruct = ""
+
+	return $item_buff_2D
+
+EndFunc
+
+
 
 Func ListUi($Visible=0)
 	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
@@ -210,12 +263,14 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;EndIf
 
 ;_log("Finish")
+
+_log("Bounty : " & fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward",1,85))
 ;ListUi(1)
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
-consoleLog("Disconnect : " & _checkDisconnect())
+;consoleLog("Disconnect : " & _checkDisconnect())
 
-consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))		
+;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))		
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 
 

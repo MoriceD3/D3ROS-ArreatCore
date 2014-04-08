@@ -31,8 +31,9 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		ElseIf $arr_sequence[$index][1] = "closeconfirm" Then
 			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
-			TakeWPV2($arr_sequence[$index][2])
-			;TakeWp($arr_sequence[$index][2], $arr_sequence[$index][3], $arr_sequence[$index][4], $arr_sequence[$index][5])
+			TakeWPV2($arr_sequence[$index][2], 0)
+		ElseIf $arr_sequence[$index][1] = "takewpadv" Then
+			TakeWPV2($arr_sequence[$index][2], 1)
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			if Not _TownPortalnew() Then
 				$GameFailed=1
@@ -379,27 +380,48 @@ Func sequence()
 				;***************************************CMD BLOQUANTE*****************************************
 				If StringInStr($line, "takewp=", 2) Then; TakeWP detected
 					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
-
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
 					   _Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
 					EndIf
-
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
-
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
 						SendSequence($array_sequence)
 						$array_sequence = ArrayInit($array_sequence)
 						_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
-						TakeWPV2($table_wp)
+						TakeWPV2($table_wp, 0)
 						$line = ""
 					Else
 						_log("Mise en array d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
 						$array_sequence[UBound($array_sequence) - 1][0] = 1
 						$array_sequence[UBound($array_sequence) - 1][1] = "takewp"
+						$array_sequence[UBound($array_sequence) - 1][2] = $table_wp
+						$noblocline = 0
+						$line = ""
+					EndIf
+				ElseIf StringInStr($line, "takewpadv=", 2) Then; TakeWP detected
+					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
+					If $autobuff Then ; Buff avant de prendre le WP
+					   Sleep(500)
+					   buffinit()
+					   _Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
+					EndIf
+					$line = StringReplace($line, "takewpadv=", "", 0, 2)
+					$table_wp = $line
+					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
+						SendSequence($array_sequence)
+						$array_sequence = ArrayInit($array_sequence)
+						_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
+						TakeWPV2($table_wp, 1)
+						$line = ""
+					Else
+						_log("Mise en array d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
+						$array_sequence = ArrayUp($array_sequence)
+						$array_sequence[UBound($array_sequence) - 1][0] = 1
+						$array_sequence[UBound($array_sequence) - 1][1] = "takewpadv"
 						$array_sequence[UBound($array_sequence) - 1][2] = $table_wp
 						$noblocline = 0
 						$line = ""

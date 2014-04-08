@@ -105,6 +105,7 @@ Func _botting()
 			_log("We are in menu : Resuming game", $LOG_LEVEL_VERBOSE)
 			$DeathCountToggle = True
 			_resumegame()
+			Sleep(1500)
 		EndIf
 
 		While Not _onloginscreen() And Not _ingame()
@@ -118,6 +119,7 @@ Func _botting()
 				ContinueLoop 2
 			EndIf
 			_resumegame()
+			Sleep(1500)
 		WEnd
 
 		If Not _onloginscreen() And Not _playerdead() And _ingame() Then

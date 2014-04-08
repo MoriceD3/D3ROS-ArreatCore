@@ -4,11 +4,12 @@
 ;
 
 Global $d3
-Global $_Myoffset   = 0
-Global $_MyGuid     = 0
-Global $_MyACDWorld = 0
-Global $_MyCharType = 0
-Global $hotkeycheck = False
+Global $_Myoffset   		  = 0
+Global $_MyGuid     		  = 0
+Global $My_FastAttributeGroup
+Global $_MyACDWorld 		  = 0
+Global $_MyCharType 		  = 0
+Global $hotkeycheck 		  = False
 
 ; Variable contenant le stuff actuel
 Global $allSNOitems
@@ -138,8 +139,8 @@ Global $fichierlog  = "log-" & @YEAR & "_" & @MDAY & "_" & @MON & "_" & @HOUR & 
 Global $fichierstat = "stat_" & @YEAR & "_" & @MON & "_" & @MDAY & "-" & @HOUR & "h" & @MIN & ".txt"
 
 ; Listes interne
-Global $List_BanItemACDCheckList = "a1_|a3_|a2_|a4_|Lore_Book_Flippy|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoins|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
-Global $List_BanItemStartName    = "barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A|Azmodan_BSS_soul|Belial_BSS_soul"
+Global $List_BanItemACDCheckList = "a1_|a3_|a2_|a4_|a5_|Lore_Book_Flippy|D3Arrow|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoin|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
+Global $List_BanItemStartName    = "DH_|x1_DemonHunter|D3Arrow|barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|ZoltunKulle_EnergyTwister|a2dun_Cald_Belial_Room_Gate_A|a2dun_Cald_Belial_Room_A_Breakable_main|AngelWings_common_model|lordOfDespair_bladeGlow_model|a3dun_crater_st_Demon_BloodContainer_A|Azmodan_BSS_soul|Belial_BSS_soul"
 
 ; Tables de gestions des listes
 Global $Table_Coffre 		      = [0]
