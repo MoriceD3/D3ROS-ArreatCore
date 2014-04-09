@@ -2004,9 +2004,8 @@ Func handle_Coffre(ByRef $item)
 				;_log("waiting 1 s")
 			EndIf
 			If ($result = 1) Or ($result = 2 And $item[9] < 2) Then
-				sleep(1000)
+				Sleep(1000)
 				_log("Cursed Chest : Waiting 1 s")
-				Send($KeyCloseWindows)
 			EndIf
 		EndIf
 	Else
@@ -2018,7 +2017,8 @@ Func handle_Coffre(ByRef $item)
 			EndIf
 		EndIf
 	EndIf
-	return $result
+	Send($KeyCloseWindows)
+	Return $result
 EndFunc
 
 

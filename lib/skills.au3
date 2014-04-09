@@ -417,7 +417,7 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "zone", 25, "wrath", 100, 35], _
                         [$X1_Crusader_BlessedShield, "Crusader_BlessedShield", "", "attack", 20, "wrath", 100, 45], _
                         [$X1_Crusader_Condemn, "Crusader_Condemn", 15000, "zone", "", "", "", 10], _
-                        [$X1_Crusader_Judgment, "Crusader_Judgment", 5000, "elite", "", "", 100, 35], _
+                        [$X1_Crusader_Judgment, "Crusader_Judgment", 5000, "attack", "", "", 100, 35], _
                         [$X1_Crusader_LawsOfHope2, "Crusader_LawsOfHope", 45000, "life", 0, "", 80, ""], _
                         [$X1_Crusader_AkaratsChampion, "Crusader_AkaratsChampion", 90000, "elite", "", "", 100, 45], _
                         [$X1_Crusader_FistOfTheHeavens, "Crusader_FistOfTheHeavens", 0, "attack", 30, "wrath", 100, 45], _
