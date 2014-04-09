@@ -469,7 +469,7 @@ Func IterateBackpack($bag = 0, $rlvl = 0)
 	;$bag = 0 for backpack and 15 for stash
 	;$rlvl = 1 for actual level requirement of item and 0 for base required level
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8a8, $d3, "ptr") ; 2.0.3 : 0x8b8
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
 	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
 	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x120, $d3, "ptr") + 0x0, $d3, "ptr");$_LocalActor_3
@@ -504,7 +504,7 @@ EndFunc   ;==>IterateBackpack
 
 Func Iteratestuff()
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr") ;8a0
+	$ptr2 = _memoryread($ptr1 + 0x8a8, $d3, "ptr") ; 2.0.3 : 0x8b8 ;8a0
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
 	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
 
@@ -956,7 +956,7 @@ EndFunc   ;==>LocateMyToon
 
 Func startIterateLocalActor(ByRef $index, ByRef $offset, ByRef $count)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8a8, $d3, "ptr") ; 2.0.3 : 0x8b8
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
 	$count = _memoryread($ptr3 + 0x108, $d3, "int")
 	$index = 0
@@ -1454,7 +1454,7 @@ EndFunc   ;==>Resistance
 
 Func GetACDOffsetByACDGUID($Guid)
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8a8, $d3, "ptr") ; 2.0.3 : 0x8a8
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "int")
 	$index = BitAND($Guid, 0xFFFF)
 
@@ -1532,7 +1532,7 @@ EndFunc
 Func IterateCACD(ByRef $ItemCRactor)
 
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x8b8, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 0x8a8, $d3, "ptr") ; 2.0.3 ; 0x8b8
 	$ptr3 = _memoryread($ptr2 + 0x0, $d3, "ptr")
 	$_Count = _memoryread($ptr3 + 0x108, $d3, "int")
 	$CurrentOffset = _memoryread(_memoryread($ptr3 + 0x120, $d3, "ptr") + 0x0, $d3, "ptr")
@@ -3576,7 +3576,7 @@ EndFunc   ;==>Die2Fast
 
 Func GetFAG($idAttrib)
 	$c = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$c1 = _memoryread($c + 0x8ac, $d3, "ptr")
+	$c1 = _memoryread($c + 0x89C, $d3, "ptr") ; 2.0.3 : 0x8ac
 	$c2 = _memoryread($c1 + 0x54, $d3, "ptr")
 	$id = BitAND($idAttrib, 0xFFFF)
 	$bitshift = _memoryread($c2 + 0x164, $d3, "int")
@@ -3664,7 +3664,8 @@ Func IsPowerReady($idAttrib, $idPower)
 EndFunc   ;==>IsPowerReady
 
 Func IsBuffActive($idAttrib, $idPower)
-	Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Buff_Active[0], BitShift($idPower, -12))), $d3, "int") == 1
+	;Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Buff_Active[0], BitShift($idPower, -12))), $d3, "int") == 1
+	;does not exist anymore in ros after 2.0.4
 EndFunc   ;==>IsBuffActive
 
 
@@ -4290,11 +4291,11 @@ EndFunc   ;==>GestSpellInit
 ;==================================================================================
 Func GetPlayerOffset()
 	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2 = _memoryread($ptr1 + 0x9a4, $d3, "ptr")      ;0x96c
+	$ptr2 = _memoryread($ptr1 + 0x994, $d3, "ptr")  ; 2.0.3 : 0x9a4    ;0x96c
 	$index = _memoryread($ptr2 + 0x0, $d3, "int")
 
 	$ptr1bis = _memoryread($ofs_objectmanager, $d3, "ptr")
-	$ptr2bis = _memoryread($ptr1 + 0x88c, $d3, "ptr")    ;0x874
+	$ptr2bis = _memoryread($ptr1 + 0x87c, $d3, "ptr") ; 2.0.3 : 0x88c    ;0x874
 	$id = _memoryread($ptr2bis + 0x5c + $index * 0xD138, $d3, "int")
 
 	Return GetActorFromId($id)
@@ -5672,7 +5673,7 @@ Func GameState()
 	;1 // In Game
 	;0 // Loading Screen
 	;5 // Menu
-	return _memoryRead(_memoryRead($ofs_objectmanager ,$d3, "ptr") + 0x900, $d3, "ptr")
+	return _memoryRead(_memoryRead($ofs_objectmanager ,$d3, "ptr") + 0x8f0, $d3, "ptr") ; 2.0.3 : 0x900
 Endfunc
 
 Func BanActor($actor)
@@ -5721,8 +5722,8 @@ EndFunc
 
 Func GetLocalPlayer()
 	;Global $ObjManStorage = 0x7CC ;0x794
-	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x9a4, $d3, 'int') ;0x94C/934
-	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x88c, $d3, 'int')
+	$v0 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x994, $d3, 'int') ; 2.0.3 : 0x9a4 ;0x94C/934
+	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x87c, $d3, 'int') ; 2.0.3 : 0x88c
 
 	if $v0 <> 0 AND _MemoryRead($v0, $d3, 'int') <> -1 AND $v1 <> 0 Then
 		return 0xD138 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
