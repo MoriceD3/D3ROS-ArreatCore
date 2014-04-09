@@ -148,32 +148,30 @@ Func GetUIRectangle($x, $y, $r, $b)
 EndFunc
 
 Func fastcheckuiitemvisible($valuetocheckfor, $visibility, $bucket)
-
 	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
 	$UiPtr2 = _memoryread($UiPtr1 + $Ofs_UI_A, $d3, "ptr")
 	$UiPtr3 = _memoryread($UiPtr2 + $Ofs_UI_B, $d3, "ptr")
 	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
-
 	$UiPtr = _memoryread($BuckitOfs + ($bucket * 0x4), $d3, "ptr")
 
-	while $UiPtr <> 0
+	While $UiPtr <> 0
 		$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
 		$Visible = BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
-		if $Visibility = 1 AND $Visible = 4 Then
+		If $Visibility = 1 And $Visible = 4 Then
 			$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
 			If StringInStr($name, $valuetocheckfor) Then
-				return true
+				Return True
 			EndIf
 		ElseIf $Visibility = 0 Then
 			$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
 			If StringInStr($name, $valuetocheckfor) Then
-				return true
+				Return True
 			EndIf
 		EndIf
 
 		$UiPtr = _memoryread($UiPtr, $d3, "ptr")
 	WEnd
-	return false
+	Return false
 Endfunc
 
 Func GetOfsFastUI($valuetocheckfor, $bucket)
@@ -355,15 +353,19 @@ EndFunc   ;==>_checkStashopen OK
 
 Func _checkBannerOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetProfileBannerCustomization_main.LayoutRoot.OverlayContainer.PageHeader", 1, 1697)
-EndFunc
+EndFunc ;==>_checkBannerOpen OK
 
 Func _checkParagonOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.Paragon_main.LayoutRoot", 1, 377)
-EndFunc
+EndFunc ;==>_checkParagonOpen OK
 
 Func _checkInventoryopen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 1813)
 EndFunc   ;==>_checkInventoryopen OK
+
+Func _checkBountyRewardOpen() 
+	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 1969) 
+EndFunc ;==>_checkBountyRewardOpen OK
 
 Func GetLevelAreaId()
 	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
@@ -1184,6 +1186,10 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	   EndIf
 	EndIf
 
+	If _checkBountyRewardOpen() Then
+		Send($KeyCloseWindows)
+	EndIf
+
 	Local $toggletry = 0
 	Global $lastwp_x = $_x
 	Global $lastwp_y = $_y
@@ -1875,7 +1881,6 @@ Func handle_Coffre(ByRef $item)
 			EndIf
 		EndIf
 	EndIf
-	Send($KeyCloseWindows)
 	Return $result
 EndFunc
 
@@ -1977,8 +1982,6 @@ Func Attack()
 		Return
 	EndIf
 
-	Send($KeyCloseWindows)
-
 	Local $IgnoreList = ""
 	Local $item[$TableSizeGuidStruct + 1]
 	Local $OldActor = ""
@@ -1991,8 +1994,6 @@ Func Attack()
 	Local $wasLoot = False
 
 	While IsArray($test_iterateallobjectslist)
-
-		;TODO : Check if quest windows is visible and close windows !
 		If _playerdead_revive() Then
 			_log("Attack : ExitLoop cause of player_revive", $LOG_LEVEL_WARNING)
 			ExitLoop
@@ -2002,6 +2003,10 @@ Func Attack()
 			$GameFailed = 1
 			_log("Attack : Return because _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
 			ExitLoop
+		EndIf
+
+		If _checkBountyRewardOpen() Then
+			Send($KeyCloseWindows)
 		EndIf
 
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
@@ -2096,6 +2101,10 @@ Func Attack()
 			Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
 		EndIf
 	WEnd
+
+	If _checkBountyRewardOpen() Then
+		Send($KeyCloseWindows)
+	EndIf
 
 EndFunc   ;==>Attack
 
