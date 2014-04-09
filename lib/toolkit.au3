@@ -12,18 +12,6 @@
 ;;  By Opkllhibus, Leo11173, Kickbar
 ;;================================================================================
 ;;================================================================================
-;;================================================================================
-;; PRE FUNCTIONS
-;;================================================================================
-;;--------------------------------------------------------------------------------
-;;      Make sure you are running as admin
-;;--------------------------------------------------------------------------------
-
-$Admin = IsAdmin()
-If $Admin <> 1 Then
-	MsgBox(0x30, "ERROR", "This program require administrative rights you fool!")
-	Exit
-EndIf
 
 ;;--------------------------------------------------------------------------------
 ;;      Includes
@@ -36,28 +24,7 @@ EndIf
 #include "constants.au3"
 #include "Utils.au3"
 #include "ExpTableConst.au3"
-#include "NomadMemory.au3"
- ;THIS IS EXTERNAL, GET IT AT THE AUTOIT WEBSITE
-
-;;--------------------------------------------------------------------------------
-;;      Initialize MouseCoords
-;;--------------------------------------------------------------------------------
-Opt("MouseCoordMode", 2) ;1=absolute, 0=relative, 2=client
-Opt("MouseClickDownDelay", Random(10, 20))
-Opt("SendKeyDownDelay", Random(10, 20))
-
-;;--------------------------------------------------------------------------------
-;;      Open the process
-;;--------------------------------------------------------------------------------
-Opt("WinTitleMatchMode", -1)
-SetPrivilege("SeDebugPrivilege", 1)
-Global $ProcessID = WinGetProcess("[CLASS:D3 Main Window Class]", "")
-$d3 = _MemoryOpen($ProcessID)
-If @error Then
-	WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
-	MsgBox(4096, "ERROR", "Failed to open memory for process;" & $ProcessID)
-	Exit
-EndIf
+#include "NomadMemory.au3"  ;THIS IS EXTERNAL, GET IT AT THE AUTOIT WEBSITE
 
 ;;================================================================================
 ;; FUNCTIONS
