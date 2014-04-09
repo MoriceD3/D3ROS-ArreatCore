@@ -60,6 +60,32 @@ Global Const $WRITE_ME_DEATH			= 9
 Global Const $WRITE_ME_TAKE_WP			= 10
 Global Const $WRITE_ME_TAKE_BREAK_MENU	= 11
 
+; Spell Type
+Global Const $SPELL_TYPE_LIFE   		  = 0
+Global Const $SPELL_TYPE_ATTACK   		  = 1
+Global Const $SPELL_TYPE_PHYSICAL   	  = 2
+Global Const $SPELL_TYPE_ELITE   		  = 3
+Global Const $SPELL_TYPE_BUFF   	  	  = 4
+Global Const $SPELL_TYPE_ZONE   		  = 5
+Global Const $SPELL_TYPE_ZONE_AND_BUFF    = 6
+Global Const $SPELL_TYPE_MOVE   		  = 7
+Global Const $SPELL_TYPE_LIFE_AND_ATTACK  = 8
+Global Const $SPELL_TYPE_LIFE_OR_ATTACK   = 9
+Global Const $SPELL_TYPE_MOVE_OR_ATTACK   = 10
+Global Const $SPELL_TYPE_LIFE_OR_BUFF	  = 11
+Global Const $SPELL_TYPE_LIFE_OR_MOVE     = 12
+Global Const $SPELL_TYPE_LIFE_AND_BUFF    = 13
+Global Const $SPELL_TYPE_ATTACK_OR_BUFF   = 14
+Global Const $SPELL_TYPE_ATTACK_AND_BUFF  = 15
+Global Const $SPELL_TYPE_LIFE_OR_ELITE    = 16
+Global Const $SPELL_TYPE_LIFE_AND_ELITE   = 17
+Global Const $SPELL_TYPE_ATTACK_OR_ELITE  = 18
+Global Const $SPELL_TYPE_ATTACK_AND_ELITE = 19
+Global Const $SPELL_TYPE_ELITE_AND_BUFF   = 20
+Global Const $SPELL_TYPE_ELITE_OR_BUFF    = 21
+Global Const $SPELL_TYPE_PERMANENT_BUFF   = 22
+Global Const $SPELL_TYPE_CHANNELING	      = 23
+
 ; Item Type
 Global Const $ITEM_TYPE_MOB		= 1
 Global Const $ITEM_TYPE_SHRINE  = 2

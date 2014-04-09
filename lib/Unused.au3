@@ -265,6 +265,250 @@ Func LevelAreaConstants()
 	Global $A5todo = 0x41ebb
 EndFunc   ;==>LevelAreaConstants
 
+Func GetMyStats()
+	Local $index, $offset, $count, $item[4]
+	startIterateLocalActor($index, $offset, $count)
+	While iterateLocalActorList($index, $offset, $count, $item)
+		If StringInStr($item[2], "GoldCoin-") Then
+			_log("Current GOLD: " & IterateActorAtribs($item[1], $Atrib_ItemStackQuantityLo), $LOG_LEVEL_VERBOSE)
+			ExitLoop
+		EndIf
+	WEnd
+	_log("Power Disabled: " & IterateActorAtribs($_MyGuid, $Atrib_Magic_Find_Handicap), $LOG_LEVEL_VERBOSE)
+	_log("Difficulty: " & GetAttributeSelf($Atrib_Difficulty), $LOG_LEVEL_VERBOSE)
+	_log("Act: " & IterateActorAtribs($_MyGuid, $Atrib_Act), $LOG_LEVEL_VERBOSE)
+	_log("Current Level: " & IterateActorAtribs($_MyGuid, $Atrib_Level), $LOG_LEVEL_VERBOSE)
+	_log("Strength: " & IterateActorAtribs($_MyGuid, $Atrib_Strength_Total), $LOG_LEVEL_VERBOSE)
+	_log("Dexterity: " & IterateActorAtribs($_MyGuid, $Atrib_Dexterity_Total), $LOG_LEVEL_VERBOSE)
+	_log("Inteligence: " & IterateActorAtribs($_MyGuid, $Atrib_Intelligence_Total), $LOG_LEVEL_VERBOSE)
+	_log("Vitality: " & IterateActorAtribs($_MyGuid, $Atrib_Vitality_Total), $LOG_LEVEL_VERBOSE)
+	_log("Gold find: " & IterateActorAtribs($_MyGuid, $Atrib_Gold_Find), $LOG_LEVEL_VERBOSE)
+	_log("Magic find: " & IterateActorAtribs($_MyGuid, $Atrib_Magic_Find), $LOG_LEVEL_VERBOSE)
+	_log("Pickup Radius : " & IterateActorAtribs($_MyGuid, $Atrib_Gold_PickUp_Radius), $LOG_LEVEL_VERBOSE)
+	_log("Movement speed : " & IterateActorAtribs($_MyGuid, $Atrib_Movement_Scalar_Capped_Total), $LOG_LEVEL_VERBOSE)
+
+EndFunc   ;==>GetMyStats
+
+Func Removed_GestSpellcast
+;~ 			case 23
+;~ 			   ;or ($buff_table[1] and IsPowerReady($_MyGuid, $buff_table[9]))
+;~ If $buff_table[1] <> False  Then
+;~   Switch $buff_table[6]
+;~ 	  Case "right"
+;~ 		  MouseDown("right")
+;~ 	  Case "left"
+;~ 		  MouseDown("left")
+;~ 	  Case Else
+;~ 	   Send("{" & $buff_table[6] & " down}")
+;~    EndSwitch
+;~ send("{shiftdown}")
+;~  $check_source=GetResource( $_MyGuid, $buff_table[5])
+;~     $vie=getlifep()
+;~    if IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur) > 0 and $check_source>$buff_table[4]/$MaximumSource and $vie>$buff_table[7]/100 then
+;~ 	  $cana=true
+;~    Else
+;~ 	  $cana=False
+;~ 	  EndIf
+
+;~ while $cana=true
+;~    Dim $pos = UpdateObjectsPos($offset)
+;~    $Coords = FromD3toScreenCoords($pos[0], $pos[1], $pos[2])
+;~    MouseMove($Coords[0], $Coords[1], 3)
+;~    sleep(10)
+;~    $check_source=GetResource( $_MyGuid, $buff_table[5])
+;~    $vie=getlifep()
+;~    if IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur) > 0 and $check_source>$buff_table[4]/$MaximumSource and $vie>$buff_table[7]/100 then
+;~ 	  $cana=true
+;~    Else
+;~ 	  $cana=False
+;~    EndIf
+;~
+;~    	For $ii = 0 To 5
+
+;~ 		Dim $buff_table2[11]
+
+;~ 			Switch $ii
+
+;~ 	case 0
+;~ 		$buff_table2 = $Skill1
+;~ 	case 1
+;~ 		$buff_table2 = $Skill2
+;~ 	case 2
+;~ 		$buff_table2 = $Skill3
+;~ 	case 3
+;~ 		$buff_table2 = $Skill4
+;~ 	case 4
+;~ 		$buff_table2 = $Skill5
+;~ 	case 5
+;~ 		$buff_table2 = $Skill6
+;~ 	Endswitch
+;~ 	If $buff_table2[3]=4 and IsBuffActive($_MyGuid, $buff_table2[9])=false  Then
+;~ 	   $cana=false
+;~ 	   endif
+;~  Next
+;~
+;~    if _playerdead() Then
+;~ 	  send("{shiftup}")
+;~ 	   Switch $buff_table[6]
+;~ 	  Case "right"
+;~ 		  mouseup("right")
+;~ 	  Case "left"
+;~ 		  mouseup("left")
+;~ 	  Case Else
+;~ 		 Send("{" & $buff_table[6] & " up}")
+;~    endswitch
+;~    exitloop
+;~ endif
+;~ WEnd
+;~  send("{shiftup}")
+;~    Switch $buff_table[6]
+;~ 	  Case "right"
+;~ 		  mouseup("right")
+;~ 	  Case "left"
+;~ 		  mouseup("left")
+;~ 	  Case Else
+;~ 		 Send("{" & $buff_table[6] & " up}")
+;~    endswitch
+;~
+
+;~ 				$buff_table[10] = TimerInit()
+
+
+EndFunc
+
+
+Func _inventoryfull()
+
+	$ptr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
+	$ptr2 = _memoryread($ptr1 + 2420, $d3, "ptr")
+	$ptr3 = _memoryread($ptr2 + 0, $d3, "ptr")
+	$ofs_uielements = _memoryread($ptr3 + 8, $d3, "ptr")
+	$uielementpointer = _memoryread($ofs_uielements + 4 * 1185, $d3, "ptr")
+
+	While $uielementpointer <> 0
+		$npnt = _memoryread($uielementpointer + 528, $d3, "ptr")
+		$name = BinaryToString(_memoryread($npnt + 56, $d3, "byte[256]"), 4)
+		If StringInStr($name, "Root.TopLayer.error_notify.error_text") Then
+			If _memoryread($npnt + 40, $d3, "int") = 1 Then
+				$uitextptr = _memoryread($npnt + 0xAE0, $d3, "ptr")
+				$uitext = BinaryToString(_memoryread($uitextptr, $d3, "byte[1024]"), 4)
+;~                                 _log(@CRLF & $uitext)
+				If StringInStr($uitext, 'nulle part') Or StringInStr($uitext, 'inventaire') Or StringInStr($uitext, 'no place') Or StringInStr($uitext, 'enough inventory') Then
+					_log(@CRLF & $uitext, $LOG_LEVEL_ERROR, True)
+					Return True
+				EndIf
+
+			Else
+;~                                 _log($valuetocheckfor & " is invisible")
+				Return False
+			EndIf
+		EndIf
+		$uielementpointer = _memoryread($uielementpointer, $d3, "ptr")
+	WEnd
+;~         _log($valuetocheckfor & " not found")
+	Return False
+EndFunc   ;==>_inventoryfull
+
+Func UpdateArrayAttack($array_obj, $IgnoreList, $update_attrib = 0)
+
+	If UBound($array_obj) <= 1 Or Not IsArray($array_obj) Then
+		Return False
+	EndIf
+
+	If $update_attrib = 0 Then
+		Return UpdateObjectsList(_Array2DDelete($array_obj, 0))
+	Else
+
+		Local $buff2 = IterateFilterAttackV4($IgnoreList)
+		If $MonsterTri Then
+			_ArraySort($buff2, 0, 0, 0, 9)
+		EndIf
+
+		If $MonsterPriority Then
+			Dim $buff2_buff = TriObjectMonster($buff2)
+			Dim $buff2 = $buff2_buff
+		EndIf
+
+		Return $buff2
+	EndIf
+EndFunc   ;==>UpdateArrayAttack
+
+;;================================================================================
+; Function:			IndexStringList($_offset)
+; Description:		Read and index data from the specified offset
+; Parameter(s):		$_offset - The offset linking to the file def
+;								  be in hex format (0x00000000).
+;					$_displayInfo - Setting this to 1 will make the function spit
+;								out the results while running
+;
+; Note(s):			This function is made specificly to index string lists.
+;					This is usefull for getting real localized names from the
+;					proxy names you get from the objectmanager strucs.
+;					i have only test this on monster names but it should work for all.
+;==================================================================================
+Func IndexStringList($_offset, $_displayInfo = 0)
+
+	$_offset_FileMonster_StrucSize = 0x50
+	$_StringCount = _MemoryRead($_offset + 0xc, $d3, 'int')
+	$_CurrentOffset = $_offset + 0x28
+	Dim $_OutPut[$_StringCount][2]
+
+	For $i = 0 To $_StringCount - 1
+		$_OutPut[$i][0] = _MemoryRead(_MemoryRead($_CurrentOffset, $d3, 'int'), $d3, 'char[32]') ;Proxy Name, like "Priest_Male_B_NoLook"
+		$_OutPut[$i][1] = _MemoryRead(_MemoryRead($_CurrentOffset + 0x10, $d3, 'int'), $d3, 'char[34]') ;Localized name, like "Brother Malachi the Healer"
+		Assign("__" & $_OutPut[$i][0], $_OutPut[$i][1], 2)
+
+		$_CurrentOffset = $_CurrentOffset + $_offset_FileMonster_StrucSize
+		If $_displayInfo = 1 Then _log($_CurrentOffset & " ProxyName: " & $_OutPut[$i][0] & @TAB & " LocalizedName: " & $_OutPut[$i][1])
+	Next
+
+	Return $_OutPut
+EndFunc   ;==>IndexStringList
+
+;;================================================================================
+; Function:			LinkActors
+; Description:		Read and index data from the specified offset
+; Parameter(s):		$_offset - The offset linking to the file def
+;								be in hex format (0x00000000).
+;					$_displayInfo - Setting this to 1 will make the function spit
+;								out the results while running
+; Note(s):			This function is used to index data from the MPQ files that
+;					that have been loaded into memory.
+;					Im not sure why the count doesnt go beyond 256.
+;					So for the time being if the count goes beyond 256 the size
+;					is set to a specified count and then the array will be scaled
+;					after when data will stop being available.
+;==================================================================================
+Func LinkActors($OBject, $_displayInfo = 0)
+	Global $OBject_Mem_Actor = $OBject
+	Global $Object_File_Actor = IndexSNO($ofs_ActorDef, 0)
+	Global $Object_File_Monster = IndexSNO($ofs_MonsterDef, 0)
+	Dim $__outputdata[UBound($OBject_Mem_Actor, 1) - 1][2]
+	For $i = 0 To UBound($OBject_Mem_Actor, 1) - 1
+		If $OBject_Mem_Actor[$i][9] <> -1 Then
+			$ItemIndex = _ArraySearch($Object_File_Actor, $OBject_Mem_Actor[$i][9], 0, 0, 0, 1, 1, 1)
+			If $ItemIndex > 0 Then
+				$MonsterID = _MemoryRead($Object_File_Actor[$ItemIndex][0] + 0x6c, $d3, 'ptr')
+				$ItemIndex = _ArraySearch($Object_File_Monster, $MonsterID, 0, 0, 0, 1, 1, 1)
+				If $ItemIndex > 0 Then
+					$Type = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_MonsterType, $d3, 'int')
+					$MonsterType = $_Const_MonsterType[$Type + 1]
+					$Race = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_MonsterRace, $d3, 'int')
+					$MonsterRace = $_Const_MonsterRace[$Race + 1]
+					$LevelNormal = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_LevelNormal, $d3, 'int') ;//Here are some data you can use if you want,
+					$LevelNightmare = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_LevelNightmare, $d3, 'int') ;//...it gives info about levels based on dificulty
+					$LevelHell = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_LevelHell, $d3, 'int')
+					$LevelInferno = _MemoryRead($Object_File_Monster[$ItemIndex][0] + $_ofs_FileMonster_LevelInferno, $d3, 'int')
+					$OBject_Mem_Actor[$i][11] = $Type
+					$OBject_Mem_Actor[$i][12] = $Race
+					;if $_displayInfo = 1 Then _log($i & " " & $Object_File_Actor[$ItemIndex][0] & @tab & " " &$MonsterType &@tab & " " & $MonsterRace &@tab & " Level Normal:" & $LevelNormal &@tab & " " & $StringListDB[$Name][1] &" " & @TAB  &$OBject_Mem_Actor[$i][2])
+				EndIf
+			EndIf
+		EndIf
+	Next
+	Return $OBject_Mem_Actor
+EndFunc   ;==>LinkActors
+
 
 Dim $RecordCave[1][9] ;0 -> Name // 1, 2, 3 -> Pos (head)// 4, 5, 6 -> Pos (foot) // 7 -> id word // 8 -> Explorer
 
