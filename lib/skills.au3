@@ -409,7 +409,7 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Provoke, "Crusader_Provoke", 20000, "attack", 0, "", "", 10], _
                         [$X1_Crusader_Smite, "Crusader_Smite", "", "attack", 0, "", "", 15], _
                         [$X1_Crusader_BlessedHammer, "Crusader_BlessedHammer", "", "attack", 10, "wrath", "", 30], _
-                        [$X1_Crusader_SteedCharge, "Crusader_SteedCharge", 25000, "move", "", "", "", ""], _
+                        [$X1_Crusader_SteedCharge, "Crusader_SteedCharge", 16000, "move", "", "", "", ""], _
                         [$X1_Crusader_LawsOfValor2, "Crusader_LawsOfValor", 45000, "buff&elite", "", "", 100, ""], _
                         [$X1_Crusader_Justice, "Crusader_Justice", "", "physical", "", "", "", ""], _
                         [$X1_Crusader_Consecration, "Crusader_Consecration", 30000, "elite", 0, "", 100, 15], _
@@ -436,7 +436,7 @@ Global $WitchDoctor_skill_Table[22][8] =	[ _
 						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 10, "mana", "", 45], _
 						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 147, "mana", "", ""], _
 						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 122, "mana", "", 10], _
-						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 98, "mana", "", 10], _
+						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 50, "mana", "", 10], _
 						[$Witchdoctor_Hex, "Witchdoctor_Hex", 15000, "buff", 49, "mana", "", ""], _
 						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 16000, "attack", 37, "mana", "", 12], _
 						[$Witchdoctor_Locust_Swarm, "Witchdoctor_Locust_Swarm", 0, "attack", 196, "mana", "", 10], _
@@ -533,7 +533,7 @@ Global $Wizard_skill_Table[28][8] = [ _
 						[$Wizard_ShockPulse, "Wizard_ShockPulse", "", "physical", "", "", 100, 45], _
 						[$Wizard_SlowTime, "Wizard_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_StormArmor, "Wizard_StormArmor", 110000, "buff", 25, "arcane", "", ""], _
-						[$Wizard_Teleport, "Wizard_Teleport", 15000, "life", "", "", 35, ""], _
+						[$Wizard_Teleport, "Wizard_Teleport", 15000, "life", "", "", 50, ""], _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""] _
 						]
 
