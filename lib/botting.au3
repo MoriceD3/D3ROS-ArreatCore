@@ -4,11 +4,11 @@ Func _dorun()
 	_log("*** Starting new run", $LOG_LEVEL_VERBOSE)
 
 	Local $hTimer = TimerInit()
-	While Not offsetlist() And TimerDiff($hTimer) < 30000 ; 30secondes
+	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
 		Sleep(40)
 	WEnd
 
-    If TimerDiff($hTimer) >= 30000 Then
+    If TimerDiff($hTimer) >= 60000 Then
         Return False
     EndIf
 

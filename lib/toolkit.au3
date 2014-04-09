@@ -2912,7 +2912,7 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 		EndIf
 
 		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry < 25 ; on attend d'avoir une nouvelle Area environ 12 sec
+		While $Newarea = $Curentarea And $areatry <= 30 ; on attend d'avoir une nouvelle Area environ 15 sec
 			$Newarea = GetLevelAreaId()
 			Sleep(500)
 			$areatry += 1
@@ -4821,7 +4821,7 @@ Func SafePortStart()
 
 		Local $areatry = 0
 
-		While $Newarea = $Curentarea And $areatry <= 10
+		While $Newarea = $Curentarea And $areatry <= 30
 			$Newarea = GetLevelAreaId()
 			Sleep(500)
 			$areatry = $areatry + 1
@@ -4862,7 +4862,7 @@ Func SafePortBack()
 		$Newarea = GetLevelAreaId()
 
 		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry <= 10
+		While $Newarea = $Curentarea And $areatry <= 30
 			$Newarea = GetLevelAreaId()
 			Sleep(500)
 			$areatry += 1
@@ -5007,10 +5007,9 @@ Func Auto_spell_init()
 		_log("PAS DE CLASS DETECT", $LOG_LEVEL_ERROR)
 	EndIf
 
-	for $i=-1 to 4
-		For $y=0 to Ubound($tab_skill_temp) - 1
-
-			if GetActivePlayerSkill($i) = $tab_skill_temp[$y][0] Then
+	For $i = -1 To 4
+		For $y = 0 To Ubound($tab_skill_temp) - 1
+			If GetActivePlayerSkill($i) = $tab_skill_temp[$y][0] Then
 				If $i= -1 Then
 					$Skill1 = assoc_skill($y, "left", $tab_skill_temp)
 					_log("Skill Associed Left Click -> " & $Skill1[1], $LOG_LEVEL_DEBUG)
@@ -5032,7 +5031,6 @@ Func Auto_spell_init()
 				EndIf
 				Exitloop
 			EndIF
-
 		Next
 	Next
 EndFunc
