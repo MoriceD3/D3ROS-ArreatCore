@@ -10,6 +10,102 @@ Global $sequence_save = 0
 Global $autobuff = False
 Global $reverse = 0
 
+Func GetBountySequences($Table_BountyAct)
+	If Not IsArray($Table_BountyAct) Then
+		Return False
+	EndIf
+	If UBound($Table_BountyAct) = 0 Then
+		Return False
+	EndIf
+
+	Local $hTimer = TimerInit()
+	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
+		Sleep(40)
+	WEnd
+
+	If TimerDiff($hTimer) >= 60000 Then
+		Return False
+	EndIf
+
+	Sleep(1500)
+
+	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
+		Send("M")
+		Sleep(100)
+	WEnd
+
+	$SeqList = ""
+	$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.BountyContainer.Bounties._content._stackpanel._tilerow0._item"
+	For $i = 0 To UBound($Table_BountyAct) - 1
+		_log("Getting bounties for act : " & $Table_BountyAct[$i])
+
+		$CurrentAct = GetNumActByWPUI()
+		If $CurrentAct <> $Table_BountyAct[$i] Then
+			SwitchAct($Table_BountyAct[$i])
+		EndIf
+
+		For $z = 0 To 4
+			ClickUI($NameUI & $z)
+			Sleep(100)
+			$bounty = GetTextUI(1251, 'Root.TopLayer.tooltip_dialog_background.tooltip_2.tooltip')
+			If $bounty <> False Then
+				$temp = StringSplit($bounty,Chr(0),2)
+				$bounty = $temp[0]
+				$bounty = StringReplace($bounty, "Bounty: ", "")
+				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
+				$bounty = $bounty & "#" & $Table_BountyAct[$i]
+				$seq = GetSequenceForBounty($bounty)
+				If $seq <> False Then
+					 _log("Sequence found for bounty : " & $bounty & " -> " & $seq, $LOG_LEVEL_DEBUG)
+					If $SeqList = "" Then
+						$SeqList = $seq
+					Else
+						$SeqList = $SeqList & "|" & $seq
+					EndIf
+				EndIf
+			EndIf
+		Next
+	Next
+
+	Send("M")
+	Sleep(150)
+
+	If $SeqList = "" Then
+		_log("No supported sequences found !", $LOG_LEVEL_WARNING)
+		Return False
+	Else
+		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
+		Return $SeqList
+	EndIf
+
+EndFunc
+
+Func GetSequenceForBounty($bountyName)
+	_log("Searching For bounty : (" & $bountyname & ")", $LOG_LEVEL_DEBUG)
+	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
+	$Result = False
+	While 1
+		$line = FileReadLine($file)
+		If @error = -1 Then
+			ExitLoop
+		 EndIf
+		If StringInStr($line, $bountyName) Then
+			$temp = StringSplit($line,"#", 2)
+			If Ubound($temp) = 3 Then
+				$Result = $temp[2]
+				If $Result = "" Or $Result = "None" Then
+					$Result = False
+				Else
+					ExitLoop
+				EndIf
+			EndIf
+		EndIf
+	WEnd
+	FileClose($file)
+	Return $Result
+EndFunc
+
+
 Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 	If $arr_sequence[$index][0] = 2 And $mvtp = 1 Then
 		movetopos($arr_sequence[$index][1], $arr_sequence[$index][2], $arr_sequence[$index][3], $arr_sequence[$index][4], $arr_sequence[$index][5])

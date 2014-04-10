@@ -281,9 +281,8 @@ _log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Vault))
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
 
-;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))		
+;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
-
 
 ;;--------------------------------------------------------------------------------
 ;;	IterateObjectList()

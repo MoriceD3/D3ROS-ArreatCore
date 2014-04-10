@@ -183,6 +183,7 @@ Global $Table_BannedActors 	      = [0]
 Global $Table_PriorityMonster     = [0]
 Global $Table_Potions 		      = [0]
 Global $Table_Grablist 		      = [0]
+Global $Table_BountyAct		      = [0]
 
 ;statistique
 Global $CheckTakeShrineTaken = 0

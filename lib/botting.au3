@@ -123,13 +123,28 @@ Func _botting()
 		WEnd
 
 		If Not _onloginscreen() And Not _playerdead() And _ingame() Then
-			$timermaxgamelength = TimerInit()
-			If _dorun() = True Then
-				$Try_ResumeGame = 0
-				$Try_Logind3 = 0
-				$BreakCounter += 1 ;on se met a compter les games avant la pause
-				$games += 1
-				$gamecounter += 1
+			If $Choix_Act_Run = -3 Then
+				$Table_BountyAct = StringSplit($List_BountyAct,"|",2)
+				_ArraySortRandom($Table_BountyAct)
+				$temp = GetBountySequences($Table_BountyAct)
+				If $temp = False Then
+					_log("No possible bounty found. Skipping this run" , $LOG_LEVEL_ERROR)
+					$File_Sequence = ""
+					$BreakCounter += 1 ; On augmente qd meme le break counter pour éviter trop de création de game
+				Else
+					$File_Sequence = $temp
+				EndIf
+			EndIf
+
+			If Not $File_Sequence = "" Then
+				$timermaxgamelength = TimerInit()
+				If _dorun() = True Then
+					$Try_ResumeGame = 0
+					$Try_Logind3 = 0
+					$BreakCounter += 1 ;on se met a compter les games avant la pause
+					$games += 1
+					$gamecounter += 1
+				EndIf
 			EndIf
 		EndIf
 
