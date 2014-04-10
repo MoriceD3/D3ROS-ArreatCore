@@ -28,3 +28,4 @@ tuez Ghom#3#None
 nettoyez la caserne#3#None
 tuez Haxxor#3#act3_ADV-tower_[1-5]
 la caldera maudite#3#None
+tuez Acharné le Fendeur#3#act3_ADV-core_start_[1-5]
