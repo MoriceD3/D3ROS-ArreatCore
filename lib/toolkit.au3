@@ -367,6 +367,10 @@ Func _checkBountyRewardOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 1969) 
 EndFunc ;==>_checkBountyRewardOpen OK
 
+Func _checkQuestRewardOpen() 
+	Return fastcheckuiitemvisible("Root.NormalLayer.questreward_dialog", 1, 1612) 
+EndFunc ;==>_checkQuestRewardOpen OK
+
 Func GetLevelAreaId()
 	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
 EndFunc   ;==>GetLevelAreaId
@@ -1190,6 +1194,10 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 		Send($KeyCloseWindows)
 	EndIf
 
+	If _checkQuestRewardOpen() Then
+		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+	EndIf
+
 	Local $toggletry = 0
 	Global $lastwp_x = $_x
 	Global $lastwp_y = $_y
@@ -1396,26 +1404,43 @@ Func ArrayStruct($tagStruct, $numElements)
 EndFunc
 
 Func GetElement($Struct, $Element, $tagSTRUCT)
-   Return DllStructCreate($tagSTRUCT, DllStructGetPtr($Struct) + $Element * DllStructGetSize(DllStructCreate($tagStruct)))
+   $result = DllStructCreate($tagSTRUCT, DllStructGetPtr($Struct) + $Element * DllStructGetSize(DllStructCreate($tagStruct)))
+   If @Error > 0 Then Return False
+   Return $result
 EndFunc
 
 Func GetItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, $position, $CurrentPosition = False)
 
 	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $GuidStruct)
+	
+	If $iterateObjectsStruct = False Then Return False
 
 	If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+		If @Error > 0 Then Return False
 		$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+		If @Error > 0 Then Return False
 		$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+		If @Error > 0 Then Return False
 		$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x
+		If @Error > 0 Then Return False
 		$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y
+		If @Error > 0 Then Return False
 		$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z
+		If @Error > 0 Then Return False
 		$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+		If @Error > 0 Then Return False
 		$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+		If @Error > 0 Then Return False
 		$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+		If @Error > 0 Then Return False
 		$item[8] = $offset + $position * DllStructGetSize($iterateObjectsStruct)
+		If @Error > 0 Then Return False
 		$item[10] = DllStructGetData($iterateObjectsStruct, 10) ; x Foot
+		If @Error > 0 Then Return False
 		$item[11] = DllStructGetData($iterateObjectsStruct, 11) ; y Foot
+		If @Error > 0 Then Return False
 		$item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+		If @Error > 0 Then Return False
 
 		If Not $CurrentPosition Then
 			$item[9] = GetDistance($Item[10], $Item[11], $Item[12])
@@ -1484,6 +1509,9 @@ Func IterateFilterAttackV4($IgnoreList)
 
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	If @error > 0 Then
+		Return False
+	EndIf
 
 	$CurrentLoc = GetCurrentPos()
 
@@ -1554,11 +1582,19 @@ Func IterateFilterZoneV2($dist, $n = 2)
 
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
+
+	If $count = 0 Or $count = 65535 Then
+		Return False
+	EndIf
+
 	Local $z = 0
 
 	$CurrentLoc = GetCurrentPos()
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	If @error > 0 Then
+		Return False
+	EndIf
 
 	Dim $item[$TableSizeGuidStruct]
 
@@ -2009,6 +2045,10 @@ Func Attack()
 			Send($KeyCloseWindows)
 		EndIf
 
+		If _checkQuestRewardOpen() Then
+			ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+		EndIf
+
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
 			_log("Attack : First Item skipped since same as last try", $LOG_LEVEL_DEBUG)
 			$skipped += 1
@@ -2106,6 +2146,10 @@ Func Attack()
 		Send($KeyCloseWindows)
 	EndIf
 
+	If _checkQuestRewardOpen() Then
+		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+	EndIf
+
 EndFunc   ;==>Attack
 
 Func DetectElite($Guid)
@@ -2192,27 +2236,29 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
         If ($elite >= 1 And $ChaseElite) Or (IsItemInTable($Table_PriorityMonster, $Name)) Then
         	Dim $pos = UpdateObjectsPos($offset)
         Else
-	        For $a = 0 To UBound($test_iterateallobjectslist2) - 1
-	            $CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
-	            $CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-	            If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 Then
-	            	Dim $dist_maj = UpdateObjectsPos($test_iterateallobjectslist2[$a][8])
-	                $test_iterateallobjectslist2[$a][9] = $dist_maj[3]
-	            Else
-	                $test_iterateallobjectslist2[$a][9] = 10000
-	            EndIf
-	        Next
+        	If IsArray($test_iterateallobjectslist2) Then
+		        For $a = 0 To UBound($test_iterateallobjectslist2) - 1
+		            $CurrentACD = GetACDOffsetByACDGUID($test_iterateallobjectslist2[$a][0]); ###########
+		            $CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+		            If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 Then
+		            	Dim $dist_maj = UpdateObjectsPos($test_iterateallobjectslist2[$a][8])
+		                $test_iterateallobjectslist2[$a][9] = $dist_maj[3]
+		            Else
+		                $test_iterateallobjectslist2[$a][9] = 10000
+		            EndIf
+		        Next
 
-	        _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
+		        _ArraySort($test_iterateallobjectslist2, 0, 0, 0, 9)
 
-	        $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
-
-	        Dim $pos = UpdateObjectsPos($offset)
-
-			If $pos[3] > $dist_verif + 5 Then
-				_log($Name & " : Leave because of Dist Verif : " & $pos[3] & " - " & $dist_verif, $LOG_LEVEL_WARNING)
-				$return = 2
-				ExitLoop
+		        If UBound($test_iterateallobjectslist2) > 0 Then
+			        $dist_verif = GetDistance($test_iterateallobjectslist2[0][10], $test_iterateallobjectslist2[0][11], $test_iterateallobjectslist2[0][12])
+			        Dim $pos = UpdateObjectsPos($offset)
+					If $pos[3] > $dist_verif + 5 Then
+						_log($Name & " : Leave because of Dist Verif : " & $pos[3] & " - " & $dist_verif, $LOG_LEVEL_WARNING)
+						$return = 2
+						ExitLoop
+					EndIf
+				EndIf
 			EndIf
 		EndIf
 
@@ -2781,7 +2827,9 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 
 		Return True
 	Else
-		If TakeWpByKey($WPNumber) Then
+		$Res = TakeWpByKey($WPNumber)
+		_log("Result : TakeWpByKey " & $Res)
+		If $Res = True Then
 			Sleep(500)
 			While Not offsetlist()
 				Sleep(10)
@@ -2838,7 +2886,7 @@ Func TakeWpByKey($num, $try = 0)
 
 	If TimerDiff($timer) > 3700 Then
 		While GetLevelAreaId() = $Curentarea And $compt_wait < 6
-			_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
+			_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
 			$compt_wait += 1
 			sleep(1000)
 		WEnd
@@ -2846,12 +2894,12 @@ Func TakeWpByKey($num, $try = 0)
 
 	If GetLevelAreaId() <> $Curentarea Then
 		_log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
-		Return true
+		Return True
 	Else
 		_log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
 		TakeWpByKey($num, $try + 1)
 	EndIf
-Endfunc
+EndFunc
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
@@ -3490,7 +3538,7 @@ EndFunc   ;==>IsPowerReady
 Func IsBuffActive($idAttrib, $idPower)
 	;Return _memoryread(GetAttributeOfs($idAttrib, BitOR($Atrib_Buff_Active[0], BitShift($idPower, -12))), $d3, "int") == 1
 	;does not exist anymore in ros after 2.0.4
-	Return
+	Return False
 EndFunc   ;==>IsBuffActive
 
 Func launch_spell($i)
@@ -3617,7 +3665,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 
 		$source = GetResource($_MyGuid, $buff_table[5])
 
-		If $buff_table[0] And ($source > $buff_table[4] / $MaximumSource Or $buff_table[5] = "") And (TimerDiff($buff_table[10]) > $buff_table[2] or $buff_table[2]="") Then ;skill Activé
+		If $buff_table[0] And ($source > $buff_table[4] / $MaximumSource Or $buff_table[5] = "") And (TimerDiff($buff_table[10]) > $buff_table[2] or $buff_table[2] = "") Then ;skill Activé
 			Switch $action_spell
    				Case 0 ; movetopos
     				Switch $buff_table[3]
@@ -3643,7 +3691,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 								$buff_table[10] = TimerInit()
 							EndIf
 						Case $SPELL_TYPE_MOVE_OR_ATTACK
-							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") or $action_spell <> 1 Then
+							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") Or $action_spell <> 1 Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
@@ -3661,7 +3709,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 							If GetLifep() <= $buff_table[7] / 100 Or $elite > 0 Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
-							 EndIf
+							EndIf
 						Case $SPELL_TYPE_PERMANENT_BUFF
 							launch_spell($i)
 							$buff_table[10] = TimerInit()
@@ -3686,7 +3734,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 								$buff_table[10] = TimerInit()
 							 Endif
 						Case $SPELL_TYPE_BUFF
-							If Not IsBuffActive($_MyGuid, $buff_table[9]) And $action_spell = 1 Then
+							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
@@ -3696,7 +3744,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 							Else
 							   $dist = $buff_table[8]
 							EndIf
-							If $action_spell = 1 And IterateFilterZoneV2($dist) Then
+							If IterateFilterZoneV2($dist) Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
@@ -3707,7 +3755,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 								Else
 								   $dist = $buff_table[8]
 								EndIf
-								If  IterateFilterZoneV2($dist) Then
+								If IterateFilterZoneV2($dist) Then
 									launch_spell($i)
 									$buff_table[10] = TimerInit()
 								EndIf
