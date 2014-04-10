@@ -10,6 +10,7 @@ Global $My_FastAttributeGroup
 Global $_MyACDWorld 		  = 0
 Global $_MyCharType 		  = 0
 Global $hotkeycheck 		  = False
+Global $ZoneCheckTimer 		  = 0
 
 ; Variable contenant le stuff actuel
 Global $allSNOitems
