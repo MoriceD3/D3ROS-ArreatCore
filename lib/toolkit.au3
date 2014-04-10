@@ -2506,7 +2506,7 @@ Func OpenWp(ByRef $item)
 	Local $maxtry = 0
 	If Not _playerdead() Then
 		_log("OpenWp : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
-		While getDistance($item[10], $item[11], $item[12]) > 40 And $maxtry <= 15
+		While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 			$Coords = FromD3toScreenCoords($item[10], $item[11], $item[12])
 			;_log("Dans LE while")
 			MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
@@ -2514,7 +2514,7 @@ Func OpenWp(ByRef $item)
 			_log('interactbyactor: click x : ' & $Coords[0] & " y : " & $Coords[1], $LOG_LEVEL_DEBUG)
 			Sleep(500)
 		WEnd
-		Interact($item[10], $item[11], $item[12])
+		Interact($item[2], $item[3], $item[4])
 		Sleep(500)
 	EndIf
 
@@ -2714,14 +2714,14 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 		_Log("WP Found", $LOG_LEVEL_VERBOSE)
 		OpenWp($item)
 
-		Sleep(750)
+		Sleep(1000)
 		Local $wptry = 0
 		While Not _checkWPopen() And Not _playerdead()
 			If $wptry <= 6 Then
 				_log('Fail to open wp', $LOG_LEVEL_WARNING)
 				$wptry += 1
 				OpenWp($item)
-				Sleep(750)
+				Sleep(1000)
 			EndIf
 			If $wptry > 6 Then
 				$GameFailed = 1
