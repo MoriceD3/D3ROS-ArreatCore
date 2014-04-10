@@ -1387,6 +1387,7 @@ Func iterateObjectsList(ByRef $index, ByRef $offset, ByRef $count, ByRef $item)
 
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	If @Error > 0 Then Return False
 
 	GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, 0, False)
 
@@ -1413,7 +1414,9 @@ Func GetItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef 
 
 	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $GuidStruct)
 	
-	If $iterateObjectsStruct = False Then Return False
+	If $iterateObjectsStruct = False Then 
+		Return False
+	EndIf
 
 	If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
 		If @Error > 0 Then Return False
@@ -3744,9 +3747,12 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 							Else
 							   $dist = $buff_table[8]
 							EndIf
-							If IterateFilterZoneV2($dist) Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+							If TimerDiff($ZoneCheckTimer) > 500 Then
+								If IterateFilterZoneV2($dist) Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+								$ZoneCheckTimer = TimerInit()
 							EndIf
 						Case $SPELL_TYPE_ZONE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False then
@@ -3755,9 +3761,12 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
 								Else
 								   $dist = $buff_table[8]
 								EndIf
-								If IterateFilterZoneV2($dist) Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+								If TimerDiff($ZoneCheckTimer) > 500 Then
+									If IterateFilterZoneV2($dist) Then
+										launch_spell($i)
+										$buff_table[10] = TimerInit()
+									EndIf
+									$ZoneCheckTimer = TimerInit()
 								EndIf
 						 	Endif
 						Case $SPELL_TYPE_LIFE_AND_ATTACK
