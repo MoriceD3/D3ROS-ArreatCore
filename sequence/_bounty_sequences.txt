@@ -54,7 +54,7 @@ nettoyez la grotte antique#2#None
 la garnison maudite#3#None
 nettoyez le passage souterrain#3#None
 tuez Griffe-Tranchante#3#None
-tuez Asmodan#3#None
+tuez Asmodan#3#act3_ADV-Tuer_Azmodan
 tuez Rakanoth#4#None
 tuez l’aspect de la Souffrance#4#None
 tuez Martel#4#None
@@ -97,8 +97,8 @@ tuez Jhorum le Clerc#2#None
 nettoyez la grotte mystérieuse#2#None
 forgé au combat#3#None
 nettoyez la fonderie#3#None
-tuez Aile-de-Braise#3#None
-tuez Démonica la Redoutable#3#None
+tuez Aile-de-Braise#3#act3_ADV-field_[1-4]
+tuez Démonica la Redoutable#3#act3_ADV-tower_[1-5]
 le sectateur réformé#5#None
 tuez Theodosia Buhre#5#None
 tuez Xaphane#5#None
