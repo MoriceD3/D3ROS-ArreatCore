@@ -2184,11 +2184,13 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 		$noHitTimeout = $noHitTimeout * 2
 	ElseIf $elite Then
 		$CptElite += 1 ; on compte les elite
-		If $ChaseElite Then
-			; Monstre elite et chaseelite on augmente les timeouts
+		; Monstre elite on augmente les timeouts
+		If $elite = 7 Then
+			$killTimeoutValue = $killTimeoutValue * 5
+		Else
 			$killTimeoutValue = $killTimeoutValue * 3
-			$noHitTimeout = $noHitTimeout * 1.5
 		EndIf
+		$noHitTimeout = $noHitTimeout * 1.5
 	EndIf
 
 	;loop the attack until the mob is dead
