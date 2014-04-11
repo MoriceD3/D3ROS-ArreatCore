@@ -120,7 +120,7 @@ Func GetPositionUI($ofs)
 	$point[2] = _MemoryRead($ofs + 0x4E0, $d3, "float")
 	$point[3] = _MemoryRead($ofs + 0x4E4, $d3, "float")
 
-	_log("GetPositionUI (" & $ofs & ") x : " & $point[0] & " - y : " & $point[1] & " - r : " & $point[2] & " - b : " & $point[3])
+	;_log("GetPositionUI (" & $ofs & ") x : " & $point[0] & " - y : " & $point[1] & " - r : " & $point[2] & " - b : " & $point[3])
 	Return $point
 EndFunc
 
@@ -1907,8 +1907,8 @@ Func handle_Coffre(ByRef $item)
 				;_log("waiting 1 s")
 			EndIf
 			If ($result = 1) Or ($result = 2 And $item[9] < 2) Then
-				Sleep(1000)
-				_log("Cursed Chest : Waiting 1 s")
+				Sleep(1500)
+				_log("Cursed Chest : Waiting 1,5 s")
 			EndIf
 		EndIf
 	Else
@@ -2186,7 +2186,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 		$CptElite += 1 ; on compte les elite
 		If $ChaseElite Then
 			; Monstre elite et chaseelite on augmente les timeouts
-			$killTimeoutValue = $killTimeoutValue * 2
+			$killTimeoutValue = $killTimeoutValue * 3
 			$noHitTimeout = $noHitTimeout * 1.5
 		EndIf
 	EndIf

@@ -58,6 +58,7 @@ Global $List_Decor = "Bone|RockPile|DemonCage|Barrel|crate|barricade|Rock|Log|Bo
 Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Frosty|TrOut_Fields_Chest|TrOut_Highlands_Chest|Cath_chest|Chest_Rare|caOut_StingingWinds_Chest|CaOut_Oasis_Chest|x1_Global_Chest_SpeedKill|x1_Global_Chest_CursedChest|a3dun_Crater_ST_Chest"
 Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
+Global $List_BountyAct = "1|2|3"
 Global $grabListFile = ""
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
@@ -277,6 +278,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 			$NombreMaxiAct2 = IniRead($profilFile, "Run info", "NombreMaxiAct2", $NombreMaxiAct2)
 			$NombreMaxiAct3 = IniRead($profilFile, "Run info", "NombreMaxiAct3", $NombreMaxiAct3)
 	EndSwitch
+
+	$List_BountyAct = IniRead($profilFile, "Run info", "BountyAct", $List_BountyAct)
 	;; Fin d'ajout config run
 
 	$List_Monster = IniRead($profilFile, "Run info", "monsterList", $List_Monster)

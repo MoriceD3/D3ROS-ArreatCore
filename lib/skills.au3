@@ -414,9 +414,9 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Justice, "Crusader_Justice", "", "physical", "", "", "", ""], _
                         [$X1_Crusader_Consecration, "Crusader_Consecration", 30000, "elite", 0, "", 100, 15], _
                         [$X1_Crusader_LawsOfJustice2, "Crusader_LawsOfJustice", 45000, "buff", "", "", 100, ""], _
-                        [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "zone", 25, "wrath", 100, 35], _
+                        [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "attack", 25, "wrath", 100, 35], _
                         [$X1_Crusader_BlessedShield, "Crusader_BlessedShield", "", "attack", 20, "wrath", 100, 45], _
-                        [$X1_Crusader_Condemn, "Crusader_Condemn", 15000, "zone", "", "", "", 10], _
+                        [$X1_Crusader_Condemn, "Crusader_Condemn", 15000, "attack", "", "", "", 10], _
                         [$X1_Crusader_Judgment, "Crusader_Judgment", 5000, "attack", "", "", 100, 35], _
                         [$X1_Crusader_LawsOfHope2, "Crusader_LawsOfHope", 45000, "life", 0, "", 80, ""], _
                         [$X1_Crusader_AkaratsChampion, "Crusader_AkaratsChampion", 90000, "elite", "", "", 100, 45], _
@@ -444,7 +444,7 @@ Global $WitchDoctor_skill_Table[22][8] =	[ _
 						[$Witchdoctor_PlagueOfToads, "Witchdoctor_PlagueOfToads", 0 , "physical", 12, "mana", "", 35], _
 						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 10, "mana", "", 45], _
 						[$Witchdoctor_Sacrifice, "Witchdoctor_Sacrifice", 0, "attack&elite", 0, "mana", "", 10], _
-						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 16000, "zone", 59, "mana", "", 16], _
+						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 16000, "attack", 59, "mana", "", 16], _
                         [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 108, "mana", "", 45], _
 						[$Witchdoctor_SpiritWalk, "Witchdoctor_SpiritWalk", 2000, "buff_permanent", 49, "mana", 80, ""], _
 						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 45000, "move", 49, "mana", "", ""], _

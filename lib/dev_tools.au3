@@ -275,15 +275,18 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;GetMyStats()
 
 
-_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Sentry))
-_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Vault))
+;_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Sentry))
+;_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Vault))
+
+$Table_BountyAct = StringSplit("1|2|3|4|5","|",2)
+$temp = GetBountySequences($Table_BountyAct)
+
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
 
-;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))		
+;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
-
 
 ;;--------------------------------------------------------------------------------
 ;;	IterateObjectList()

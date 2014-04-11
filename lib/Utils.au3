@@ -13,6 +13,20 @@ Const $LOG_LEVEL_WARNING = 2
 Const $LOG_LEVEL_DEBUG = 3
 Const $LOG_LEVEL_ERROR = 4
 
+Func _ArraySortRandom(ByRef $aArray, $iMultiplier = 2)
+
+    Local $A, $B, $Temp
+    Local $size = UBound($aArray)
+
+    For $i = 1 To $iMultiplier * $size
+        $A = Random(0, $size - 1, 1)
+        $B = Random(0, $size - 1, 1)
+        $Temp = $aArray[$A]
+        $aArray[$A] = $aArray[$B]
+        $aArray[$B] = $Temp
+    Next
+EndFunc   ;==>_ArraySortRandom
+
 Func consoleLog($text, $level = 0)
 	Switch $level
 	    Case $LOG_LEVEL_VERBOSE

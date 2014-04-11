@@ -16,6 +16,8 @@ Func SelectGameType($SelectGameType, $auto)
 	;Automatisation des sequences sur enchainement de run
 	If $auto Then
 		Switch $SelectGameType
+			Case -3
+				$File_Sequence = ""
 			Case -2
 				$File_Sequence = $SequenceFileAdventure
 			Case 1
@@ -68,7 +70,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  SelectDifficultyMonsterPower()
 		   EndIf
 
-			If $SelectGameType <> -2 Then
+			If $SelectGameType > -2 Then
 				_log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
 		   		ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
 		   		Sleep(1000)
