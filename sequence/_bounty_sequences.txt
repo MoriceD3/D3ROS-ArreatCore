@@ -11,7 +11,6 @@ tuez Thrum#2#None
 tuez le capitaine Dale#3#None
 nettoyez la caserne#3#None
 le sommet de la gloire#3#None
-tuez Gholash#3#None
 tuez Cydaée#3#None
 le dais maudit#4#None
 tuez Oah’ Tash#4#None
@@ -116,3 +115,166 @@ tuez Tombe-Hache l’Exécuteur#3#None
 tuez Haxxor#3#act3_ADV-tower_[1-5]
 tuez Acharné le Fendeur#3#act3_ADV-core_start_[1-5]
 tuez Gholash#3#act3_ADV-tower_[1-5]
+tuez Venimite#1#None
+tuez Logrut le Guerrier#1#None
+tuez Plume-Sanglante#2#None
+tuez l’Archiviste#2#None
+les profondeurs maudites#3#None
+le glacier maudit#3#None
+tuez Veshan le Féroce#4#None
+tuez Presse-Purée#4#None
+le vrai fils du loup#5#None
+tuez Frondeur#5#None
+tuez Severag#5#None
+tuez le Gardien#1#None
+tuez Cogneface la Matraque#3#None
+tuez le briseur de siège#3#None
+le toucher de la mort#5#None
+tuez Morghum la Bête#5#None
+tuez Valtesk le Cruel#5#None
+tuez Gale#1#None
+l’ultime combat des anciens#1#None
+tuez Shondar l’invocateur#2#None
+tuez Zoltun Kulle#2#None
+tuez Gugyn le Gantelet#3#None
+tuez Nuit-Sinistre le Sans-âme#4#None
+nobles trépassés#5#None
+le butin des tourbeux#5#None
+tuez Baëthus#5#None
+The Cursed Cellar#1#None
+Kill Merrium Skullthorn#1#None
+Kill the Skeleton King#1#None
+Kill Mange#1#None
+Clear the Cave of the Moon Clan#1#None
+A Miner's Gold#2#None
+Kill Belial#2#None
+Clear the Ruins#2#None
+Clear the Vile Cavern#2#None
+Kill Mage Lord Caustus#2#None
+Clear the Battlefield Stores Level 2#3#None
+Kill Shertik the Brute#3#None
+Blaze of Glory#3#None
+Kill Mhawgann the Unholy#3#None
+Kill Azmodan#3#act3_ADV-Tuer_Azmodan
+Kill Rakanoth#4#None
+Kill Oah' Tash#4#None
+Clear the Hell Rift#4#None
+Kill Kysindra the Wretched#4#None
+The Cursed Chapel#4#None
+Cryptology#5#None
+Pest Problems#5#None
+Kill Morghum the Beast#5#None
+Kill Nak Qujin#5#None
+Kill Malthael#5#None
+Clear Khazra Den#1#None
+Eternal War#1#None
+Revenge of Gharbad#1#None
+Kill Theodyn Deathsinger#1#None
+The Cursed Battlement#2#None
+The Guardian Spirits#2#None
+Clear the Flooded Cave#2#None
+Kill Pazuzu#2#None
+Kill Zoltun Kulle#2#None
+Kill Ganthar the Trickster#3#None
+Forged in Battle#3#None
+Clear the Icefall Caves#3#None
+Kill Valifahr the Noxious#3#None
+The Cursed Dais#4#None
+Kill Kao' Ahn#4#None
+Kill Sledge#4#None
+Kill the Aspect of Hatred#4#None
+Kill Diablo#4#None
+Touch of Death#5#None
+The True Son of the Wolf#5#None
+Kill Vilepaw#5#None
+Kill Slarth the Tunneler#5#None
+Clear the Den of the Fallen#1#None
+The Cursed Mill#1#None
+Kill Fecklar's Ghost#1#None
+Kill the Warden#1#None
+Kill the Butcher#1#None
+Kill Gart the Mad#2#None
+Rygnar Idol#2#None
+Kill Maghda#2#None
+Clear the Ancient Cave#2#None
+Kill Mage Lord Flaydren#2#None
+Kill Ghom#3#None
+Clear the Foundry#3#None
+The Cursed Glacier#3#None
+Kill Lummock the Brute#3#None
+Kill Riplash#3#None
+Kill Torchlighter#4#None
+Kill Izual#4#None
+Noble Deaths#5#None
+Penny for Your Troubles#5#None
+Kill Urzael#5#None
+Kill Ballartrask the Defiler#5#None
+Clear the Scavenger's Den#1#None
+Kill Lorzak the Powerful#1#None
+Kill Ashek#2#None
+Kill Jhorum the Cleric#2#None
+Sardar's Treasure#2#None
+Kill Greelode the Unforgiving#3#None
+Kill Emberwing#3#act3_ADV-field_[1-4]
+Kill the Aspect of Anguish#4#None
+The Rebellious Rabble#5#None
+Kill Targerious#5#None
+Kill Vek Marru#5#None
+Kill Adria#5#None
+Kill Severag#5#None
+Kill Growler#1#None
+The Cursed Hatchery#1#None
+Kill Krailen the Wicked#1#None
+Lair of the Lacuni#2#None
+Restless Sands#2#None
+Clear the Mysterious Cave#2#None
+Kill Bloodfeather#2#None
+Kill Thornback#3#None
+Kill Bholen#3#None
+Kill the Aspect of Pain#4#None
+The Cursed City#5#None
+Kill Sartor#5#None
+The Cursed Outpost#2#None
+Kill Inquisitor Hamath#2#None
+Clear the Forward Barracks#3#None
+Kill Growlfang#3#None
+Kill Crabbs#3#None
+The Cursed Caldera#3#None
+Kill Hammermash#4#None
+Kill Pyres the Damned#4#None
+A Shameful Death#5#None
+Kill Almash the Grizzly#5#None
+Kill Vek Tabok#5#None
+The Cursed Realm#5#None
+Kill Crassus the Tormentor#1#None
+Kill Saha the Slasher#2#None
+Kill Yeth#2#None
+Prisoners of Kamyr#2#None
+Clear the Cave of Burrowing Horror#2#None
+The Cursed Garrison#3#None
+Kill Gormungandr#3#None
+Kill Demonika the Wicked#3#act3_ADV-tower_[1-5]
+Kill Dale Hawthorne#5#None
+Kill Purah#5#None
+The Demon Cache#5#None
+Kill Captain Cage#1#None
+Kill Captain Clegg#1#None
+Apothecary's Brother#1#None
+Kill Barty the Minuscule#2#None
+Kill High Cultist Murdos#2#None
+Kill Allucayrd#3#None
+Kill Cydaea#3#None
+Kill Slarg the Behemoth#4#None
+The Cursed Forum#5#None
+Altar of Sadness#5#None
+Kill Bari Hattar#5#None
+Kill Baethus#5#None
+The Matriarch's Bones#1#None
+The Cursed Camp#1#None
+Kill Balzhak#2#None
+Kill Raiha#2#None
+Kill the Vicious Gray Turkey#3#None
+Clear the Underbridge#3#None
+Kill Severclaw #3#None
+The Miser's Will#5#None
+Kill Lograth#5#None

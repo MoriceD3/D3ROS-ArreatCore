@@ -64,6 +64,57 @@ Func IterateObjectListV2()
 
 EndFunc
 
+Func IsBountyKnown($bountyName)
+	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
+	$Result = False
+	While 1
+		$line = FileReadLine($file)
+		If @error = -1 Then
+			ExitLoop
+		 EndIf
+		If StringInStr($line, $bountyName) Then
+			Return True
+		EndIf
+	WEnd
+	FileClose($file)
+	Return $Result
+EndFunc
+
+
+Func list_bounties() 
+
+	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
+		Send("M")
+		Sleep(100)
+	WEnd
+
+	$Table_BountyAct = StringSplit("1|2|3|4|5","|",2)
+	$SeqList = ""
+	$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.BountyContainer.Bounties._content._stackpanel._tilerow0._item"
+	_log("Listing unknown bounties : ")
+	For $i = 0 To UBound($Table_BountyAct) - 1
+		SwitchAct($Table_BountyAct[$i])
+		For $z = 0 To 4
+			ClickUI($NameUI & $z)
+			$bounty = GetTextUI(1251, 'Root.TopLayer.tooltip_dialog_background.tooltip_2.tooltip')
+			If $bounty <> False Then
+				$temp = StringSplit($bounty,Chr(0),2)
+				$bounty = $temp[0]
+				$bounty = StringReplace($bounty, "Bounty: ", "")
+				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
+				$bounty = $bounty & "#" & $Table_BountyAct[$i]
+				If IsBountyKnown($bounty) = False Then
+					ConsoleWrite($bounty & "#None" & @CRLF)
+				EndIf
+			EndIf
+		Next
+	Next
+	_log("End ")
+	Send("M")
+	Sleep(150)
+
+EndFunc
+
 
 
 Func ListUi($Visible=0)
@@ -278,8 +329,10 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Sentry))
 ;_log("Ready : " & IsPowerReady($_MyGuid, $DemonHunter_Vault))
 
-$Table_BountyAct = StringSplit("1|2|3|4|5","|",2)
-$temp = GetBountySequences($Table_BountyAct)
+;$Table_BountyAct = StringSplit("1|2|3|4|5","|",2)
+;$temp = GetBountySequences($Table_BountyAct)
+
+list_bounties()
 
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
