@@ -1,9 +1,9 @@
+TakeWPAdv=32
 MonsterList=x1_SpeedKill_Gluttony|Ghoul_|a3dun_battlefield_Demon_GroundTrap_GasChamber|Beast_B|Goblin|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_|SoulRipper_
 AutoBuff=True
 attackrange=45 
-TakeWPAdv=32
-sleep=500
 reverse=true
+sleep=500
 3399.53051757813, 592.883728027344, 4.13610076904297, 1, 25
 3366.55126953125, 532.103759765625, 4.13610172271729, 1, 25
 3375.353515625, 480.171478271484, 4.13610172271729, 1, 25

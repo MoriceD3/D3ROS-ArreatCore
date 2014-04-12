@@ -1,10 +1,10 @@
+TakeWPAdv=35
 MonsterList=x1_SpeedKill_Gluttony|Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni
 AutoBuff=True
 attackrange=40 
-TakeWPAdv=35
-sleep=500
 reverse=true
 usepath=false
+sleep=500
 1032.34997558594, 970.047302246094, -9.89999675750732,1,25
 1038.1669921875, 961.938842773438, -9.89999771118164,1,25
 1063.84606933594, 957.234741210938, -9.89999771118164,1,25

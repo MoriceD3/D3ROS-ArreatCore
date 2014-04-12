@@ -1,8 +1,8 @@
+TakeWPAdv=24
 Monsterlist=LacuniFemale_|fastMummy_|fastMummy_Spawner_|Swarm_|sandMonster_|sandWasp_|critterSnake_|Sandling_|Bloodhawk_|LacuniMale_|Skeleton_|Skeleton_|ZombieSkinny_|Zombie_|ZombieCrawler_|Rockworm_
 BanList=caOut_Boneyard_BanishedSkeleton_B
 Autobuff=true
 attackrange=40
-TakeWPAdv=24
 Sleep=500
 1120.42639160156,3834.56420898438,110.10001373291,1,25
 1080.42639160156,3834.56420898438,110.10001373291,1,25

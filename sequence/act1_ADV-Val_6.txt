@@ -1,9 +1,9 @@
+TakeWPAdv=7
 MonsterList=x1_SpeedKill_Gluttony|Ghoul_|WitherMoth|WoodWraith|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|TriuneSummoner_A|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni|Uber|Ghoul|Cultist|CultistMelee|Goatman_Shaman_A|Goatman_Shaman_B|Goatman_Shaman|Goatman_S|WoodWraith_A_01|WoodWraith_A_02|WoodWraith_A_03|graveRobber_
 DecorList=Log|Bone|RockPile|Barricade
 autobuff=True
 attackrange=40 
 usepath=false
-TakeWPAdv=7
 Sleep=500
 2172.767578125, 1828.44860839844, 0.935080707073212,1,25
 2193.99389648438, 1836.62548828125, 0.100000306963921,1,25
