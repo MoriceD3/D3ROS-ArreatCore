@@ -2853,58 +2853,103 @@ EndFunc
 
 Func TakeWpByKey($num, $try = 0)
 
-	If $try > 6 Then
-		$GameFailed = 1
-		_log("TakeWpByKey : Too many tries", $LOG_LEVEL_ERROR)
-		Return False
-	EndIf
-
-	$compt_while = 0
-	$compt_wait = 0
-
-	Attack()
-
 	Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
 
-	_log("clicking wp UI")
+	If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
 
-	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
-		Send("M")
-		sleep(100)
-	WEnd
-
-	VerifAct($num)
-	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
-	Sleep(100)
-
-	$timer = timerinit()
-
-	While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-		If $compt_while = 0 Then
-			_log("enclenchement du timer")
-			$timer = timerinit()
-		EndIf
-		Sleep(100)
-		$compt_while += 1
-	WEnd
-
-	If TimerDiff($timer) > 3700 Then
-		While GetLevelAreaId() = $Curentarea And $compt_wait < 6
-			_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
-			$compt_wait += 1
-			sleep(1000)
-		WEnd
+	If _playerdead() Then
+	   Return False
 	EndIf
 
-	If GetLevelAreaId() <> $Curentarea Then
-		_log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
-		Return True
-	Else
-		_log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
-		TakeWpByKey($num, $try + 1)
+	While $try < 20 And $Newarea = $Curentarea And Not _checkdisconnect()
+
+	   Local $WPopen = 0
+	   Local $TPtimer = 0
+	   Local $Attacktimer = 0
+	   Local $compt_while = 0
+	   Local $compt_wait = 0
+
+	   _Log("TakeWpByKey : Enclenche attack during TakeWpByKey")
+	   Attack()
+	   Sleep(250)
+
+	   If Not _playerdead() Then
+
+		  CheckZoneBeforeTP()
+
+		  Sleep(250)
+		  Send("M")
+		  Sleep(1000)
+
+		  If _checkWPopen() Then
+			 _Log("TakeWpByKey : clicking wp UI")
+			 VerifAct($num)
+			 ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
+			 Sleep(300)
+			 $WPopen = 1
+		  EndIf
+
+		  If $WPopen Then
+			 _Log("TakeWpByKey : enclenchement fastCheckui de la barre de loading")
+			 While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+				If $compt_while = 0 Then
+				   _log("enclenchement du timer")
+				   $TPtimer = timerinit()
+				EndIf
+				$compt_while += 1
+
+				checkforpotion()
+
+				$Attacktimer = TimerInit()
+				Attack()
+				Sleep(100)
+				TimerDiff($Attacktimer)
+			 WEnd
+		  EndIf
+
+
+		  If Not $compt_while And Not _intown() And $WPopen Then
+			 $CurrentLoc = getcurrentpos()
+			 MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
+			 _Log("TakeWpByKey : On se deplace, pas de detection de la barre de TP")
+		  Else
+		     _Log("TakeWpByKey : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ")
+		  EndIf
+
+		  If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
+			 While GetLevelAreaId() = $Curentarea And $compt_wait < 7
+				_Log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
+				$compt_wait += 1
+				sleep(1000)
+			 WEnd
+		  EndIf
+
+		  Sleep(500)
+
+		  $Newarea = GetLevelAreaId()
+		  If $Newarea <> $Curentarea Then
+			 _Log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
+			 Sleep(500)
+			 ExitLoop
+		  Else
+		     _Log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
+			 $try += 1
+		  EndIf
+	   Else
+	      _Log("TakeWpByKey : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
+		  Return False
+	   EndIf
+	WEnd
+
+	If $try > 19 Or _checkdisconnect() Then
+	   _log("TakeWpByKey : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
+	   Return False
 	EndIf
-EndFunc
+
+ 	_Log("TakeWpByKey : On a renvoyer true, quite bien la fonction")
+ 	Return True
+Endfunc ; ==> TakeWpByKey
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
