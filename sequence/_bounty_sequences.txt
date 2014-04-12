@@ -3,7 +3,7 @@ nettoyez l’Antre des déchus#1#None
 une ferme assiégée#1#None
 tuez la reine Aranéa#1#None
 tuez Théodyn Chantemort#1#None
-tuez Bélial#2#None
+tuez Bélial#2#act2_ADV-Tuer_Belial
 nettoyez les ruines#2#None
 le sanctuaire de Rakanishu#2#None
 tuez le seigneur-mage Misgen#2#None
