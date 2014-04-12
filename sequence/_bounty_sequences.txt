@@ -128,7 +128,7 @@ tuez Frondeur#5#None
 tuez Severag#5#None
 tuez le Gardien#1#None
 tuez Cogneface la Matraque#3#None
-tuez le briseur de siège#3#None
+tuez le briseur de siège#3#act3_ADV-Tuer_Siegebreaker
 le toucher de la mort#5#None
 tuez Morghum la Bête#5#None
 tuez Valtesk le Cruel#5#None
