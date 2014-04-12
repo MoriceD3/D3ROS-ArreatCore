@@ -135,7 +135,7 @@ tuez Valtesk le Cruel#5#None
 tuez Gale#1#None
 l’ultime combat des anciens#1#None
 tuez Shondar l’invocateur#2#None
-tuez Zoltun Kulle#2#None
+tuez Zoltun Kulle#2#act2_ADV-Tuer_ZoltunKulle
 tuez Gugyn le Gantelet#3#None
 tuez Nuit-Sinistre le Sans-âme#4#None
 nobles trépassés#5#None
