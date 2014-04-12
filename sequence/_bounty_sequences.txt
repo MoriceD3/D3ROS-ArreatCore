@@ -48,7 +48,7 @@ les os de la matriarche#1#None
 le moulin maudit#1#None
 tuez le Boucher#1#None
 l’avant-poste maudit#2#None
-tuez Maghda#2#None
+tuez Maghda#2#act2_ADV-Tuer_Maghda
 nettoyez la grotte antique#2#None
 la garnison maudite#3#None
 nettoyez le passage souterrain#3#None
