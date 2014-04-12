@@ -65,20 +65,23 @@ Func SelectGameType($SelectGameType, $auto)
 
 		If IsGameSettingsOpened() Then
 
-		   ;Selection de la difficulte et de la puissance des monstres
-		   If ($Totalruns = 1) And ($TypedeBot = 1) Then
-			  SelectDifficultyMonsterPower()
-		   EndIf
-
-			If $SelectGameType > -2 Then
+			If $SelectGameType > -2 And ($Totalruns = 1) Then
 				_log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
-		   		ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
+		   		ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
 		   		Sleep(1000)
+				;Selection de la difficulte et de la puissance des monstres
+				If $TypedeBot = 1 Then
+				   SelectDifficultyMonsterPower()
+				EndIf
 			Else
 				_log("Passage en mode Aventure", $LOG_LEVEL_DEBUG)
-				ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
+				ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
 			  	Sleep(Random(600, 800, 1))
-	  			ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
+	  			;Selection de la difficulte et de la puissance des monstres
+				If $TypedeBot = 1 Then
+				   SelectDifficultyMonsterPower()
+				EndIf
+				ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
 				Sleep(Random(600, 800, 1))
 				Return
 			EndIf
@@ -527,8 +530,13 @@ Func SelectDifficultyMonsterPower()
 
 	;Selection de la difficulté
 	_Log("Change Difficulty")
-	ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton")
-	Sleep(Random(600, 800, 1))
+	If  $Choix_Act_Run > -2 Then
+	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton")
+	   Sleep(Random(600, 800, 1))
+	Else
+	  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeContent.ChangeDifficultyButton")
+	  Sleep(Random(600, 800, 1))
+    EndIf
 
     If IsGameDifficultyOpened() Then
 
@@ -616,7 +624,7 @@ Func IsQuestChangeUiOpened()
 EndFunc   ;==>IsQuestChangeUiOpened OK
 
 Func IsGameSettingsOpened()
-    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton", 1, 954)
+    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 1, 199)
 EndFunc   ;==>IsGameSettingsOpened
 
 Func IsQuestOpened()
