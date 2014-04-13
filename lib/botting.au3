@@ -29,6 +29,7 @@ Func _dorun()
 	StatsDisplay()
 
 	If Not $hotkeycheck Then
+		CheckGameMode()
 		CheckHotkeys()
 		Auto_spell_init()
 		GestSpellInit()
@@ -250,7 +251,29 @@ Func ClickInventory($c, $l)
 	MouseClick("right", $XCoordinate, $YCoordinate)
 EndFunc
 
+Func CheckGameMode()
+    _Log("What game mode you are", $LOG_LEVEL_DEBUG)
 
+	While Not _checkWPopen() And Not _checkdisconnect()
+		Send("M")
+		Sleep(1000)
+	WEnd
+
+	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
+	   $ModePlaying = $Adventure
+	   _Log("Adventure Mode", $LOG_LEVEL_VERBOSE)
+	Else
+	   $ModePlaying = $Story
+	   _Log("Story Mode", $LOG_LEVEL_VERBOSE)
+	EndIf
+
+	While _checkWPopen() And Not _checkdisconnect()
+	   Send($KeyCloseWindows)
+	   Sleep(250)
+	WEnd
+	Sleep(500)
+EndFunc
+ 
 ;;--------------------------------------------------------------------------------
 ;;     Check KeyTo avoid sell of equiped stuff
 ;;--------------------------------------------------------------------------------

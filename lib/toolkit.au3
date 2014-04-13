@@ -5219,55 +5219,145 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	Switch $BeforeInteract
 		Case $MOVETO_SMITH ; Smith
 			Switch $Act
-				Case 1
-					MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
+			    Case 1
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
+						 Case $Adventure
+							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
+					EndSwitch
 				Case 2 To 4
-					;do nothing act 3 and 4
+					Switch $ModePlaying
+						 Case $Story
+							 ;do nothing act 2, 3 and 4
+						 Case $Adventure
+							 ;do nothing act 2, 3 and 4
+					EndSwitch
 				Case 5
-					MoveToPos(551.606567382813, 506.932373046875, 2.76036787033081, 0, 60)
-					Sleep(Random(100, 200))
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
+							 Sleep(Random(100, 200))
+						 Case $Adventure
+							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
+							 Sleep(Random(100, 200))
+					EndSwitch
 			EndSwitch
 		Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
 				Case 1
-					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 60)
-				Case 2 to 4
-					;do nothing act 2, 3 and 4
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+						 Case $Adventure
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+					EndSwitch
+				Case 2 to 5
+					Switch $ModePlaying
+						 Case $Story
+							 ;do nothing act 2, 3, 4 and 5
+						 Case $Adventure
+							 ;do nothing act 2, 3, 4 and 5
+					EndSwitch
 			EndSwitch
 		Case $MOVETO_REPAIR_VENDOR
 			Switch $Act
-	        Case 1
-	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
-	        Case 2 To 4
-	                ;do nothing act 3-4
+				 Case 1
+	                Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
+						 Case $Adventure
+							 MoveToPos(320.372528076172, 522.431640625, 24.0453319549561, 0, 60)
+					EndSwitch
+				 Case 2 To 5
+	                Switch $ModePlaying
+						 Case $Story
+							 ;do nothing act 2, 3, 4 and 5
+						 Case $Adventure
+							 ;do nothing act 2, 3, 4 and 5
+					EndSwitch
 	        EndSwitch
 	    Case $MOVETO_BOOKOFCAIN
 	    	Switch $Act
-				Case 1
-					MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
-				Case 2
-					;do nothing act 2
-				Case 3 To 4
-					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
-				Case 5
-					MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+				 Case 1
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
+						 Case $Adventure
+							 MoveToPos(372.583282470703, 520.788818359375, 24.0453300476074, 0, 60)
+					EndSwitch
+				 Case 2
+					Switch $ModePlaying
+						 Case $Story
+							 ;do nothing act 2
+						 Case $Adventure
+							 ;do nothing act 2
+					EndSwitch
+				 Case 3 To 4
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
+						 Case $Adventure
+							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
+				    EndSwitch
+				 Case 5
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+						 Case $Adventure
+							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+				    EndSwitch
 			EndSwitch
 	    Case $MOVETO_PORTAL
 	    	Switch $Act
-				Case 1 ; act 1
-					MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
-					MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
-					MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
-				Case 2 ; act 2
-					;mtp a definir
-				Case 3 ; act 3
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
-				Case 4 ; act 4
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+				 Case 1 ; act 1
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
+							 MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
+							 MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
+						 Case $Adventure
+							 MoveToPos(354.920471191406, 524.129821777344, 24.0453243255615, 0, 60)
+							 MoveToPos(367.810638427734, 525.292724609375, 24.0453281402588, 0, 60)
+							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
+				    EndSwitch
+				 Case 2 ; act 2
+					Switch $ModePlaying
+						 Case $Story
+							 ;mtp a definir
+						 Case $Adventure
+							 ;mtp a definir
+					EndSwitch
+				 Case 3 To 4; act 3-4
+					Switch $ModePlaying
+						 Case $Story
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+						 Case $Adventure
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+					EndSwitch
+				Case 5 ; act 5
+					Switch $ModePlaying
+						 Case $Story
+							 ;mtp a definir
+						 Case $Adventure
+							 ;mtp a definir
+					EndSwitch
 			EndSwitch
 	EndSwitch
 	Sleep(100)
