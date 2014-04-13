@@ -1752,7 +1752,7 @@ Func Is_Shrine(ByRef $item)
 			Return False
 		Case $item[9] > $range_shrine
 			Return False
-		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Frenzied") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Fortune"))
+		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "Purification_Well_"))
 			Return True
 		Case Else
 			Return False
