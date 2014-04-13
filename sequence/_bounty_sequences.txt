@@ -54,7 +54,7 @@ la garnison maudite#3#None
 nettoyez le passage souterrain#3#None
 tuez Griffe-Tranchante#3#None
 tuez Asmodan#3#act3_ADV-Tuer_Azmodan
-tuez Rakanoth#4#None
+tuez Rakanoth#4#act4_ADV-Tuer_Rakanoth
 tuez l’aspect de la Souffrance#4#None
 tuez Martel#4#None
 la chapelle maudite#4#None
@@ -156,7 +156,7 @@ Kill Shertik the Brute#3#None
 Blaze of Glory#3#None
 Kill Mhawgann the Unholy#3#None
 Kill Azmodan#3#act3_ADV-Tuer_Azmodan
-Kill Rakanoth#4#None
+Kill Rakanoth#4#act4_ADV-Tuer_Rakanoth
 Kill Oah' Tash#4#None
 Clear the Hell Rift#4#None
 Kill Kysindra the Wretched#4#None
