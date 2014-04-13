@@ -1,4 +1,9 @@
+tuez Krelm l’Inqualifiable#1#act1_ADV-champs_[1-8]
+tuez le seigneur Brone#1#act1_ADV-putride_[1-6]
+tuez Hawthorne Gable#1#act1_ADV-putride_[1-6]
 tuez Bras-Marteau#1#None
+tuez l’nquisiteur Hamath#2#act2_ADV-gorge_noire_[1-3]
+tuez Obis le Puissant#3#act3_ADV-rempart_[1-5]
 nettoyez l’Antre des déchus#1#None
 une ferme assiégée#1#None
 tuez la reine Aranéa#1#None
@@ -45,7 +50,7 @@ tuez Malthaël#5#None
 la ruche#5#None
 tuez le capitaine Cage#1#None
 les os de la matriarche#1#None
-le moulin maudit#1#None
+le moulin maudit#1#act1_ADV-champs_[1-8]
 tuez le Boucher#1#None
 l’avant-poste maudit#2#None
 tuez Maghda#2#act2_ADV-Tuer_Maghda
@@ -127,7 +132,7 @@ le vrai fils du loup#5#None
 tuez Frondeur#5#None
 tuez Severag#5#None
 tuez le Gardien#1#None
-tuez Cogneface la Matraque#3#None
+tuez Cogneface la Matraque#3#act3_fdp_[1-5]
 tuez le briseur de siège#3#act3_ADV-Tuer_Siegebreaker
 le toucher de la mort#5#None
 tuez Morghum la Bête#5#None
@@ -147,7 +152,7 @@ Kill the Skeleton King#1#None
 Kill Mange#1#None
 Clear the Cave of the Moon Clan#1#None
 A Miner's Gold#2#None
-Kill Belial#2#None
+Kill Belial#2#act2_ADV-Tuer_Belial
 Clear the Ruins#2#None
 Clear the Vile Cavern#2#None
 Kill Mage Lord Caustus#2#None
@@ -174,7 +179,7 @@ The Cursed Battlement#2#None
 The Guardian Spirits#2#None
 Clear the Flooded Cave#2#None
 Kill Pazuzu#2#None
-Kill Zoltun Kulle#2#None
+Kill Zoltun Kulle#2#act2_ADV-Tuer_ZoltunKulle
 Kill Ganthar the Trickster#3#None
 Forged in Battle#3#None
 Clear the Icefall Caves#3#None
@@ -189,13 +194,13 @@ The True Son of the Wolf#5#None
 Kill Vilepaw#5#None
 Kill Slarth the Tunneler#5#None
 Clear the Den of the Fallen#1#None
-The Cursed Mill#1#None
+The Cursed Mill#1#act1_ADV-champs_[1-8]
 Kill Fecklar's Ghost#1#None
 Kill the Warden#1#None
 Kill the Butcher#1#None
 Kill Gart the Mad#2#None
 Rygnar Idol#2#None
-Kill Maghda#2#None
+Kill Maghda#2#act2_ADV-Tuer_Maghda
 Clear the Ancient Cave#2#None
 Kill Mage Lord Flaydren#2#None
 Kill Ghom#3#None
@@ -235,7 +240,7 @@ Kill the Aspect of Pain#4#None
 The Cursed City#5#None
 Kill Sartor#5#None
 The Cursed Outpost#2#None
-Kill Inquisitor Hamath#2#None
+Kill Inquisitor Hamath#2#act2_ADV-gorge_noire_[1-3]
 Clear the Forward Barracks#3#None
 Kill Growlfang#3#None
 Kill Crabbs#3#None
