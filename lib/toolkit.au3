@@ -5221,24 +5221,24 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 			Switch $Act
 			    Case 1
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
 					EndSwitch
 				Case 2 To 4
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;do nothing act 2, 3 and 4
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;do nothing act 2, 3 and 4
 					EndSwitch
 				Case 5
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
 							 Sleep(Random(100, 200))
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
 							 Sleep(Random(100, 200))
 					EndSwitch
@@ -5247,7 +5247,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 			Switch $Act
 				Case 1
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
 							 Sleep(300)
 							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
@@ -5255,7 +5255,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
 							 Sleep(300)
 							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
 							 Sleep(300)
 							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
@@ -5266,9 +5266,9 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 					EndSwitch
 				Case 2 to 5
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;do nothing act 2, 3, 4 and 5
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;do nothing act 2, 3, 4 and 5
 					EndSwitch
 			EndSwitch
@@ -5276,16 +5276,16 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 			Switch $Act
 				 Case 1
 	                Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(320.372528076172, 522.431640625, 24.0453319549561, 0, 60)
 					EndSwitch
 				 Case 2 To 5
 	                Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;do nothing act 2, 3, 4 and 5
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;do nothing act 2, 3, 4 and 5
 					EndSwitch
 	        EndSwitch
@@ -5293,30 +5293,30 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	    	Switch $Act
 				 Case 1
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(372.583282470703, 520.788818359375, 24.0453300476074, 0, 60)
 					EndSwitch
 				 Case 2
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;do nothing act 2
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;do nothing act 2
 					EndSwitch
 				 Case 3 To 4
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
 				    EndSwitch
 				 Case 5
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
 				    EndSwitch
 			EndSwitch
@@ -5324,38 +5324,38 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	    	Switch $Act
 				 Case 1 ; act 1
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
 							 MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
 							 MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(354.920471191406, 524.129821777344, 24.0453243255615, 0, 60)
 							 MoveToPos(367.810638427734, 525.292724609375, 24.0453281402588, 0, 60)
 							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
 				    EndSwitch
 				 Case 2 ; act 2
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;mtp a definir
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;mtp a definir
 					EndSwitch
 				 Case 3 To 4; act 3-4
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
 							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
 							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
 							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
 							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
 					EndSwitch
 				Case 5 ; act 5
 					Switch $ModePlaying
-						 Case $Story
+						 Case $PLAYING_MODE_STORY
 							 ;mtp a definir
-						 Case $Adventure
+						 Case $PLAYING_MODE_ADVENTURE
 							 ;mtp a definir
 					EndSwitch
 			EndSwitch

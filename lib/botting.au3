@@ -260,10 +260,10 @@ Func CheckGameMode()
 	WEnd
 
 	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
-	   $ModePlaying = $Adventure
+	   $ModePlaying = $PLAYING_MODE_ADVENTURE
 	   _Log("Adventure Mode", $LOG_LEVEL_VERBOSE)
 	Else
-	   $ModePlaying = $Story
+	   $ModePlaying = $PLAYING_MODE_STORY
 	   _Log("Story Mode", $LOG_LEVEL_VERBOSE)
 	EndIf
 
