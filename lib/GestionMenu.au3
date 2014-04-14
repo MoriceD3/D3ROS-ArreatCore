@@ -65,20 +65,23 @@ Func SelectGameType($SelectGameType, $auto)
 
 		If IsGameSettingsOpened() Then
 
-		   ;Selection de la difficulte et de la puissance des monstres
-		   If ($Totalruns = 1) And ($TypedeBot = 1) Then
-			  SelectDifficultyMonsterPower()
-		   EndIf
-
-			If $SelectGameType > -2 Then
+			If $SelectGameType > -2 And ($Totalruns = 1) Then
 				_log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
-		   		ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
+		   		ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
 		   		Sleep(1000)
+				;Selection de la difficulte et de la puissance des monstres
+				If $TypedeBot = 1 Then
+				   SelectDifficultyMonsterPower()
+				EndIf
 			Else
 				_log("Passage en mode Aventure", $LOG_LEVEL_DEBUG)
-				ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
+				ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
 			  	Sleep(Random(600, 800, 1))
-	  			ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
+	  			;Selection de la difficulte et de la puissance des monstres
+				If $TypedeBot = 1 Then
+				   SelectDifficultyMonsterPower()
+				EndIf
+				ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
 				Sleep(Random(600, 800, 1))
 				Return
 			EndIf
@@ -319,6 +322,9 @@ EndFunc   ;==>SelectGameType
 
 ;Selection de la quete en automatique
 Func SelectQuest()
+	If ($Choix_Act_Run = -3) And ($Totalruns = 1) Then
+		SelectGameType(-3, True)
+	EndIf
 	If ($Choix_Act_Run = -2) And ($Totalruns = 1) Then
 		SelectGameType(-2, True)
 	EndIf
@@ -472,11 +478,13 @@ Func SelectHero()
 	   Sleep(Random(600, 800, 1))
 
 	   ;Choix du heros
-	   For $i = 1 To Random(6, 7, 1) Step 1
+	   For $i = 1 To Random(10, 11, 1) Step 1
 		  MouseWheel("up")
 		  ;Valeur de test ok 100
 		  Sleep(Random(100, 150, 1))
 	   Next
+
+	   Sleep(Random(500, 750, 1))
 
 	   Switch $Heros
 			Case 1
@@ -514,6 +522,20 @@ Func SelectHero()
 			   Next
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
 
+			Case 11
+			   For $i = 1 To 9 Step 1
+				  MouseWheel("down")
+				  Sleep(Random(100, 150, 1))
+			   Next
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+
+			Case 12
+			   For $i = 1 To 9 Step 1
+				  MouseWheel("down")
+				  Sleep(Random(100, 150, 1))
+			   Next
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+
 	   EndSwitch
 	   Sleep(Random(600, 800, 1))
 
@@ -527,8 +549,13 @@ Func SelectDifficultyMonsterPower()
 
 	;Selection de la difficulté
 	_Log("Change Difficulty")
-	ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton")
-	Sleep(Random(600, 800, 1))
+	If  $Choix_Act_Run > -2 Then
+	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton")
+	   Sleep(Random(600, 800, 1))
+	Else
+	  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeContent.ChangeDifficultyButton")
+	  Sleep(Random(600, 800, 1))
+    EndIf
 
     If IsGameDifficultyOpened() Then
 
@@ -616,7 +643,7 @@ Func IsQuestChangeUiOpened()
 EndFunc   ;==>IsQuestChangeUiOpened OK
 
 Func IsGameSettingsOpened()
-    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton", 1, 954)
+    Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 1, 199)
 EndFunc   ;==>IsGameSettingsOpened
 
 Func IsQuestOpened()

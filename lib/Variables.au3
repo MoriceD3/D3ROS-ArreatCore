@@ -98,6 +98,11 @@ Global Const $ITEM_TYPE_LOOT    = 6
 Global Const $ITEM_TYPE_DECOR   = 7
 Global Const $ITEM_TYPE_RACK    = 8
 
+;CheckGameMode
+Global $ModePlaying 					= 0
+Global Const $PLAYING_MODE_STORY		= 1
+Global Const $PLAYING_MODE_ADVENTURE    = 2
+
 ; Range Item
 Global $range_shrine = 40
 Global $range_health = 35

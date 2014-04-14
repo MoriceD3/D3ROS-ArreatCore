@@ -1733,7 +1733,7 @@ Func Is_Shrine(ByRef $item)
 			Return False
 		Case $item[9] > $range_shrine
 			Return False
-		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Frenzied") Or StringInStr($item[1], "a4dun_Garden_Purification_Well_Fortune"))
+		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "Purification_Well_"))
 			Return True
 		Case Else
 			Return False
@@ -2834,58 +2834,103 @@ EndFunc
 
 Func TakeWpByKey($num, $try = 0)
 
-	If $try > 6 Then
-		$GameFailed = 1
-		_log("TakeWpByKey : Too many tries", $LOG_LEVEL_ERROR)
-		Return False
-	EndIf
-
-	$compt_while = 0
-	$compt_wait = 0
-
-	Attack()
-
 	Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
 
-	_log("clicking wp UI")
+	If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
 
-	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
-		Send("M")
-		sleep(100)
-	WEnd
-
-	VerifAct($num)
-	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
-	Sleep(100)
-
-	$timer = timerinit()
-
-	While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-		If $compt_while = 0 Then
-			_log("enclenchement du timer")
-			$timer = timerinit()
-		EndIf
-		Sleep(100)
-		$compt_while += 1
-	WEnd
-
-	If TimerDiff($timer) > 3700 Then
-		While GetLevelAreaId() = $Curentarea And $compt_wait < 6
-			_log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
-			$compt_wait += 1
-			sleep(1000)
-		WEnd
+	If _playerdead() Then
+	   Return False
 	EndIf
 
-	If GetLevelAreaId() <> $Curentarea Then
-		_log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
-		Return True
-	Else
-		_log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
-		TakeWpByKey($num, $try + 1)
+	While $try < 20 And $Newarea = $Curentarea And Not _checkdisconnect()
+
+	   Local $WPopen = 0
+	   Local $TPtimer = 0
+	   Local $Attacktimer = 0
+	   Local $compt_while = 0
+	   Local $compt_wait = 0
+
+	   _Log("TakeWpByKey : Enclenche attack during TakeWpByKey")
+	   Attack()
+	   Sleep(250)
+
+	   If Not _playerdead() Then
+
+		  CheckZoneBeforeTP()
+
+		  Sleep(250)
+		  Send("M")
+		  Sleep(1000)
+
+		  If _checkWPopen() Then
+			 _Log("TakeWpByKey : clicking wp UI")
+			 VerifAct($num)
+			 ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
+			 Sleep(300)
+			 $WPopen = 1
+		  EndIf
+
+		  If $WPopen Then
+			 _Log("TakeWpByKey : enclenchement fastCheckui de la barre de loading")
+			 While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+				If $compt_while = 0 Then
+				   _log("enclenchement du timer")
+				   $TPtimer = timerinit()
+				EndIf
+				$compt_while += 1
+
+				checkforpotion()
+
+				$Attacktimer = TimerInit()
+				Attack()
+				Sleep(100)
+				TimerDiff($Attacktimer)
+			 WEnd
+		  EndIf
+
+
+		  If Not $compt_while And Not _intown() And $WPopen Then
+			 $CurrentLoc = getcurrentpos()
+			 MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
+			 _Log("TakeWpByKey : On se deplace, pas de detection de la barre de TP")
+		  Else
+		     _Log("TakeWpByKey : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ")
+		  EndIf
+
+		  If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
+			 While GetLevelAreaId() = $Curentarea And $compt_wait < 7
+				_Log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
+				$compt_wait += 1
+				sleep(1000)
+			 WEnd
+		  EndIf
+
+		  Sleep(500)
+
+		  $Newarea = GetLevelAreaId()
+		  If $Newarea <> $Curentarea Then
+			 _Log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
+			 Sleep(500)
+			 ExitLoop
+		  Else
+		     _Log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
+			 $try += 1
+		  EndIf
+	   Else
+	      _Log("TakeWpByKey : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
+		  Return False
+	   EndIf
+	WEnd
+
+	If $try > 19 Or _checkdisconnect() Then
+	   _log("TakeWpByKey : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
+	   Return False
 	EndIf
-EndFunc
+
+ 	_Log("TakeWpByKey : On a renvoyer true, quite bien la fonction")
+ 	Return True
+Endfunc ; ==> TakeWpByKey
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
@@ -4988,8 +5033,9 @@ Func _TownPortalnew($mode=0)
 			Send($KeyPortal)
 			Sleep(250)
 
-			If $Choix_Act_Run < 100 And Detect_UI_error($MODE_BOSS_TP_DENIED) AND NOT _intown() Then
+			If ($Choix_Act_Run < 100 And $Choix_Act_Run > -2) AND NOT _intown() And Detect_UI_error($MODE_BOSS_TP_DENIED) Then
 				_Log('_TownPortalnew : Detection Asmo room', $LOG_LEVEL_WARNING)
+				$Execute_TownPortalnew = False
 				Return False
 			EndIf
 
@@ -5148,55 +5194,145 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 	Switch $BeforeInteract
 		Case $MOVETO_SMITH ; Smith
 			Switch $Act
-				Case 1
-					MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
+			    Case 1
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(2965.33325195313, 2822.7978515625, 24.0453224182129, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
+					EndSwitch
 				Case 2 To 4
-					;do nothing act 3 and 4
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;do nothing act 2, 3 and 4
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;do nothing act 2, 3 and 4
+					EndSwitch
 				Case 5
-					MoveToPos(551.606567382813, 506.932373046875, 2.76036787033081, 0, 60)
-					Sleep(Random(100, 200))
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
+							 Sleep(Random(100, 200))
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(578.169067382813, 503.704925537109, 2.62076425552368, 0, 60)
+							 Sleep(Random(100, 200))
+					EndSwitch
 			EndSwitch
 		Case $MOVETO_POTION_VENDOR ; Potion_Vendor
 			Switch $Act
 				Case 1
-					MoveToPos(3007.27221679688, 2820.4560546875, 24.0453319549561, 0, 60)
-				Case 2 to 4
-					;do nothing act 2, 3 and 4
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+							 Sleep(300)
+							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+							 Sleep(300)
+							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
+					EndSwitch
+				Case 2 to 5
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;do nothing act 2, 3, 4 and 5
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;do nothing act 2, 3, 4 and 5
+					EndSwitch
 			EndSwitch
 		Case $MOVETO_REPAIR_VENDOR
 			Switch $Act
-	        Case 1
-	                MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
-	        Case 2 To 4
-	                ;do nothing act 3-4
+				 Case 1
+	                Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(2914.19946289063, 2802.09716796875, 24.0453300476074, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(320.372528076172, 522.431640625, 24.0453319549561, 0, 60)
+					EndSwitch
+				 Case 2 To 5
+	                Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;do nothing act 2, 3, 4 and 5
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;do nothing act 2, 3, 4 and 5
+					EndSwitch
 	        EndSwitch
 	    Case $MOVETO_BOOKOFCAIN
 	    	Switch $Act
-				Case 1
-					MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
-				Case 2
-					;do nothing act 2
-				Case 3 To 4
-					MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
-				Case 5
-					MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+				 Case 1
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(2955.8681640625, 2803.51489257813, 24.0453319549561, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(372.583282470703, 520.788818359375, 24.0453300476074, 0, 60)
+					EndSwitch
+				 Case 2
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;do nothing act 2
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;do nothing act 2
+					EndSwitch
+				 Case 3 To 4
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(395.930847167969, 390.577362060547, 0.408410131931305, 0, 60)
+				    EndSwitch
+				 Case 5
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(498.356781005859, 528.380126953125, 2.66207718849182, 0, 60)
+				    EndSwitch
 			EndSwitch
 	    Case $MOVETO_PORTAL
 	    	Switch $Act
-				Case 1 ; act 1
-					MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
-					MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
-					MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
-				Case 2 ; act 2
-					;mtp a definir
-				Case 3 ; act 3
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
-				Case 4 ; act 4
-					MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-					MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-					MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+				 Case 1 ; act 1
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(2922.02783203125, 2791.189453125, 24.0453262329102, 0, 60)
+							 MoveToPos(2945.61547851563, 2800.7109375, 24.0453319549561, 0, 60)
+							 MoveToPos(2973.68774414063, 2800.90869140625, 24.0453262329102, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(354.920471191406, 524.129821777344, 24.0453243255615, 0, 60)
+							 MoveToPos(367.810638427734, 525.292724609375, 24.0453281402588, 0, 60)
+							 MoveToPos(387.610260009766, 537.2958984375, 24.0453281402588, 0, 60)
+				    EndSwitch
+				 Case 2 ; act 2
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;mtp a definir
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;mtp a definir
+					EndSwitch
+				 Case 3 To 4; act 3-4
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+						 Case $PLAYING_MODE_ADVENTURE
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+					EndSwitch
+				Case 5 ; act 5
+					Switch $ModePlaying
+						 Case $PLAYING_MODE_STORY
+							 ;mtp a definir
+						 Case $PLAYING_MODE_ADVENTURE
+							 ;mtp a definir
+					EndSwitch
 			EndSwitch
 	EndSwitch
 	Sleep(100)
