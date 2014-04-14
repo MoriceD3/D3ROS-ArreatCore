@@ -71,8 +71,13 @@ Func GetBountySequences($Table_BountyAct)
 	Sleep(150)
 
 	If $SeqList = "" Then
-		_log("No supported sequences found !", $LOG_LEVEL_WARNING)
-		Return False
+		If $NoBountyFailbackToAdventure Then
+			_log("No supported sequences found !, Loading adventure ones", $LOG_LEVEL_WARNING)
+			Return $SequenceFileAdventure
+		Else
+			_log("No supported sequences found !, Ending run", $LOG_LEVEL_WARNING)
+			Return False
+		EndIf
 	Else
 		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
 		Return $SeqList
@@ -83,6 +88,10 @@ EndFunc
 Func GetSequenceForBounty($bountyName)
 	_log("Searching For bounty : (" & $bountyname & ")", $LOG_LEVEL_DEBUG)
 	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
+	If $file = -1 Then
+		_log("File not found !")
+		Return False
+	EndIf
 	$Result = False
 	While 1
 		$line = FileReadLine($file)

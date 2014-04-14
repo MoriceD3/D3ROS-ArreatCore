@@ -59,6 +59,7 @@ Global $List_Coffre = "Props_Demonic_Container|Crater_Chest|Chest_Snowy|Chest_Fr
 Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
 Global $List_BountyAct = "1|2|3"
+Global $NoBountyFailbackToAdventure = True
 Global $grabListFile = ""
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
@@ -215,10 +216,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	;; Ajout config run
 	$Choix_Act_Run = IniRead($profilFile, "Run info", "Choix_Act_Run", $Choix_Act_Run)
 
-	Switch $Choix_Act_Run
-		Case -2
-			$SequenceFileAdventure = IniRead($profilFile, "Run info", "SequenceFileAdventure", $SequenceFileAdventure)
+	$SequenceFileAdventure = IniRead($profilFile, "Run info", "SequenceFileAdventure", $SequenceFileAdventure)
 
+	Switch $Choix_Act_Run
 		Case 0
 			$File_Sequence = IniRead($profilFile, "Run info", "SequenceFile", $File_Sequence)
 
@@ -367,6 +367,10 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
 	$Dummy = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
 	$PartieSolo = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($profilFile, "Run info", "NoBountyFailbackToAdventure", $NoBountyFailbackToAdventure)
+	$NoBountyFailbackToAdventure = Trim(StringLower($Dummy)) == "true"
+
 	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
 	$debugBot = Trim(StringLower($Dummy)) == "true"
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
