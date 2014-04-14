@@ -2040,7 +2040,7 @@ Func Attack()
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[1][$i]
 			Next
-			If $wasLoot And $item[13] <> $ITEM_TYPE_MOB Then
+			If $WaitForLoot And $wasLoot And $item[13] <> $ITEM_TYPE_MOB Then
 				; Last item was a loot skipped for affix, and next action is not a mob so wait a little in case multiple items in affix
 				_log("Attack : Small wait because potential multiple item in affix", $LOG_LEVEL_DEBUG)
 				Sleep(350)
