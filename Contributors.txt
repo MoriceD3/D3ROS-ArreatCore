@@ -21,7 +21,7 @@ Anonymous69 :
 - Refonte d'une grosse partie du code pour plus de performance
 - Mise en oeuvre du support Aventure et Campagne
 - Mise en place de la PrioriyMonsterlist et du mode ChaseElite pour pourchasser les élites ou les gobelins
-- Mise en place de la dectection des bounty et chargement des séquences correspondantes
+- Mise en place de la detection des bounty et chargement des séquences correspondantes
 - Amélioration nombreuses du comportement du bot (Gestion des timeouts, des blocages, des bans, des retrys, ....)
 - Très nombreuses corrections de bugs
 - Très nombreuses optimisations du code
@@ -34,6 +34,8 @@ bilabou :
 
 - Séquences tuer les bos ADV et campagne
 - Mise à jour des affixes
+- Prise des globes et des puits de vie selon le % de vie (+Panis Ralh)
+- Prise des globes de power (+Panis Ralh)
 
 rabbit2000 :
 
