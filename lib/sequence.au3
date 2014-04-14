@@ -875,6 +875,7 @@ EndFunc   ;==> InteractBossPortal
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
 ; -> attackrange=				(definition d'un nouvel attackrange)
 ; -> monsterlist=               (definition des monstres à tuer)
+; -> specialml=					(definition de la special monsterlist)
 ; -> banlist=                   (banlist)
 ; -> racklist=					(liste des racks a ouvrir)
 ; -> chestlist=					(liste des coffres a ouvrir)
