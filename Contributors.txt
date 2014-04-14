@@ -20,6 +20,7 @@ Anonymous69 :
 - Refonte d'une grosse partie du code pour plus de lisibilité
 - Refonte d'une grosse partie du code pour plus de performance
 - Mise en oeuvre du support Aventure et Campagne
+- Mise en place de la configuration des touches
 - Mise en place de la PrioriyMonsterlist et du mode ChaseElite pour pourchasser les élites ou les gobelins
 - Mise en place de la detection des bounty et chargement des séquences correspondantes
 - Amélioration nombreuses du comportement du bot (Gestion des timeouts, des blocages, des bans, des retrys, ....)

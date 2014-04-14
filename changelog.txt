@@ -17,11 +17,14 @@ Changelog :
 
 - De nombreuse nouvelles options : (Voir les fichiers settings pour plus d'aide)
 * ChaseElite pour pourchaser les élites
-* PrioriyMonsterlist pour pourchaser certains mobs commes les gobelins
+* PrioriyMonsterlist pour pourchaser certains mobs comme les gobelins
 * Gestion des pauses
+* Options pour une gestion complète du recyclage, de la revente et des grablists
 * Gestion des listes de coffres / racks / decors a ouvrir / casser
 * Gestion de différentes grablists
 * Mode debug pour génération facile de logs pour le support
 * Gestion de la sécurité en hardcore
+* Configuration des touches pour l'ensemble des fonctions
+* Gestion dynamique des timeouts
 
 Et surement beaucoup plus
