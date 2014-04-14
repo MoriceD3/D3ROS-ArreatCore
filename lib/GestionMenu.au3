@@ -322,6 +322,9 @@ EndFunc   ;==>SelectGameType
 
 ;Selection de la quete en automatique
 Func SelectQuest()
+	If ($Choix_Act_Run = -3) And ($Totalruns = 1) Then
+		SelectGameType(-3, True)
+	EndIf
 	If ($Choix_Act_Run = -2) And ($Totalruns = 1) Then
 		SelectGameType(-2, True)
 	EndIf
