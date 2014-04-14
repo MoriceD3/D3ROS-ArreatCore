@@ -1,0 +1,45 @@
+Moriced3 :
+
+- Refonte de l'automatisation pour qu'il soit compatible dans "Tous les formats"
+- Correction blocage au coffre act 1 et exécute plus les spell dans la fonction stashandrepair
+- Séquence act 1,2,3 avec modification attackrange a l'intérieur
+- Séquence ADV act 1,2,3 modification attackrange a l'intérieur
+- Séquence tuer les bos ADV et campagne
+- Amélioration des statistiques
+- Ajout de la fonction faire une pause après xx nombre de game
+- Amélioration Func _TownPortalnew et TakeWpByKey + correction lier a cs fonction (gestion des affix a l'intérieur, ce défend en tout temps gère les déco)
+- Amélioration Func _leavegame ne cause plus déco pré maturer 
+- Meilleur gestion des déco (temps réaction améliorer)
+- Fonction BuyPotion qui achète les potion selon la configuration 
+- Amélioration Func _logind3
+- buffinit avant prendre WP et portBack
+- Possibilité de ne pas identifier les légendaire
+
+Anonymous69 :
+
+- Refonte d'une grosse partie du code pour plus de lisibilité
+- Refonte d'une grosse partie du code pour plus de performance
+- Mise en oeuvre du support Aventure et Campagne
+- Mise en place de la PrioriyMonsterlist et du mode ChaseElite pour pourchasser les élites ou les gobelins
+- Mise en place de la dectection des bounty et chargement des séquences correspondantes
+- Amélioration nombreuses du comportement du bot (Gestion des timeouts, des blocages, des bans, des retrys, ....)
+- Très nombreuses corrections de bugs
+- Très nombreuses optimisations du code
+- Mise en place d'un système de recyclage / vente / grablist prennant en charge tous les cas de figures
+- Mise en place correcte de fermeture des fenetres de bounty / quest rewards
+- Mise en place des fonctions WaitForLoot pour une attente intelligente du bot après le dernier kill ou l'ouverture d'un coffre
+- Refonte de la gestion des logs pour support de niveaux différents (Erreur, warning, ...) très utile en mode scite
+
+bilabou :
+
+- Séquences tuer les bos ADV et campagne
+- Mise à jour des affixes
+
+rabbit2000 :
+
+- Automatisation des acts 1,2,3 en mode manuel, semi-auto, auto et tuer les boss boucle en boucle =====> 
+- Gestion des différents perso et de grablist dans les settings
+- Ajout de la fonction PartieSolo pour jouer avec le bot en team
+
+gmsMath et RqideN : 
+- Fonction PauseToSurviveHC

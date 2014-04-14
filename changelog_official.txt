@@ -1,0 +1,315 @@
+Mise à jour 8.2i le 09/04/14
+Compatible D3 2.0.4
+Correction $stringreferencefromfile non déclaré dans certains cas
+Support du compagnon goblin (puzzle ring)
+Stabilité accrue sur les machines lentes (Foxey)
+Fonction isbuffactive désactivé
+
+###########################################################################################################
+Mise à jour 8.2h le 07/04/14
+Support pour le mode Aventure
+Support Demonic chest (à terminer)
+Support Crusader (auto skill need tweaking)
+Détection des langues plus rapide
+Compatible toutes résolutions (corrigé)
+Autres Optimisations/corrections oubliées
+
+###########################################################################################################
+Mise à jour 8.2f le 21/03/14
+Optimisation des boucles de lectures
+Detection mob/items plus rapide
+Compatible toutes résolutions
+Ne devrais plus cliquer accidentellement sur des UI
+Correction d'un bug empêchant l'attaque si le monstre était trop grand
+Fonction salvage (Lorenco), à parametrer dans le setting.ini
+Autres modifications oubliées
+
+
+
+###########################################################################################################
+Mise à jour 8.2e le 13/03/14
+
+Correction d'un bug lorsque le stash était full
+Amélioration leavegame
+Probable réduction du nombre de crash
+Amélioration diverses
+
+
+###########################################################################################################
+Mise à jour 8.2d le 12/03/14
+
+Compatible patch 2.0.3
+Correction func leavegame à nouveau
+Autres corrections
+
+###########################################################################################################
+Mise à jour 8.2c le 09/03/14
+
+Correction func leavegame
+Correction grabliste
+Ne devrais plus louper de monstres
+
+###########################################################################################################
+Mise à jour 8.2b le 08/03/14
+
+Correction du click sur la fenetre des points paragon
+Correction blocage livre de cain
+Correction blocage Act 1
+Refonte de la fonction resurection
+Grab les plans légendaires
+Correction sur la fonction Téléporte
+
+###########################################################################################################
+Mise à jour 8.2a le 06/03/14
+Correction de quelques Bugs
+
+###########################################################################################################
+Mise à jour 8.2 le 05/03/14
+Compatible avec le dernier patch de diablo 3 ROS 2.0.2
+
+Nouvelle fonction Func ClickUI($name) -> click sur l'UI indiqué
+Nouvelle fonction Func TakeWPV2($WPNumber=0) -> take the wp X (exemple for sequence file : TakeWP=4)
+Lors du premier lancement, le temps d'initialisation peut prendre entre 10 et 40 secondes.
+
+
+###########################################################################################################
+Mise à jour 8.0a le 15/05/13
+Compatible avec le dernier patch de diablo 1.8a
+
+###########################################################################################################
+Mise à jour 8.0a le 11/05/13
+
+Corrrection afin d'atteindre le livre de cain dans tous les acts
+Correction sur la détection de l'inventaire full
+Correction sur une varriable non déclarée
+Attaque des breakable temporairement désactivé
+
+###########################################################################################################
+Mise à jour 8.0 le 10/05/13
+
+Compatible avec le dernier patch de diablo 1.8
+Identifie directement via le livre de Cain
+Amelioration de la gestion des skill
+Corrections de divers bug
+Stats enregistrées sous forme de graphique (uniquement pour des sessions de plus de 15 runs)
+D'autre correction et amélioration que l'on à oublié entre le moment où on les a misent en place et maintenant ^^.
+
+###########################################################################################################
+Mise à jour 7.2a (13/03/13)
+Support all game languages
+Configuration automatique des skills (autoskills)
+Capable d'éviter certain affixes (lave, etc..)
+Corrections de bugs divers
+Compatible avec le patch 1.0.7a
+Ne tente plus de prendre le shrine dans la dernire zone car s'y bloque trop souvent
+
+###########################################################################################################Mise à jour 7.1
+Optimisation de l'offsetlist (plus de fail, stabilité accrue)
+Mise en place d'une sécurité anti vente d'équipement (InventoryCheck=True)
+Optimisation de la fonction takeWP
+Correction d'un bug relatif à la prise de shrines
+Ajout de séquences
+Identification, Stash, Vente plus rapide
+Correction d'un bug dans la boucle principale pouvant entrainer une erreur (continueloop 2)
+
+
+###########################################################################################################
+Mise à jour 7.0
+Compatible avec le dernier patch D3
+Lecture des acteurs plus rapide (par structure)
+Lecture des objets et attrib plus rapide (par structure)
+Trie de l'environnement et monstre prioritaires
+Nouvelle gestion des skills
+Nouveau systeme de filtre d'items (fichier grablist.txt)
+Peut garder les items non identifiés si demandé (Unidentified=true)
+Purge de l'inventaire en milieu de run si full
+
+Infos relative aux nouvelles options du settings.ini :
+MonsterTri = True -> permet de grab et d'attaquer les items/monstre les plus proches
+MonsterRefresh = True -> rafraichi l'environement après chaque kill (peut faire ramer)
+ItemRefresh = True -> rafraichi l'environement après chaque grab (peut faire ramer)
+MonsterPriority = True -> force le kill de tous les mobs avant de grabber (déconseillé)
+
+Concernant la nouvelle gestion des spells (exemple) :
+SpellOn1=true <- active ou non le spells 1
+SpellName1=barbarian_ancientspear <- indique quel est le spell 1 (voir lib\skills.au3 pour la liste)
+SpellDelay1=1500 <- délai de cooldown minimum du spell
+SpellType1=attack <- indique dans quel cas le spell est enclancheable (attack elite buff life physical move)
+SpellEnergyNeeds1=0 <- cout en énergie du spell
+SpellEnergy1=Fury <- type d'éenergie
+SpellKey1=right <- touche du spell (left, right, &, é, ", etc...)
+SpellLife1= <- enclenche si le spell si la vie est en dessous de la valeure (0 à100) et que le type de spell est 
+SpellDistance1= 44 <- distance maxi entre le joueur et le monstre pour enclancher le spell
+Note : cette partie du setting sera expliqué lors de prochains tutoriaux.
+
+
+
+###########################################################################################################
+Mise à jour 6.13
+Correction d'un bug entraînant une boucle infinie lors du filtrage de l'inventaire
+Correction d'un bug provoquant la sortie de la sourie de la fenêtre du jeu
+Correction d'un bug provoquant une erreur de variable cord -> cords
+Ajout de Func SafePortBack() pour le retour vile -> zone de combat
+Grabit plus rapide
+Interaction avec les acteurs plus rapide
+Sequence au3 et usepath au3 modifiés
+Ajout d'une liste de monstre spéciaux (éditable dans setting.au3)
+Gamebalance est correctement à jour
+Ajout d'une fonction DetectElite (non utilisé)
+Vérification de la coordonnée Z lors de l'attaque des monstres
+Autres modifications oubliées ;)
+MERCI AUX CONTRIBUTEURS
+
+###########################################################################################################
+Mise à jour 6.12
+Correction d'un bug pouvant survenir lors de la prise d'un item au sol
+Le délai de pression des touches a été augmenté, ce délai est aléatoire
+La fonction _log peut désormais enregistrer les logs dans un fichier si on lui indique l'argument 1.
+Ajout de debug.exe (permet d'obtenir les logs tout en utlisant le main.exe)
+Note : Les logs enregistrés sur fichier se trouvent dans le dossier log
+Ajout d'une "BanmonsterList": les chiens zombie du WD et autres pet ne sont plus confondus avec des monstres
+La position des "click" lors des déplacements se détermine de manière plus aléatoire qu'avant
+Légère modification sur l'affichage des statistiques
+Modification sur la manière de détecter le monsterpower
+Modification, l'inventaire se filtre plus rapidement
+Peut maintenant cliquer sur resuiciter en cas de mort (ResActivated=true et ResLife=3)
+Peut effectuer aléatoirement les chemins à l'envers (UsePath=true)
+Les séquences sont désormais stoqué sous forme de fichier et ne nécéssite plus de recompilation (texte SequenceFile=sequence\act3_core_field_tower.txt)
+Autres modifications oubliées ;)
+
+###########################################################################################################
+Mise à jour 6.01
+La touche pour testing passe de "x" à "F1" pour eviter d'avoir des soucis lors que login si le mot de passe contient un "x".
+Modification mineure sur la fonction pour prendre les shrines
+Correction d'un bug entrainant une erreur de variable si dès l'arrivé dans une nouvelle partie, le bot a besoin de réparer.
+Les ressources maximum sont désormais correctement prisent en compte.
+Correction de bugs concernant les buff et les skills a utiliser
+Fonction TogglePause modif
+Fonction CheckWindowD3() ajoutée
+
+
+###########################################################################################################
+Mise à jour 5.12
+Meilleure prise en charge de certaines Décos
+Détection des déco plus rapides
+Détection WP, inventaire, stash etc plus rapide
+Ajout d'un grabrange dans setting.ini (rayon de ramassage)
+Ajout d'un attacktimeout dans setting.ini (temps avant de changer de cible)
+Ajout d'un grabtimeout dans setting.ini (temps avant d'ignorer un loot si l'on arrive pas a le prendre)
+Ajout d'un check de la dll au lancement
+Les fichiers stats sont maintenant générés dans le dossier stats
+Ajout d'une fonction ListUI / Bucket / Text UI
+Correction d'un bug entrainant un echec d'initialisation des offset
+Correction d'un bug entrainant l'appui sur la touche shift (et donc l'attaque dans le vent)
+Ajout d'une fonction EmergencyStopCheck qui stop le bot si trop de morts en 20 minutes ou si on a pas réussi a réparer 5 fois de suite
+Grab les sources légendaires
+Ajout d'une variable KeyforSpell (pour indiquer sur quelle touche appuyer lors des spells).
+
+Prend un screenshot en cas d'erreur S001 V001. Merci de poster ensuite le screen sur le fofo.
+
+Fonction et modifications faites :
+
+[Fonction] 	Prendre Les Shrines 
+[Fonction] 	Enoughtpotions
+[Fonction]	Interdire L'execution D'autoit X64
+[Fonction]	Fastcheckuivalue
+[Fonction]	List Ui
+[Modification] 	Gestion Position Fenetre Stat
+[Modification]	Refonte de CheckWindowD3
+[Modification]	LISEZ-MOI.txt
+[Modification]	Emplacement fichiers logs
+
+
+
+###########################################################################################################
+Mise à jour 5.11 30/10
+Correction de bug lié au variable non déclaré en fonction du MP
+Correction de bug empéchant le bot de rréparer correctement en inferno avec MP activé
+Gestion des déconnections amélioré
+Chasse au temps perdu épisode 1 :
+- Si l'on se coince quelques part un certain temps, alors le bot considèrera la game comme fail et passera a la suivante.
+- Si l'on n'a pas réussi a prendre un WP alors le bot considèrera qu'on est coincé
+
+
+###########################################################################################################
+Mise à jour 5.10 28/10
+Compatible 1.0.5a
+Détection Auto de l'act
+Détection Auto de la difficulté
+Détection Auto du monsterpower
+Intégration du toolkit
+Ajout d'une fonction de détection d'area
+Réorganisation des dossiers pour éviter certaines confusions
+Ajout des stats XP
+Corrections de bugs avec la mana du wichdoctor et le spirit du monk
+Diverses corrections de bugs
+La fenêtre de Diablo reste désormais bien au premier plan
+La variable "Act =" dans settings.ini a été supprimé
+
+
+###########################################################################################################
+Mise à jour 3.3e 12/10
+
+Détection de la mort plus rapide, fin de run plus rapide apres mort
+Détection des déconnections et reconnection si besoin (uniquement pour les decos serveur)
+Gestion amélioré de skills en fonction de l'energie disponible (A parametrer dans settings.ini)
+Abandon d'Emergencyclick et emergency skill car plus besoin
+La fenêtre Diablo III ne peut plus être géné par un pop-up, elle reste au premier plan
+Correction d'un bug pouvant faire sortir la sourie en dehors de la zone du jeu
+Fonction Interactbyactorname et Townportal améliorés
+Correction d'un Bug sur Takewp pouvant entrainer l'impossibilité d'ouvrir la fenetre des wp correctement
+Ajout d'un compteur de déconnections
+Diverses corrections, améliorations.
+
+
+
+###########################################################################################################
+Mise à jour 3.3d 01/10 : 
+3.3d - Comportement globale amélioré
+3.3d - Correction du bug : "ne tente plus de passer et rester bloquer à travers un gros pack de mob"
+3.3d - Correction du bug : "n'oublie plus moulte tas de gold et d'items"
+3.3d - gestion des blocages plus basique et plus efficace
+3.3d - corrections mineur sur les buffs
+3.3d - Corrections diverses plus en tête ^^
+3.3c - Nouvelle fonction pour se déplacer vers les vendeur et le coffre
+3.3c - Nouvelle gestion des blocages en chemin
+3.3c - setting.ini propre
+Ajout de prebuff1/2/3/4 dans le settings.ini (pour buffer dès e début de la game true = oui / false = non)
+"repairafterxxgames=" est désormais bien pris en compte, réparera toutes les X games (avec - ou + 2 games d'ajout pour que cela ai l'air plus aléatoire)
+Autopopo et Getife modifié (voir topic xoum)
+Petite modification dans les préférences d’exécution (règle certain soucis sur OS 64 bits)
+Check correctement la résolution de d3 (ne vend plus sans faire exprès si le jeu n'est pas en 800*600)
+Quelques autre modifications que je n'ai plus en tête actuellement
+b - Correction : lors d'un déplacement vers le vendeur ou le coffre on ne click plus si l'acteur est hors de portée
+b - Ajout de multiples vérifications au vendeur. On stop si on a échoué après plusieurs tentatives d'ouverture du stash ou de vendeur
+b - Ajustement de "l'antiblocage" lors de déplacements 
+b - Correction de prébuff
+b - Les points de passage sont désormais stoqués dans le fichier sequence.au3. Si vous modifiez, ne pas oublier de changer l'act dans settings.ini si besoin.
+
+###########################################################################################################
+Mise à jour 23/09: 
+Détection de la mort plus rapide
+Ajout d'un contrôle de la touche pour fermer l'inventaire (Pour éviter les vente d'item équipés)
+Ajout de statistiques (merci Yopens)et d'une touche PAUSE (F3)
+Ajout d'un click droit d'urgence si la vie tombe en dessous de xx% (se règle dans settings.ini)
+Ajout d'un Skill d'urgence si la vie tombe en dessous de xx% (se règle dans settings.ini)
+Gestion des potion si en dessous de xx% vie. Se règle dans settings.ini (merci Chrissou)
+"Tentative" de gestion des blockages lors de changement de position (merci Tempo)
+Act 1, Act 2, Act 3, Act 4, dans settings.ini (note : le npc de l'act 2 est la fillette, prenez une quest vers la fin pour avoir la fillette proche du coffre)
+Ajout d'un mode Dev (settings.ini), permet de désactiver _botting. 
+Fonction findActor() et getlifep() retravaillé
+
+###########################################################################################################
+Mise à jour 17/09 : 
+Peut désormais vendre et placer les items dans le coffre (les items dans la grablist sont stash, les autres vendus)
+Peut grab et garder certains item rares si spécifiés dans le settings.ini ex : rareList=Amulet_|Ring_
+Amélioration de la fonction prenant les waypoint
+Amélioration de la fonction stash
+Amélioration de la allant au NPC
+Amélioration de la fonction townportal (quite si trop de fail) "xoum" 
+Ajout d'item dans la grablist et de monstres dans la monsterlist
+
+###########################################################################################################
+Mise à jour 12/09 : Prends les objets légendaires et gère jusqu’à 4 buffs avec différents délais
+###########################################################################################################
+Mise à jour 11/09 : correction de la plupart des bugs utilisateurs reportés.
