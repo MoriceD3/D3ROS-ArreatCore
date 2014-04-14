@@ -1,5 +1,5 @@
-MonsterList=FallenGrunt_A|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|Barricade|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Goblin|uber_|Uber|DuneDervish|TriuneVesselActivated_C|TriuneCultist_C|TriuneCultist_D
-specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
+MonsterList=FallenGrunt_A|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|Barricade|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Goblin|uber_|Uber|DuneDervish|TriuneVesselActivated_C|TriuneCultist_C|TriuneCultist_D|Maghda
+banlist=Lore_BelialMaghdaMissive2|Boss_Portal_Maghda
 AutoBuff=True
 revive=false
 attackrange=40
@@ -97,8 +97,6 @@ UsePath=false
 attackrange=65
 offsetlist()
 specialml=Maghda
-attackrange=65
-usepath=false
 269.5625, 199.048904418945, 0.100000001490116,1,25
 261.53369140625, 199.309280395508, 0.100000001490116,1,25
 250.382369995117, 199.670928955078, 0.100000001490116,1,25
@@ -131,5 +129,4 @@ sleep=3200
 _townportal()
 sleep=2000
 endsave()
-specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
 sleep=500

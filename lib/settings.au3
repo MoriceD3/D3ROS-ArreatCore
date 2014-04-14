@@ -50,7 +50,7 @@ Global $a_time = 9000
 Global $g_time = 7500
 Global $ChaseElite = False
 Global $List_BanAffix = ""
-Global $List_SpecialMonster = "Goblin|brickhouse_|woodwraith_"
+Global $List_SpecialMonster = "Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber|x1_SpeedKill_Gluttony"
 Global $List_PriorityMonster = "Goblin|Uber"
 Global $List_Monster = "Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|Fallen|GoatMutant|demonFlyer_B|creepMob|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni"
 Global $List_BanMonster = "treasureGoblin_A_Slave|Skeleton_Archer_A_Unique_Ring_|Skeleton_A_Unique_Ring_|WD_ZombieDog|WD_wallOfZombies|DH_Companion"
@@ -381,7 +381,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	;Chargement des tables
 	LoadTableFromString($Table_Coffre, $List_Coffre)
 	LoadTableFromString($Table_Rack, $List_Rack)
-	LoadTableFromString($Table_BanMonster, $List_BanMonster)
+	LoadTableFromString($Table_BanMonster, $List_BanMonster, False)
 	LoadTableFromString($Table_Monster, $List_Monster)
 	LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster)
 	LoadTableFromString($Table_BanItemStartName, $List_BanItemStartName)
@@ -654,7 +654,6 @@ Func Init_grablistFile($grabListPath = "grablist/")
 		EndIf
 	Next
 
-	$temp = $List_grablist
-	LoadTableFromString($Table_Grablist, $temp)
+	LoadTableFromString($Table_Grablist, $List_grablist, False)
 
 EndFunc   ;==>Init_grablistFile

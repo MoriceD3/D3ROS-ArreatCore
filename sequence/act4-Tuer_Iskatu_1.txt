@@ -1,4 +1,4 @@
-MonsterList=angelDemonImpact_angelTrail|coreEliteDemon_podRocket|spire_AngelCorpse_Barrel_A|angelDemonImpact_angelTrail_thicker|crowd_commonAngel_falling|demonAttack_battle
+MonsterList=angelDemonImpact_angelTrail|coreEliteDemon_podRocket|spire_AngelCorpse_Barrel_A|angelDemonImpact_angelTrail_thicker|crowd_commonAngel_falling|demonAttack_battle|shadowVermin_A_1000MonsterFight|TerrorDemon_A_Unique_1000Monster
 BanList=
 AutoBuff=True
 usepath=false
@@ -37,7 +37,7 @@ sleep=1000
 closewindows()
 sleep=500
 closeconfirm()
-sleep=1500
+sleep=2500
 offsetlist()
 usepath=false
 specialml=shadowVermin_A_1000MonsterFight|TerrorDemon_A_Unique_1000Monster
@@ -134,7 +134,6 @@ sleep=1000
 357.018920898438, 319.118957519531, 1.49171483516693,1,25
 355.073516845703, 295.09765625, 3.15568923950195,1,25
 endsave()
-specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
 sleep=500
 InteractBossPortal=g_Portal_ArchTall_Blue
 sleep=1000

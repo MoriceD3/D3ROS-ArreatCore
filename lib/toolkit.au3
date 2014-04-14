@@ -5518,9 +5518,11 @@ Func IsBannedActor($actor)
 	Return False
 EndFunc
 
-Func LoadTableFromString(ByRef $Table, ByRef $string)
+Func LoadTableFromString(ByRef $Table, ByRef $string, $cleanup = True)
 	$Table = StringSplit($string, "|")
-	$string = ""
+	If $cleanup Then
+		$string = ""
+	EndIf
 EndFunc
 
 Func AddItemToTable(ByRef $table, $item)

@@ -298,7 +298,7 @@ EndFunc   ;==>ArrayInit
 
 Func attackRange($String)
     If Not $String = "" Then
-        $a_range =Round($String)
+        $a_range = Round($String)
         _log("Modification de la valeur attackRange : " & $a_range, $LOG_LEVEL_VERBOSE)
     EndIf
 EndFunc ;==>valeur attackRange
@@ -318,40 +318,40 @@ EndFunc   ;==>Trim
 Func MonsterList($String)
 	If Not $String = "" Then
 		$List_Monster = $String
-		LoadTableFromString($Table_Monster, $List_Monster) ; Chargement de la nouvelle table
 		_log("Remplacement de la MonsterList : " & $List_Monster, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_Monster, $List_Monster) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>MonsterList
 
 Func BanList($String)
 	If Not $String = "" Then
-		$List_BanMonster = $List_BanMonster & "|" & $String
-		LoadTableFromString($Table_BanMonster, $List_BanMonster) ; Chargement de la nouvelle table
-		_log("Ajout d'une nouvelle BanList : " & $List_BanMonster, $LOG_LEVEL_VERBOSE)
+		$Temp = $List_BanMonster & "|" & $String
+		_log("Ajout d'une nouvelle BanList : " & $Temp, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_BanMonster, $Temp) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>BanList
 
 Func ChestList($String)
 	If Not $String = "" Then
 		$List_Coffre = $String
-		LoadTableFromString($Table_Coffre, $List_Coffre) ; Chargement de la nouvelle table
 		_log("Remplacement de la ChestList : " & $List_Coffre, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_Coffre, $List_Coffre) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>ChestList
 
 Func RackList($String)
 	If Not $String = "" Then
 		$List_Rack = $String
-		LoadTableFromString($Table_Rack, $List_Rack) ; Chargement de la nouvelle table
 		_log("Remplacement de la RackList : " & $List_Rack, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_Rack, $List_Rack) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>RackList
 
 Func DecorList($String)
 	If Not $String = "" Then
 		$List_Decor = $String
-		LoadTableFromString($Table_Decor, $List_Decor) ; Chargement de la nouvelle table
 		_log("Remplacement de la DecorList : " & $List_Decor, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_Decor, $List_Decor) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>DecorList
 
@@ -428,6 +428,12 @@ Func sequence()
 		Local $old_ResActivated = $ResActivated
 		Local $old_UsePath = $UsePath
 		Local $old_TakeShrines = $TakeShrines
+		Local $old_Attackrange = $a_range
+		Local $old_Table_SpecialMonster = $Table_SpecialMonster
+		Local $old_Table_BanMonster = $Table_BanMonster
+		Local $old_Table_Decor = $Table_Decor
+		Local $old_Table_Coffre = $Table_Coffre
+		Local $old_Table_Rack = $Table_Rack
 
 		Local $compt_line = 0
 		Dim $txttoarray[1]
@@ -805,6 +811,12 @@ Func sequence()
 		$ResActivated = $old_ResActivated
 		$UsePath = $old_UsePath
 		$TakeShrines = $old_TakeShrines
+		$a_range = $old_Attackrange
+		$Table_SpecialMonster = $old_Table_SpecialMonster
+		$Table_BanMonster = $old_Table_BanMonster
+		$Table_Decor = $old_Table_Decor
+		$Table_Coffre = $old_Table_Coffre
+		$Table_Rack = $old_Table_Rack
 		unbuff()
 		If $GameFailed = 1 Then
 			ExitLoop
@@ -863,7 +875,6 @@ EndFunc   ;==> InteractBossPortal
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
 ; -> attackrange=				(definition d'un nouvel attackrange)
 ; -> monsterlist=               (definition des monstres à tuer)
-; -> specialml=					(definition de la special monsterlist)
 ; -> banlist=                   (banlist)
 ; -> racklist=					(liste des racks a ouvrir)
 ; -> chestlist=					(liste des coffres a ouvrir)

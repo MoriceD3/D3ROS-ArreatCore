@@ -292,12 +292,12 @@ Func SelectGameType($SelectGameType, $auto)
 					  ClickUIMode(0, 0, 215, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
 
-					   For $i = 1 To 1 Step 1
+					   For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
 
-					  ClickUIMode(0, 0, 230, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 200, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 
 			  EndSwitch
 
@@ -601,7 +601,7 @@ Func SelectDifficultyMonsterPower()
 EndFunc   ;==>SelectDifficultyMonsterPower
 
 
-Func ClickUIMode($mode, $x, $y, $name, $bucket=-1)
+Func ClickUIMode($mode, $x, $y, $name, $bucket = -1)
 
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
@@ -626,7 +626,6 @@ Func ClickUIMode($mode, $x, $y, $name, $bucket=-1)
 	Switch $mode
 		 Case 0
 			MouseClick("left", ($Point2[0] + $Point2[2] / 2) , $Point2[1] + $Point2[3] / 2)
-
 		 Case 1
 			MouseClick("left", ($Point2[0] + $Point2[2] / 2) , $Point2[1] + $Point2[3] / 2)
 			MouseDown("left")

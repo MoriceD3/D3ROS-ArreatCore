@@ -65,5 +65,4 @@ sleep=500
 _townportal()
 sleep=500
 endsave()
-specialml=Goblin|brickhouse_|WoodWraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|SkeletonSummoner_|Uber
 sleep=500

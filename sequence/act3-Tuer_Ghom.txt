@@ -1,4 +1,5 @@
 MonsterList=Gluttony|a3dun_battlefield_Demon_GroundTrap_GasChamber|Beast_B|Goblin|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_
+Banlist=Gluttony_gasCloud|Boss_Portal_Gluttony
 AutoBuff=True
 attackrange=45
 revive=false
@@ -18,7 +19,7 @@ sleep=1500
 closewindows()
 sleep=500
 closeconfirm()
-sleep=5000
+sleep=7000
 432.900482177734, 359.853668212891, 0.100000120699406,1,25
 407.018737792969, 357.655609130859, -0.0354028865695,1,25
 387.586639404297, 370.248138427734, 0.100000105798244,1,25
@@ -50,5 +51,4 @@ sleep=500
 closewindows()
 sleep=5000
 endsave()
-specialml=Goblin|brickhouse_|woodwraith_|Siege_wallMonster|DuneDervish_|Ghost_|Lamprey_|Uber
 sleep=500
