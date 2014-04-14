@@ -186,12 +186,7 @@ Func _botting()
 EndFunc   ;==>_botting
 
 Func CheckAndDefineSize()
-	if $SizeWindows = 0 Then
-		$SizeWindows = WinGetClientSize("[CLASS:D3 Main Window Class]")
-		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1], $LOG_LEVEL_DEBUG)
-	EndIF
-
-	if $PointFinal[0] = 0 AND $PointFinal[1] = 0 AND $PointFinal[2] = 0 AND $PointFinal[3] = 0 Then
+	If $PointFinal[0] = 0 And $PointFinal[1] = 0 And $PointFinal[2] = 0 And $PointFinal[3] = 0 Then
 
 		;$result = GetOfsUI("Root.NormalLayer.game_notify_dialog_backgroundScreen.dlg_new_paragon.button", 0)
 		$OfsBtnParagon = GetOfsFastUI("Root.NormalLayer.game_notify_dialog_backgroundScreen.dlg_new_paragon.button", 1028)
@@ -230,7 +225,7 @@ Func Checkclickable($coord)
 		$coord[0] = ($PointFinal[1] + $PointFinal[2]) - 1
 	EndIF
 
-	return $coord
+	Return $coord
 EndFunc
 
 Func ClickInventory($c, $l)

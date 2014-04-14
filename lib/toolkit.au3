@@ -39,6 +39,13 @@ Func CheckWindowD3()
 		MsgBox(0, Default, "Fenêtre Diablo III absente.")
 		Terminate()
 	EndIf
+
+	If $SizeWindows = 0 Then
+		$SizeWindows = WinGetClientSize("[CLASS:D3 Main Window Class]")
+		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1], $LOG_LEVEL_DEBUG)
+		$AspectChange = ($SizeWindows[0] / $SizeWindows[1]) / (800 / 600)
+	EndIf
+	
 EndFunc   ;==>CheckWindowD3
 
 Func CheckWindowD3Size()
@@ -125,26 +132,18 @@ Func GetPositionUI($ofs)
 EndFunc
 
 Func GetUIRectangle($x, $y, $r, $b)
-	Dim $Point[4]
+	;$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
 
-	$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
-	$resolutionX = $size[0]
-	$resolutionY = $size[1]
-
-	$fourthreewidth = ($size[1] / 3.0) * 4.0
-	$mbRatio = 600.0 / $size[1]
-	$mb = ($size[0] - $fourthreewidth) * $mbRatio
-	$sx = ($x + $mb) / (1200.0 / $size[1])
-	$sr = ($r + $mb) / (1200.0 / $size[1])
-	$sy = $y * ($size[1] / 1200.0)
-	$sb = ($b-1) * ($size[1] / 1200.0)
+	$mb = ($SizeWindows[0] - (($SizeWindows[1] / 3.0) * 4.0)) * (600.0 / $SizeWindows[1])
+	$sx = ($x + $mb) / (1200.0 / $SizeWindows[1])
+	$sr = ($r + $mb) / (1200.0 / $SizeWindows[1])
+	$sy = $y * ($SizeWindows[1] / 1200.0)
+	$sb = ($b-1) * ($SizeWindows[1] / 1200.0)
 
 	;_log("GetUIRectangle -> sx : " & $sx & " - sy : " & $sy & " - right : " & $sr - $sx & " - bottom : " & $sb - $sy)
 
 	Dim $Point[4] = [$sx, $sy, $sr - $sx, $sb - $sy]
-
-	return $Point
-
+	Return $Point
 EndFunc
 
 Func fastcheckuiitemvisible($valuetocheckfor, $visibility, $bucket)
@@ -1112,16 +1111,10 @@ EndFunc   ;==>startIterateObjectsList
 ;;--------------------------------------------------------------------------------
 Func FromD3toScreenCoords($_x, $_y, $_z)
 	Dim $return[2]
-	$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
+	
+	;Disable costly check
+	;CheckWindowD3Size()
 
-	If Not $size[0] = $SizeWindows[0] Or Not $size[1] = $SizeWindows[1] Then
-		_log("Windows Size Changed", $LOG_LEVEL_ERROR)
-		Terminate()
-	EndIF
-
-	$resolutionX = $size[0]
-	$resolutionY = $size[1]
-	$aspectChange = ($resolutionX / $resolutionY) / (800 / 600)
 	$CurrentLoc = GetCurrentPos()
 	$xd = $_x - $CurrentLoc[0]
 	$yd = $_y - $CurrentLoc[1]
@@ -1142,25 +1135,13 @@ Func FromD3toScreenCoords($_x, $_y, $_z)
 		$Z = (-0.515 * $xd + - 0.514 * $yd + - 0.686 * $zd + 97.002) / $w
 		$x /= $aspectChange
 	WEnd
-	$return[0] = ($x + 1) / 2 * $resolutionX
-	$return[1] = (1 - $y) / 2 * $resolutionY
+	$return[0] = ($x + 1) / 2 * $SizeWindows[0]
+	$return[1] = (1 - $y) / 2 * $SizeWindows[1]
 
 	$return = Checkclickable($return)
 
 	Return $return
 EndFunc   ;==>FromD3toScreenCoords
-
-
-;;--------------------------------------------------------------------------------
-;;      UiRatio()
-;;--------------------------------------------------------------------------------
-Func UiRatio($_x, $_y)
-	Dim $return[2]
-	$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
-	$return[0] = $size[1] * ($_x / 600)
-	$return[1] = $size[1] * ($_y / 600)
-	Return $return
-EndFunc   ;==>UiRatio
 
 Func GetCurrentPos()
 	Dim $return[3]
@@ -2957,7 +2938,6 @@ Func _resumegame()
 		   $tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
 		EndIf
 		
-		;_randomclick(135, 285)
 		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
 		$Try_ResumeGame += 1
 	EndIf
@@ -3223,11 +3203,6 @@ Func RandSleep($min = 5, $max = 45, $chance = 3)
 		Next
 	EndIf
 EndFunc   ;==>RandSleep
-
-Func _randomclick($x, $y, $button = "left")
-	$coord = UiRatio($x, $y)
-	MouseClick($button, Random($coord[0] - 3, $coord[0] + 3), Random($coord[1] - 3, $coord[1] + 3))
-EndFunc   ;==>_randomclick
 
 ;;--------------------------------------------------------------------------------
 ;;############# Speels by Xoum

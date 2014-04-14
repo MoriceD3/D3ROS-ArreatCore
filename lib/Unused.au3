@@ -265,6 +265,23 @@ Func LevelAreaConstants()
 	Global $A5todo = 0x41ebb
 EndFunc   ;==>LevelAreaConstants
 
+
+;;--------------------------------------------------------------------------------
+;;      UiRatio()
+;;--------------------------------------------------------------------------------
+Func UiRatio($_x, $_y)
+	Dim $return[2]
+	$size = WinGetClientSize("[CLASS:D3 Main Window Class]")
+	$return[0] = $size[1] * ($_x / 600)
+	$return[1] = $size[1] * ($_y / 600)
+	Return $return
+EndFunc   ;==>UiRatio
+
+Func _randomclick($x, $y, $button = "left")
+	$coord = UiRatio($x, $y)
+	MouseClick($button, Random($coord[0] - 3, $coord[0] + 3), Random($coord[1] - 3, $coord[1] + 3))
+EndFunc   ;==>_randomclick
+
 Func GetMyStats()
 	Local $index, $offset, $count, $item[4]
 	startIterateLocalActor($index, $offset, $count)

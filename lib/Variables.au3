@@ -18,6 +18,7 @@ Global $allSNOitems
 ; Variables pour la gestion de la fenêtre Diablo
 Global $SizeWindows = 0
 Global $PointFinal[4] = [0,0,0,0]
+Global $AspectChange
 
 ; Variables pour la detection d'erreurs
 Global $Byte_Full_Inventory[2]
