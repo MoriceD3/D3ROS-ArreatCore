@@ -475,11 +475,13 @@ Func SelectHero()
 	   Sleep(Random(600, 800, 1))
 
 	   ;Choix du heros
-	   For $i = 1 To Random(6, 7, 1) Step 1
+	   For $i = 1 To Random(10, 11, 1) Step 1
 		  MouseWheel("up")
 		  ;Valeur de test ok 100
 		  Sleep(Random(100, 150, 1))
 	   Next
+
+	   Sleep(Random(500, 750, 1))
 
 	   Switch $Heros
 			Case 1
@@ -512,6 +514,20 @@ Func SelectHero()
 
 			Case 10
 			   For $i = 1 To 5 Step 1
+				  MouseWheel("down")
+				  Sleep(Random(100, 150, 1))
+			   Next
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+
+			Case 11
+			   For $i = 1 To 9 Step 1
+				  MouseWheel("down")
+				  Sleep(Random(100, 150, 1))
+			   Next
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+
+			Case 12
+			   For $i = 1 To 9 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
