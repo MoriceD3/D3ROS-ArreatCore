@@ -1,5 +1,13 @@
 Changelog : 
 
+- Version 1.1 : 15/04/2014
+
+- Ajout d'une nouvelle option : NoBountyFailbackToAdventure
+- Correction d'un bug en mode farming de boss
+- Amélioration de la lisibilité du settings.ini
+- Par défaut le bot est maintenant en mode semi-automatique et run Aventure
+- Augmentation des temps pour les loots en fin de séquence boss
+
 - Version 1.0 : 14/04/2014
 
 1ère version publique du merge de l'ancien Bot Automatisation 8.1 et de la version 8.2i avec de nombreux ajouts
