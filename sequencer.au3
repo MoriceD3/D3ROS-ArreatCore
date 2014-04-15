@@ -94,10 +94,11 @@ CheckWindowD3()
 
 _log("Sequence maker ready !", $LOG_LEVEL_WARNING)
 
+AutoItSetOption("GUIOnEventMode", 1)
+
 ShowSequencerTools()
 
-; Attente en fin de script pour conserver la console ou utiliser les devs tools
+; Attente en fin de script pour conserver la console et utiliser le sequencer
 While 1
 	Sleep(50)
 WEnd
-

@@ -41,17 +41,21 @@ Func ShowSequencerTools()
 	EndIf
 	GUISetOnEvent($GUI_EVENT_CLOSE, "On_SequencerTools_Close")
 
-	$recordSceneButton = GUICtrlCreateButton("Enregistrer la scène (F1)", 10, 10, 180, 30)
-    GUICtrlSetOnEvent(-1, "Read_Scene")
-    $recordObjectButton = GUICtrlCreateButton("Enregistrer les objets (F3)", 10, 50, 180, 30)
-    GUICtrlSetOnEvent(-1, "Sequencer_IterateObj")
-    $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 100, 180, 30)
-    GUICtrlSetOnEvent(-1, "SequencerMarkPos")
-    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scène et quitter (F2)", 10, 150, 180, 30)
-    GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
-    GUICtrlSetOnEvent(-1, "Draw_Scene")
+	$recordSceneButton = GUICtrlCreateLabel("Enregistrer la scène : F1", 10, 10, 180, 20)
+    $recordObjectButton = GUICtrlCreateLabel("Enregistrer les objets : F3", 10, 30, 180, 20)
 
-    GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur les 2 premiers boutons pour commencer l'enregistrement." & @CRLF  & @CRLF & "Appuyer sur le bouton Marquer une position pour ajouter des points à la séquence." & @CRLF & @CRLF & "Quand tout est fini appuyer sur le bouton Dessiner la scène." & @CRLF  & @CRLF & "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 190, 180, 360)
+    $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 60, 180, 30)
+	GUICtrlSetOnEvent($hButton3, "SequencerMarkPos")
+
+    GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur F1 et ou F3 pour commencer l'enregistrement." & @CRLF  _
+    	& @CRLF & "Appuyer sur le ù pour ajouter des points à la séquence." & @CRLF & @CRLF _
+    	& "Quand tout est fini appuyer sur le bouton Dessiner la scène (ou F2)." & @CRLF  & @CRLF _
+    	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 160, 180, 360)
+	
+    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scène et quitter (F2)", 10, 120, 180, 30)
+    GUICtrlSetOnEvent($DrawSceneButton, "Draw_Scene")
+    GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
+
 	GUISetState()
 EndFunc
 
@@ -170,11 +174,9 @@ Func Draw_Scene()
 EndFunc
 
 Func Sequencer_IterateObj()
-
 	If $recordObjectButton <> 0 Then
 		GUICtrlSetState($recordObjectButton, $GUI_DISABLE)
 	EndIf
-
 	offsetlist()
 	_log("Iterate Object Start")
 	While 1

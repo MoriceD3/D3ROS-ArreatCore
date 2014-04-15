@@ -1,5 +1,11 @@
 Changelog : 
 
+- Version 1.2 : 15/04/2014
+
+- Mise à jour de l'icône du bot
+- Ajout d'une interface graphique en mode Devmode=True
+- Ajout d'un sequencer fonctionnel avec un interface graphique (Sequencer.exe)
+
 - Version 1.1 : 15/04/2014
 
 - Ajout d'une nouvelle option : NoBountyFailbackToAdventure
