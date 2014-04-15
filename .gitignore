@@ -1,3 +1,4 @@
 stats/*.txt
 log/*.txt
 /lib/extra/langdetect
+/debug_tools.txt

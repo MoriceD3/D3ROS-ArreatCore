@@ -95,6 +95,7 @@ If Not $Devmode Then
 	_botting()
 Else
 	_log("Dev mode ready", $LOG_LEVEL_WARNING)
+	ShowDebugTools()
 EndIf
 
 ; Attente en fin de script pour conserver la console ou utiliser les devs tools

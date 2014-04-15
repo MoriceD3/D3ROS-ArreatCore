@@ -1,6 +1,8 @@
 #include-once
 
 #include <Array.au3>
+#include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
 ;
 ; Fichier inclus uniquement en mode dev
 ;
@@ -9,8 +11,70 @@ HotKeySet("{F1}", "Testing")
 HotKeySet("{F4}", "Testing_IterateObjetcsList")
 ;HotKeySet("{F6}", "Read_Scene")
 ;HotKeySet("{F7}", "Drawn")
-HotKeySet("{F8}", "MarkPos")
-HotKeySet("{F11}", "MonsterListing")
+HotKeySet("{F8}", "DebugMarkPos")
+HotKeySet("{F11}", "DebugMonsterListing")
+
+HotKeySet("{F10}", "ShowDebugTools")
+
+Opt("GUIOnEventMode", 1)
+
+Global $debugToolsHandle
+
+Func ShowDebugTools()
+	$debugToolsHandle = GUICreate("Debug tools", 200, 400, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
+	If $debugToolsHandle = 0 Then
+		_Log("Problem starting debug tools", $LOG_LEVEL_ERROR)
+		Return
+	EndIf
+	GUISetOnEvent($GUI_EVENT_CLOSE, "On_DebugTools_Close")
+
+	$hButton1 = GUICtrlCreateButton("Enregistrer position", 10, 10, 180, 30)
+    GUICtrlSetOnEvent(-1, "DebugMarkPos")
+    $hButton2 = GUICtrlCreateButton("Afficher liste des monstres", 10, 50, 180, 30)
+    GUICtrlSetOnEvent(-1, "DebugMonsterListing")
+    $hButton3 = GUICtrlCreateButton("Lister les bountys", 10, 90, 180, 30)
+    GUICtrlSetOnEvent(-1, "DebugListBounties")
+    $hButton4 = GUICtrlCreateButton("Lister l'UI visible", 10, 130, 180, 30)
+    GUICtrlSetOnEvent(-1, "DebugUi")
+
+
+    GUICtrlCreateLabel("Les résultats sont sauvés dans debug_tools.txt", 10, 340, 180, 30)
+	GUISetState()
+EndFunc
+
+Func _logDebugTools($line)
+  $file = FileOpen(@ScriptDir & "\debug_tools.txt", 1)
+  If $file = -1 Then
+     ConsoleWrite("!Log file error, can not be opened !")
+     Return
+  Else
+     FileWrite($file, $line & @CRLF)
+  EndIf
+  FileClose($file)
+EndFunc
+
+Func DebugListBounties() 
+	List_Bounties(True)
+EndFunc
+
+Func DebugMarkPos()
+	$currentloc = GetCurrentPos()
+	$markpos = $currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ", 1, 25"
+	_logDebugTools($markpos)
+	_log($markpos , $LOG_LEVEL_DEBUG)
+EndFunc
+
+Func DebugMonsterListing()
+	MonsterListing(True)
+EndFunc
+
+Func DebugUi()
+	ListUI(1, True)
+EndFunc
+
+Func On_DebugTools_Close()
+	GUIDelete($debugToolsHandle)
+EndFunc
 
 Func IterateObjectListV2()
 
@@ -81,7 +145,13 @@ Func IsBountyKnown($bountyName)
 EndFunc
 
 
-Func list_bounties() 
+Func List_Bounties($debug = False) 
+
+	If WinExists("[CLASS:D3 Main Window Class]") Then
+		WinActivate("[CLASS:D3 Main Window Class]")
+		WinSetOnTop("[CLASS:D3 Main Window Class]", "", 1)
+		Sleep(300)
+	EndIf
 
 	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
 		Send("M")
@@ -98,13 +168,16 @@ Func list_bounties()
 			ClickUI($NameUI & $z)
 			$bounty = GetTextUI(1251, 'Root.TopLayer.tooltip_dialog_background.tooltip_2.tooltip')
 			If $bounty <> False Then
-				$temp = StringSplit($bounty,Chr(0),2)
+				$temp = StringSplit($bounty, Chr(0), 2)
 				$bounty = $temp[0]
 				$bounty = StringReplace($bounty, "Bounty: ", "")
 				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
 				$bounty = $bounty & "#" & $Table_BountyAct[$i]
 				If IsBountyKnown($bounty) = False Then
 					ConsoleWrite($bounty & "#None" & @CRLF)
+					If $debug Then
+						_logDebugTools($bounty & "#None")
+					EndIf
 				EndIf
 			EndIf
 		Next
@@ -112,12 +185,9 @@ Func list_bounties()
 	_log("End ")
 	Send("M")
 	Sleep(150)
-
 EndFunc
 
-
-
-Func ListUi($Visible=0)
+Func ListUi($Visible = 0 , $debug = False)
 	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
 	$UiPtr2 = _memoryread($UiPtr1 + $Ofs_UI_A, $d3, "ptr")
 	$UiPtr3 = _memoryread($UiPtr2 + $Ofs_UI_B, $d3, "ptr")
@@ -125,36 +195,32 @@ Func ListUi($Visible=0)
 	$BuckitOfs = _memoryread($UiPtr3 + $Ofs_UI_C, $d3, "ptr")
 	$UiCount = _memoryread($UiPtr3 + $Ofs_UI_D, $d3, "int")
 
-	;_log("Ui Count -> " & $UiCount)
-
-	for $g=0 to $UiCount - 1
+	For $g = 0 To $UiCount - 1
 		$UiPtr = _memoryread($BuckitOfs, $d3, "ptr")
-		while $UiPtr <> 0
+		While $UiPtr <> 0
 			$nPtr = _memoryread($UiPtr + $Ofs_UI_nPtr, $d3, "ptr")
 			$IsVisible =  BitAND(_memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr"), 0x4)
-			;$IsVisible = _memoryread($nPtr + $Ofs_UI_Visible, $d3, "ptr")
-
-			if $IsVisible = 4 OR $Visible = 0 Then
+			If $IsVisible = 4 OR $Visible = 0 Then
 				$Name = BinaryToString(_memoryread($nPtr + $Ofs_UI_Name, $d3, "byte[1024]"), 4)
-				_log(@CRLF & "Buckit N° " & $g & " (" & $IsVisible  & ") -> " & $Name )
+				$temp = StringSplit($Name, Chr(0), 2)
+				$Name = $temp[0]
+				_log("Buckit : " & $g & " (" & $IsVisible  & ") -> " & $Name, $LOG_LEVEL_DEBUG)
+				If $debug Then
+					_logDebugTools("Buckit : " & $g & " (" & $IsVisible  & ") -> " & $Name)
+				EndIf
 			EndIf
-
 			$UiPtr = _memoryread($UiPtr, $d3, "ptr")
 		WEnd
 		$BuckitOfs = $BuckitOfs + 0x4
-
-
 	Next
-
 EndFunc
 
 Func MarkPos()
 	$currentloc = GetCurrentPos()
-	_log($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ",1,25");
+	_log($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ", 1, 25");
 EndFunc   ;==>MarkPos
 
-
-Func MonsterListing()
+Func MonsterListing($debug = False)
 	$Object = IterateObjectListV2()
 	$foundtarget = 0
 	_log("monster listing ===========================", $LOG_LEVEL_WARNING)
@@ -162,10 +228,12 @@ Func MonsterListing()
 	For $i = 0 To UBound($Object, 1) - 1
 		If $Object[$i][1] <> -1  Then
 			_log($Object[$i][1] & " ("  & $Object[$i][9] & ")", $LOG_LEVEL_DEBUG)
+			If $debug Then
+				_logDebugTools($Object[$i][1] & " ("  & $Object[$i][9] & ")")
+			EndIf
 		EndIf
 	Next
 EndFunc   ;==>MonsterListing
-
 
 Func Testing_IterateObjetcsList()
 
@@ -332,8 +400,9 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;$Table_BountyAct = StringSplit("1|2|3|4|5","|",2)
 ;$temp = GetBountySequences($Table_BountyAct)
 
-list_bounties()
+;list_bounties()
 
+;ShowDebugTools() 
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
