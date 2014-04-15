@@ -2,3 +2,8 @@ stats/*.txt
 log/*.txt
 /lib/extra/langdetect
 /debug_tools.txt
+/sequencer/pictureScene.png
+/sequencer/picturemtp.png
+/sequencer/sequence.txt
+/sequencer/ObjectList.txt
+/lib/ico/Thumbs.db
