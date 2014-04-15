@@ -94,6 +94,8 @@ CheckWindowD3()
 
 _log("Sequence maker ready !", $LOG_LEVEL_WARNING)
 
+ShowSequencerTools()
+
 ; Attente en fin de script pour conserver la console ou utiliser les devs tools
 While 1
 	Sleep(50)

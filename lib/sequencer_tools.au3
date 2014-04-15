@@ -27,6 +27,39 @@ Global $PictureScene = "sequencer\pictureScene"
 Global $Picturemtp = "sequencer\picturemtp"
 Global $nameObjectListTxt = "sequencer\ObjectList"
 
+
+Global $SequencerToolsHandle
+Global $recordSceneButton = 0
+Global $recordObjectButton = 0
+Global $DrawSceneButton = 0
+
+Func ShowSequencerTools()
+	$SequencerToolsHandle = GUICreate("Sequencer tools", 200, 500, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
+	If $SequencerToolsHandle = 0 Then
+		_Log("Problem starting debug tools", $LOG_LEVEL_ERROR)
+		Return
+	EndIf
+	GUISetOnEvent($GUI_EVENT_CLOSE, "On_SequencerTools_Close")
+
+	$recordSceneButton = GUICtrlCreateButton("Enregistrer la scène (F1)", 10, 10, 180, 30)
+    GUICtrlSetOnEvent(-1, "Read_Scene")
+    $recordObjectButton = GUICtrlCreateButton("Enregistrer les objets (F3)", 10, 50, 180, 30)
+    GUICtrlSetOnEvent(-1, "Sequencer_IterateObj")
+    $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 100, 180, 30)
+    GUICtrlSetOnEvent(-1, "SequencerMarkPos")
+    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scène et quitter (F2)", 10, 150, 180, 30)
+    GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
+    GUICtrlSetOnEvent(-1, "Draw_Scene")
+
+    GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur les 2 premiers boutons pour commencer l'enregistrement." & @CRLF  & @CRLF & "Appuyer sur le bouton Marquer une position pour ajouter des points à la séquence." & @CRLF & @CRLF & "Quand tout est fini appuyer sur le bouton Dessiner la scène." & @CRLF  & @CRLF & "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 190, 180, 360)
+	GUISetState()
+EndFunc
+
+Func On_SequencerTools_Close()
+	GUIDelete($SequencerToolsHandle)
+	Terminate()
+EndFunc
+
 Func tri_flag()
 	Dim $table_Walkable[1][8]
 	Dim $table_UnWalkable[1][8]
@@ -137,6 +170,11 @@ Func Draw_Scene()
 EndFunc
 
 Func Sequencer_IterateObj()
+
+	If $recordObjectButton <> 0 Then
+		GUICtrlSetState($recordObjectButton, $GUI_DISABLE)
+	EndIf
+
 	offsetlist()
 	_log("Iterate Object Start")
 	While 1
@@ -231,6 +269,11 @@ Func IndexSNONoLimit($_offset, $_displayInfo = 0)
 EndFunc   ;==>IndexSNO
 
 Func Read_Scene()
+
+	If $recordSceneButton <> 0 Then
+		GUICtrlSetState($recordSceneButton, $GUI_DISABLE)
+	EndIf
+
 	_log("Lancement lecture scene")
 	$nb_totale_scene_record = 0
 	$nb_totale_navcell_record = 0
@@ -315,6 +358,9 @@ Func Read_Scene()
 
 		;################################################################################################
 		If $New_scene_record = True Then ;Si Une nouvelle scene à eté enregistrée
+			If $drawSceneButton <> 0 Then
+				GUICtrlSetState($drawSceneButton, $GUI_DISABLE)
+			EndIf
 			_log("Scene Recorded : " & $nb_totale_scene_record)
 			Dim $list_sno_scene = IndexSNONoLimit(0x1CEF78C, 0)
 			;############################## ITERATION DU SNO ###########################################
@@ -381,6 +427,9 @@ Func Read_Scene()
 					$Scene_table_Totale[$current_scene][7] = true
 				EndIf
 			Next
+			If $drawSceneButton <> 0 Then
+				GUICtrlSetState($drawSceneButton, $GUI_ENABLE)
+			EndIf
 			_log("Ready to draw scene")
 		EndIf
 		
