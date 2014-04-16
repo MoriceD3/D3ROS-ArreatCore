@@ -1882,10 +1882,8 @@ Func handle_Coffre(ByRef $item)
 		_log("Handling cursed chest")
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 			$result = Shrine($item[1], $item[8], $item[0])
-			If $result <> 2 Then
-				_log("Ban Cursed chest (" & $result & ") -> " & $item[1])
-				BanActor($item[1])
-			EndIf
+			_log("Ban Cursed chest (" & $result & ") -> " & $item[1])
+			BanActor($item[1])
 			If $result = 1 Then
 				Sleep(2000)
 				_log("Cursed Chest opened : Waiting 2 s")
@@ -3385,7 +3383,7 @@ Func Coffre($item)
 
 	If StringInStr($name , "Global_Chest") Then
 		_log("Coffre() : Wait a litle, it's a demonic chest")
-		Sleep(1200)
+		Sleep(1500)
 	EndIf
 
 	Return 1
