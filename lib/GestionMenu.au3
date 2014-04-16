@@ -56,12 +56,24 @@ Func SelectGameType($SelectGameType, $auto)
 
 	Sleep(Random(1500, 2000, 1))
 
-	If $TypedeBot <> 2 Then
+	Local $Waiting_Time = 0
+	While Not _inmenu() And $Waiting_Time < 11
+	   Sleep(500)
+	   $Waiting_Time += 1
+	WEnd
+
+	If $TypedeBot <> 2 And _inmenu() Then
 		;Selection -> CHANGER DE QUETE
-		Sleep(Random(300, 400, 1))
+		Sleep(Random(700, 800, 1))
 		_Log("Game Settings")
 		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu") ; tap paramètre de la partie
 		Sleep(Random(700, 800, 1))
+
+		Local $Waiting_Time = 0
+		While Not IsGameSettingsOpened() And $Waiting_Time < 11
+		   Sleep(500)
+		   $Waiting_Time += 1
+		WEnd
 
 		If IsGameSettingsOpened() Then
 
@@ -88,9 +100,21 @@ Func SelectGameType($SelectGameType, $auto)
 			   EndIf
 			EndIf
 
+		   Local $Waiting_Time = 0
+		   While Not IsGameSettingsOpened() And $Waiting_Time < 11
+			  Sleep(500)
+			  $Waiting_Time += 1
+		   WEnd
+
 		   _Log("Choose a New Quest")
 		   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton"); tap changer
 		   Sleep(Random(700, 800, 1))
+
+		   Local $Waiting_Time = 0
+		   While Not IsQuestOpened() And $Waiting_Time < 11
+			  Sleep(500)
+			  $Waiting_Time += 1
+		   WEnd
 
 		   ;Selection de la quête
 		   If IsQuestOpened() Then
@@ -306,7 +330,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  ;Bp choisir la quete
 			  Sleep(Random(300, 400, 1))
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton") ; Tap OK 'Choose a new quest'
-			  Sleep(Random(300, 400, 1))
+			  Sleep(Random(500, 600, 1))
 
 			  ; Bp validation de la quête
 			  If IsQuestChangeUiOpened() Then
@@ -316,8 +340,12 @@ Func SelectGameType($SelectGameType, $auto)
 			  EndIf
 			  Sleep(Random(600, 800, 1))
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809) ; tap sauvegarder et fermer
-			  Sleep(Random(600, 800, 1))
-		  EndIf
+			  Sleep(Random(800, 1000, 1))
+		   Else
+			  _Log("Quest Menu No Opened", $LOG_LEVEL_DEBUG)
+		   EndIf
+	   Else
+		  _Log("Game Settings No Opened", $LOG_LEVEL_DEBUG)
 	   EndIf
 	EndIf
 EndFunc   ;==>SelectGameType
@@ -473,7 +501,13 @@ Func SelectHero()
 	ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Slot1.LayoutRoot.SwitchHero")
 	Sleep(Random(600, 800, 1))
 
-    If IsMenuHeroSelectOpened() Then
+    Local $Waiting_Time = 0
+	While Not IsMenuHeroSelectOpened() And $Waiting_Time < 11
+	   Sleep(500)
+	   $Waiting_Time += 1
+	WEnd
+
+	If IsMenuHeroSelectOpened() Then
 
 	   ;positionnement sur la scrollbar
 	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar")
@@ -544,6 +578,8 @@ Func SelectHero()
 	   ;Deplacement sur le bp choisir
 	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton")
 	   Sleep(Random(2000, 2500, 1)) ; temps mini de chargement du hero 2000ms
+    Else
+	   _Log("Hero Menu No Opened", $LOG_LEVEL_DEBUG)
     EndIf
 EndFunc   ;==>SelectHero
 
@@ -559,7 +595,13 @@ Func SelectDifficultyMonsterPower()
 	  Sleep(Random(600, 800, 1))
     EndIf
 
-    If IsGameDifficultyOpened() Then
+    Local $Waiting_Time = 0
+	While Not IsGameDifficultyOpened() And $Waiting_Time < 11
+	   Sleep(500)
+	   $Waiting_Time += 1
+	WEnd
+
+	If IsGameDifficultyOpened() Then
 
 	   Switch $difficulte
 			Case 1 ;Normal
@@ -598,8 +640,11 @@ Func SelectDifficultyMonsterPower()
 	   EndIf
 
 	   ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton"); tap OK Difficulty
-	   Sleep(Random(900, 1000, 1))
+	   Sleep(Random(1000, 1500, 1))
+    Else
+	   _Log("Game Difficulty No Opened", $LOG_LEVEL_DEBUG)
     EndIf
+
 EndFunc   ;==>SelectDifficultyMonsterPower
 
 
