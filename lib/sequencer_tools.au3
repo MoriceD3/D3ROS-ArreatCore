@@ -49,10 +49,11 @@ Func ShowSequencerTools()
 
     GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur F1 et ou F3 pour commencer l'enregistrement." & @CRLF  _
     	& @CRLF & "Appuyer sur le ù pour ajouter des points à la séquence." & @CRLF & @CRLF _
+    	& "Quand le bouton Dessiner la scene est désactiver, attendre un peu le temps que le bot finisse son scan." & @CRLF & @CRLF _
     	& "Quand tout est fini appuyer sur le bouton Dessiner la scène (ou F2)." & @CRLF  & @CRLF _
     	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 160, 180, 360)
 	
-    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scène et quitter (F2)", 10, 120, 180, 30)
+    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 120, 180, 30)
     GUICtrlSetOnEvent($DrawSceneButton, "Draw_Scene")
     GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
 

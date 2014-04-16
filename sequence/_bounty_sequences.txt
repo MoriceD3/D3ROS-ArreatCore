@@ -284,3 +284,62 @@ Clear the Underbridge#3#None
 Kill Severclaw #3#None
 The Miser's Will#5#None
 Kill Lograth#5#None
+Kill Glidewing#1#None
+Kill Hawthorne Gable#1#None
+Kill Queen Araneae#1#None
+Clear the Caverns of Frost#3#None
+Kill Veshan the Fierce#4#None
+Home Invasion#5#None
+Kill Erdith#5#None
+Kill Rockulus#5#None
+Kill Rad'noj#1#None
+Kill Mage Lord Ghuyan#2#None
+Kill Thromp the Breaker#3#None
+Blood Ties#3#None
+Kill the Siegebreaker Assault Beast#3#None
+Kill Brimstone#3#None
+The Last Stand#5#None
+The Burning Man#5#None
+Kill Percepeus#1#None
+Kill Battlerage the Plagued#1#None
+Clear Sirocco Caverns#2#None
+Lost Treasure of Khan Dakab#2#None
+Kill Thugeesh the Enraged#2#None
+Kill Bashface the Truncheon#3#None
+Kill Gugyn the Gauntlet#3#None
+Kill Bari Moqqu#5#None
+The Lost Legion#5#None
+Kill Braluk Grimlow#1#None
+The Cursed Court#1#None
+Kill Logrut the Warrior#1#None
+Clear Cryder's Outpost#3#None
+Out of the Fire#5#None
+Kill Tadardya#5#None
+Resurrection#5#None
+The Cursed Bellows#1#None
+Kill Blarg#2#None
+The Cursed Pit#2#None
+Kill Gholash#3#None
+Finding the Forgotten#5#None
+Kill Ragus Grimlow#1#None
+The Jar of Souls#1#None
+Kill Sammash#2#None
+Kill the Tomekeeper#2#None
+Kill the Aspect of Lies#4#None
+Kill Grimsmack#1#None
+Kill Bludgeonskull #1#None
+Kill Torsar#2#None
+The Cursed Spire#2#None
+Kill Charuch the Spear#3#None
+Kill Rakanoth#5#None
+Kill Oah' Tash#5#None
+Clear the Hell Rift#5#None
+Kill the Aspect of Lies#5#None
+The Cursed Chapel#5#None
+Kill Buras the Impaler#1#None
+Kill Razormouth#2#None
+Clear the Fortified Bunker#3#None
+Kill Garganug#3#None
+Kill Haures#4#None
+Kill Igor Stalfos#5#None
+A Diversion#5#None

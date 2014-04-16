@@ -94,6 +94,7 @@ CheckWindowD3()
 If Not $Devmode Then
 	_botting()
 Else
+	CheckAndDefineSize()
 	_log("Dev mode ready", $LOG_LEVEL_WARNING)
 	ShowDebugTools()
 EndIf
