@@ -43,7 +43,7 @@ Global $tab_grablist[1][2]
 Global $PartieSolo = True
 
 Global $profilFile = "settings/settings.ini"
-Global $TeamMate = False
+Global $Follower = False
 Global $a_range = Round(Random(55, 60))
 Global $g_range = Round(Random(100, 120))
 Global $a_time = 9000
@@ -294,8 +294,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "WaitForLoot", $WaitForLoot)
 	$WaitForLoot = Trim(StringLower($Dummy)) == "true"
 
-	$Dummy = IniRead($profilFile, "Run info", "TeamMate", $TeamMate)
-	$TeamMate = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($profilFile, "Run info", "Follower", $Follower)
+	$Follower = Trim(StringLower($Dummy)) == "true"
 
 	;Selection de la difficulte et du pm des monstres
 	$difficulte = IniRead($profilFile, "Run info", "difficulte", $difficulte)

@@ -2952,14 +2952,14 @@ Func _resumegame()
 		$menu_rdy = 1
 	EndIf
 
-	If Not $TeamMate Then
+	If Not $Follower Then
 		While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
 			_log("Wait Other Follower")
 			sleep(500)
 		WEnd
 	EndIf
 
-	If $TeamMate Then
+	If $Follower Then
 		While GameState() = 5
 			_log("Wait Party Leader")
 			sleep(500)
