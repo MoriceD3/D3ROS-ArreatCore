@@ -57,7 +57,7 @@ Func SelectGameType($SelectGameType, $auto)
 	Sleep(Random(1500, 2000, 1))
 
 	Local $Waiting_Time = 0
-	While Not _inmenu() And $Waiting_Time < 11
+	While Not _inmenu() And $Waiting_Time < 40 ; 20 sec
 	   Sleep(500)
 	   $Waiting_Time += 1
 	WEnd
