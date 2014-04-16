@@ -9,6 +9,7 @@
 Global $sequence_save = 0
 Global $autobuff = False
 Global $reverse = 0
+Global $PositionRange = 5
 
 Func GetBountySequences($Table_BountyAct)
 	If Not IsArray($Table_BountyAct) Then
@@ -417,10 +418,11 @@ Func traitement_read_str($txt)
 EndFunc   ;==>traitement_read_str
 
 
-Func sequence()
+Func sequence($sequence_list)
 
 	Dim $filetoarray[1]
 	Local $load_file = ""
+	Local $end_sequence = False
 
 	;	if( StringInStr($File_Sequence, "|", 2) ) Then
 	;		ReDim $filetoarray[UBound( StringSplit($File_Sequence, "|", 2) )]
@@ -429,7 +431,7 @@ Func sequence()
 	;		$filetoarray[1] = $File_Sequence
 	;	EndIf
 
-	$filetoarray = traitement_read_str($File_Sequence)
+	$filetoarray = traitement_read_str($sequence_list)
 
 	For $z = 0 To UBound($filetoarray) - 1
 
@@ -478,6 +480,11 @@ Func sequence()
 		For $i = 0 To UBound($txttoarray) - 1
 			If $GameFailed = 1 Then
 				_log("Game failed exiting sequence()", $LOG_LEVEL_WARNING)
+				ExitLoop
+			EndIf
+
+			If $end_sequence Then
+				_log("End sequence activated", $LOG_LEVEL_WARNING)
 				ExitLoop
 			EndIf
 
@@ -635,6 +642,12 @@ Func sequence()
 					EndIf
 					$line = ""
 					$definition = 1
+				ElseIf StringInStr($line, "positionrange=", 2) Then
+					$line = StringReplace($line, "positionrange=", "", 0, 2)
+					_log("Changing PositionRange to : " & $line, $LOG_LEVEL_DEBUG)
+					$PositionRange = Number($line)
+					$line = ""
+					$definition = 1
 				ElseIf StringInStr($line, "revive=", 2) Then
 					$line = StringReplace($line, "revive=", "", 0, 2)
 					If $old_ResActivated Then
@@ -703,6 +716,31 @@ Func sequence()
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 							$array_sequence[UBound($array_sequence) - 1][1] = "offsetlist"
 						EndIf
+					ElseIf StringInStr($line, "ifposition=", 2) Then; ifposition detected
+						_log("Testing current position with range : " & $PositionRange)
+						$pos = GetCurrentPos()
+						$line = StringReplace($line, "ifposition=", "", 0, 2)
+						$temp = StringSplit($line, ":", 2)
+						$checkpos = StringSplit($temp[0], ",", 2)
+						If (Abs($pos[0] - $checkpos[0]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) Then
+							_log("Position found ! ", $LOG_LEVEL_VERBOSE)
+							If StringInStr($temp[1], "loadsequence=", 2) Then
+								$end_sequence = True
+								_log($temp[1])
+								$temp = StringReplace($temp[1], "loadsequence=", "")
+								_log("Lancement de la sequence : " & $temp)
+								Sequence($temp)
+							Else
+								_log("Invalid command found for ifposition")
+							EndIf
+						Else
+							_log("Position not found ! ", $LOG_LEVEL_WARNING)
+						EndIf
+					ElseIf StringInStr($line, "loadsequence=", 2) Then
+						$end_sequence = True
+						$line = StringReplace($line, "loadsequence=", "")
+						_log("Lancement de la sequence : " & $line & " et arrêt de la séquence en cours")
+						Sequence($line)
 					ElseIf StringInStr($line, "safeportback()", 2) Then; safeportback() detected
 						SafePortBack()
 					ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportstart() detected
@@ -827,7 +865,7 @@ Func sequence()
 		$Table_Coffre = $old_Table_Coffre
 		$Table_Rack = $old_Table_Rack
 		unbuff()
-		If $GameFailed = 1 Then
+		If $GameFailed = 1 Or $end_sequence Then
 			ExitLoop
 		EndIf
 	Next

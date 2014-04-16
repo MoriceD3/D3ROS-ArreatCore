@@ -62,7 +62,7 @@ Func _dorun()
 	enoughtPotions()
 	init_sequence()
 
-	sequence()
+	sequence($File_Sequence)
 	_log("End Run. Gamefailed : " & $GameFailed, $LOG_LEVEL_VERBOSE)
 	Return True
 EndFunc   ;==>_dorun
