@@ -3148,14 +3148,12 @@ Func Repair()
 EndFunc   ;==>Repair
 
 Func DefineVendorTab()
-	If $VendorTabRepair = "" Then ;On a jamais insctancier la recherche des tables
-		If fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.tab_4", 1, 1984) Then
-			$VendorTabRepair = 3
-			_log("Definition of Repair Tab to TAB 3", $LOG_LEVEL_DEBUG)
-		Else
-			$VendorTabRepair = 2
-			_log("Definition of Repair Tab to TAB 2", $LOG_LEVEL_DEBUG)
-		EndIf
+	If fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.tab_4", 1, 1984) Then
+		$VendorTabRepair = 3
+		_log("Definition of Repair Tab to TAB 3", $LOG_LEVEL_DEBUG)
+	Else
+		$VendorTabRepair = 2
+		_log("Definition of Repair Tab to TAB 2", $LOG_LEVEL_DEBUG)
 	EndIf
 EndFunc
 
