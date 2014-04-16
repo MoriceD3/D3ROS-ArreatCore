@@ -1881,15 +1881,13 @@ Func handle_Coffre(ByRef $item)
 		_log("Handling cursed chest")
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 			$result = Shrine($item[1], $item[8], $item[0])
-			If $result = 0 Then
-				_log("Ban Cursed chest -> " & $item[1])
+			If $result <> 2 Then
+				_log("Ban Cursed chest (" & $result & ") -> " & $item[1])
 				BanActor($item[1])
-				;sleep(1000)
-				;_log("waiting 1 s")
 			EndIf
-			If ($result = 1) Or ($result = 2 And $item[9] < 2) Then
-				Sleep(1500)
-				_log("Cursed Chest : Waiting 1,5 s")
+			If $result = 1 Then
+				Sleep(2000)
+				_log("Cursed Chest opened : Waiting 2 s")
 			EndIf
 		EndIf
 	Else
