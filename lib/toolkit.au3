@@ -847,13 +847,14 @@ Func _filter2attrib($CurrentIdAttrib, $filter2read)
 		;_log("the value you search is : "& $result)
 		Return $result
 	Else
-		;_log("will find : "& $filter2read)
+		;_log("will find : " & $filter2read & " / " & $CurrentIdAttrib)
 		$currattrib = Eval($filter2read)
 		If IsArray($currattrib) Then
 			$result = Round((GetAttribute($CurrentIdAttrib, $currattrib[0])) * $currattrib[1], 2)
 			; _log("the value you search is : "& $result)
 			Return $result
 		Else
+			;_log("Not an array")
 			Return 0
 		EndIf
 	EndIf

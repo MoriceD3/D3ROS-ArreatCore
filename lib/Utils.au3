@@ -51,7 +51,7 @@ Func _log($text, $level = $LOG_LEVEL_NONE, $forceDebug = False)
            $start = "+>"
        Case $LOG_LEVEL_WARNING
            $start = "->"
-      Case $LOG_LEVEL_DEBUG
+       Case $LOG_LEVEL_DEBUG
            $start = ">>"
        Case $LOG_LEVEL_ERROR
            $start = "!>"

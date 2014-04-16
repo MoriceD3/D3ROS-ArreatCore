@@ -617,6 +617,7 @@ Func Init_grablistFile($grabListPath = "grablist/")
 	Dim $txttoarray[1]
 	Local $compt_line = 0
 
+	_log("Loading grablist : " & $grabListPath &  $grabListFile)
 	Local $file = FileOpen($grabListPath &  $grabListFile, 0)
 	If $file = -1 Then
 		MsgBox(0, "Error", "Unable to open file : " & $grabListFile)
@@ -647,7 +648,7 @@ Func Init_grablistFile($grabListPath = "grablist/")
 			ReDim $tab_grablist[$compt + 1][2]
 			$tab_grablist[$compt][0] = $var_temp[0]
 			$tab_grablist[$compt][1] = $var_temp[1]
-			Assign($var_temp[0], $var_temp[1], 2)
+			;Assign("_filter_" & $var_temp[0], $var_temp[1], 2)
 			$compt += 1
 		Else
 			If $List_grablist = "" Then
