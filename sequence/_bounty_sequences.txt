@@ -133,7 +133,7 @@ le vrai fils du loup#5#None
 tuez Frondeur#5#None
 tuez Severag#5#None
 tuez le Gardien#1#None
-tuez Cogneface la Matraque#3#act3_fdp_[1-5]
+tuez Cogneface la Matraque#3#act3_ADV-fdp_[1-5]
 tuez le briseur de siège#3#None
 le toucher de la mort#5#None
 tuez Morghum la Bête#5#None
