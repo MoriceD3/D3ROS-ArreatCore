@@ -1,39 +1,30 @@
-;Acte 1
-;Map Inconnu
 Kill Growler#1#None
 Kill Glidewing#1#None
 
-
-;Anglais
-;Northern Highlands [MapFix mais wp aleatoire]
-;Northen Highlands directement
 Kill Reggrel the Despised#1#None
 Kill Theodyn Deathsinger#1#none
-;Leoric's Hunting Ground[MapFix]
+
 Kill Percepeus#1#None
-;Highlands Cave (random map)
+
 Apothecary's Brother#1#None
-;Leoric’s Manor (fix mais passe par une random)
+
 Kill Krailen the Wicked #1#None
 Kill Jezeb the Conjuror #1#None
 
-;Halls of Agony lvl 1 [RandomMap] 
+
 Kill BattleRage the Plagued#1#None
 Kill BludgeonSkull#1#None
 
-;Halls of Agony lvl 2 [Random Map]
 Kill the Warden#1#None
 Kill Sotnob the fool#1#None
 Kill Crassus the tormentor#1#None
 A Stranger in Need#1#None
 
-;Halls of Agony lvl 3 [Random Map]
 Kill the Butcher#1#None
 Kill Boneslag the Slayer#1#None
 Kill Treefist Woodhead#1#None
 The Cursed Bellows#1#None
 
-;Fields of Misery [Fix mais WP aléatoire]
 Kill Charger#1#act1_ADV-champs_[1-8]
 Kill Dreadclaw the Leaper#1#act1_ADV-champs_[1-8]
 Kill Krelm the Flagitious#1#act1_ADV-champs_[1-8]
@@ -43,18 +34,16 @@ The Cursed Grove#1#None
 Carrion Farm#1#None
 The Family of Rathe#1#None
 
-;Southern highland (Fix)
 Kill Buras the Impaler#1#Act1_BOUNTY-Southern_Kill_1
 Kill Cadhul the DeathCaller#1#Act1_BOUNTY-Southern_Kill_1
 Kill Logrut the Warrior#1#Act1_BOUNTY-Southern_Kill_1
 Kill Lorzak the Powerfull#1#Act1_BOUNTY-Southern_Kill_1
+The Cursed Camp#1#Act1_BOUNTY-Southern_Shrine_1
+Revenge of Gharbad#1#Act1_BOUNTY-Southern_Gharbad_1
+Scavenged Scabbard#1#None
 Crumbling tower#1#None
 Clear the Cave of the Moon Clan#1#None
-The Cursed Camp#1#Act1_ADV_BOUNTY-Shrine_1
-Scavenged Scabbard#1#None
-Revenge of Gharbad#1#Act1_BOUNTY-Southern_Gharbad_1
 
-;Festering Woods (fix)
 Kill Fecklar's Ghost#1#act1_ADV-putride_[1-6]
 Kill Grimsmack#1#act1_ADV-putride_[1-6]
 Kill Hawthorne Gable#1#act1_ADV-putride_[1-6]
@@ -64,48 +53,39 @@ Last stand of the ancient#1#None
 Clear the warrior's rest#1#None
 Clear the crypt of the ancients#1#None
 
-;Weeping Hollow (fix)
 Kill Kankerrot#1#act1_ADV-Val_[1-8]
 Kill Mira Aemon#1#act1_ADV-Val_[1-8]
 Kill Mange#1#act1_ADV-Val_[1-8]
 Clear the Den of the Fallen#1#None
 
-;Cemetary of the forsaken (map fixe mais pour les 4 bounties : Crypt random + random map)
 Clear the jar of souls #1#None
 Kill Digger O'Dell#1#None
 Kill the Dataminer#1#None
 The Matriarch's Bones#1#None
 
-;Cathedral lvl 1 (random map)
 Kill Ragus Grimlow#1#None
 Kill Braluk Grimlow#1#None
 The Cursed Chamber of bone#1#None
 
-;Cathedral lvl 2 (random map)
 Kill Merrium SkullThorn#1#None
 Kill FireStarter#1#None
 Kill Cudgelarm#1#None
 The Cursed Court#1#None
 
-;Cathedral lvl 4 (random map)
 Kill Captain Cage#1#None
 Kill Killian Damort#1#None
 
-;The Royals Crypts (map fix)
 Kill Skeletton King#1#none
 Kill Rad'Noj#1#none
 Kill Captain Clegg#1#none
 
-;Caverns of Araneae (random)
 Kill Queen Araneae#1#None
 Kill Qurash the reviled#1#None
 Kill Rathlin the widowmaker#1#None
 The Cursed hatchery#1#None
 
-;The Old ruins (map fix)
 The Cursed Cellar#1#Act1_BOUNTY-The_Cursed_Cellar_1
 
-;Français
 tuez Krelm l’Inqualifiable#1#act1_ADV-champs_[1-8]
 tuez le seigneur Brone#1#act1_ADV-putride_[1-6]
 tuez Hawthorne Gable#1#act1_ADV-putride_[1-6]
@@ -139,7 +119,6 @@ tuez le Gardien#1#None
 tuez Gale#1#None
 l’ultime combat des anciens#1#None
 
-;Acte 2
 tuez Yeth#2#act2_ADV-alcarnus_[1-8]
 tuez l’nquisiteur Hamath#2#act2_ADV-gorge_noire_[1-3]
 tuez Bélial#2#act2_ADV-Tuer_Belial
@@ -214,7 +193,6 @@ The Cursed Spire#2#None
 Kill Charuch the Spear#3#None
 Kill Razormouth#2#None
 
-;Acte 3
 tuez Obis le Puissant#3#act3_ADV-rempart_[1-5]
 tuez le capitaine Dale#3#None
 nettoyez la caserne#3#None
@@ -291,8 +269,6 @@ Kill Gholash#3#None
 Clear the Fortified Bunker#3#None
 Kill Garganug#3#None
 
-
-;Acte 4
 le dais maudit#4#None
 tuez Oah’ Tash#4#None
 nettoyez la faille infernale#4#None
@@ -334,7 +310,6 @@ tuez Nuit-Sinistre le Sans-âme#4#None
 Kill Torchlighter#4#None
 Kill Izual#4#None
 
-;Acte 5
 la patrouille perdue#5#None
 tuez Urzaël#5#None
 tuez Vek Marru#5#None
@@ -420,14 +395,3 @@ Noble Deaths#5#None
 Penny for Your Troubles#5#None
 Kill Urzael#5#None
 Kill Ballartrask the Defiler#5#None
-
-
-
-
-
-
-
-
-
-
-
