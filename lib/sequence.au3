@@ -915,7 +915,8 @@ EndFunc   ;==> InteractBossPortal
 ;
 ; CMD BLOQUANTE                 (les cmd dite bloquante, force l'envoie de l'array, elles definissent donc un point de sauvegarde pour le code si revive on)
 ; -> _townportal()              (force un tp en ville, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
-; -> takewp=a,b,c,d             (prend un teleporteur, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
+; -> takewp=X            		(prend un teleporteur mode campagne, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
+; -> takewpadv=X            	(prend un teleporteur mode aventure, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
 ; -> endsave()                  (force l'envoie de l'array, et donc definit un point de sauvegarde si revive on)
 
 ; CMD DEFINITION
@@ -935,10 +936,13 @@ EndFunc   ;==> InteractBossPortal
 ; -> sleep=                     (definition d'un sleep)
 ; -> offsetlist()               (rafraichissement de la memoire)
 ; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appelé uniquement au dessus d'un takewp ou d'un _townportal())
-; -> interactbyactorname=       (Interagie avec un npc)
+; -> interactbyactorname=       (Interagit avec un npc / porte / objet)
+; -> InteractBossPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
 ; -> buffinit()                 (Force l'initialisation des buffs)
 ; -> unbuff()                   (force l'unbuff)
 ; -> send=                      (Envoie une Key)
+; -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
+; -> ifposition=				(Vérifie la position en cours et charge la séquence indiquée si l'on s'y trouve : ifposition=x,y,z:loadsequence=XXX)
 ; -> closewindows()			 	(Ferme toutes les fenêtres ouvertes)
 ; -> closeconfirm()				(Click ok dans les dialogues de confirmation (Par Ex : Annulation de vidéo))
 ; -> x, y, z, w, y              (movetopos, composé de 5 argument)
