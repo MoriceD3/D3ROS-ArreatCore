@@ -968,7 +968,6 @@ EndFunc   ;==> InteractBossPortal
 ; -> closewindows()			 	(Ferme toutes les fenêtres ouvertes)
 ; -> closeconfirm()				(Click ok dans les dialogues de confirmation (Par Ex : Annulation de vidéo))
 ; -> x, y, z, w, y              (movetopos, composé de 5 argument)
-
 ;
 ; L'array renvoyé par la fonction SendSequence() (array[X][6])
 ;

@@ -350,17 +350,21 @@ Func UnBuff()
 EndFunc   ;==>UnBuff
 
 Func buff1()
+	_log("Lancement du buff 1 en pré-buff")
 	Send($Key1)
 EndFunc   ;==>buff1
 
 Func buff2()
+	_log("Lancement du buff 2 en pré-buff")
 	Send($Key2)
 EndFunc   ;==>buff2
 
 Func buff3()
+	_log("Lancement du buff 3 en pré-buff")
 	Send($Key3)
 EndFunc   ;==>buff3
 
 Func buff4()
+	_log("Lancement du buff 4 en pré-buff")
 	Send($Key4)
 EndFunc   ;==>buff4

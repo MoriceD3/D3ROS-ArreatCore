@@ -3639,7 +3639,7 @@ Func GetResource($idAttrib, $resource)
 	EndIf
 EndFunc ;==>GetResource
 
-Func GestSpellcast($Distance, $action_spell, $elite, $Guid=0, $Offset=0)
+Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 	; $action_spell = 0 -> movetopos
 	; $action_spell = 1 -> attack
 	; $action_spell = 2 -> grab
