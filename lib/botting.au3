@@ -304,28 +304,28 @@ Func Buffinit()
 		If $delaiBuff1 Then
 			AdlibRegister("buff1", $delaiBuff1 * Random(1, 1.2))
 		EndIf
-		Sleep(400)
+		Sleep(500)
 	EndIf
 	If $PreBuff2 Then
 		buff2()
 		If $delaiBuff2 Then
 			AdlibRegister("buff2", $delaiBuff2 * Random(1, 1.2))
 		EndIf
-		Sleep(400)
+		Sleep(500)
 	EndIf
 	If $PreBuff3 Then
 		buff3()
 		If $delaiBuff3 Then
 			AdlibRegister("buff3", $delaiBuff3 * Random(1, 1.2))
 		EndIf
-		Sleep(400)
+		Sleep(500)
 	EndIf
 	If $PreBuff4 Then
 		buff4()
 		If $delaiBuff4 Then
 			AdlibRegister("buff4", $delaiBuff4 * Random(1, 1.2))
 		EndIf
-		Sleep(400)
+		Sleep(500)
 	EndIf
 EndFunc   ;==>Buffinit
 
