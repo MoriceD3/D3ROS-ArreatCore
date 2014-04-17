@@ -8,7 +8,7 @@ Global $hGraphic
 Global $hFormat = _GDIPlus_StringFormatCreate()
 Global $hFamily = _GDIPlus_FontFamilyCreate("Arial")
 Global $hFontxx = _GDIPlus_FontCreate($hFamily, 11, 2)
-Global $hBrush = _GDIPlus_BrushCreateSolid(0xFFDE00FF)
+Global $hBrush = _GDIPlus_BrushCreateSolid(0x00000000)
 
 Func Initiate_GDIpicture($width, $height)
 	_GDIPlus_Startup()
@@ -50,9 +50,9 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 		_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
 		_GDIPlus_PenDispose($color_rec)
 	ElseIf $type = 0 Then
-		 $color_rec = _GDIPlus_PenCreate($NavcellUnWalkableColor, 1)
-		_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
-		_GDIPlus_PenDispose($color_rec)
+		 $color_rec = _GDIPlus_BrushCreateSolid($NavcellUnWalkableColor) ;color format AARRGGBB (hex) ; _GDIPlus_PenCreate($NavcellUnWalkableColor, 1)
+		_GDIPlus_GraphicsFillRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec) ; _GDIPlus_GraphicsDrawRect
+		 _GDIPlus_BrushDispose($color_rec) ; _GDIPlus_PenDispose
 	Else
 		$color_rec = _GDIPlus_PenCreate($SceneColor, 1)
 		;Msgbox(1, "", "Dessinage de la scene n°" & $count)
@@ -73,7 +73,8 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 EndFunc
 
 Func Save_GDIpicture()
-	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\" & $PictureScene & ".png")
+$area = GetLevelAreaId()
+	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $PictureScene 	& ".png")
 
 ;_arraydisplay($Table_mtp)
 	If $count_mtp > 1 Then
@@ -90,7 +91,7 @@ Func Save_GDIpicture()
 	EndIf
 	#ce
 
-	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\" & $Picturemtp & ".png")
+	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $Picturemtp &  ".png")
 EndFunc
 
 

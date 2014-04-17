@@ -12,7 +12,7 @@ Global $Buff_MeshMaxY = 0
 Global $Iterate_Objet[1]
 
 Global $DrawScene="True"
-Global $DrawNavCellWalkable="True"
+Global $DrawNavCellWalkable="False"
 Global $DrawNavCellUnWalkable="True"
 Global $DrawArrow="True"
 Global $DrawMtp="True"
@@ -22,10 +22,10 @@ Global $NavcellWalkableColor="0xFF85DB24"
 Global $NavcellUnWalkableColor="0xFF83888a"
 Global $ArrawColor="0xFF00FFC0"
 Global $MtpColor="0xFFFF0000"
-Global $nameSequenceTxt = "sequencer\sequence"
-Global $PictureScene = "sequencer\pictureScene"
-Global $Picturemtp = "sequencer\picturemtp"
-Global $nameObjectListTxt = "sequencer\ObjectList"
+Global $nameSequenceTxt = "-sequence-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
+Global $PictureScene = "-pictureScene-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
+Global $Picturemtp = "-picturemtp-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
+Global $nameObjectListTxt = "-ObjectList-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 
 
 Global $SequencerToolsHandle
@@ -179,6 +179,7 @@ Func Sequencer_IterateObj()
 		GUICtrlSetState($recordObjectButton, $GUI_DISABLE)
 	EndIf
 	offsetlist()
+	$area = GetLevelAreaId()
 	_log("Iterate Object Start")
 	While 1
 		Local $index, $offset, $count, $item[14]
@@ -186,7 +187,7 @@ Func Sequencer_IterateObj()
 		Dim $item_buff_2D[1][10]
 		Local $i = 0
 		$compt = 0
-		$file = FileOpen( @scriptDir & "\" & $nameObjectListTxt & ".txt", 1)
+		$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameObjectListTxt & ".txt", 1)
 
 		If $file = -1 Then
 			_log("Enabled to open file, Script will shutdown")
@@ -221,8 +222,9 @@ EndFunc
 
 Func SequencerMarkPos()
 	$currentloc = GetCurrentPos()
+	$area = GetLevelAreaId()
 	ConsoleWrite($currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ", 1, 25" & @CRLF);
-	$file = FileOpen( @scriptDir & "\" & $nameSequenceTxt & ".txt", 1)
+	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
 
 	If $file = -1 Then
 		_log("Enabled to open file, Script will shutdown")
