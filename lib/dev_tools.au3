@@ -172,7 +172,7 @@ Func List_Bounties($debug = False)
 				$bounty = $temp[0]
 				$bounty = StringReplace($bounty, "Bounty: ", "")
 				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
-				$bounty = $bounty & "#" & $Table_BountyAct[$i]
+				$bounty = $Table_BountyAct[$i] & "#" & $bounty 
 				If IsBountyKnown($bounty) = False Then
 					ConsoleWrite($bounty & "#None" & @CRLF)
 					If $debug Then

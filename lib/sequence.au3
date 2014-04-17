@@ -54,7 +54,7 @@ Func GetBountySequences($Table_BountyAct)
 				$bounty = $temp[0]
 				$bounty = StringReplace($bounty, "Bounty: ", "")
 				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
-				$bounty = $bounty & "#" & $Table_BountyAct[$i]
+				$bounty = $Table_BountyAct[$i] & "#" & $bounty
 				$seq = GetSequenceForBounty($bounty)
 				If $seq <> False Then
 					 _log("Sequence found for bounty : " & $bounty & " -> " & $seq, $LOG_LEVEL_DEBUG)
@@ -101,8 +101,8 @@ Func GetSequenceForBounty($bountyName)
 		 EndIf
 		If StringInStr($line, $bountyName) Then
 			$temp = StringSplit($line,"#", 2)
-			If Ubound($temp) = 3 Then
-				$Result = $temp[2]
+			If Ubound($temp) = 5 Then
+				$Result = $temp[4]
 				If $Result = "" Or $Result = "None" Then
 					$Result = False
 				Else

@@ -1,0 +1,433 @@
+;Acte 1
+;Map Inconnu
+Kill Growler#1#None
+Kill Glidewing#1#None
+
+
+;Anglais
+;Northern Highlands [MapFix mais wp aleatoire]
+;Northen Highlands directement
+Kill Reggrel the Despised#1#None
+Kill Theodyn Deathsinger#1#none
+;Leoric's Hunting Ground[MapFix]
+Kill Percepeus#1#None
+;Highlands Cave (random map)
+Apothecary's Brother#1#None
+;Leoric’s Manor (fix mais passe par une random)
+Kill Krailen the Wicked #1#None
+Kill Jezeb the Conjuror #1#None
+
+;Halls of Agony lvl 1 [RandomMap] 
+Kill BattleRage the Plagued#1#None
+Kill BludgeonSkull#1#None
+
+;Halls of Agony lvl 2 [Random Map]
+Kill the Warden#1#None
+Kill Sotnob the fool#1#None
+Kill Crassus the tormentor#1#None
+A Stranger in Need#1#None
+
+;Halls of Agony lvl 3 [Random Map]
+Kill the Butcher#1#None
+Kill Boneslag the Slayer#1#None
+Kill Treefist Woodhead#1#None
+The Cursed Bellows#1#None
+
+;Fields of Misery [Fix mais WP aléatoire]
+Kill Charger#1#act1_ADV-champs_[1-8]
+Kill Dreadclaw the Leaper#1#act1_ADV-champs_[1-8]
+Kill Krelm the Flagitious#1#act1_ADV-champs_[1-8]
+Clear the Scavenger Den#1#none
+Clear Kazra Den#1#None
+The Cursed Grove#1#None
+Carrion Farm#1#None
+The Family of Rathe#1#None
+
+;Southern highland (Fix)
+Kill Buras the Impaler#1#Act1_BOUNTY-Southern_Kill_1
+Kill Cadhul the DeathCaller#1#Act1_BOUNTY-Southern_Kill_1
+Kill Logrut the Warrior#1#Act1_BOUNTY-Southern_Kill_1
+Kill Lorzak the Powerfull#1#Act1_BOUNTY-Southern_Kill_1
+Crumbling tower#1#None
+Clear the Cave of the Moon Clan#1#None
+The Cursed Camp#1#Act1_ADV_BOUNTY-Shrine_1
+Scavenged Scabbard#1#None
+Revenge of Gharbad#1#Act1_BOUNTY-Southern_Gharbad_1
+
+;Festering Woods (fix)
+Kill Fecklar's Ghost#1#act1_ADV-putride_[1-6]
+Kill Grimsmack#1#act1_ADV-putride_[1-6]
+Kill Hawthorne Gable#1#act1_ADV-putride_[1-6]
+Kill Galush Valdant#1#act1_ADV-putride_[1-6]
+Eternal War#1#none
+Last stand of the ancient#1#None
+Clear the warrior's rest#1#None
+Clear the crypt of the ancients#1#None
+
+;Weeping Hollow (fix)
+Kill Kankerrot#1#act1_ADV-Val_[1-8]
+Kill Mira Aemon#1#act1_ADV-Val_[1-8]
+Kill Mange#1#act1_ADV-Val_[1-8]
+Clear the Den of the Fallen#1#None
+
+;Cemetary of the forsaken (map fixe mais pour les 4 bounties : Crypt random + random map)
+Clear the jar of souls #1#None
+Kill Digger O'Dell#1#None
+Kill the Dataminer#1#None
+The Matriarch's Bones#1#None
+
+;Cathedral lvl 1 (random map)
+Kill Ragus Grimlow#1#None
+Kill Braluk Grimlow#1#None
+The Cursed Chamber of bone#1#None
+
+;Cathedral lvl 2 (random map)
+Kill Merrium SkullThorn#1#None
+Kill FireStarter#1#None
+Kill Cudgelarm#1#None
+The Cursed Court#1#None
+
+;Cathedral lvl 4 (random map)
+Kill Captain Cage#1#None
+Kill Killian Damort#1#None
+
+;The Royals Crypts (map fix)
+Kill Skeletton King#1#none
+Kill Rad'Noj#1#none
+Kill Captain Clegg#1#none
+
+;Caverns of Araneae (random)
+Kill Queen Araneae#1#None
+Kill Qurash the reviled#1#None
+Kill Rathlin the widowmaker#1#None
+The Cursed hatchery#1#None
+
+;The Old ruins (map fix)
+The Cursed Cellar#1#Act1_BOUNTY-The_Cursed_Cellar_1
+
+;Français
+tuez Krelm l’Inqualifiable#1#act1_ADV-champs_[1-8]
+tuez le seigneur Brone#1#act1_ADV-putride_[1-6]
+tuez Hawthorne Gable#1#act1_ADV-putride_[1-6]
+une ferme assiégée#1#None
+tuez la reine Aranéa#1#None
+tuez Théodyn Chantemort#1#None
+tuez Ragus Grimlow#1#None
+tuez le roi squelette#1#None
+tuez Galush Valdant#1#None
+nettoyez la grotte du clan de la Lune#1#None
+le frère de l’apothicaire#1#None
+tuez le capitaine Cage#1#None
+les os de la matriarche#1#None
+le moulin maudit#1#act1_ADV-champs_[1-8]
+tuez le Boucher#1#None
+nettoyez la tanière de khazras#1#None
+la tour croulante#1#None
+un étranger en détresse#1#None
+le fourreau retrouvé#1#None
+tuez Jezeb le Conjurateur#1#None
+tuez Merrium Crâne-Épine#1#None
+la famille Rathe#1#None
+tuez Rathlin la Faiseuse de veuves#1#None
+tuez Bras-Marteau#1#None
+nettoyez l’Antre des déchus#1#None
+la cave maudite#1#None
+tuez Braluk Grimlow#1#None
+tuez Venimite#1#None
+tuez Logrut le Guerrier#1#None
+tuez le Gardien#1#None
+tuez Gale#1#None
+l’ultime combat des anciens#1#None
+
+;Acte 2
+tuez Yeth#2#act2_ADV-alcarnus_[1-8]
+tuez l’nquisiteur Hamath#2#act2_ADV-gorge_noire_[1-3]
+tuez Bélial#2#act2_ADV-Tuer_Belial
+nettoyez les ruines#2#None
+le sanctuaire de Rakanishu#2#None
+tuez le seigneur-mage Misgen#2#None
+tuez Thrum#2#None
+tuez Samaras le Chasseur#2#None
+le trésor de Sardar#2#None
+nettoyez la grotte de l’horreur enfouie#2#None
+la fosse maudite#2#None
+l’avant-poste maudit#2#None
+tuez Maghda#2#act2_ADV-Tuer_Maghda
+nettoyez la grotte antique#2#None
+nettoyez les grottes du sirocco#2#None
+l’idole de Rygnar#2#None
+tuez Gryssian#2#None
+tuez Pazuzu#2#None
+tuez le seigneur-mage Skomara#2#None
+tuez Jhorum le Clerc#2#act2_ADV-alcarnus_[1-8]
+nettoyez la grotte mystérieuse#2#None
+tout l’or d’un mineur#2#None
+les bas-fonds maudits#2#None
+le repaire des Lacunis#2#None
+tuez Balzhak#2#None
+tuez le seigneur-mage Caustus#2#None
+tuez Plume-Sanglante#2#None
+tuez l’Archiviste#2#None
+tuez Shondar l’invocateur#2#None
+tuez Zoltun Kulle#2#act2_ADV-Tuer_ZoltunKulle
+A Miner's Gold#2#None
+Kill Belial#2#act2_ADV-Tuer_Belial
+Clear the Ruins#2#None
+Clear the Vile Cavern#2#None
+Kill Mage Lord Caustus#2#None
+The Cursed Battlement#2#None
+The Guardian Spirits#2#None
+Clear the Flooded Cave#2#None
+Kill Pazuzu#2#None
+Kill Zoltun Kulle#2#act2_ADV-Tuer_ZoltunKulle
+Kill Gart the Mad#2#None
+Rygnar Idol#2#None
+Kill Maghda#2#act2_ADV-Tuer_Maghda
+Clear the Ancient Cave#2#None
+Kill Mage Lord Flaydren#2#None
+Kill Ashek#2#None
+Kill Jhorum the Cleric#2#None
+Sardar's Treasure#2#None
+Lair of the Lacuni#2#None
+Restless Sands#2#None
+Clear the Mysterious Cave#2#None
+Kill Bloodfeather#2#None
+The Cursed Outpost#2#None
+Kill Inquisitor Hamath#2#act2_ADV-gorge_noire_[1-3]
+Clear the Forward Barracks#3#None
+Kill Saha the Slasher#2#None
+Kill Yeth#2#act2_ADV-alcarnus_[1-8]
+Prisoners of Kamyr#2#None
+Clear the Cave of Burrowing Horror#2#None
+Kill Barty the Minuscule#2#None
+Kill High Cultist Murdos#2#None
+Kill Balzhak#2#None
+Kill Raiha#2#None
+Kill Mage Lord Ghuyan#2#None
+Clear Sirocco Caverns#2#None
+Lost Treasure of Khan Dakab#2#None
+Kill Thugeesh the Enraged#2#None
+Kill Blarg#2#None
+The Cursed Pit#2#None
+Kill Torsar#2#None
+The Cursed Spire#2#None
+Kill Charuch the Spear#3#None
+Kill Razormouth#2#None
+
+;Acte 3
+tuez Obis le Puissant#3#act3_ADV-rempart_[1-5]
+tuez le capitaine Dale#3#None
+nettoyez la caserne#3#None
+le sommet de la gloire#3#None
+tuez Cydaée#3#None
+tuez Aloysius le Funèbre#3#None
+tuez Ghom#3#None
+nettoyez le niveau 2 des réserves du champ de bataille#3#None
+la caldera maudite#3#None
+la garnison maudite#3#None
+nettoyez le passage souterrain#3#None
+tuez Griffe-Tranchante#3#None
+tuez Asmodan#3#act3_ADV-Tuer_Azmodan
+tuez l’Écraseur#3#None
+le cours de la bataille#3#None
+nettoyez les cavernes du Givre#3#None
+tuez Maggrus le Sauvage#3#None
+nettoyez le fortin renforcé#3#None
+tuez Ghallem le Cruel#3#None
+tuez Shandra’Har#3#None
+forgé au combat#3#None
+nettoyez la fonderie#3#None
+tuez Aile-de-Braise#3#act3_ADV-field_[1-4]
+tuez Démonica la Redoutable#3#act3_ADV-tower_[1-5]
+tuez Belagg Percechair#3#None
+les liens du sang#3#None
+tuez Tombe-Hache l’Exécuteur#3#None
+tuez Haxxor#3#act3_ADV-tower_[1-5]
+tuez Acharné le Fendeur#3#act3_ADV-core_start_[1-5]
+tuez Gholash#3#act3_ADV-tower_[1-5]
+les profondeurs maudites#3#None
+le glacier maudit#3#None
+tuez Cogneface la Matraque#3#act3_ADV-fdp_[1-5]
+tuez le briseur de siège#3#None
+Clear Cryder's Outpost#3#None
+Kill Bashface the Truncheon#3#None
+Kill Gugyn the Gauntlet#3#None
+Kill the Vicious Gray Turkey#3#None
+Clear the Underbridge#3#None
+Kill Severclaw #3#None
+Kill Allucayrd#3#None
+Kill Cydaea#3#None
+The Cursed Garrison#3#None
+Kill Gormungandr#3#None
+Kill Growlfang#3#None
+Kill Crabbs#3#None
+The Cursed Caldera#3#None
+Kill Thornback#3#None
+Kill Bholen#3#None
+Kill Greelode the Unforgiving#3#None
+Kill Emberwing#3#act3_ADV-field_[1-4]
+Kill Ghom#3#None
+Clear the Foundry#3#None
+The Cursed Glacier#3#None
+Kill Lummock the Brute#3#None
+Kill Riplash#3#None
+Kill Ganthar the Trickster#3#None
+Forged in Battle#3#None
+Clear the Icefall Caves#3#None
+Kill Valifahr the Noxious#3#None
+Clear the Battlefield Stores Level 2#3#None
+Kill Shertik the Brute#3#None
+Blaze of Glory#3#None
+Kill Mhawgann the Unholy#3#None
+tuez Gugyn le Gantelet#3#None
+Kill Azmodan#3#act3_ADV-Tuer_Azmodan
+Kill Demonika the Wicked#3#act3_ADV-tower_[1-5]
+Clear the Caverns of Frost#3#None
+Kill Thromp the Breaker#3#None
+Blood Ties#3#None
+Kill the Siegebreaker Assault Beast#3#None
+Kill Brimstone#3#None
+Kill Gholash#3#None
+Clear the Fortified Bunker#3#None
+Kill Garganug#3#None
+
+
+;Acte 4
+le dais maudit#4#None
+tuez Oah’ Tash#4#None
+nettoyez la faille infernale#4#None
+tuez Izual#4#None
+tuez l’aspect du Péché#4#None
+tuez l’aspect de l’Angoisse#4#None
+tuez Slarg le béhémoth#4#None
+tuez Diablo#4#None
+tuez Rakanoth#4#act4_ADV-Tuer_Rakanoth
+tuez l’aspect de la Souffrance#4#None
+tuez Martel#4#None
+la chapelle maudite#4#None
+tuez Kao’ Ahn#4#None
+tuez Rhau’Kye#4#None
+tuez Pyrus le Damné#4#None
+tuez Veshan le Féroce#4#None
+tuez Presse-Purée#4#None
+Kill Haures#4#None
+Kill Sammash#2#None
+Kill the Tomekeeper#2#None
+Kill the Aspect of Lies#4#None
+Kill Veshan the Fierce#4#None
+Kill Slarg the Behemoth#4#None
+Kill Hammermash#4#None
+Kill Pyres the Damned#4#None
+Kill the Aspect of Pain#4#None
+Kill the Aspect of Anguish#4#None
+The Cursed Dais#4#None
+Kill Kao' Ahn#4#None
+Kill Sledge#4#None
+Kill the Aspect of Hatred#4#None
+Kill Diablo#4#None
+Kill Rakanoth#4#act4_ADV-Tuer_Rakanoth
+Kill Oah' Tash#4#None
+Clear the Hell Rift#4#None
+Kill Kysindra the Wretched#4#None
+The Cursed Chapel#4#None
+tuez Nuit-Sinistre le Sans-âme#4#None
+Kill Torchlighter#4#None
+Kill Izual#4#None
+
+;Acte 5
+la patrouille perdue#5#None
+tuez Urzaël#5#None
+tuez Vek Marru#5#None
+tuez Bari Hattar#5#None
+tuez Haziaël#5#None
+bévue magique#5#None
+tuez Sumaryss le Damné#5#None
+tuez Nak Sarugg#5#None
+tuez Malthaël#5#None
+la ruche#5#None
+tuez Katherine Batts#5#None
+une situation mortelle#5#None
+tuez Tadardya#5#None
+tuez Adria#5#None
+tuez Borgoth#5#None
+la tempête de feu#5#None
+la cité maudite#5#None
+tuez Forask le Tunnelier#5#None
+le forum maudit#5#None
+tiré du feu#5#None
+tuez Scythys#5#None
+l’Arme Prodigieuse#5#None
+le sectateur réformé#5#None
+tuez Theodosia Buhre#5#None
+tuez Xaphane#5#None
+le vrai fils du loup#5#None
+tuez Frondeur#5#None
+tuez Severag#5#None
+le toucher de la mort#5#None
+tuez Morghum la Bête#5#None
+tuez Valtesk le Cruel#5#None
+Kill Bari Moqqu#5#None
+The Lost Legion#5#None
+The Last Stand#5#None
+The Burning Man#5#None
+The Miser's Will#5#None
+Kill Lograth#5#None
+The Cursed Forum#5#None
+Altar of Sadness#5#None
+Kill Bari Hattar#5#None
+Kill Baethus#5#None
+Kill Dale Hawthorne#5#None
+Kill Purah#5#None
+The Demon Cache#5#None
+A Shameful Death#5#None
+Kill Almash the Grizzly#5#None
+Kill Vek Tabok#5#None
+The Cursed Realm#5#None
+The Cursed City#5#None
+Kill Sartor#5#None
+The Rebellious Rabble#5#None
+Kill Targerious#5#None
+Kill Vek Marru#5#None
+Kill Adria#5#None
+Kill Severag#5#None
+Touch of Death#5#None
+The True Son of the Wolf#5#None
+Kill Vilepaw#5#None
+Kill Slarth the Tunneler#5#None
+Cryptology#5#None
+Pest Problems#5#None
+Kill Morghum the Beast#5#None
+Kill Nak Qujin#5#None
+Kill Malthael#5#None
+nobles trépassés#5#None
+le butin des tourbeux#5#None
+tuez Baëthus#5#None
+Home Invasion#5#None
+Kill Erdith#5#None
+Kill Rockulus#5#None
+Out of the Fire#5#None
+Kill Tadardya#5#None
+Resurrection#5#None
+Finding the Forgotten#5#None
+Kill Rakanoth#5#None
+Kill Oah' Tash#5#None
+Clear the Hell Rift#5#None
+Kill the Aspect of Lies#5#None
+The Cursed Chapel#5#None
+Kill Igor Stalfos#5#None
+A Diversion#5#None
+Noble Deaths#5#None
+Penny for Your Troubles#5#None
+Kill Urzael#5#None
+Kill Ballartrask the Defiler#5#None
+
+
+
+
+
+
+
+
+
+
+
