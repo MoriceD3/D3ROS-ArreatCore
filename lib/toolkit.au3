@@ -2350,6 +2350,7 @@ Func Grabit($name, $offset)
 				Unbuff()
 				TpRepairAndBack()
 				Buffinit()
+				_log("buffinit post grabit full inventory")
 				$Execute_TpRepairAndBack = False
 			EndIf
 		EndIf

@@ -127,8 +127,10 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		ElseIf $arr_sequence[$index][1] = "InteractBossPortal" Then
 			InteractBossPortal($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
+			_log("Buffinit sequence")
 			BuffInit()
 		ElseIf $arr_sequence[$index][1] = "unbuff" Then
+			_log("Unbuff sequence")
 			Unbuff()
 		ElseIf $arr_sequence[$index][1] = "send" Then
 			Send($arr_sequence[$index][2])
@@ -193,7 +195,7 @@ Func revive(ByRef $path)
 			if NOT _checkRepair() Then
 				if fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
-					_log("Res At Corp", $LOG_LEVEL_VERBOSE)
+					_log("Res At Corp and buffinit", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(6000, 7000))
 					buffinit()
 					Return 1
@@ -251,11 +253,13 @@ Func bloc_sequence(ByRef $arr_MTP, $revive = 0)
 		unbuff()
 		tpRepairAndBack()
 		buffinit()
+		_log("buffinit post repair")
 	EndIf
 
 	If $revive = 1 Then
 		Sleep(Random(2500, 3500))
 		buffinit()
+		_log("buffinit post death")
 	EndIf
 
 	If IsArray($arr_MTP) Then
@@ -798,7 +802,7 @@ Func sequence($sequence_list)
 							buffinit()
 							_log("Enclenchement d'un buffinit() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("Mise en array dun buffinit() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							_log("Mise en array d'un buffinit() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
 							$array_sequence[UBound($array_sequence) - 1][1] = "buffinit"
