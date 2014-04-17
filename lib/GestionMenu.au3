@@ -57,7 +57,7 @@ Func SelectGameType($SelectGameType, $auto)
 	Sleep(Random(1500, 2000, 1))
 
 	Local $Waiting_Time = 0
-	While Not _inmenu() And $Waiting_Time < 40 ; 20 sec
+	While Not _inmenu() And $TypedeBot <> 2 And $Waiting_Time < 40
 	   Sleep(500)
 	   $Waiting_Time += 1
 	WEnd
@@ -132,9 +132,9 @@ Func SelectGameType($SelectGameType, $auto)
 
 			  ;selection d'une quete pour fermer les sous quetes
 			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
-			  Sleep(700)
+			  Sleep(1500)
 			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
-			  Sleep(500)
+			  Sleep(1000)
 
 			  Switch $SelectGameType
 				   Case 1;selection de la quête 10.1 act 1
@@ -242,7 +242,7 @@ Func SelectGameType($SelectGameType, $auto)
 
 					  For $i = 1 To 22 Step 1
 						 MouseWheel("down")
-						 Sleep(150)
+						 Sleep(Random(100, 150, 1))
 					  Next
 					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
@@ -257,7 +257,7 @@ Func SelectGameType($SelectGameType, $auto)
 
 					  For $i = 1 To 25 Step 1
 						 MouseWheel("down")
-						 Sleep(150)
+						 Sleep(Random(100, 150, 1))
 					  Next
 					  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 					  Sleep(Random(600, 800, 1))
@@ -330,7 +330,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  ;Bp choisir la quete
 			  Sleep(Random(300, 400, 1))
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton") ; Tap OK 'Choose a new quest'
-			  Sleep(Random(500, 600, 1))
+			  Sleep(Random(1000, 1500, 1))
 
 			  ; Bp validation de la quête
 			  If IsQuestChangeUiOpened() Then
