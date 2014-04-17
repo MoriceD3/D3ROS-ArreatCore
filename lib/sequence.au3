@@ -422,7 +422,7 @@ Func sequence($sequence_list)
 
 	Dim $filetoarray[1]
 	Local $load_file = ""
-	Local $end_sequence = False
+	Local $end_game = False
 
 	;	if( StringInStr($File_Sequence, "|", 2) ) Then
 	;		ReDim $filetoarray[UBound( StringSplit($File_Sequence, "|", 2) )]
@@ -476,6 +476,7 @@ Func sequence($sequence_list)
 		EndIf
 
 		Dim $array_sequence[1][6]
+		Local $end_sequence = False
 
 		For $i = 0 To UBound($txttoarray) - 1
 			If $GameFailed = 1 Then
@@ -614,7 +615,7 @@ Func sequence($sequence_list)
 				ElseIf StringInStr($line, "maxgamelength=", 2) Then
 					$line = StringReplace($line, "maxgamelength=", "", 0, 2)
 					MaxGameLength($line)
-					_log("Enclenchemen d'un MaxGameLengt() Line : " & $i + 1, $LOG_LEVEL_DEBUG)
+					_log("Enclenchement d'un MaxGameLength() Line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
@@ -728,14 +729,31 @@ Func sequence($sequence_list)
 								$end_sequence = True
 								_log($temp[1])
 								$temp = StringReplace($temp[1], "loadsequence=", "")
-								_log("Lancement de la sequence : " & $temp)
+								_log("[If] Lancement de la sequence : " & $temp)
 								Sequence($temp)
+							ElseIf StringInStr($temp[1], "endsequence()", 2) Then
+								_log("[If] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+							ElseIf StringInStr($temp[1], "endgame()", 2) Then
+								_log("[If] End game detected. Stopping current run!.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+								$end_game = True
 							Else
 								_log("Invalid command found for ifposition")
 							EndIf
 						Else
-							_log("Position not found ! ", $LOG_LEVEL_WARNING)
+							_log("Position not found !", $LOG_LEVEL_WARNING)
 						EndIf
+					ElseIf StringInStr($line, "endsequence()", 2) Then
+						$end_sequence = True
+						_log("End sequence detected. Stopping current sequence file", $LOG_LEVEL_WARNING)
+					ElseIf StringInStr($line, "endgame()", 2) Then
+						$end_sequence = True
+						$end_game = True
+						_log("End game detected. Stopping current run !", $LOG_LEVEL_WARNING)
+					ElseIf StringInStr($line, "terminate()", 2) Then
+						_log("Terminate detected. Ending script !", $LOG_LEVEL_ERROR)
+						Terminate()
 					ElseIf StringInStr($line, "loadsequence=", 2) Then
 						$end_sequence = True
 						$line = StringReplace($line, "loadsequence=", "")
@@ -865,7 +883,7 @@ Func sequence($sequence_list)
 		$Table_Coffre = $old_Table_Coffre
 		$Table_Rack = $old_Table_Rack
 		unbuff()
-		If $GameFailed = 1 Or $end_sequence Then
+		If $GameFailed = 1 Or $end_game Then
 			ExitLoop
 		EndIf
 	Next
@@ -943,7 +961,10 @@ EndFunc   ;==> InteractBossPortal
 ; -> unbuff()                   (force l'unbuff)
 ; -> send=                      (Envoie une Key)
 ; -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
-; -> ifposition=				(Vérifie la position en cours et charge la séquence indiquée si l'on s'y trouve : ifposition=x,y,z:loadsequence=XXX)
+; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
+; -> endgame()					(Arrête la game en cours)
+; -> terminate()				(Arrête le script !)
+; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) (Commande supportée : loadsequence=xxx / endsequence() / endgame() )
 ; -> closewindows()			 	(Ferme toutes les fenêtres ouvertes)
 ; -> closeconfirm()				(Click ok dans les dialogues de confirmation (Par Ex : Annulation de vidéo))
 ; -> x, y, z, w, y              (movetopos, composé de 5 argument)
