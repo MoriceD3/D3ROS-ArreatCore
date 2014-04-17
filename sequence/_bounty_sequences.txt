@@ -44,15 +44,15 @@ Carrion Farm#1#None
 The Family of Rathe#1#None
 
 ;Southern highland (Fix)
-Kill Buras the Impaler#1#Act1_ADV_Southern_Kill_1
-Kill Cadhul the DeathCaller#1#Act1_ADV_Southern_Kill_1
-Kill Logrut the Warrior#1#Act1_ADV_Southern_Kill_1
-Kill Lorzak the Powerfull#1#Act1_ADV_Southern_Kill_1
+Kill Buras the Impaler#1#Act1_BOUNTY-Southern_Kill_1
+Kill Cadhul the DeathCaller#1#Act1_BOUNTY-Southern_Kill_1
+Kill Logrut the Warrior#1#Act1_BOUNTY-Southern_Kill_1
+Kill Lorzak the Powerfull#1#Act1_BOUNTY-Southern_Kill_1
 Crumbling tower#1#None
 Clear the Cave of the Moon Clan#1#None
-The Cursed Camp#1#Act1_ADV_Southern_Shrine_1
+The Cursed Camp#1#Act1_ADV_BOUNTY-Shrine_1
 Scavenged Scabbard#1#None
-Revenge of Gharbad#1#Act1_ADV_Southern_Gharbad_1
+Revenge of Gharbad#1#Act1_BOUNTY-Southern_Gharbad_1
 
 ;Festering Woods (fix)
 Kill Fecklar's Ghost#1#act1_ADV-putride_[1-6]
@@ -103,7 +103,7 @@ Kill Rathlin the widowmaker#1#None
 The Cursed hatchery#1#None
 
 ;The Old ruins (map fix)
-The Cursed Cellar#1#Act1_ADV_The_Cursed_Cellar_1
+The Cursed Cellar#1#Act1_BOUNTY-The_Cursed_Cellar_1
 
 ;Français
 tuez Krelm l’Inqualifiable#1#act1_ADV-champs_[1-8]
