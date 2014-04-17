@@ -30,6 +30,8 @@ Anonymous69 :
 - Mise en place correcte de fermeture des fenetres de bounty / quest rewards
 - Mise en place des fonctions WaitForLoot pour une attente intelligente du bot après le dernier kill ou l'ouverture d'un coffre
 - Refonte de la gestion des logs pour support de niveaux différents (Erreur, warning, ...) très utile en mode scite
+- Ajout de ifposition / loadsequence / positionrange dans les sequences
+- Remise en route d'une sequence maker valide
 
 bilabou :
 
@@ -37,6 +39,11 @@ bilabou :
 - Mise à jour des affixes
 - Prise des globes et des puits de vie selon le % de vie (+Panis Ralh)
 - Prise des globes de power (+Panis Ralh)
+
+Elal :
+
+- Completion du fichier bounty
+- Nouvelles séquences
 
 rabbit2000 :
 

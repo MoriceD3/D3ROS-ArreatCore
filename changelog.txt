@@ -1,5 +1,19 @@
 Changelog : 
 
+- Version 1.3 : 17/04/2014
+
+- Ajout de nouvelles séquences bounty
+- Ajout de nouvelles fonctions dans les séquences (ifposition / loadsequence / positionrange)
+- Gestion de grablistXP pour toute les difficultés
+- Modification de la configuration par défaut pour des runs plus rapides
+- Légère modification du sequencer pour des images plus faciles a corréler
+- Fix gestion Cursed Chest
+- Fix conflit grablist et configuration
+- Fix gestion de l'onglet repair entre les actes
+- Fix gestionmenu pour lag et machine lentes
+- Suppression des decorlist dans les séquences par defaut
+- Ajout d'une aide sur les commandes des séquences (_aide_sequence.txt)
+
 - Version 1.2 : 15/04/2014
 
 - Mise à jour de l'icône du bot
