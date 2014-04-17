@@ -506,7 +506,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 						[$DemonHunter_Vault, "DemonHunter_Vault", 3000, "life", 8, "discipline", 85, ""] _
 							]
 
-Global $Wizard_skill_Table[28][8] = [ _
+Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Blizzard, "Wizard_Blizzard", 2500, "attack", 40, "arcane", 100, 45], _
 						[$Wizard_DiamondSkin, "Wizard_DiamondSkin", 15000, "life", "", "", 35, ""], _
 						[$Wizard_EnergyArmor, "Wizard_EnergyArmor", 50000, "buff", 25, "arcane", "", ""], _
@@ -534,7 +534,8 @@ Global $Wizard_skill_Table[28][8] = [ _
 						[$Wizard_SlowTime, "Wizard_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_StormArmor, "Wizard_StormArmor", 110000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_Teleport, "Wizard_Teleport", 15000, "life", "", "", 50, ""], _
-						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""] _
+						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""], _
+						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 11000, "attack", 20, "arcane", 35, ""] _
 						]
 
 ;[ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE]
