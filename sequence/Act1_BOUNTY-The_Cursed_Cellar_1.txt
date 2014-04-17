@@ -1,7 +1,6 @@
 TakeWPadv=1
 
 MonsterList=WitherMoth|WoodWraith|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|TriuneSummoner_A|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni|Uber|Ghoul|Cultist|CultistMelee|Goatman_Shaman_A|Goatman_Shaman_B|Goatman_Shaman|Goatman_S|WoodWraith_A_01|WoodWraith_A_02|WoodWraith_A_03|graveRobber_
-DecorList=Log|Bone|RockPile|Barricade
 autobuff=True
 attackrange=40 
 usepath=false
