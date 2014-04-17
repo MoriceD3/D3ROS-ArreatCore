@@ -922,6 +922,7 @@ EndFunc   ;==> InteractBossPortal
 ; CMD DEFINITION
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
 ; -> attackrange=				(definition d'un nouvel attackrange)
+; -> positionrange=				(definition de la précision en yard du ifposition)
 ; -> monsterlist=               (definition des monstres à tuer)
 ; -> specialml=					(definition de la special monsterlist)
 ; -> banlist=                   (banlist)
