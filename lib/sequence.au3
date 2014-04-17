@@ -632,7 +632,8 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "autobuff=", "", 0, 2)
 					If $line = "true" Then
 						$autobuff = True
-						_log("Autobuff definit sur true line : " & $i + 1, $LOG_LEVEL_DEBUG)
+						BuffInit()
+						_log("Autobuff definit sur true line : " & $i + 1 & " et lancement buffinit" , $LOG_LEVEL_DEBUG)
 					Else
 						$autobuff = False
 						_log("Autobuff definit sur false line : " & $i + 1, $LOG_LEVEL_DEBUG)
