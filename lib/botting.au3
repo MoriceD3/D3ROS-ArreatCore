@@ -29,8 +29,8 @@ Func _dorun()
 	StatsDisplay()
 
 	If Not $hotkeycheck Then
-		CheckGameMode()
 		CheckHotkeys()
+		CheckGameMode()
 		Auto_spell_init()
 		GestSpellInit()
 		Load_Attrib_GlobalStuff()
