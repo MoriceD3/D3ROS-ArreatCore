@@ -172,7 +172,7 @@
 3#nettoyez les cavernes du Givre#3#Need EN#None
 3#tuez Maggrus le Sauvage#3#Need EN#None
 3#nettoyez le fortin renforcé#3#Need EN#None
-3#tuez Ghallem le Cruel#3#Need EN#None
+3#tuez Ghallem le Cruel#3#Need EN#act3_ADV-field_[1-4]
 3#tuez Shandra’Har#3#Need EN#None
 3#forgé au combat#3#Need EN#None
 3#nettoyez la fonderie#3#Need EN#None
