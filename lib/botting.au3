@@ -139,6 +139,7 @@ Func _botting()
 
 			If Not $File_Sequence = "" Then
 				$timermaxgamelength = TimerInit()
+				$GameOverTime = False
 				If _dorun() = True Then
 					$Try_ResumeGame = 0
 					$Try_Logind3 = 0

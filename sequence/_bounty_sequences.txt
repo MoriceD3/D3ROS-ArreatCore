@@ -75,38 +75,40 @@
 1#la cave maudite#1#Need EN#None
 1#Need FR#1#Kill Bludgeonskull #None
 
-2#tuez Yeth#2#Need EN#act2_ADV-alcarnus_[1-8]
-2#tuez l’nquisiteur Hamath#2#Need EN#act2_ADV-gorge_noire_[1-3]
-2#tuez Bélial#2#Need EN#act2_ADV-Tuer_Belial
+2#tuez Samaras le Chasseur#2#Need EN#act2_BOUNTY-vents_cinglants_[1-2]
+2#tuez l’nquisiteur Hamath#2#Kill Inquisitor Hamath#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Sammash#2#Kill Sammash#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Balzhak#2#Kill Balzhak#act2_BOUNTY-vents_cinglants_[1-2]
+2#tuez Shondar l’invocateur#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Barty le Minuscule#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Brisos#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Yeth#2#Kill Yeth#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Bélial#2#Kill Belial#act2_ADV-Tuer_Belial
+2#tuez Jhorum le Clerc#2#Need EN#act2_ADV-alcarnus_[1-8]
+2#tuez Zoltun Kulle#2#Kill Zoltun Kulle#act2_ADV-Tuer_ZoltunKulle
+2#tuez Maghda#2#Kill Maghda#act2_ADV-Tuer_Maghda
 2#nettoyez les ruines#2#Need EN#None
 2#le sanctuaire de Rakanishu#2#Need EN#None
 2#tuez le seigneur-mage Misgen#2#Need EN#None
 2#tuez Thrum#2#Need EN#None
-2#tuez Samaras le Chasseur#2#Need EN#None
 2#le trésor de Sardar#2#Need EN#None
 2#nettoyez la grotte de l’horreur enfouie#2#Need EN#None
 2#la fosse maudite#2#Need EN#None
 2#l’avant-poste maudit#2#Need EN#None
-2#tuez Maghda#2#Need EN#act2_ADV-Tuer_Maghda
 2#nettoyez la grotte antique#2#Need EN#None
 2#nettoyez les grottes du sirocco#2#Need EN#None
 2#l’idole de Rygnar#2#Need EN#None
 2#tuez Gryssian#2#Need EN#None
 2#tuez Pazuzu#2#Need EN#None
 2#tuez le seigneur-mage Skomara#2#Need EN#None
-2#tuez Jhorum le Clerc#2#Need EN#act2_ADV-alcarnus_[1-8]
 2#nettoyez la grotte mystérieuse#2#Need EN#None
 2#tout l’or d’un mineur#2#Need EN#None
 2#les bas-fonds maudits#2#Need EN#None
 2#le repaire des Lacunis#2#Need EN#None
-2#tuez Balzhak#2#Need EN#None
 2#tuez le seigneur-mage Caustus#2#Need EN#None
 2#tuez Plume-Sanglante#2#Need EN#None
 2#tuez l’Archiviste#2#Need EN#None
-2#tuez Shondar l’invocateur#2#Need EN#None
-2#tuez Zoltun Kulle#2#Need EN#act2_ADV-Tuer_ZoltunKulle
 2#Need FR#2#A Miner's Gold#None
-2#Need FR#2#Kill Belial#act2_ADV-Tuer_Belial
 2#Need FR#2#Clear the Ruins#None
 2#Need FR#2#Clear the Vile Cavern#None
 2#Need FR#2#Kill Mage Lord Caustus#None
@@ -114,10 +116,8 @@
 2#Need FR#2#The Guardian Spirits#None
 2#Need FR#2#Clear the Flooded Cave#None
 2#Need FR#2#Kill Pazuzu#None
-2#Need FR#2#Kill Zoltun Kulle#act2_ADV-Tuer_ZoltunKulle
 2#Need FR#2#Kill Gart the Mad#None
 2#Need FR#2#Rygnar Idol#None
-2#Need FR#2#Kill Maghda#act2_ADV-Tuer_Maghda
 2#Need FR#2#Clear the Ancient Cave#None
 2#Need FR#2#Kill Mage Lord Flaydren#None
 2#Need FR#2#Kill Ashek#None
@@ -128,14 +128,11 @@
 2#Need FR#2#Clear the Mysterious Cave#None
 2#Need FR#2#Kill Bloodfeather#None
 2#Need FR#2#The Cursed Outpost#None
-2#Need FR#2#Kill Inquisitor Hamath#act2_ADV-gorge_noire_[1-3]
 2#Need FR#2#Kill Saha the Slasher#None
-2#Need FR#2#Kill Yeth#act2_ADV-alcarnus_[1-8]
 2#Need FR#2#Prisoners of Kamyr#None
 2#Need FR#2#Clear the Cave of Burrowing Horror#None
 2#Need FR#2#Kill Barty the Minuscule#None
 2#Need FR#2#Kill High Cultist Murdos#None
-2#Need FR#2#Kill Balzhak#None
 2#Need FR#2#Kill Raiha##None
 2#Need FR#2#Kill Mage Lord Ghuyan#None
 2#Need FR#2#Clear Sirocco Caverns#None
@@ -146,7 +143,6 @@
 2#Need FR#2#Kill Torsar#None
 2#Need FR#2#The Cursed Spire#None
 2#Need FR#2#Kill Razormouth#None
-2#Need FR#2Kill Sammash#None
 2#Need FR#2Kill the Tomekeeper#None
 2#Need FR#2#Kill Hemit#None
 2#Need FR#2#The Shrine of Rakanishu#None
