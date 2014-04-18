@@ -306,42 +306,22 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$TypeDeGrabList = IniRead($profilFile, "Run info", "TypeDeGrabList", $TypeDeGrabList)
 
 	;Selection de la GrabListe suivant la difficulté
-	Switch $difficulte
-		Case 1
-			Switch $TypeDeGrabList
+	Switch $TypeDeGrabList
+		Case 1 ; Grablist difficulté
+			Switch $difficulte
 				Case 1
 					$grabListFile = IniRead($profilFile, "Run info", "grablistNormal", $grabListFile)
 				Case 2
-					$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
-			EndSwitch
-		Case 2
-			Switch $TypeDeGrabList
-				Case 1
 					$grabListFile = IniRead($profilFile, "Run info", "grablistDifficile", $grabListFile)
-				Case 2
-					$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
-			EndSwitch
-		Case 3
-			Switch $TypeDeGrabList
-				Case 1
+				Case 3
 					$grabListFile = IniRead($profilFile, "Run info", "grablistExpert", $grabListFile)
-				Case 2
-					$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
-			EndSwitch
-		Case 4
-			Switch $TypeDeGrabList
-				Case 1
+				Case 4
 					$grabListFile = IniRead($profilFile, "Run info", "grablistCalvaire", $grabListFile)
-				Case 2
-					$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
-			EndSwitch
-		Case 5
-			Switch $TypeDeGrabList
-				Case 1
+				Case 5
 					$grabListFile = IniRead($profilFile, "Run info", "grabListTourment", $grabListFile)
-				Case 2
-					$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
 			EndSwitch
+		Case 2 ; Grablist XP
+			$grabListFile = IniRead($profilFile, "Run info", "grabListXP", $grabListFile)
 	EndSwitch
 
 	$Dummy = IniRead($profilFile, "Run info", "QualiteItemKeep", "9")
