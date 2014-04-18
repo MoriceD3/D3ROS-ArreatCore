@@ -2479,6 +2479,62 @@ Func checkForPotion()
 	EndIf
 EndFunc   ;==>checkForPotion
 
+Func checkForGlobes()
+	If GetLifep() < $LifeForHealth / 100 And $TakeGlobeInFight Then
+		Local $index, $offset, $count
+		startIterateObjectsList($index, $offset, $count)
+
+		Dim $item[$TableSizeGuidStruct + 1]
+
+		$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+		If @error > 0 Then
+			Return False
+		EndIf
+
+		$CurrentLoc = GetCurrentPos()
+		$SearchCount = UBound($Table_SearchObject) - 1 
+		For $i = 0 To $count
+			If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
+				If ($item[9] > $range_health) Or (GetLifep() > $LifeForHealth / 100) Then
+					ContinueLoop
+				EndIf
+				If (StringInStr($item[1], "HealthGlobe") Or StringInStr($item[1], "PowerGlobe")) Then
+					_log("Globe found !" , $LOG_LEVEL_WARNING)
+					$CurrentACD = GetACDOffsetByACDGUID($item[0])
+					$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
+					If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+						Local $timeForGlobe = TimerInit()
+						While iterateactoratribs($item[0], $Atrib_gizmo_state) <> 1 And _playerdead() = False
+							Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+							If $distance >= $pickupRadius Then
+								If TimerDiff($timeForGlobe) > 1500 Then
+									_log('Globe is banned because time out', $LOG_LEVEL_WARNING)
+									BanActor($item[1])
+									Return
+								Else
+									$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+									MouseMove($Coords[0], $Coords[1], 3)
+								EndIf
+							Else
+								_log('Globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+							EndIf
+							If TimerDiff($timeForGlobe) > 2000 Then
+								_log('Fake globe', $LOG_LEVEL_WARNING)
+								BanActor($item[1])
+								Return
+							EndIf
+							Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+							Sleep(10)
+						WEnd
+						Return
+					EndIf
+				EndIf
+			EndIf
+		Next
+	EndIf
+EndFunc   ;==>checkForPotion
+
 Func checkFromTable($table, $compare, $quality)
 	For $i = 0 To UBound($table) - 1
 		If StringRegExp($compare, "(?i)^" & $table[$i][0] & "") = 1 And $quality >= $table[$i][2] Then
@@ -2879,6 +2935,7 @@ Func TakeWpByKey($num, $try = 0)
 				$compt_while += 1
 
 				checkforpotion()
+				checkForGlobes()
 
 				$Attacktimer = TimerInit()
 				Attack()
@@ -3409,7 +3466,7 @@ Func Health($name, $offset, $Guid)
 				_log('Health globe ignore (already full life)', $LOG_LEVEL_VERBOSE)
 				Return 0
 			Endif
-		ElseIf $distance < 2 Then
+		ElseIf $distance < $pickupRadius Then
 			_log('Health globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
 			Return 1
 		EndIf
@@ -3438,7 +3495,7 @@ Func Power($name, $offset, $Guid)
 				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 				MouseMove($Coords[0], $Coords[1], 3)
 			EndIf
-		ElseIf $distance < 2 Then
+		ElseIf $distance < $pickupRadius Then
 			_log('Power globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
 			Return 1
 		EndIf
@@ -3645,6 +3702,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 	; $action_spell = 1 -> attack
 	; $action_spell = 2 -> grab
 	checkForPotion()
+	checkForGlobes()
 	PauseToSurviveHC() ; pause HCSecurity
 
 	For $i = 0 To 5
@@ -5046,6 +5104,7 @@ Func _TownPortalnew($mode=0)
 			   $compt_while += 1
 
 			   checkforpotion()
+			   checkForGlobes()
 
 			   $Attacktimer = TimerInit()
 			   Attack()

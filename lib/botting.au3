@@ -37,6 +37,7 @@ Func _dorun()
 
 		$maxhp = GetAttribute($_MyGuid, $Atrib_Hitpoints_Max_Total) ; dirty placement
 		_log("Max HP : " & $maxhp, $LOG_LEVEL_VERBOSE)
+		$pickupRadius = GetAttributeSelf($Atrib_Gold_PickUp_Radius)
 		GetMaxResource($_MyGuid, $namecharacter)
 		Send($KeyPortal)
 		Sleep(500)

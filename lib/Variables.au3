@@ -136,6 +136,7 @@ Global $FailOpen_BookOfCain 	= 0
 ; Informations sur le personnage
 Global $nameCharacter
 Global $maxhp
+Global $pickupRadius
 
 ; Acte en cours
 Global $Act = 0
