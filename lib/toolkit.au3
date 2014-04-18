@@ -2505,26 +2505,21 @@ Func checkForGlobes()
 					$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
 					If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 						Local $timeForGlobe = TimerInit()
-						While iterateactoratribs($item[0], $Atrib_gizmo_state) <> 1 And _playerdead() = False
-							Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-							If $distance >= $pickupRadius Then
-								If TimerDiff($timeForGlobe) > 1500 Then
-									_log('Globe is banned because time out', $LOG_LEVEL_WARNING)
-									BanActor($item[1])
-									Return
-								Else
-									$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-									MouseMove($Coords[0], $Coords[1], 3)
-								EndIf
+						While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+							$objpos = UpdateObjectsPos($item[0])
+							If $objpos[3] >= $pickupRadius Then
+								$Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
+								MouseMove($Coords[0], $Coords[1], 3)
 							Else
 								_log('Globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+								Return
 							EndIf
 							If TimerDiff($timeForGlobe) > 2000 Then
-								_log('Fake globe', $LOG_LEVEL_WARNING)
+								_log('Fake globe or timeout', $LOG_LEVEL_WARNING)
 								BanActor($item[1])
 								Return
 							EndIf
-							Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+							Interact($objpos[4], $objpos[5], $objpos[6])
 							Sleep(10)
 						WEnd
 						Return
