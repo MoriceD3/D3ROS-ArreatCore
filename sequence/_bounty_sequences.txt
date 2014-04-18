@@ -80,11 +80,11 @@
 2#tuez Sammash#2#Kill Sammash#act2_BOUNTY-route_alcarnus_[1-2]
 2#tuez Balzhak#2#Kill Balzhak#act2_BOUNTY-vents_cinglants_[1-2]
 2#tuez Shondar l’invocateur#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
-2#tuez Barty le Minuscule#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
+2#tuez Barty le Minuscule#2#Kill Barty the Minuscule#act2_BOUNTY-route_alcarnus_[1-2]
 2#tuez Brisos#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
 2#tuez Yeth#2#Kill Yeth#act2_BOUNTY-route_alcarnus_[1-2]
 2#tuez Bélial#2#Kill Belial#act2_ADV-Tuer_Belial
-2#tuez Jhorum le Clerc#2#Need EN#act2_ADV-alcarnus_[1-8]
+2#tuez Jhorum le Clerc#2#Kill Jhorum the Cleric#act2_ADV-alcarnus_[1-8]
 2#tuez Zoltun Kulle#2#Kill Zoltun Kulle#act2_ADV-Tuer_ZoltunKulle
 2#tuez Maghda#2#Kill Maghda#act2_ADV-Tuer_Maghda
 2#nettoyez les ruines#2#Need EN#None
@@ -99,29 +99,26 @@
 2#nettoyez les grottes du sirocco#2#Need EN#None
 2#l’idole de Rygnar#2#Need EN#None
 2#tuez Gryssian#2#Need EN#None
-2#tuez Pazuzu#2#Need EN#None
+2#tuez Pazuzu#2#Kill Pazuzu#None
 2#tuez le seigneur-mage Skomara#2#Need EN#None
 2#nettoyez la grotte mystérieuse#2#Need EN#None
 2#tout l’or d’un mineur#2#Need EN#None
 2#les bas-fonds maudits#2#Need EN#None
 2#le repaire des Lacunis#2#Need EN#None
-2#tuez le seigneur-mage Caustus#2#Need EN#None
+2#tuez le seigneur-mage Caustus#2#Kill Mage Lord Caustus#None
 2#tuez Plume-Sanglante#2#Need EN#None
 2#tuez l’Archiviste#2#Need EN#None
 2#Need FR#2#A Miner's Gold#None
 2#Need FR#2#Clear the Ruins#None
 2#Need FR#2#Clear the Vile Cavern#None
-2#Need FR#2#Kill Mage Lord Caustus#None
 2#Need FR#2#The Cursed Battlement#None
 2#Need FR#2#The Guardian Spirits#None
 2#Need FR#2#Clear the Flooded Cave#None
-2#Need FR#2#Kill Pazuzu#None
 2#Need FR#2#Kill Gart the Mad#None
 2#Need FR#2#Rygnar Idol#None
 2#Need FR#2#Clear the Ancient Cave#None
 2#Need FR#2#Kill Mage Lord Flaydren#None
 2#Need FR#2#Kill Ashek#None
-2#Need FR#2#Kill Jhorum the Cleric#None
 2#Need FR#2#Sardar's Treasure#None
 2#Need FR#2#Lair of the Lacuni#None
 2#Need FR#2#Restless Sands#None
@@ -131,7 +128,6 @@
 2#Need FR#2#Kill Saha the Slasher#None
 2#Need FR#2#Prisoners of Kamyr#None
 2#Need FR#2#Clear the Cave of Burrowing Horror#None
-2#Need FR#2#Kill Barty the Minuscule#None
 2#Need FR#2#Kill High Cultist Murdos#None
 2#Need FR#2#Kill Raiha##None
 2#Need FR#2#Kill Mage Lord Ghuyan#None
@@ -147,7 +143,6 @@
 2#Need FR#2#Kill Hemit#None
 2#Need FR#2#The Shrine of Rakanishu#None
 
-;Acte 3
 3#Need FR#3#Clear the Forward Barracks#None
 3#Need FR#3#Kill Charuch the Spear#None
 3#tuez Obis le Puissant#3#Need EN#act3_ADV-rempart_[1-5]
@@ -156,13 +151,13 @@
 3#le sommet de la gloire#3#Need EN#None
 3#tuez Cydaée#3#Need EN#None
 3#tuez Aloysius le Funèbre#3#Need EN#None
-3#tuez Ghom#3#Need EN#None
+3#tuez Ghom#3#Kill Ghom#None
 3#nettoyez le niveau 2 des réserves du champ de bataille#3#Need EN#None
 3#la caldera maudite#3#Need EN#None
 3#la garnison maudite#3#Need EN#None
 3#nettoyez le passage souterrain#3#Need EN#None
 3#tuez Griffe-Tranchante#3#Need EN#None
-3#tuez Asmodan#3#Need EN#act3_ADV-Tuer_Azmodan
+3#tuez Asmodan#3#Kill Azmodan#act3_ADV-Tuer_Azmodan
 3#tuez l’Écraseur#3#Need EN#None
 3#le cours de la bataille#3#Need EN#None
 3#nettoyez les cavernes du Givre#3#Need EN#None
@@ -172,18 +167,18 @@
 3#tuez Shandra’Har#3#Need EN#None
 3#forgé au combat#3#Need EN#None
 3#nettoyez la fonderie#3#Need EN#None
-3#tuez Aile-de-Braise#3#Need EN#act3_ADV-field_[1-4]
-3#tuez Démonica la Redoutable#3#Need EN#act3_ADV-tower_[1-5]
-3#tuez Belagg Percechair#3#Need EN#None
+3#tuez Aile-de-Braise#3#Kill Emberwing#act3_ADV-field_[1-4]
+3#tuez Démonica la Redoutable#3#Kill Demonika the Wicked#act3_ADV-tower_[1-5]
+3#tuez Belagg Percechair#3#Kill Belagg Pierceflesh#None
 3#les liens du sang#3#Need EN#None
 3#tuez Tombe-Hache l’Exécuteur#3#Need EN#None
 3#tuez Haxxor#3#Need EN#act3_ADV-tower_[1-5]
 3#tuez Acharné le Fendeur#3#Need EN#act3_ADV-core_start_[1-5]
-3#tuez Gholash#3#Need EN#act3_ADV-tower_[1-5]
+3#tuez Gholash#3#Kill Gholash#act3_ADV-tower_[1-5]
 3#les profondeurs maudites#3#Need EN#None
 3#le glacier maudit#3#Need EN#None
 3#tuez Cogneface la Matraque#3#Need EN#act3_ADV-fdp_[1-5]
-3#tuez le briseur de siège#3#Need EN#None
+3#tuez le briseur de siège#3#Kill the Siegebreaker Assault Beast#None
 
 3#Need FR#3#Clear Cryder's Outpost#None
 3#Need FR#3#Kill Bashface the Truncheon#None
@@ -201,8 +196,6 @@
 3#Need FR#3#Kill Thornback#None
 3#Need FR#3#Kill Bholen#None
 3#Need FR#3#Kill Greelode the Unforgiving#None
-3#Need FR#3#Kill Emberwing#act3_ADV-field_[1-4]
-3#Need FR#3#Kill Ghom#None
 3#Need FR#3#Clear the Foundry#None
 3#Need FR#3#The Cursed Glacier#None
 3#Need FR#3#Kill Lummock the Brute#None
@@ -216,60 +209,48 @@
 3#Need FR#3#Blaze of Glory#None
 3#Need FR#3#Kill Mhawgann the Unholy#None
 3#Need FR#3#tuez Gugyn le Gantelet#None
-3#Need FR#3#Kill Azmodan#act3_ADV-Tuer_Azmodan
-3#Need FR#3#Kill Demonika the Wicked#act3_ADV-tower_[1-5]
 3#Need FR#3#Clear the Caverns of Frost#None
 3#Need FR#3#Kill Thromp the Breaker#None
 3#Need FR#3#Blood Ties#None
-3#Need FR#3#Kill the Siegebreaker Assault Beast#None
 3#Need FR#3#Kill Brimstone#None
-3#Need FR#3#Kill Gholash#None
 3#Need FR#3#Clear the Fortified Bunker#None
 3#Need FR#3#Kill Garganug#None
 3#Need FR#3#Kill the Crusher#None
 3#Need FR#3#Kill Brutu#act3_ADV-tower_[1-5]
 3#Need FR#3#Kill Groak the Brawler#None
-3#Need FR#3#Kill Belagg Pierceflesh#None
 
 4#le dais maudit#4#Need EN#None
-4#tuez Oah’ Tash#4#Need EN#None
+4#tuez Oah’ Tash#4#Kill Oah' Tash#None
 4#nettoyez la faille infernale#4#Need EN#None
-4#tuez Izual#4#Need EN#None
+4#tuez Izual#4#Kill Izual#None
 4#tuez l’aspect du Péché#4#Need EN#None
 4#tuez l’aspect de l’Angoisse#4#Need EN#None
-4#tuez Slarg le béhémoth#4#Need EN#None
-4#tuez Diablo#4#Need EN#None
-4#tuez Rakanoth#4#Need EN#act4_ADV-Tuer_Rakanoth
+4#tuez Slarg le béhémoth#4#Kill Slarg the Behemoth#None
+4#tuez Diablo#4#Kill Diablo#None
+4#tuez Rakanoth#4#Kill Rakanoth#act4_ADV-Tuer_Rakanoth
 4#tuez l’aspect de la Souffrance#4#Need EN#None
 4#tuez Martel#4#Need EN#None
 4#la chapelle maudite#4#Need EN#None
-4#tuez Kao’ Ahn#4#Need EN#None
+4#tuez Kao’ Ahn#4#Kill Kao' Ahn#None
 4#tuez Rhau’Kye#4#Need EN#None
 4#tuez Pyrus le Damné#4#Need EN#None
-4#tuez Veshan le Féroce#4#Need EN#None
+4#tuez Veshan le Féroce#4#Kill Veshan the Fierce#None
 4#tuez Presse-Purée#4#Need EN#None
 4#tuez Nuit-Sinistre le Sans-âme#4#Need EN#None
 
 4#Need FR#4#Kill Haures#None
 4#Need FR#4#Kill the Aspect of Lies#None
-4#Need FR#4#Kill Veshan the Fierce#None
-4#Need FR#4#Kill Slarg the Behemoth#None
 4#Need FR#4#Kill Hammermash#None
 4#Need FR#4#Kill Pyres the Damned#None
 4#Need FR#4#Kill the Aspect of Pain#None
 4#Need FR#4#Kill the Aspect of Anguish#None
 4#Need FR#4#The Cursed Dais#None
-4#Need FR#4#Kill Kao' Ahn#None
 4#Need FR#4#Kill Sledge#None
 4#Need FR#4#Kill the Aspect of Hatred#None
-4#Need FR#4#Kill Diablo#None
-4#Need FR#4#Kill Rakanoth#act4_ADV-Tuer_Rakanoth
-4#Need FR#4#Kill Oah' Tash#None
 4#Need FR#4#Clear the Hell Rift#None
 4#Need FR#4#Kill Kysindra the Wretched#None
 4#Need FR#4#The Cursed Chapel#None
 4#Need FR#4#Kill Torchlighter#None
-4#Need FR#4#Kill Izual#None
 
 5#la patrouille perdue#5#Need EN#None
 5#tuez Urzaël#5#Need EN#None

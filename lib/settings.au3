@@ -30,6 +30,7 @@ Global $MonsterPriority = False
 Global $Unidentified = False
 Global $WaitForLoot = True
 Global $ShouldPreBuff = False
+Global $TakeGlobeInFight = False
 ; gestion items
 Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
@@ -471,7 +472,8 @@ Func InitSkillHeros($skillHeros)
 	; BuyPotion
 	$NbPotionBuy = IniRead($skillHeros, "Run info", "NbPotionBuy", $NbPotionBuy)
 
-	$TakeShrines = IniRead($skillHeros, "Run info", "TakeShrines", $TakeShrines)
+	$Dummy = IniRead($skillHeros, "Run info", "TakeShrines", $TakeShrines)
+	$TakeShrines = Trim(StringLower($Dummy)) == "true"
 
 	$repairafterxxgames = IniRead($skillHeros, "Run info", "repairafterxxgames", $repairafterxxgames)
 
@@ -489,6 +491,9 @@ Func InitSkillHeros($skillHeros)
 	$MonsterPriority = Trim(StringLower($Dummy)) == "true"
 	$Dummy = IniRead($skillHeros, "Run info", "InventoryCheck", $InventoryCheck)
 	$InventoryCheck = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($skillHeros, "Run info", "TakeGlobeInFight", $TakeGlobeInFight)
+	$TakeGlobeInFight = Trim(StringLower($Dummy)) == "true"
 
 	$a_time = IniRead($skillHeros, "Run info", "attacktimeout", $a_time)
 	$g_time = IniRead($skillHeros, "Run info", "grabtimeout", $g_time)

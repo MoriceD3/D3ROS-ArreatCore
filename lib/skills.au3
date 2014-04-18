@@ -509,9 +509,9 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Blizzard, "Wizard_Blizzard", 2500, "attack", 40, "arcane", 100, 45], _
 						[$Wizard_DiamondSkin, "Wizard_DiamondSkin", 15000, "life", "", "", 35, ""], _
-						[$Wizard_EnergyArmor, "Wizard_EnergyArmor", 50000, "buff", 25, "arcane", "", ""], _
-						[$Wizard_Familiar, "Wizard_Familiar", 50000, "buff", 20, "arcane", "", ""], _
-						[$Wizard_MagicWeapon, "Wizard_MagicWeapon", 50000, "buff", 25, "arcane", "", ""], _
+						[$Wizard_EnergyArmor, "Wizard_EnergyArmor", 600000, "buff", 25, "arcane", "", ""], _
+						[$Wizard_Familiar, "Wizard_Familiar", 600000, "buff", 20, "arcane", "", ""], _
+						[$Wizard_MagicWeapon, "Wizard_MagicWeapon", 600000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_SpectralBlade, "Wizard_SpectralBlade", "", "physical", "", "", 100, 1], _
 						[$Wizard_ArcaneOrb, "Wizard_ArcaneOrb", "", "attack", 35, "arcane", 100, 45], _
 						[$Wizard_ArcaneTorrent, "Wizard_ArcaneTorrent", "", "attack", 16, "arcane", 100, 45], _
@@ -527,7 +527,7 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Hydra, "Wizard_Hydra", 5000, "buff", 15, "arcane", "", ""], _
 						[$Wizard_IceArmor, "Wizard_IceArmor", 110000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_MagicMissile, "Wizard_MagicMissile", "", "physical", "", "", 100, 45], _
-						[$Wizard_Meteor, "Wizard_Meteor", 2500, "attack", 50, "arcane", 100, 45], _
+						[$Wizard_Meteor, "Wizard_Meteor", 2500, "attack", 40, "arcane", 100, 45], _
 						[$Wizard_MirrorImage, "Wizard_MirrorImage", 14000, "attack", "", "arcane", 100, 45], _
 						[$Wizard_RayOfFrost, "Wizard_RayOfFrost", "", "attack", 16, "arcane", 100, 45], _
 						[$Wizard_ShockPulse, "Wizard_ShockPulse", "", "physical", "", "", 100, 45], _

@@ -136,6 +136,7 @@ Global $FailOpen_BookOfCain 	= 0
 ; Informations sur le personnage
 Global $nameCharacter
 Global $maxhp
+Global $pickupRadius
 
 ; Acte en cours
 Global $Act = 0
@@ -191,6 +192,10 @@ Global $Table_PriorityMonster     = [0]
 Global $Table_Potions 		      = [0]
 Global $Table_Grablist 		      = [0]
 Global $Table_BountyAct		      = [0]
+
+; Table et paramètre de recherche d'objet durant une séquence
+Global $Table_SearchObject = False
+Global $SearchForObject    = False
 
 ;statistique
 Global $CheckTakeShrineTaken = 0
