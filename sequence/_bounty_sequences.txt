@@ -1,14 +1,15 @@
 1#Need FR#1#Kill Growler#None
 1#Need FR#1#Kill Glidewing#None
-1#Need FR#1#Kill Reggrel the Despised#None
-1#tuez Théodyn Chantemort#1#Kill Theodyn Deathsinger#none
-1#Need FR#1#Kill Percepeus#None
+1#Need FR#1#Kill Reggrel the Despised#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#tuez Théodyn Chantemort#1#Kill Theodyn Deathsinger#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#Need FR#1#Kill Percepeus#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#Need FR#1#Kill Hrugowl the Defiant#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
 1#le frère de l’apothicaire#1#Apothecary's Brother#None
-1#Need FR#1#Kill Krailen the Wicked#None
-1#tuez Jezeb le Conjurateur#1#Kill Jezeb the Conjuror#None
+1#Need FR#1#Kill Krailen the Wicked#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1|Act1_BOUNTY-Leoric_Manor_1
+1#tuez Jezeb le Conjurateur#1#Kill Jezeb the Conjuror#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1|Act1_BOUNTY-Leoric_Manor_1
 1#Need FR#1#Kill BattleRage the Plagued#None
 1#Need FR#1#Kill BludgeonSkull#None
-1#Need FR#1#Kill the Warden#None
+1#Tuez le Gardien#1#Kill the Warden#None
 1#Need FR#1#Kill Sotnob the fool#None
 1#Need FR#1#Kill Crassus the tormentor#None
 1#un étranger en détresse#1#A Stranger in Need#None
@@ -71,7 +72,6 @@
 1#tuez Gale#1#Need EN#None
 1#le moulin maudit#1#Need EN#act1_ADV-champs_[1-8]
 1#le fourreau retrouvé#1#Need EN#None
-1#tuez le Gardien#1#Need EN#None
 1#la cave maudite#1#Need EN#None
 1#Need FR#1#Kill Bludgeonskull #None
 
