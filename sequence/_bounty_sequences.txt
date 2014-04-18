@@ -1,12 +1,37 @@
-1#Need FR#1#Kill Growler#None
-1#Need FR#1#Kill Glidewing#None
-1#Need FR#1#Kill Reggrel the Despised#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#tuez Rad’noj#1#Kill Rad'Noj#act1_BOUNTY-cryptes_royals
+1#tuez le roi squelette#1#Kill the Skeleton King#act1_ADV-Tuer_SkeletonKing
+1#tuez Galush Valdant#1#Kill Galush Valdant#act1_ADV-putride_[1-6]
+1#tuez Hawthorne Gable#1#Kill Hawthorne Gable#act1_ADV-putride_[1-6]
+1#tuez Krelm l’Inqualifiable#1#Kill Krelm the Flagitious#act1_ADV-champs_[1-8]
+1#tuez Logrut le Guerrier#1#Kill Logrut the Warrior#Act1_BOUNTY-Southern_Kill_1
+1#tuez Fonceur#1#Kill Charger#act1_ADV-champs_[1-8]
+1#tuez le capitaine Clegg#1#Kill Captain Clegg#act1_BOUNTY-cryptes_royals
+1#tuez le fantôme de Fecklar#1#Kill Fecklar's Ghost#act1_ADV-putride_[1-6]
+1#tuez Macchabcès#1#Need EN#act1_ADV-Val_[1-8]
+1#tuez Gale#1#Need EN#act1_ADV-Val_[1-8]
+1#tuez Melmak#1#Need EN#act1_ADV-champs_[1-8]
+1#tuez le seigneur Brone#1#Need EN#act1_ADV-putride_[1-6]
+1#le moulin maudit#1#Need EN#act1_ADV-champs_[1-8]
 1#tuez Théodyn Chantemort#1#Kill Theodyn Deathsinger#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#tuez Jezeb le Conjurateur#1#Kill Jezeb the Conjuror#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1|Act1_BOUNTY-Leoric_Manor_1
+1#Need FR#1#Kill Reggrel the Despised#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
 1#Need FR#1#Kill Percepeus#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
 1#Need FR#1#Kill Hrugowl the Defiant#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
-1#le frère de l’apothicaire#1#Apothecary's Brother#None
 1#Need FR#1#Kill Krailen the Wicked#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1|Act1_BOUNTY-Leoric_Manor_1
-1#tuez Jezeb le Conjurateur#1#Kill Jezeb the Conjuror#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1|Act1_BOUNTY-Leoric_Manor_1
+1#Need FR#1#Kill Dreadclaw the Leaper#act1_ADV-champs_[1-8]
+1#Need FR#1#Kill Cadhul the DeathCaller#Act1_BOUNTY-Southern_Kill_1
+1#Need FR#1#Kill Buras the Impaler#Act1_BOUNTY-Southern_Kill_1
+1#Need FR#1#Kill Lorzak the Powerfull#Act1_BOUNTY-Southern_Kill_1
+1#Need FR#1#Revenge of Gharbad#Act1_BOUNTY-Southern_Gharbad_1
+1#Need FR#1#Kill Grimsmack#act1_ADV-putride_[1-6]
+1#Need FR#1#The Cursed Camp#Act1_ADV_BOUNTY-Southern_Shrine_1
+1#Need FR#1#Kill Kankerrot#act1_ADV-Val_[1-8]
+1#Need FR#1#Kill Mira Aemon#act1_ADV-Val_[1-8]
+1#Need FR#1#Kill Mange#act1_ADV-Val_[1-8]
+1#Need FR#1#The Cursed Cellar#Act1_BOUNTY-The_Cursed_Cellar_1
+1#Need FR#1#Kill Growler#None
+1#Need FR#1#Kill Glidewing#None
+1#le frère de l’apothicaire#1#Apothecary's Brother#None
 1#Need FR#1#Kill BattleRage the Plagued#None
 1#Need FR#1#Kill BludgeonSkull#None
 1#Tuez le Gardien#1#Kill the Warden#None
@@ -17,34 +42,18 @@
 1#Need FR#1#Kill Boneslag the Slayer#None
 1#Need FR#1#Kill Treefist Woodhead#None
 1#Need FR#1#The Cursed Bellows#None
-1#Need FR#1#Kill Charger#act1_ADV-champs_[1-8]
-1#Need FR#1#Kill Dreadclaw the Leaper#act1_ADV-champs_[1-8]
-1#tuez Krelm l’Inqualifiable#1#Kill Krelm the Flagitious#act1_ADV-champs_[1-8]
 1#nettoyez l’Antre des déchus#1#Clear the Scavenger's Den#none
 1#nettoyez la tanière de khazras#1#Clear Kazra Den#None
 1#Need FR#1#The Cursed Grove#None
 1#une ferme assiégée#1#Carrion Farm#None
 1#la famille Rathe#1#The Family of Rathe#None
-1#Need FR#1#Kill Buras the Impaler#Act1_BOUNTY-Southern_Kill_1
-1#Need FR#1#Kill Cadhul the DeathCaller#Act1_BOUNTY-Southern_Kill_1
-1#tuez Logrut le Guerrier#1#Kill Logrut the Warrior#Act1_BOUNTY-Southern_Kill_1
-1#Need FR#1#Kill Lorzak the Powerfull#Act1_BOUNTY-Southern_Kill_1
 1#la tour croulante#1#Crumbling tower#None
 1#nettoyez la grotte du clan de la Lune#1#Clear the Cave of the Moon Clan#None
-1#Need FR#1#The Cursed Camp#Act1_ADV_BOUNTY-Southern_Shrine_1
 1#Need FR#1#Scavenged Scabbard#None
-1#Need FR#1#Revenge of Gharbad#Act1_BOUNTY-Southern_Gharbad_1
-1#Need FR#1#Kill Fecklar's Ghost#act1_ADV-putride_[1-6]
-1#Need FR#1#Kill Grimsmack#act1_ADV-putride_[1-6]
-1#tuez Hawthorne Gable#1#Kill Hawthorne Gable#act1_ADV-putride_[1-6]
-1#tuez Galush Valdant#1#Kill Galush Valdant#act1_ADV-putride_[1-6]
 1#Need FR#1#Eternal War#None
 1#l’ultime combat des anciens#1#Last stand of the ancient#None
 1#Need FR#1#Clear the warrior's rest#None
 1#Need FR#1#Clear the crypt of the ancients#None
-1#Need FR#1#Kill Kankerrot#act1_ADV-Val_[1-8]
-1#Need FR#1#Kill Mira Aemon#act1_ADV-Val_[1-8]
-1#Need FR#1#Kill Mange#act1_ADV-Val_[1-8]
 1#Need FR#1#Clear the Den of the Fallen#None
 1#Need FR#1#Clear the jar of souls#None
 1#Need FR#1#Kill Digger O'Dell#None
@@ -59,18 +68,11 @@
 1#Need FR#1#The Cursed Court#None
 1#tuez le capitaine Cage#1#Kill Captain Cage#None
 1#Need FR#1#Kill Killian Damort#None
-1#tuez le roi squelette#1#Kill the Skeleton King#none
-1#Need FR#1#Kill Rad'Noj#None
-1#Need FR#1#Kill Captain Clegg#none
 1#tuez la reine Aranéa#1#Kill Queen Araneae#None
 1#Need FR#1#Kill Qurash the reviled#None
 1#tuez Rathlin la Faiseuse de veuves#1#Kill Rathlin the widowmaker#None
 1#Need FR#1#The Cursed hatchery#None
-1#Need FR#1#The Cursed Cellar#Act1_BOUNTY-The_Cursed_Cellar_1
-1#tuez le seigneur Brone#1#Need EN#act1_ADV-putride_[1-6]
 1#tuez Venimite#1#Need EN#None
-1#tuez Gale#1#Need EN#None
-1#le moulin maudit#1#Need EN#act1_ADV-champs_[1-8]
 1#le fourreau retrouvé#1#Need EN#None
 1#la cave maudite#1#Need EN#None
 1#Need FR#1#Kill Bludgeonskull #None
