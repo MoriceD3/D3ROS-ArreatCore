@@ -29,6 +29,7 @@ Global $ItemRefresh = True
 Global $MonsterPriority = False
 Global $Unidentified = False
 Global $WaitForLoot = True
+Global $ShouldPreBuff = False
 ; gestion items
 Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
@@ -434,6 +435,10 @@ Func InitSkillHeros($skillHeros)
 	$Dummy = IniRead($skillHeros, "Run info", "SpellPreBuff4", $PreBuff4)
 	$PreBuff4 = Trim(StringLower($Dummy)) == "true"
 	$delaiBuff4 = IniRead($skillHeros, "Run info", "SpellPreBuffDelay4", $delaiBuff4)
+
+	If $PreBuff1 Or $PreBuff2 Or $PreBuff3 Or $PreBuff4 Then
+		$ShouldPreBuff = True
+	EndIf
 
 	;; Spells
 	$Skill_conf1[0] = IniRead($skillHeros, "Run info", "SpellOnLeft", $Skill_conf1[0])

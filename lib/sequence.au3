@@ -450,6 +450,8 @@ Func sequence($sequence_list)
 		Local $old_Table_Coffre = $Table_Coffre
 		Local $old_Table_Rack = $Table_Rack
 
+		$autobuff = $ShouldPreBuff
+
 		Local $compt_line = 0
 		Dim $txttoarray[1]
 
@@ -506,7 +508,7 @@ Func sequence($sequence_list)
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
-					   _Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
+					   _Log("Enclenchement auto du buffinit() takewp", $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
@@ -530,7 +532,7 @@ Func sequence($sequence_list)
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
-					   _Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
+					   _Log("Enclenchement auto du buffinit() takewpadv", $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = StringReplace($line, "takewpadv=", "", 0, 2)
 					$table_wp = $line
@@ -632,8 +634,7 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "autobuff=", "", 0, 2)
 					If $line = "true" Then
 						$autobuff = True
-						BuffInit()
-						_log("Autobuff definit sur true line : " & $i + 1 & " et lancement buffinit" , $LOG_LEVEL_DEBUG)
+						_log("Autobuff definit sur true line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					Else
 						$autobuff = False
 						_log("Autobuff definit sur false line : " & $i + 1, $LOG_LEVEL_DEBUG)
