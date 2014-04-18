@@ -119,6 +119,10 @@ EndFunc
 Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 	If $arr_sequence[$index][0] = 2 And $mvtp = 1 Then
 		movetopos($arr_sequence[$index][1], $arr_sequence[$index][2], $arr_sequence[$index][3], $arr_sequence[$index][4], $arr_sequence[$index][5])
+		$looking = LookForObjects()
+		If Not $looking = False Then
+			Return $looking
+		EndIf
 	Else
 		If $arr_sequence[$index][1] = "sleep" Then
 			Sleep($arr_sequence[$index][2])
@@ -144,7 +148,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			TakeWPV2($arr_sequence[$index][2], 1)
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			if Not _TownPortalnew() Then
-				$GameFailed=1
+				$GameFailed = 1
 				Return False
 			EndIf
 		ElseIf $arr_sequence[$index][1] = "offsetlist" Then
@@ -153,6 +157,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			WEnd
 		EndIf
 	EndIf
+	Return False
 EndFunc   ;==>TraitementSequence
 
 Func _playerdead_revive()
@@ -262,13 +267,17 @@ Func bloc_sequence(ByRef $arr_MTP, $revive = 0)
 		_log("buffinit post death")
 	EndIf
 
+	$result = False
 	If IsArray($arr_MTP) Then
 		If $UsePath Then
-			UsePath($arr_MTP)
+			$result = UsePath($arr_MTP)
 		Else
 			For $i = 0 To UBound($arr_MTP, 1) - 1
 				If $arr_MTP[$i][0] <> 0 Then
-					TraitementSequence($arr_MTP, $i, 1)
+					$result = TraitementSequence($arr_MTP, $i, 1)
+					If Not $result = False Then
+						Return $result
+					EndIf
 					If revive($arr_MTP) Then
 						Return
 					EndIf
@@ -278,6 +287,7 @@ Func bloc_sequence(ByRef $arr_MTP, $revive = 0)
 	Else
 		_log("Invalid sequence array argument", $LOG_LEVEL_ERROR)
 	EndIf
+	Return $result
 EndFunc   ;==>bloc_sequence
 
 Func SendSequence(ByRef $arr_sequence)
@@ -285,7 +295,22 @@ Func SendSequence(ByRef $arr_sequence)
 		; ON ENVOIT ICI L'ARRAY A LA FONCTION DE DEPLACEMENT
 		$arr_sequence = reverse_arr($arr_sequence)
 		;**TEMPORAIRE**
-		bloc_sequence($arr_sequence)
+		$result = bloc_sequence($arr_sequence)
+		If Not $result = False Then
+			_log("Object found and command is : " & $result, $LOG_LEVEL_ERROR)
+			If StringInStr($result, "loadsequence=", 2) Then
+				$temp = StringReplace($result, "loadsequence=", "")
+				_log("[Ob] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
+				Sequence($temp)
+			ElseIf StringInStr($result, "endsequence()", 2) Then
+				_log("[Ob] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
+			ElseIf StringInStr($result, "terminate()", 2) Then
+				_log("[Ob] Terminate detected. Stopping script!.", $LOG_LEVEL_ERROR)
+			Else
+				_log("Invalid command found for ifobjectfound")
+			EndIf
+			Return False
+		EndIf
 		;**TEMPORAIRE**
 		If $autobuff Then
 			Sleep(500)
@@ -294,6 +319,7 @@ Func SendSequence(ByRef $arr_sequence)
 		EndIf
 	EndIf
 	$sequence_save = 0
+	Return True
 EndFunc   ;==>SendSequence
 
 Func ArrayUp(ByRef $array_sequence)
@@ -422,6 +448,41 @@ Func traitement_read_str($txt)
 EndFunc   ;==>traitement_read_str
 
 
+Func LookForObjects()
+	If Not $SearchForObject Then
+		Return False
+	EndIf
+
+	Local $index, $offset, $count
+	startIterateObjectsList($index, $offset, $count)
+
+	Dim $item[$TableSizeGuidStruct + 1]
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+	If @error > 0 Then
+		Return False
+	EndIf
+
+	$CurrentLoc = GetCurrentPos()
+	$SearchCount = UBound($Table_SearchObject) - 1 
+	For $i = 0 To $count
+		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
+			For $z = 0 to $SearchCount
+				If $item[9] > $Table_SearchObject[$z][1] Then
+					ContinueLoop
+				EndIf
+				If StringInStr($item[1], $Table_SearchObject[$z][0]) Then
+					Return $Table_SearchObject[$z][2]
+				EndIf
+			Next
+		EndIf
+	Next
+
+	Return False
+EndFunc
+
+
 Func sequence($sequence_list)
 
 	Dim $filetoarray[1]
@@ -482,7 +543,10 @@ Func sequence($sequence_list)
 		EndIf
 
 		Dim $array_sequence[1][6]
+		$sequence_save = 0
 		Local $end_sequence = False
+		$SearchForObject = False 
+		$Table_SearchObject = False
 
 		For $i = 0 To UBound($txttoarray) - 1
 			If $GameFailed = 1 Then
@@ -513,11 +577,15 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
-						SendSequence($array_sequence)
-						$array_sequence = ArrayInit($array_sequence)
-						_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
-						TakeWPV2($table_wp, 0)
-						$line = ""
+						If SendSequence($array_sequence) Then
+							$array_sequence = ArrayInit($array_sequence)
+							_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							TakeWPV2($table_wp, 0)
+							$line = ""
+						Else
+							$end_sequence = True
+							$line = ""
+						EndIf
 					Else
 						_log("Mise en array d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
@@ -537,11 +605,15 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "takewpadv=", "", 0, 2)
 					$table_wp = $line
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
-						SendSequence($array_sequence)
-						$array_sequence = ArrayInit($array_sequence)
-						_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
-						TakeWPV2($table_wp, 1)
-						$line = ""
+						If SendSequence($array_sequence) Then
+							$array_sequence = ArrayInit($array_sequence)
+							_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							TakeWPV2($table_wp, 1)
+							$line = ""
+						Else
+							$end_sequence = True
+							$line = ""
+						EndIf
 					Else
 						_log("Mise en array d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
@@ -553,19 +625,23 @@ Func sequence($sequence_list)
 					EndIf
 				ElseIf StringInStr($line, "_townportal()", 2) Then; _townportal() detected
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
-						SendSequence($array_sequence)
-						$array_sequence = ArrayInit($array_sequence)
-						_log("Enclenchement d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
-						If Not _checkdisconnect() Then
-						   If Not _TownPortalnew() Then
-							  $GameFailed = 1
-							  Return False
-						   EndIf
-						Else
-						   $GameFailed = 1
-						   Return False
+						If SendSequence($array_sequence) Then
+							$array_sequence = ArrayInit($array_sequence)
+							_log("Enclenchement d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							If Not _checkdisconnect() Then
+							   If Not _TownPortalnew() Then
+								  $GameFailed = 1
+								  Return False
+							   EndIf
+							Else
+							   $GameFailed = 1
+							   Return False
+							EndIf
+							$line = ""
+						Else 
+							$end_sequence = True
+							$line = ""
 						EndIf
-						$line = ""
 					Else
 						_log("Mise en array d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						$array_sequence = ArrayUp($array_sequence)
@@ -575,10 +651,14 @@ Func sequence($sequence_list)
 						$line = ""
 					EndIf
 				ElseIf StringInStr($line, "endsave()", 2) Then; endsave() detected
-					SendSequence($array_sequence)
-					$array_sequence = ArrayInit($array_sequence)
-					$line = ""
-					_log("Enclenchement d'un endsave() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$line = ""
+						_log("Enclenchement d'un endsave() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
 				EndIf
 				;*********************************************************************************************
 				;******************************CMD DE DEFINITION**********************************************
@@ -653,6 +733,26 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "positionrange=", "", 0, 2)
 					_log("Changing PositionRange to : " & $line, $LOG_LEVEL_DEBUG)
 					$PositionRange = Number($line)
+					$line = ""
+					$definition = 1
+				ElseIf StringInStr($line, "ifobjectfound=", 2) Then
+					$line = StringReplace($line, "ifobjectfound=", "", 0, 2)
+					$temp = StringSplit($line, ":", 2)
+					$temp2 = StringSplit($temp[0] , ",", 2)
+					If $Table_SearchObject = False Then
+						Dim $Table_SearchObject[1][3]
+						$Table_SearchObject[0][0] = $temp2[0]
+						$Table_SearchObject[0][1] = $temp2[1]
+						$Table_SearchObject[0][2] = $temp[1]
+					Else
+						$size = Ubound($Table_SearchObject)
+						Redim $Table_SearchObject[$size + 1][3]
+						$Table_SearchObject[$size][0] = $temp2[0]
+						$Table_SearchObject[$size][1] = $temp2[1]
+						$Table_SearchObject[$size][2] = $temp[1]
+					EndIf
+					_log("Ajout d'un objet a rechercher : " & $temp2[0] & " (Range : " & $temp2[1] & "). Action : " & $temp[1], $LOG_LEVEL_DEBUG)
+					$SearchForObject = True
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "revive=", 2) Then
@@ -733,9 +833,8 @@ Func sequence($sequence_list)
 							_log("Position found ! ", $LOG_LEVEL_VERBOSE)
 							If StringInStr($temp[1], "loadsequence=", 2) Then
 								$end_sequence = True
-								_log($temp[1])
 								$temp = StringReplace($temp[1], "loadsequence=", "")
-								_log("[If] Lancement de la sequence : " & $temp)
+								_log("[If] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
 								Sequence($temp)
 							ElseIf StringInStr($temp[1], "endsequence()", 2) Then
 								_log("[If] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
@@ -871,7 +970,9 @@ Func sequence($sequence_list)
 			EndIf
 
 			If UBound($txttoarray) = $i + 1 Then
-				SendSequence($array_sequence)
+				If SendSequence($array_sequence) = False Then
+					$end_sequence = True
+				EndIf
 			EndIf
 
 		Next
@@ -953,9 +1054,12 @@ EndFunc   ;==> InteractBossPortal
 ; -> racklist=					(liste des racks a ouvrir)
 ; -> chestlist=					(liste des coffres a ouvrir)
 ; -> decorlist=					(liste des objets de décor a casser)
+; -> ifobjectfound=				(Définie une recherche active d'object (comme un portail) a une distance maximale et lance une commande)
+;								(Commandes supportées : loadsequence=XXX / endsequence() / terminate())
+;								(Ex : ifobjectfound=g_Portal_Circle_Blue,25:loadsequence=lasequencedelacave)
 ; -> autobuff=true/false        (active ou desactive la gestion des buffs automatiquement lors du passage d'un array)
-; -> revive=true/false          (active ou desactive la fonction revive, si ResActivated est definit sur false dans le setting.ini, la command n'a aucun effet)
-; -> usepath=true/false         (active ou desactive la fonction usepath, si UsePath est definit sur false dans le setting.ini, la command n'a aucun effet)
+; -> revive=true/false          (active ou desactive la fonction revive, si ResActivated est definit sur false dans le setting.ini, la commande n'a aucun effet)
+; -> usepath=true/false         (active ou desactive la fonction usepath, si UsePath est definit sur false dans le setting.ini, la commande n'a aucun effet)
 ;
 ; CMD PASSIVE
 ; -> sleep=                     (definition d'un sleep)

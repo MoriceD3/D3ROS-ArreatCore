@@ -34,8 +34,6 @@ Func UsePath(ByRef $path)
 			$GameFailed = 1
 		EndIF
 
-
-
 		GestSpellcast(0, 0, 0)
 
 		If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
@@ -53,6 +51,12 @@ Func UsePath(ByRef $path)
 
 		If $GameOverTime = True Then
 			ExitLoop
+		EndIf
+
+		$looking = LookForObjects()
+		If Not $looking = False Then
+			MouseUp($MouseMoveClick)
+			Return $looking
 		EndIf
 
 		$Distance = GetDistance($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
@@ -86,7 +90,7 @@ Func UsePath(ByRef $path)
 
 			$Coords = Checkclickable($Coords)
 
-			dim $Coords_Rnd[2]
+			Dim $Coords_Rnd[2]
 			$Coords_Rnd[0] = Random($Coords[0] - 20, $Coords[0] + 20)
 			$Coords_Rnd[1] = Random($Coords[1] - 20, $Coords[1] + 15)
 
@@ -117,7 +121,6 @@ Func UsePath(ByRef $path)
 		WEnd
 		;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 		Sleep(10)
-
 
 		;ConsoleWrite("currentloc: " & $_Myoffset & " - "&$CurrentLoc[0] & " : " & $CurrentLoc[1] & " : " & $CurrentLoc[2] &@CRLF)
 		;ConsoleWrite("distance/m range: " & $Distance & " : " & $pos[4] & @CRLF)
@@ -154,6 +157,7 @@ Func UsePath(ByRef $path)
 		TraitementSequence($path, $i)
 	Next
 	MouseUp($MouseMoveClick)
+	Return False
 EndFunc   ;==>UsePath
 
 
