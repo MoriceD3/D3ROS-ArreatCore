@@ -66,7 +66,7 @@ Func SelectGameType($SelectGameType, $auto)
 		;Selection -> CHANGER DE QUETE
 		Sleep(Random(700, 800, 1))
 		_Log("Game Settings")
-		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu") ; tap paramètre de la partie
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu", 270) ; tap paramètre de la partie
 		Sleep(Random(700, 800, 1))
 
 		Local $Waiting_Time = 0
