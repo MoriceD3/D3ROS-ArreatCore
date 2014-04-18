@@ -128,6 +128,8 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			Sleep($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "interactbyactorname" Then
 			InteractByActorName($arr_sequence[$index][2])
+		ElseIf $arr_sequence[$index][1] = "InteractIronDoor" Then
+			InteractIronDoor($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractBossPortal" Then
 			InteractBossPortal($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
@@ -886,6 +888,18 @@ Func sequence($sequence_list)
 							$array_sequence[UBound($array_sequence) - 1][1] = "interactbyactorname"
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 						EndIf
+					ElseIf StringInStr($line, "InteractIronDoor=", 2) Then ;InteractIronDoor detected
+						$line = StringReplace($line, "InteractIronDoor=", "", 0, 2)
+						If $sequence_save = 0 Then
+							InteractIronDoor($line)
+							_log("Enclenchement d'un InteractIronDoor direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
+						Else
+							_log("Mise en array d'un InteractIronDoor() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							$array_sequence = ArrayUp($array_sequence)
+							$array_sequence[UBound($array_sequence) - 1][0] = 1
+							$array_sequence[UBound($array_sequence) - 1][1] = "InteractIronDoor"
+							$array_sequence[UBound($array_sequence) - 1][2] = $line
+						EndIf
 					ElseIf StringInStr($line, "InteractBossPortal=", 2) Then ;InteractBossPortals detected
 						$line = StringReplace($line, "InteractBossPortal=", "", 0, 2)
 						If $sequence_save = 0 Then
@@ -996,6 +1010,31 @@ Func sequence($sequence_list)
 	Next
 EndFunc   ;==>sequence
 
+Func InteractIronDoor($NameIronDoor, $dist = 30)
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
+	Local $maxtry = 0
+	startIterateObjectsList($index, $offset, $count)
+	If _playerdead() = False Then
+		While iterateObjectsList($index, $offset, $count, $item)
+			If StringInStr($item[1], $NameIronDoor) And $item[9] < $dist Then
+				_log("InteractIronDoor : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
+				While getDistance($item[2], $item[3], $item[4]) > 15 And $maxtry <= 15
+					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
+					MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
+					$maxtry += 1
+					_log('InteractIronDoor: click x : ' & $Coords[0] & " y : " & $Coords[1], $LOG_LEVEL_VERBOSE)
+					Sleep(800)
+				WEnd
+				Sleep(800)
+				Interact($item[2], $item[3], $item[4])
+				$foundobject = 1
+				Sleep(100)
+				ExitLoop
+			EndIf
+		WEnd
+	EndIf
+	Return $foundobject
+EndFunc   ;==>InteractIronDoor
 
 Func InteractBossPortal($NameBossPortal)
 
@@ -1066,6 +1105,7 @@ EndFunc   ;==> InteractBossPortal
 ; -> offsetlist()               (rafraichissement de la memoire)
 ; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appelé uniquement au dessus d'un takewp ou d'un _townportal())
 ; -> interactbyactorname=       (Interagit avec un npc / porte / objet)
+; -> InteractIronDoor=          (Interagit avec porte / grille )
 ; -> InteractBossPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
 ; -> buffinit()                 (Force l'initialisation des buffs)
 ; -> unbuff()                   (force l'unbuff)
