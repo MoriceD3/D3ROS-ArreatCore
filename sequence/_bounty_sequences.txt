@@ -24,7 +24,7 @@
 1#Need FR#1#Kill Lorzak the Powerfull#Act1_BOUNTY-Southern_Kill_1
 1#Need FR#1#Revenge of Gharbad#Act1_BOUNTY-Southern_Gharbad_1
 1#Need FR#1#Kill Grimsmack#act1_ADV-putride_[1-6]
-1#Need FR#1#The Cursed Camp#Act1_ADV_BOUNTY-Southern_Shrine_1
+1#Need FR#1#The Cursed Camp#Act1_BOUNTY-Southern_Shrine_1
 1#Need FR#1#Kill Kankerrot#act1_ADV-Val_[1-8]
 1#Need FR#1#Kill Mira Aemon#act1_ADV-Val_[1-8]
 1#Need FR#1#Kill Mange#act1_ADV-Val_[1-8]
