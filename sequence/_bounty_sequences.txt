@@ -151,7 +151,7 @@
 3#tuez le capitaine Dale#3#Need EN#None
 3#nettoyez la caserne#3#Need EN#None
 3#le sommet de la gloire#3#Need EN#None
-3#tuez Cydaée#3#Need EN#None
+3#tuez Cydaée#3#Kill Cydaea#act3_BOUNTY-tour_maudits_lvl1|act3_BOUNTY-Tuer_cydaée
 3#tuez Aloysius le Funèbre#3#Need EN#None
 3#tuez Ghom#3#Kill Ghom#None
 3#nettoyez le niveau 2 des réserves du champ de bataille#3#Need EN#None
@@ -163,7 +163,7 @@
 3#tuez l’Écraseur#3#Need EN#None
 3#le cours de la bataille#3#Need EN#None
 3#nettoyez les cavernes du Givre#3#Need EN#None
-3#tuez Maggrus le Sauvage#3#Need EN#None
+3#tuez Maggrus le Sauvage#3#Need EN#act3_BOUNTY-tour_maudits_lvl1
 3#nettoyez le fortin renforcé#3#Need EN#None
 3#tuez Ghallem le Cruel#3#Need EN#act3_ADV-field_[1-4]
 3#tuez Shandra’Har#3#Need EN#None
@@ -189,7 +189,6 @@
 3#Need FR#3#Clear the Underbridge#None
 3#Need FR#3#Kill Severclaw#None
 3#Need FR#3#Kill Allucayrd#None
-3#Need FR#3#Kill Cydaea#None
 3#Need FR#3#The Cursed Garrison#None
 3#Need FR#3#Kill Gormungandr#None
 3#Need FR#3#Kill Growlfang#None
