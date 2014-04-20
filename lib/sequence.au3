@@ -130,8 +130,8 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			InteractByActorName($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractIronDoor" Then
 			InteractIronDoor($arr_sequence[$index][2])
-		ElseIf $arr_sequence[$index][1] = "InteractBossPortal" Then
-			InteractBossPortal($arr_sequence[$index][2])
+		ElseIf $arr_sequence[$index][1] = "InteractWithPortal" Then
+			InteractWithPortal($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
 			_log("Buffinit sequence")
 			BuffInit()
@@ -900,16 +900,16 @@ Func sequence($sequence_list)
 							$array_sequence[UBound($array_sequence) - 1][1] = "InteractIronDoor"
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 						EndIf
-					ElseIf StringInStr($line, "InteractBossPortal=", 2) Then ;InteractBossPortals detected
-						$line = StringReplace($line, "InteractBossPortal=", "", 0, 2)
+					ElseIf StringInStr($line, "InteractWithPortal=", 2) Then ;InteractWithPortal detected
+						$line = StringReplace($line, "InteractWithPortal=", "", 0, 2)
 						If $sequence_save = 0 Then
-							_log("Enclenchement d'un InteractBossPortal direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
-							InteractBossPortal($line)
+							_log("Enclenchement d'un InteractWithPortal direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							InteractWithPortal($line)
 						Else
-							_log("Mise en array d'un InteractBossPortal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							_log("Mise en array d'un InteractWithPortal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
-							$array_sequence[UBound($array_sequence) - 1][1] = "InteractBossPortal"
+							$array_sequence[UBound($array_sequence) - 1][1] = "InteractWithPortal"
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 						EndIf
 					ElseIf StringInStr($line, "buffinit()", 2) Then ;buffinit detected
@@ -1036,17 +1036,16 @@ Func InteractIronDoor($NameIronDoor, $dist = 30)
 	Return $foundobject
 EndFunc   ;==>InteractIronDoor
 
-Func InteractBossPortal($NameBossPortal)
+Func InteractWithPortal($NamePortal)
 
 	Local $Curentarea = GetLevelAreaId()
 	Local $Newarea = $Curentarea
-	Local $BossPortalTry = 0
+	Local $PortalTry = 0
 	Local $NewAreaOk = 0
 	
-	While $NewAreaOk = 0 And $BossPortalTry < 5
-	   
-	   _Log("Try n°" & $BossPortalTry + 1 & " Boss Portal", $LOG_LEVEL_DEBUG)
-	   InteractByActorName($NameBossPortal)
+	While $NewAreaOk = 0 And $PortalTry < 5	   
+	   _Log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
+	   InteractByActorName($NamePortal)
 	   
 	   Local $areatry = 0
 	   While $Newarea = $Curentarea And $areatry <= 10
@@ -1058,18 +1057,18 @@ Func InteractBossPortal($NameBossPortal)
 	   If $Newarea <> $Curentarea Then
 		  $NewAreaOk = 1
 	   Else
-		  $BossPortalTry += 1
+		  $PortalTry += 1
 	   EndIf
 	  
     WEnd
 	
 	If $Newarea <> $Curentarea Then
-	   _log('Succesfully Boss Portal Try', $LOG_LEVEL_VERBOSE)
+	   _log('Succesfully Portal Try', $LOG_LEVEL_VERBOSE)
     Else
-	   _log('We failed Boss Portal Try', $LOG_LEVEL_ERROR)
+	   _log('We failed Portal Try', $LOG_LEVEL_ERROR)
 	   $GameFailed = 1
     EndIf
-EndFunc   ;==> InteractBossPortal
+EndFunc   ;==> InteractWithPortal
 
 ;***************** CMD ************
 ;
@@ -1106,7 +1105,7 @@ EndFunc   ;==> InteractBossPortal
 ; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appelé uniquement au dessus d'un takewp ou d'un _townportal())
 ; -> interactbyactorname=       (Interagit avec un npc / porte / objet)
 ; -> InteractIronDoor=          (Interagit avec porte / grille )
-; -> InteractBossPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
+; -> InteractWithPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
 ; -> buffinit()                 (Force l'initialisation des buffs)
 ; -> unbuff()                   (force l'unbuff)
 ; -> send=                      (Envoie une Key)

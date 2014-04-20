@@ -59,7 +59,7 @@ TakeWP=10
 181.943405151367, 723.930114746094, -47.8554992675781,1,25
 endsave()
 sleep=500
-InteractBossPortal=Boss_Portal_Azmodan
+InteractWithPortal=Boss_Portal_Azmodan
 sleep=1000
 endsave()
 offsetlist()
@@ -136,7 +136,7 @@ sleep=500
 310.909515380859, 475.308471679688, -5.67842388153076,1,25
 315.832458496094, 467.347503662109, -5.42308473587036,1,25
 sleep=500
-InteractBossPortal=g_Portal_Rectangle_Orange_IconDoor
+InteractWithPortal=g_Portal_Rectangle_Orange_IconDoor
 sleep=500
 offsetlist()
 usepath=false
@@ -147,7 +147,7 @@ usepath=false
 318.391845703125, 346.637725830078, 0.100000008940697,1,25
 309.229736328125, 345.196746826172, 0.100000664591789,1,25
 sleep=500
-InteractBossPortal=Boss_Portal_AdriaBetrayal
+InteractWithPortal=Boss_Portal_AdriaBetrayal
 sleep=500
 closewindows()
 sleep=500

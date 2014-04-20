@@ -35,7 +35,7 @@ closewindows()
 sleep=500
 354.609527587891, 681.864807128906, -14.7000007629395,1,25
 354.822143554688, 665.88525390625, -13.5165061950684,1,25
-InteractBossPortal=Boss_Portal_1000MonsterFight
+InteractWithPortal=Boss_Portal_1000MonsterFight
 endsave()
 sleep=1000
 closewindows()
@@ -139,7 +139,7 @@ sleep=1000
 355.073516845703, 295.09765625, 3.15568923950195,1,25
 endsave()
 sleep=500
-InteractBossPortal=g_Portal_ArchTall_Blue
+InteractWithPortal=g_Portal_ArchTall_Blue
 sleep=1000
 offsetlist()
 sleep=500

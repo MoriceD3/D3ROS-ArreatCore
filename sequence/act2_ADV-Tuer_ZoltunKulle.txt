@@ -20,7 +20,7 @@ endsave()
 sleep=500
 offsetlist()
 sleep=500
-InteractBossPortal=Boss_Portal_Blacksoulstone
+InteractWithPortal=Boss_Portal_Blacksoulstone
 sleep=3000
 UsePath=false
 offsetlist()

@@ -75,7 +75,7 @@ endsave()
 356.131134033203, 512.239990234375, 0.100000232458115, 1, 25
 353.751617431641, 492.511596679688, 0.100000239908695, 1, 25
 offsetlist()
-InteractBossPortal=Boss_Portal_SkeletonKing
+InteractWithPortal=Boss_Portal_SkeletonKing
 endsave()
 sleep=500
 offsetlist()

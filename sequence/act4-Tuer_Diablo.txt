@@ -10,7 +10,7 @@ sleep=500
 280.745727539063, 309.275421142578, 0.100000001490116,1,25
 291.765319824219, 292.071746826172, 2.05984544754028,1,25
 sleep=1500
-InteractBossPortal=Boss_Portal_Diablo
+InteractWithPortal=Boss_Portal_Diablo
 sleep=1000
 endsave()
 offsetlist()

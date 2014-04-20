@@ -45,7 +45,7 @@ sleep=2000
 369.935302734375, 783.431884765625, 3.775066614151,1,25
 offsetlist()
 sleep=1000
-InteractByActorName=g_Portal_Ladder_Orange
+InteractWithPortal=g_Portal_Ladder_Orange
 Sleep=1500
 offsetlist()
 usepath=false

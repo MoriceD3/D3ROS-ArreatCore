@@ -59,7 +59,7 @@ TakeWP=10
 181.943405151367, 723.930114746094, -47.8554992675781,1,25
 endsave()
 sleep=500
-InteractBossPortal=Boss_Portal_Azmodan
+InteractWithPortal=Boss_Portal_Azmodan
 sleep=1000
 endsave()
 offsetlist()

@@ -39,7 +39,7 @@ TakeWP=5
 564.995971679688, 600.894653320313, 0.325069040060043,1,25
 endsave()
 sleep=500
-InteractBossPortal=Boss_Portal_Siegebreaker
+InteractWithPortal=Boss_Portal_Siegebreaker
 endsave()
 sleep=3000
 closewindows()

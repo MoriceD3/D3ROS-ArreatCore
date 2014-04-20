@@ -15,7 +15,7 @@ sleep=500
 656.023132324219, 699.64404296875, -11.2010746002197,1,25
 endsave()
 sleep=500
-InteractBossPortal=Boss_Portal_Blacksoulstone
+InteractWithPortal=Boss_Portal_Blacksoulstone
 sleep=3000
 endsave()
 UsePath=false

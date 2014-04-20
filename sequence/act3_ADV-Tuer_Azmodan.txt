@@ -60,7 +60,7 @@ sleep=500
 endsave()
 offsetlist()
 sleep=500
-InteractBossPortal=Boss_Portal_Azmodan
+InteractWithPortal=Boss_Portal_Azmodan
 sleep=1000
 offsetlist()
 usepath=false

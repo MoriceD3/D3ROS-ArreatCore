@@ -42,7 +42,7 @@ sleep=500
 1125.25122070313, 1099.09533691406, -56.2771110534668, 1, 25
 1118.27600097656, 1054.99572753906, -73.0196762084961, 1, 25
 endsave()
-InteractBossPortal=g_Portal_ArchTall_Orange
+InteractWithPortal=g_Portal_ArchTall_Orange
 sleep=2000
 offsetlist()
 positionrange=20

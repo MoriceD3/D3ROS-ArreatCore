@@ -5,7 +5,7 @@ attackrange=40
 endsave()
 offsetlist()
 usepath=false
-InteractBossPortal=Boss_Portal_MistressOfPain
+InteractWithPortal=Boss_Portal_MistressOfPain
 sleep=1000
 offsetlist()
 988.329223632813, 1234.93493652344, 63.4823684692383, 1, 25

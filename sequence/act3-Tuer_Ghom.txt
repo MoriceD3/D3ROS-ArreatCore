@@ -6,7 +6,7 @@ revive=false
 usepath=false
 TakeWP=3
 sleep=1500
-InteractBossPortal=Boss_Portal_Gluttony
+InteractWithPortal=Boss_Portal_Gluttony
 sleep=2500
 offsetlist()
 specialml=Gluttony
