@@ -30,6 +30,7 @@
  -> nobloc()                   	(Rend la prochaine commande bloquante passive, cette fonction n'est a appelé uniquement au dessus d'un takewp ou d'un _townportal())
  -> interactbyactorname=       	(Interagit avec un npc / porte / objet)
  -> InteractWithPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
+ -> InteractWithDoor=          	(Interagit avec porte / grille )
  -> buffinit()                 	(Force l'initialisation des buffs)
  -> unbuff()                   	(force l'unbuff)
  -> send=                      	(Envoie une Key)
