@@ -63,7 +63,7 @@ endsave()
 259.391876220703, 563.390502929688, 7.63908290863037,1,25
 offsetlist()
 sleep=500
-InteractBossPortal=Boss_Portal_Belial
+InteractWithPortal=Boss_Portal_Belial
 sleep=3000
 closewindows()
 sleep=1500

@@ -89,7 +89,7 @@ endsave()
 892.298034667969, 1213.17736816406, 196.870666503906,1,25
 offsetlist()
 sleep=500
-InteractBossPortal=Boss_Portal_Maghda
+InteractWithPortal=Boss_Portal_Maghda
 sleep=1000
 UsePath=false
 attackrange=65
