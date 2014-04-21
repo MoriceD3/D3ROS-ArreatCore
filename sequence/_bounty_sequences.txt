@@ -155,7 +155,7 @@
 3#tuez Cydaée#3#Kill Cydaea#act3_BOUNTY-tour_maudits_lvl1|act3_BOUNTY-Tuer_cydaée
 3#tuez Asmodan#3#Kill Azmodan#act3_ADV-Tuer_Azmodan
 3#tuez Aile-de-Braise#3#Kill Emberwing#act3_ADV-field_[1-4]
-3#tuez Démonica la Redoutable#3#Kill Demonika the Wicked#act3_ADV-tower_[1-5]
+3#tuez Démonica la Redoutable#3#Kill Demonika the Wicked#act3_ADV-tower_[1-5]
 3#tuez Gholash#3#Kill Gholash#act3_ADV-tower_[1-5]
 3#tuez Ganthar l’Entourloupeur#3#Kill Ganthar the Trickster#act3_ADV-rempart_[1-5]
 3#tuez Ghallem le Cruel#3#Kill Ghallem the Cruel#act3_ADV-field_[1-4]
