@@ -2,7 +2,7 @@ MonsterList=FallenGrunt_A|FallenShaman_A|sandWasp_A|FallenChampion_A|Goblin|Uber
 AutoBuff=True
 attackrange=35
 usepath=false
-InteractBossPortal=g_Portal_Circle_Orange_Bright
+InteractWithPortal=g_Portal_Circle_Orange_Bright
 sleep=1000
 offsetlist()
 242.261047363281, 238.726959228516, 12.1625070571899, 1, 25
