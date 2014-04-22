@@ -819,7 +819,7 @@ Func FilterBackpack()
 
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
-			If ($quality >= 9) Then
+			If ($quality >= 9 And Not $itemDestination = "Inventory") Then
 				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality >= 6 And $itemDestination = "Stash") Then
@@ -2511,7 +2511,7 @@ Func checkForGlobes()
 								$Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
 								MouseMove($Coords[0], $Coords[1], 3)
 							Else
-								_log('Globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+								_log('Globe taken (distance=' & $objpos[3] & ')', $LOG_LEVEL_VERBOSE)
 								Return
 							EndIf
 							If TimerDiff($timeForGlobe) > 2000 Then
@@ -2528,7 +2528,7 @@ Func checkForGlobes()
 			EndIf
 		Next
 	EndIf
-EndFunc   ;==>checkForPotion
+EndFunc   ;==>checkForGlobes
 
 Func checkFromTable($table, $compare, $quality)
 	For $i = 0 To UBound($table) - 1
