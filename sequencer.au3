@@ -83,6 +83,7 @@ HotKeySet("{F3}", "Sequencer_IterateObj")
 HotKeySet("{F4}", "Terminate")
 
 HotKeySet("{ù}", "SequencerMarkPos")
+HotKeySet("{F10}", "SequencerMarkImportant")
 ;;--------------------------------------------------------------------------------
 ;;      Initialize the data and offsets
 ;;--------------------------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 Global $Table_mtp[1][5]
 Global $count_mtp = 0
+Global $Table_important[1][4]
+Global $count_Important
 Global $Scene_table_totale[1][8]
 Global $NavCell_table_totale[1][8]
 Global $Buff_MeshMinX = 999999
@@ -13,6 +15,7 @@ Global $Iterate_Objet[1]
 
 Global $SaveSequenceData = True
 Global $DrawAttackRange = True
+Global $DrawPositionName = True
 Global $DrawScene = "True"
 Global $DrawNavCellWalkable = "False"
 Global $DrawNavCellUnWalkable = "True"
@@ -34,6 +37,7 @@ Global $mapDataIni = "-MapData-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 Global $SequencerToolsHandle
 Global $recordSceneButton = 0
 Global $recordObjectButton = 0
+Global $recordImportantButton = 0
 Global $DrawSceneButton = 0
 
 Func ShowSequencerTools()
@@ -49,14 +53,17 @@ Func ShowSequencerTools()
 
     $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 60, 180, 30)
 	GUICtrlSetOnEvent($hButton3, "SequencerMarkPos")
+	$recordImportantButton = GUICtrlCreateButton("Marquer une emplacement (F10)", 10, 100, 180, 30)
+	GUICtrlSetOnEvent($recordImportantButton, "SequencerMarkImportant")
 
     GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur F1 et ou F3 pour commencer l'enregistrement." & @CRLF  _
-    	& @CRLF & "Appuyer sur le ù pour ajouter des points à la séquence." & @CRLF & @CRLF _
+    	& @CRLF & "Appuyer sur ù pour ajouter des points à la séquence." & @CRLF _
+    	& "Appuyer sur F10 pour marquer des positions importantes." & @CRLF & @CRLF _
     	& "Quand le bouton Dessiner la scene est désactiver, attendre un peu le temps que le bot finisse son scan." & @CRLF & @CRLF _
     	& "Quand tout est fini appuyer sur le bouton Dessiner la scène (ou F2)." & @CRLF  & @CRLF _
-    	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 160, 180, 360)
+    	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 200, 180, 360)
 	
-    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 120, 180, 30)
+    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 160, 180, 30)
     GUICtrlSetOnEvent($DrawSceneButton, "Draw_Scene")
     GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
 
@@ -137,6 +144,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 	$Buff_MeshMaxX = IniRead($datafile, "SceneInfo", "MeshMaxX", -1)
 	$Buff_MeshMinY = IniRead($datafile, "SceneInfo", "MeshMinY", -1)
 	$Buff_MeshMaxY = IniRead($datafile, "SceneInfo", "MeshMaxY", -1)
+	$positionCount = IniRead($datafile, "SceneInfo", "PositionCount", 0)
 
 	If $area = -1 Or $meshSize = -1 or $navSize = -1 Then
 		_log("Invalid mapData file ! ", $LOG_LEVEL_ERROR)
@@ -144,8 +152,10 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 
 	Dim $Scene_table_totale[$meshSize + 1][8]
 	Dim $NavCell_Table_Totale[$navSize + 1][8]
+	Dim $Table_position[$positionCount + 1][4]
 	Local $count_scene = 0
 	Local $count_navcell = 0
+	Local $count_position = 0
 
 	_log("Loading cell data", $LOG_LEVEL_DEBUG)
 	For $i = 0 To $navSize
@@ -183,6 +193,20 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			$Scene_table_totale[$count_scene-1][7] = $temp[7]
 		EndIf
 	Next
+	If $positionCount > 0 Then
+		_log("Loading position data", $LOG_LEVEL_DEBUG)
+		For $i = 0 To $positionCount - 1
+			$temp = IniRead($datafile, "Positions", "Position" & $i, -1)
+			If $temp <> -1 Then
+				$temp = StringSplit($temp, ",", 2)
+				$count_position += 1
+				$Table_position[$count_position - 1][0] = $temp[1]
+				$Table_position[$count_position - 1][1] = $temp[2]
+				$Table_position[$count_position - 1][2] = $temp[3]
+				$Table_position[$count_position - 1][3] = $temp[0]
+			EndIf
+		Next
+	EndIf
 
 	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
 
@@ -246,6 +270,13 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		EndIF
 	EndIf
 
+	If $count_position > 1 Then
+		For $i = 0 to $count_position - 1
+			Draw_Nav($Table_position[$i][1] - $buff_MeshMinY, $Table_position[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, $Table_position[$i][3])
+		Next
+	EndIF
+
+
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
@@ -269,11 +300,18 @@ Func Draw_Scene()
 		IniWrite($iniFile, "SceneInfo", "AreaId", $area)
 		IniWrite($iniFile, "SceneInfo", "SceneSize", Ubound($Scene_table_totale))
 		IniWrite($iniFile, "SceneInfo", "NavSize", Ubound($NavCell_Table_Totale))
+		IniWrite($iniFile, "SceneInfo", "PositionCount", $count_Important)
 		IniWrite($iniFile, "SceneInfo", "MeshMinX", $Buff_MeshMinX)
 		IniWrite($iniFile, "SceneInfo", "MeshMaxX", $Buff_MeshMaxX)
 		IniWrite($iniFile, "SceneInfo", "MeshMinY", $Buff_MeshMinY)
 		IniWrite($iniFile, "SceneInfo", "MeshMaxY", $Buff_MeshMaxY)
 	EndIf
+
+	If $count_Important > 1 Then
+		For $i = 0 to Ubound($Table_Important) - 1
+			IniWrite($iniFile, "Positions", "Position" & $i, $Table_Important[$i][3] & "," & $Table_Important[$i][0] & "," & $Table_Important[$i][1] & "," & $Table_Important[$i][2])
+		Next
+	EndIF
 
 	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
 
@@ -327,6 +365,11 @@ Func Draw_Scene()
 		Next
 	EndIf
 	#ce
+	If $count_Important > 1 Then
+		For $i = 0 to Ubound($Table_Important) - 1
+			Draw_Nav($Table_Important[$i][1] - $buff_MeshMinY, $Table_Important[$i][0] - $buff_MeshMinX, 11, 8, 8, $i)
+		Next
+	EndIF
 
 	Save_GDIpicture()
 
@@ -380,6 +423,19 @@ Func Sequencer_IterateObj()
 		FileClose($file)
 	WEnd
 EndFunc
+
+Func SequencerMarkImportant()
+	$currentloc = GetCurrentPos()
+
+	$count_Important += 1
+	ConsoleWrite("Marking important position : " &  $currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & @CRLF);
+
+	Redim $table_Important[$count_Important][4]
+	$table_Important[$count_Important - 1][0] = $currentloc[0]
+	$table_Important[$count_Important - 1][1] = $currentloc[1]
+	$table_Important[$count_Important - 1][2] = $currentloc[2]
+	$table_Important[$count_Important - 1][3] = "Unknown"
+EndFunc   ;==>MarkPos
 
 Func SequencerMarkPos()
 	$currentloc = GetCurrentPos()

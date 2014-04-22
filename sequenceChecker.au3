@@ -53,19 +53,22 @@ TraySetIcon($icon)
 #include <WindowsConstants.au3>
 #include <FileConstants.au3>
 #include <MsgBoxConstants.au3>
-#Region ### START Koda GUI section ### Form=C:\Games\D3ROS-ArreatCore\SequenceChecker.kxf
-$Form1 = GUICreate("Sequence Checker", 325, 239, 268, 142)
-$Label1 = GUICtrlCreateLabel("Bienvenu dans l'outil de validation des séquences :", 8, 8, 301, 17, $SS_CENTER)
+#Region ### START Koda GUI section ### Form=c:\games\d3ros-arreatcore\lib\extra\sequencechecker.kxf
+$Form1 = GUICreate("Sequence Checker", 325, 253, 335, 224)
+$Label1 = GUICtrlCreateLabel("Bienvenu dans l'outil de validation des séquences :", 8, 8, 245, 17, $SS_CENTER)
 $Button1 = GUICtrlCreateButton("Charger des fichiers mapData", 8, 40, 307, 25)
 $Button2 = GUICtrlCreateButton("Charger un fichier de séquence", 8, 88, 307, 25)
 $Input1 = GUICtrlCreateInput("40", 136, 128, 73, 21)
 $Label2 = GUICtrlCreateLabel("Attack range par défaut : ", 8, 128, 125, 17)
 $Checkbox1 = GUICtrlCreateCheckbox("Dessiner les zones d'attaques sur la séquence", 8, 160, 305, 17)
 GUICtrlSetState($Checkbox1, $GUI_CHECKED)
-$Button3 = GUICtrlCreateButton("Générer l'image de validation", 8, 192, 307, 25)
+$Button3 = GUICtrlCreateButton("Générer l'image de validation", 8, 208, 307, 25)
 GUICtrlSetState($Button3, $GUI_DISABLE)
+$Checkbox2 = GUICtrlCreateCheckbox("Afficher les noms des points importants", 8, 184, 241, 17)
+GUICtrlSetState($Checkbox2, $GUI_CHECKED)
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
+
 Opt("GUIOnEventMode", 0)
 
 Local $mapFiles
@@ -103,6 +106,7 @@ While 1
    		Case $Button3
    			$attackRange = GUICtrlRead ($Input1)
    			$DrawAttackRange = (GUICtrlRead ($Checkbox1) = $GUI_CHECKED)
+   			$DrawPositionName = (GUICtrlRead ($Checkbox2) = $GUI_CHECKED)
    			If UBound($mapFiles) > 1 Then
 	   			For $i = 1 To UBound($mapFiles) - 1
 	   				_log("Handling mapFile : " & $mapFiles[0] & "\" & $mapFiles[$i])

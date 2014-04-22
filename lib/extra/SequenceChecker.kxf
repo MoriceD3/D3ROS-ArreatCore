@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <object type="TAForm" name="Form1_1">
 	<properties>
-		<property name="Left" vt="Int16">268</property>
-		<property name="Top" vt="Int16">142</property>
+		<property name="Left" vt="Int16">294</property>
+		<property name="Top" vt="Int16">206</property>
 		<property name="Width" vt="Int16">340</property>
-		<property name="Height" vt="Int16">277</property>
+		<property name="Height" vt="Int16">291</property>
 		<property name="Caption" vt="String">Sequence Checker</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
@@ -82,7 +82,7 @@
 				<property name="Width" vt="Int8">73</property>
 				<property name="Height" vt="Int8">21</property>
 				<property name="TabOrder" vt="Int8">3</property>
-				<property name="Text" vt="String">Input1</property>
+				<property name="Text" vt="String">40</property>
 				<property name="CtrlStyle" vt="Int32">1342374016</property>
 				<property name="CtrlExStyle" vt="Int16">512</property>
 				<property name="Resizing" vt="Set">DockHeight</property>
@@ -123,15 +123,32 @@
 		<object type="TAButton" name="Button3">
 			<properties>
 				<property name="Left" vt="Int8">8</property>
-				<property name="Top" vt="Int16">192</property>
+				<property name="Top" vt="Int16">208</property>
 				<property name="Width" vt="Int16">307</property>
 				<property name="Height" vt="Int8">25</property>
 				<property name="Caption" vt="UTF8String">Gйnйrer l'image de validation</property>
+				<property name="Enabled" vt="False">False</property>
 				<property name="TabOrder" vt="Int8">6</property>
 				<property name="Color" vt="Ident">clBtnFace</property>
 				<property name="CtrlStyle" vt="Int32">1342373888</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
 				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TACheckbox" name="Checkbox2">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">184</property>
+				<property name="Width" vt="Int16">241</property>
+				<property name="Height" vt="Int8">17</property>
+				<property name="Caption" vt="String">Afficher les noms des points importants</property>
+				<property name="Checked" vt="True">True</property>
+				<property name="State" vt="Ident">cbChecked</property>
+				<property name="TabOrder" vt="Int8">7</property>
+				<property name="CtrlStyle" vt="Int32">1342242819</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
 			</properties>
 			<components/>
 		</object>

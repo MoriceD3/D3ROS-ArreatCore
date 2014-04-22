@@ -39,10 +39,18 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 			_GDIPlus_PenDispose($color_rec)
 		EndIF
 		_log("dessine une pos")
+	ElseIf $type = 11 Then
+		$color_rec = _GDIPlus_BrushCreateSolid(0xFF7A4DE4)
+		_GDIPlus_GraphicsFillEllipse ($hGraphic, $x - $sizex / 2, $y - $sizey / 2, 8, 8, $color_rec)
+		If $DrawPositionName Then
+			_GDIPlus_GraphicsDrawString($hGraphic, $count, $x, $y)
+		EndIf
+		_GDIPlus_BrushDispose($color_rec)
+		_log('dessine un emplacement important')
 	ElseIf $type = 10 Then
-			$color_rec = _GDIPlus_PenCreate(0xFFFF03FC, 1)
-			_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
-			_GDIPlus_PenDispose($color_rec)
+		$color_rec = _GDIPlus_PenCreate(0xFFFF03FC, 1)
+		_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
+		_GDIPlus_PenDispose($color_rec)
 		_log('dessine une reso de chemin')
 	ElseIf $type = 1 Then
 		$color_rec = _GDIPlus_PenCreate($NavcellWalkableColor, 1)
