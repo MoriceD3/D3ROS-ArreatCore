@@ -330,6 +330,7 @@ Func Draw_Scene()
 	Save_GDIpicture()
 
 	_log("Map succefully drawn and saved")
+	WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 	Exit 0
 EndFunc
 
