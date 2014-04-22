@@ -20,15 +20,17 @@ EndFunc
 Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 
 	If $type = 2 Then
-
 		If StringLower($DrawMtp) = "true" Then
 			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
 			_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
 			_GDIPlus_PenDispose($color_rec)
-		EndIF
-
+		EndIf
 		if $num <> 0  AND StringLower($DrawArrow) = "true" Then
-			$color_rec = _GDIPlus_PenCreate($ArrawColor, 1)
+			If $count = 1 Then
+				$color_rec = _GDIPlus_PenCreate($ArrowColor, 1)
+			Else
+				$color_rec = _GDIPlus_PenCreate($ArrowColorNoAttack, 1)
+			EndIf
 			$iInset = 0.5
 			$hEndCap = _GDIPlus_ArrowCapCreate(2, 4)
 			_GDIPlus_ArrowCapSetMiddleInset ($hEndCap, $iInset)
@@ -36,7 +38,6 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 			_GDIPlus_GraphicsDrawLine($hGraphic, $Table_mtp[$num-1][1] - $buff_MeshMinY, $Table_mtp[$num-1][0] - $buff_MeshMinX, $x, $y, $color_rec)
 			_GDIPlus_PenDispose($color_rec)
 		EndIF
-
 		_log("dessine une pos")
 	ElseIf $type = 10 Then
 			$color_rec = _GDIPlus_PenCreate(0xFFFF03FC, 1)
@@ -75,7 +76,7 @@ Func Save_GDIpicture()
 ;_arraydisplay($Table_mtp)
 	If $count_mtp > 1 Then
 		for $i=0 to Ubound($Table_mtp) - 1
-			Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i)
+			Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3])
 		Next
 	EndIF
 

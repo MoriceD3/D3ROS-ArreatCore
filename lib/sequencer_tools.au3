@@ -22,7 +22,8 @@ Global $DrawMtp = "True"
 Global $SceneColor = "0xFF000000"
 Global $NavcellWalkableColor = "0xFF85DB24"
 Global $NavcellUnWalkableColor = "0xFF83888a"
-Global $ArrawColor = "0xFF00FFC0"
+Global $ArrowColor = "0xFF00FFC0"
+Global $ArrowColorNoAttack = "0xFF00C0FF"
 Global $MtpColor = "0xFFFF0000"
 Global $nameSequenceTxt = "-sequence-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 Global $PictureScene = "-pictureScene-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
@@ -236,8 +237,8 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $count_mtp > 1 Then
 			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
 			For $i = 0 To Ubound($Table_mtp) - 1
-				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i)
-				If $DrawAttackRange Then
+				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3])
+				If $DrawAttackRange And $Table_mtp[$i][3] = 1 Then
 					_GDIPlus_GraphicsDrawEllipse ($hGraphic, $Table_mtp[$i][1] - $buff_MeshMinY - ($attackRange / 2) , $Table_mtp[$i][0] - $buff_MeshMinX - ($attackRange / 2) , $attackRange, $attackRange, $color_rec)
 				EndIf
 			Next
@@ -396,11 +397,11 @@ Func SequencerMarkPos()
 	FileClose($file)
 
 	Redim $table_mtp[$count_mtp][5]
-	$table_mtp[$count_mtp-1][0] = $currentloc[0]
-	$table_mtp[$count_mtp-1][1] = $currentloc[1]
-	$table_mtp[$count_mtp-1][2] = $currentloc[2]
-	$table_mtp[$count_mtp-1][3] = 1
-	$table_mtp[$count_mtp-1][4] = 25
+	$table_mtp[$count_mtp - 1][0] = $currentloc[0]
+	$table_mtp[$count_mtp - 1][1] = $currentloc[1]
+	$table_mtp[$count_mtp - 1][2] = $currentloc[2]
+	$table_mtp[$count_mtp - 1][3] = 1
+	$table_mtp[$count_mtp - 1][4] = 25
 EndFunc   ;==>MarkPos
 
 Func IndexSNONoLimit($_offset, $_displayInfo = 0)
