@@ -199,9 +199,6 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 				EndIf
 			EndIf
 		Next
-		;If $DrawScene = "true" Then
-		;	Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
-		;EndIf
 	Next
 
 	If Not $sequenceFile = False Then
@@ -248,6 +245,14 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 	EndIf
 
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
+
+	For $i = 0 To Ubound($Scene_table_totale) - 1
+		If $DrawScene = "true" Then
+			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
+		EndIf
+	Next
+
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
 
 EndFunc
 
