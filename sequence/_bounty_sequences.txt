@@ -91,14 +91,19 @@
 2#tuez Jhorum le Clerc#2#Kill Jhorum the Cleric#act2_ADV-alcarnus_[1-8]
 2#tuez Zoltun Kulle#2#Kill Zoltun Kulle#act2_ADV-Tuer_ZoltunKulle
 2#tuez Maghda#2#Kill Maghda#act2_ADV-Tuer_Maghda
+2#tuez Ashek#2#Kill Ashek#act2_BOUNTY-plateau_plaintif
+2#le rempart maudit#2#The Cursed Battlement#act2_BOUNTY-howling_plateau_Cursed
+2#l’avant-poste maudit#2#The Cursed Outpost#act2_BOUNTY-howling_plateau_Cursed
 
 2#tuez Samaras le Chasseur#2#Need EN#act2_BOUNTY-vents_cinglants_[1-2]
 2#tuez Shondar l’invocateur#2#Need EN#act2_BOUNTY-route_alcarnus_[1-2]
+2#Need FR#2#Kill Saha the Slasher#act2_BOUNTY-plateau_plaintif
+2#Need FR#2#Kill Razormouth#act2_BOUNTY-plateau_plaintif
+2#Need FR#2#A Miner's Gold#act2_BOUNTY-howling_plateau_MinerGold
 
 2#tuez Pazuzu#2#Kill Pazuzu#None
 2#nettoyez la grotte de l’horreur enfouie#2#Clear the Cave of Burrowing Horror#None
 2#tuez le seigneur-mage Caustus#2#Kill Mage Lord Caustus#None
-2#tuez Ashek#2#Kill Ashek#None
 2#nettoyez les ruines#2#Need EN#None
 2#le sanctuaire de Rakanishu#2#Need EN#None
 2#tuez le seigneur-mage Misgen#2#Need EN#None
@@ -115,10 +120,8 @@
 2#les bas-fonds maudits#2#Need EN#None
 2#tuez Plume-Sanglante#2#Need EN#None
 2#tuez l’Archiviste#2#Need EN#None
-2#Need FR#2#A Miner's Gold#None
 2#Need FR#2#Clear the Ruins#None
 2#Need FR#2#Clear the Vile Cavern#None
-2#le rempart maudit#2#The Cursed Battlement#act2_BOUNTY-howling_plateau_Cursed
 2#Need FR#2#The Guardian Spirits#None
 2#Need FR#2#Clear the Flooded Cave#None
 2#Need FR#2#Rygnar Idol#None
@@ -128,8 +131,6 @@
 2#Need FR#2#Restless Sands#None
 2#Need FR#2#Clear the Mysterious Cave#None
 2#Need FR#2#Kill Bloodfeather#None
-2#l’avant-poste maudit#2#The Cursed Outpost#act2_BOUNTY-howling_plateau_Cursed
-2#Need FR#2#Kill Saha the Slasher#None
 2#Need FR#2#Prisoners of Kamyr#None
 2#Need FR#2#Kill Raiha##None
 2#Need FR#2#Kill Mage Lord Ghuyan#None
@@ -140,7 +141,6 @@
 2#Need FR#2#The Cursed Pit#None
 2#Need FR#2#Kill Torsar#None
 2#Need FR#2#The Cursed Spire#None
-2#Need FR#2#Kill Razormouth#None
 2#Need FR#2#Kill the Tomekeeper#None
 2#Need FR#2#The Shrine of Rakanishu#None
 
