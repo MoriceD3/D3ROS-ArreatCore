@@ -11,22 +11,24 @@ Global $Buff_MeshMaxY = 0
 
 Global $Iterate_Objet[1]
 
-Global $DrawScene="True"
-Global $DrawNavCellWalkable="False"
-Global $DrawNavCellUnWalkable="True"
-Global $DrawArrow="True"
-Global $DrawMtp="True"
+Global $SaveSequenceData = True
+Global $DrawAttackRange = True
+Global $DrawScene = "True"
+Global $DrawNavCellWalkable = "False"
+Global $DrawNavCellUnWalkable = "True"
+Global $DrawArrow = "True"
+Global $DrawMtp = "True"
 
-Global $SceneColor="0xFF000000"
-Global $NavcellWalkableColor="0xFF85DB24"
-Global $NavcellUnWalkableColor="0xFF83888a"
-Global $ArrawColor="0xFF00FFC0"
-Global $MtpColor="0xFFFF0000"
+Global $SceneColor = "0xFF000000"
+Global $NavcellWalkableColor = "0xFF85DB24"
+Global $NavcellUnWalkableColor = "0xFF83888a"
+Global $ArrawColor = "0xFF00FFC0"
+Global $MtpColor = "0xFFFF0000"
 Global $nameSequenceTxt = "-sequence-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 Global $PictureScene = "-pictureScene-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 Global $Picturemtp = "-picturemtp-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 Global $nameObjectListTxt = "-ObjectList-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
-
+Global $mapDataIni = "-MapData-" & @MON &  @MDAY & @HOUR & @MIN & @SEC
 
 Global $SequencerToolsHandle
 Global $recordSceneButton = 0
@@ -122,9 +124,149 @@ Func tri_flag()
 	Return $NavCell_Table_Totale
 EndFunc
 
+Global $hImage
+Global $hGraphic
+Global $attackRange = 50
+
+Func Draw_MapData($datafile, $sequenceFile = False)
+	$area = IniRead($datafile, "SceneInfo", "AreaId", -1)
+	$meshSize = IniRead($datafile, "SceneInfo", "SceneSize", -1)
+	$navSize = IniRead($datafile, "SceneInfo", "NavSize", -1)
+	$Buff_MeshMinX = IniRead($datafile, "SceneInfo", "MeshMinX", -1)
+	$Buff_MeshMaxX = IniRead($datafile, "SceneInfo", "MeshMaxX", -1)
+	$Buff_MeshMinY = IniRead($datafile, "SceneInfo", "MeshMinY", -1)
+	$Buff_MeshMaxY = IniRead($datafile, "SceneInfo", "MeshMaxY", -1)
+
+	If $area = -1 Or $meshSize = -1 or $navSize = -1 Then
+		_log("Invalid mapData file ! ", $LOG_LEVEL_ERROR)
+	EndIf
+
+	Dim $Scene_table_totale[1][8]
+	Dim $NavCell_Table_Totale[1][8]
+	Local $count_scene = 0
+	Local $count_navcell = 0
+
+	_log("Loading cell data", $LOG_LEVEL_DEBUG)
+	For $i = 0 To $navSize
+		$temp = IniRead($datafile, "CellData", "Cell" & $i, -1)
+		If $temp <> -1 Then
+			$temp = StringSplit($temp, ",", 2)
+			$count_navcell += 1
+			Redim $NavCell_Table_Totale[$count_navcell][8]
+			$NavCell_Table_Totale[$count_navcell-1][0] = $temp[0]
+			$NavCell_Table_Totale[$count_navcell-1][1] = $temp[1]
+			$NavCell_Table_Totale[$count_navcell-1][2] = $temp[2]
+			$NavCell_Table_Totale[$count_navcell-1][3] = $temp[3]
+			$NavCell_Table_Totale[$count_navcell-1][4] = $temp[4]
+			$NavCell_Table_Totale[$count_navcell-1][5] = $temp[5]
+			$NavCell_Table_Totale[$count_navcell-1][6] = $temp[6]
+			$NavCell_Table_Totale[$count_navcell-1][7] = $temp[7]
+		EndIf
+	Next
+
+	_log("Loading mesh data", $LOG_LEVEL_DEBUG)
+	For $i = 0 To $meshSize
+		$temp = IniRead($datafile, "MeshData", "Mesh" & $i, -1)
+		If $temp <> -1 Then
+			$temp = StringSplit($temp, ",", 2)
+			$count_scene += 1
+			Redim $Scene_table_totale[$count_scene][8]
+			$Scene_table_totale[$count_scene-1][0] = $temp[0]
+			$Scene_table_totale[$count_scene-1][1] = $temp[1]
+			$Scene_table_totale[$count_scene-1][2] = $temp[2]
+			$Scene_table_totale[$count_scene-1][3] = $temp[3]
+			$Scene_table_totale[$count_scene-1][4] = $temp[4]
+			$Scene_table_totale[$count_scene-1][5] = $temp[5]
+			$Scene_table_totale[$count_scene-1][6] = $temp[6]
+			$Scene_table_totale[$count_scene-1][7] = $temp[7]
+		EndIf
+	Next
+
+	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
+
+	For $i = 0 To Ubound($Scene_table_totale) - 1
+		For $y = 0 To Ubound($NavCell_Table_Totale) - 1
+			If $Scene_table_totale[$i][0] = $NavCell_Table_Totale[$y][7] Then
+				$vx = ($Scene_table_totale[$i][3] - $buff_MeshMinX) + $NavCell_Table_Totale[$y][0]
+				$vy = ($Scene_table_totale[$i][4] - $buff_MeshMinY) + $NavCell_Table_Totale[$y][1]
+				$tx = $NavCell_Table_Totale[$y][3] - $NavCell_Table_Totale[$y][0]
+				$ty = $NavCell_Table_Totale[$y][4] - $NavCell_Table_Totale[$y][1]
+				$flag = $NavCell_Table_Totale[$y][6]
+				If $flag = 1 And $DrawNavCellWalkable = "true" Then
+					Draw_Nav($vy, $vx, $flag, $ty, $tx)
+				ElseIf $flag = 0 And $DrawNavCellUnWalkable = "true" Then
+					Draw_Nav($vy, $vx, $flag, $ty, $tx)
+				EndIf
+			EndIf
+		Next
+		;If $DrawScene = "true" Then
+		;	Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
+		;EndIf
+	Next
+
+	If Not $sequenceFile = False Then
+		$file = FileOpen($sequenceFile)
+		If $file = -1 Then
+			_log("Error openning sequenceFile !", $LOG_LEVEL_ERROR)
+			Return
+		EndIf
+
+		$count_mtp = 0
+		
+		While 1
+			$line = FileReadLine($file)
+			If @error = -1 Then
+				ExitLoop
+			 EndIf
+			 If StringInStr($line , "attackrange=") Then
+			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			 Else
+				 $temp = StringSplit($line, ",", 2)
+				 If UBound($temp) = 5 Then
+					$count_mtp += 1
+					Redim $table_mtp[$count_mtp][5]
+					$table_mtp[$count_mtp - 1][0] = $temp[0]
+					$table_mtp[$count_mtp - 1][1] = $temp[1]
+					$table_mtp[$count_mtp - 1][2] = $temp[2]
+					$table_mtp[$count_mtp - 1][3] = $temp[3]
+					$table_mtp[$count_mtp - 1][4] = $temp[4]
+				 EndIf
+			 EndIf
+		WEnd
+		FileClose($file)
+		
+		If $count_mtp > 1 Then
+			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
+			For $i = 0 To Ubound($Table_mtp) - 1
+				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i)
+				If $DrawAttackRange Then
+					_GDIPlus_GraphicsDrawEllipse ($hGraphic, $Table_mtp[$i][1] - $buff_MeshMinY - ($attackRange / 2) , $Table_mtp[$i][0] - $buff_MeshMinX - ($attackRange / 2) , $attackRange, $attackRange, $color_rec)
+				EndIf
+			Next
+			_GDIPlus_PenDispose($color_rec)
+		EndIF
+	EndIf
+
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
+
+EndFunc
+
 Func Draw_Scene()
+	$area = GetLevelAreaId()
+	$iniFile = @scriptDir & "\sequencer\" & $area & $mapDataIni & ".ini"
+
 	_log("taille du tab Scene-> " & Ubound($Scene_table_totale))
 	_log("taille du tab NavCell-> " & Ubound($NavCell_Table_Totale))
+
+	If $SaveSequenceData Then
+		IniWrite($iniFile, "SceneInfo", "AreaId", $area)
+		IniWrite($iniFile, "SceneInfo", "SceneSize", Ubound($Scene_table_totale))
+		IniWrite($iniFile, "SceneInfo", "NavSize", Ubound($NavCell_Table_Totale))
+		IniWrite($iniFile, "SceneInfo", "MeshMinX", $Buff_MeshMinX)
+		IniWrite($iniFile, "SceneInfo", "MeshMaxX", $Buff_MeshMaxX)
+		IniWrite($iniFile, "SceneInfo", "MeshMinY", $Buff_MeshMinY)
+		IniWrite($iniFile, "SceneInfo", "MeshMaxY", $Buff_MeshMaxY)
+	EndIf
 
 	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
 
@@ -137,6 +279,11 @@ Func Draw_Scene()
 	EndIF
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
+		If $SaveSequenceData Then
+			IniWrite($iniFile, "MeshData", "Mesh" & $i, $Scene_table_totale[$i][0] & "," & $Scene_table_totale[$i][1] & "," & _
+				$Scene_table_totale[$i][2] & "," & $Scene_table_totale[$i][3] & "," & $Scene_table_totale[$i][4] & "," & _
+				$Scene_table_totale[$i][5] & "," & $Scene_table_totale[$i][6] & "," & $Scene_table_totale[$i][7])
+		EndIf
 		For $y = 0 To Ubound($NavCell_Table_Totale) - 1
 			If $Scene_table_totale[$i][0] = $NavCell_Table_Totale[$y][7] Then
 				$vx = ($Scene_table_totale[$i][3] - $buff_MeshMinX) + $NavCell_Table_Totale[$y][0]
@@ -150,12 +297,17 @@ Func Draw_Scene()
 				ElseIf $flag = 0 And $DrawNavCellUnWalkable = "true" Then
 					Draw_Nav($vy, $vx, $flag, $ty, $tx)
 				EndIf
-
-			EndIF
+				If $SaveSequenceData Then
+					IniWrite($iniFile, "CellData", "Cell" & $y, $NavCell_Table_Totale[$y][0] & "," & $NavCell_Table_Totale[$y][1] & "," & _
+						$NavCell_Table_Totale[$y][2] & "," & $NavCell_Table_Totale[$y][3] & "," & $NavCell_Table_Totale[$y][4] & "," & _
+						$NavCell_Table_Totale[$y][5] & "," & $NavCell_Table_Totale[$y][6] & "," & $NavCell_Table_Totale[$y][7])
+				EndIf
+			EndIf
 		Next
 		If $DrawScene = "true" Then
 			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
 		EndIf
+		
 		_log(" -> " &  int((100 / Ubound($Scene_table_totale)))*$i & "%")
 	Next
 
@@ -170,8 +322,9 @@ Func Draw_Scene()
 	#ce
 
 	Save_GDIpicture()
-	_log("Map succefully drawn")
-	exit 0
+
+	_log("Map succefully drawn and saved")
+	Exit 0
 EndFunc
 
 Func Sequencer_IterateObj()

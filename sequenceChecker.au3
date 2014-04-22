@@ -1,0 +1,123 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=lib\ico\ico-checker.ico
+#AutoIt3Wrapper_Compression=0
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
+;;================================================================================
+;; PRE CHECKS
+;;================================================================================
+
+;;--------------------------------------------------------------------------------
+;;      Make sure you are running in x86
+;;--------------------------------------------------------------------------------
+$checkx64 = @AutoItX64
+If $checkx64 = 1 Then
+	MsgBox(0, "Erreur : ", "Script lancé en x64, merci de le lancer en x86 ")
+	Terminate()
+EndIf
+
+;;--------------------------------------------------------------------------------
+;;      Set tray icon
+;;--------------------------------------------------------------------------------
+$icon = @ScriptDir & "\lib\ico\ico-checker.ico"
+TraySetIcon($icon)
+
+;;--------------------------------------------------------------------------------
+;;      Include some files
+;;--------------------------------------------------------------------------------
+
+#include <Array.au3>
+#include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
+#include "lib\Variables.au3"
+#include "lib\Utils.au3"
+#include "lib\sequence.au3"
+#include "lib\settings.au3"
+#include "lib\skills.au3"
+#include "lib\toolkit.au3"
+#include "lib\botting.au3"
+#include "lib\stats.au3"
+#include "lib\Affix.au3"
+#include "lib\GestionMenu.au3"
+#include "lib\GestionChat.au3"
+#include "lib\dev_tools.au3"
+#include "lib\sequencer_tools.au3"
+#include "lib\Gdi_Draw.au3"
+
+#include <ButtonConstants.au3>
+#include <EditConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <StaticConstants.au3>
+#include <WindowsConstants.au3>
+#include <FileConstants.au3>
+#include <MsgBoxConstants.au3>
+#Region ### START Koda GUI section ### Form=C:\Games\D3ROS-ArreatCore\SequenceChecker.kxf
+$Form1 = GUICreate("Sequence Checker", 325, 239, 268, 142)
+$Label1 = GUICtrlCreateLabel("Bienvenu dans l'outil de validation des séquences :", 8, 8, 301, 17, $SS_CENTER)
+$Button1 = GUICtrlCreateButton("Charger des fichiers mapData", 8, 40, 307, 25)
+$Button2 = GUICtrlCreateButton("Charger un fichier de séquence", 8, 88, 307, 25)
+$Input1 = GUICtrlCreateInput("40", 136, 128, 73, 21)
+$Label2 = GUICtrlCreateLabel("Attack range par défaut : ", 8, 128, 125, 17)
+$Checkbox1 = GUICtrlCreateCheckbox("Dessiner les zones d'attaques sur la séquence", 8, 160, 305, 17)
+GUICtrlSetState($Checkbox1, $GUI_CHECKED)
+$Button3 = GUICtrlCreateButton("Générer l'image de validation", 8, 192, 307, 25)
+GUICtrlSetState($Button3, $GUI_DISABLE)
+GUISetState(@SW_SHOW)
+#EndRegion ### END Koda GUI section ###
+Opt("GUIOnEventMode", 0)
+
+Local $mapFiles
+Local $sequenceFile = False
+
+While 1
+	$nMsg = GUIGetMsg()
+	Switch $nMsg
+		Case $GUI_EVENT_CLOSE
+			Exit
+		Case $Button1
+		    Local $sFileOpenDialog = FileOpenDialog("Sélectionner le ou les fichiers mapData", @scriptdir & "\sequencer", "MapData (*.ini)", $FD_FILEMUSTEXIST + $FD_MULTISELECT)
+		    If @error Then
+		        MsgBox($MB_SYSTEMMODAL, "", "Pas de fichier sélectionné.")
+		        FileChangeDir(@ScriptDir)
+		    Else
+		        FileChangeDir(@ScriptDir)
+		        If StringInStr($sFileOpenDialog, "|") Then
+		        	$mapFiles = StringSplit($sFileOpenDialog, "|", 2)
+		        Else
+		        	Dim $mapFiles[1]
+		        	$mapFiles[0] = $sFileOpenDialog
+		        EndIf
+		        GUICtrlSetState($Button3, $GUI_ENABLE)
+		    EndIf
+		Case $Button2
+		    Local $sFileOpenDialog = FileOpenDialog("Sélectionner le fichier séquence", @scriptdir & "\sequence", "Séquence (*.txt)", $FD_FILEMUSTEXIST)
+		    If @error Then
+		        MsgBox($MB_SYSTEMMODAL, "", "Pas de fichier sélectionné.")
+		        FileChangeDir(@ScriptDir)
+		    Else
+		        FileChangeDir(@ScriptDir)
+		        $sequenceFile = $sFileOpenDialog
+		    EndIf
+   		Case $Button3
+   			$attackRange = GUICtrlRead ($Input1)
+   			$DrawAttackRange = (GUICtrlRead ($Checkbox1) = $GUI_CHECKED)
+   			If UBound($mapFiles) > 1 Then
+	   			For $i = 1 To UBound($mapFiles) - 1
+	   				_log("Handling mapFile : " & $mapFiles[0] & "\" & $mapFiles[$i])
+	   				Draw_MapData($mapFiles[0]  & "\" & $mapFiles[$i], $sequenceFile)
+	   			Next
+	   		Else
+   				_log("Handling mapFile : " & $mapFiles[0])
+   				Draw_MapData($mapFiles[0], $sequenceFile)
+   			EndIf
+   			Exit 0
+	EndSwitch
+WEnd
+
+;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_1.txt")
+;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_2.txt")
+;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_3.txt")
+;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_4.txt")
+;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_5.txt")

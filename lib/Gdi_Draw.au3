@@ -39,11 +39,9 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 
 		_log("dessine une pos")
 	ElseIf $type = 10 Then
-
 			$color_rec = _GDIPlus_PenCreate(0xFFFF03FC, 1)
 			_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
 			_GDIPlus_PenDispose($color_rec)
-
 		_log('dessine une reso de chemin')
 	ElseIf $type = 1 Then
 		$color_rec = _GDIPlus_PenCreate($NavcellWalkableColor, 1)
@@ -63,8 +61,6 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 		_GDIPlus_GraphicsDrawString($hGraphic, $count, $x, $y )
 		EndIf
 
-
-
 		_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
 		_GDIPlus_PenDispose($color_rec)
 	EndIf
@@ -73,8 +69,8 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 EndFunc
 
 Func Save_GDIpicture()
-$area = GetLevelAreaId()
-	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $PictureScene 	& ".png")
+	$area = GetLevelAreaId()
+	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $PictureScene & ".png")
 
 ;_arraydisplay($Table_mtp)
 	If $count_mtp > 1 Then
@@ -91,7 +87,7 @@ $area = GetLevelAreaId()
 	EndIf
 	#ce
 
-	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $Picturemtp &  ".png")
+	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $Picturemtp & ".png")
 EndFunc
 
 

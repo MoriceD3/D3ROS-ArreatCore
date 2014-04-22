@@ -5,3 +5,4 @@ log/*.txt
 Thumbs.db
 /sequencer/*.png
 /sequencer/*.txt
+/sequencer/*.ini
