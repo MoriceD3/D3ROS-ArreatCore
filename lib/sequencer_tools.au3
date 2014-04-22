@@ -367,7 +367,7 @@ Func Draw_Scene()
 	#ce
 	If $count_Important > 1 Then
 		For $i = 0 to Ubound($Table_Important) - 1
-			Draw_Nav($Table_Important[$i][1] - $buff_MeshMinY, $Table_Important[$i][0] - $buff_MeshMinX, 11, 8, 8, $i)
+			Draw_Nav($Table_Important[$i][1] - $buff_MeshMinY, $Table_Important[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, "P" & $i)
 		Next
 	EndIF
 
