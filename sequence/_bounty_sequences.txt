@@ -144,6 +144,9 @@
 2#Need FR#2#Kill the Tomekeeper#None
 2#Need FR#2#The Shrine of Rakanishu#None
 
+3#tuez Sulfurieux#3#Kill Brimstone#act3_BOUNTY-tower-lvl1
+3#tuez Brutu#3#Kill Brutu#act3_BOUNTY-tower-lvl1
+3#tuez Crabbs#3#Kill Crabbs#act3_BOUNTY-tower-lvl1
 3#tuez Gorog le Bagarreur#3#Kill Gorog the Bruiser#act3_ADV-core_start_[1-5]
 3#tuez Greelode le sans-pitié#3#Kill Greelode the Unforgiving#act3_ADV-fdp_[1-5]
 3#tuez Shertik la Brute#3#Kill Shertik the Brute#act3_ADV-field_[1-4]
@@ -164,8 +167,6 @@
 3#tuez Cogneface la Matraque#3#Need EN#act3_ADV-fdp_[1-5]
 3#tuez Haxxor#3#Need EN#act3_ADV-tower_[1-5]
 
-3#tuez Sulfurieux#3#Need FR#3#Kill Brimstone#None
-3#tuez Brutu#3#Kill Brutu#None
 3#tuez Cingle-langue#3#Kill Lashtongue#None
 3#tuez Ghom#3#Kill Ghom#None
 3#tuez Belagg Percechair#3#Kill Belagg Pierceflesh#None
@@ -202,7 +203,6 @@
 3#Need FR#3#The Cursed Garrison#None
 3#Need FR#3#Kill Gormungandr#None
 3#Need FR#3#Kill Growlfang#None
-3#Need FR#3#Kill Crabbs#None
 3#Need FR#3#The Cursed Caldera#None
 3#Need FR#3#Kill Thornback#None
 3#Need FR#3#Kill Bholen#None
