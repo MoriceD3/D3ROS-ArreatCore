@@ -2,8 +2,6 @@
 
 #include "settings.au3"
 
-#RequireAdmin
-
 Global $FILETIME = "dword;dword"    ;Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTC).
 Global $SYSTEMTIME = "ushort;ushort;ushort;ushort;ushort;ushort;ushort;ushort"
 

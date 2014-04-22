@@ -115,9 +115,3 @@ While 1
    			Exit 0
 	EndSwitch
 WEnd
-
-;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_1.txt")
-;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_2.txt")
-;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_3.txt")
-;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_4.txt")
-;Draw_MapData(@scriptdir & "\sequencer\119306-MapData-0422120343.ini" , @scriptdir & "\sequence\act3_ADV-core_start_5.txt")
