@@ -2500,21 +2500,21 @@ Func checkForGlobes()
 					ContinueLoop
 				EndIf
 				If (StringInStr($item[1], "HealthGlobe") Or StringInStr($item[1], "PowerGlobe")) Then
-					_log("Globe found !" , $LOG_LEVEL_WARNING)
+					_log("Globe found !", $LOG_LEVEL_WARNING)
 					$CurrentACD = GetACDOffsetByACDGUID($item[0])
 					$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
 					If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 						Local $timeForGlobe = TimerInit()
 						While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And _playerdead() = False
-							$objpos = UpdateObjectsPos($item[0])
+							$objpos = UpdateObjectsPos($item[8])
 							If $objpos[3] >= $pickupRadius Then
 								$Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
 								MouseMove($Coords[0], $Coords[1], 3)
 							Else
-								_log('Globe taken (distance=' & $objpos[3] & ')', $LOG_LEVEL_VERBOSE)
+								_log('Globe taken (range=' & $pickupRadius & ')', $LOG_LEVEL_VERBOSE)
 								Return
 							EndIf
-							If TimerDiff($timeForGlobe) > 2000 Then
+							If TimerDiff($timeForGlobe) > 1700 Then
 								_log('Fake globe or timeout', $LOG_LEVEL_WARNING)
 								BanActor($item[1])
 								Return
