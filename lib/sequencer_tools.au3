@@ -141,8 +141,8 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		_log("Invalid mapData file ! ", $LOG_LEVEL_ERROR)
 	EndIf
 
-	Dim $Scene_table_totale[1][8]
-	Dim $NavCell_Table_Totale[1][8]
+	Dim $Scene_table_totale[$meshSize + 1][8]
+	Dim $NavCell_Table_Totale[$navSize + 1][8]
 	Local $count_scene = 0
 	Local $count_navcell = 0
 
@@ -152,7 +152,6 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $temp <> -1 Then
 			$temp = StringSplit($temp, ",", 2)
 			$count_navcell += 1
-			Redim $NavCell_Table_Totale[$count_navcell][8]
 			$NavCell_Table_Totale[$count_navcell-1][0] = $temp[0]
 			$NavCell_Table_Totale[$count_navcell-1][1] = $temp[1]
 			$NavCell_Table_Totale[$count_navcell-1][2] = $temp[2]
@@ -162,6 +161,9 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			$NavCell_Table_Totale[$count_navcell-1][6] = $temp[6]
 			$NavCell_Table_Totale[$count_navcell-1][7] = $temp[7]
 		EndIf
+		If Mod($i, 1000) = 0 And $i <> 0 Then
+			_log("Loaded : " & $i & "/" & $navSize  & " navCells")
+		EndIf
 	Next
 
 	_log("Loading mesh data", $LOG_LEVEL_DEBUG)
@@ -170,7 +172,6 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $temp <> -1 Then
 			$temp = StringSplit($temp, ",", 2)
 			$count_scene += 1
-			Redim $Scene_table_totale[$count_scene][8]
 			$Scene_table_totale[$count_scene-1][0] = $temp[0]
 			$Scene_table_totale[$count_scene-1][1] = $temp[1]
 			$Scene_table_totale[$count_scene-1][2] = $temp[2]
