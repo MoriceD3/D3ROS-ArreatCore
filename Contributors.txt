@@ -31,7 +31,9 @@ Anonymous69 :
 - Mise en place des fonctions WaitForLoot pour une attente intelligente du bot après le dernier kill ou l'ouverture d'un coffre
 - Refonte de la gestion des logs pour support de niveaux différents (Erreur, warning, ...) très utile en mode scite
 - Ajout de ifposition / loadsequence / positionrange dans les sequences
-- Remise en route d'une sequence maker valide
+- Remise en route d'une sequence maker valide + backup des données des map en format mapData
+- Ajout d'un outil sequenceChecker
+- Ajout prise de globe en combat
 
 bilabou :
 

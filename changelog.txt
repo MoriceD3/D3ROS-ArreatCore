@@ -1,5 +1,17 @@
 Changelog : 
 
+- Version 1.4 : 22/04/2014
+
+- Correction problème pré buff
+- Correction bug maxgamelength
+- Update skill du wizard (Skills.au3)
+- Ajout de nombreuses séquences et bounty
+- Ajout de la commande IfObjectFound dans les séquences
+- Renomage de InteractWithDoor et de InteractWithPortal dans les séquences
+- Ajout d'une option pour la prise de globe en combat (SettingsHero.ini)
+- Ajout de la fonction de sauvegarde des données des map dans le séquencer
+- Ajout d'un outil : sequenceChecker pour la validation des séquences sur les maps (Nécessite les mapData générées par le nouveau sequencer)
+
 - Version 1.3 : 17/04/2014
 
 - Ajout de nouvelles séquences bounty
