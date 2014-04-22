@@ -118,7 +118,7 @@
 2#Need FR#2#A Miner's Gold#None
 2#Need FR#2#Clear the Ruins#None
 2#Need FR#2#Clear the Vile Cavern#None
-2#le rempart maudit#2#The Cursed Battlement#None
+2#le rempart maudit#2#The Cursed Battlement#act2_BOUNTY-howling_plateau_Cursed
 2#Need FR#2#The Guardian Spirits#None
 2#Need FR#2#Clear the Flooded Cave#None
 2#Need FR#2#Rygnar Idol#None
@@ -128,7 +128,7 @@
 2#Need FR#2#Restless Sands#None
 2#Need FR#2#Clear the Mysterious Cave#None
 2#Need FR#2#Kill Bloodfeather#None
-2#l’avant-poste maudit#2#The Cursed Outpost#None
+2#l’avant-poste maudit#2#The Cursed Outpost#act2_BOUNTY-howling_plateau_Cursed
 2#Need FR#2#Kill Saha the Slasher#None
 2#Need FR#2#Prisoners of Kamyr#None
 2#Need FR#2#Kill Raiha##None
