@@ -44,7 +44,7 @@ Func CheckWindowD3()
 		_log("Size Windows X : " & $SizeWindows[0] & " - Y : " & $SizeWindows[1], $LOG_LEVEL_DEBUG)
 		$AspectChange = ($SizeWindows[0] / $SizeWindows[1]) / (800 / 600)
 	EndIf
-	
+
 EndFunc   ;==>CheckWindowD3
 
 Func CheckWindowD3Size()
@@ -105,10 +105,10 @@ Func ClickUI($name, $bucket = -1, $click = 1)
 
 	Dim $Point2 = GetUIRectangle($Point[0], $Point[1], $Point[2], $Point[3])
 
-	If ($Point2[2] < 0) Then 
+	If ($Point2[2] < 0) Then
 		$Point2[2] = 0
 	EndIf
-	If ($Point2[3] < 0) Then 
+	If ($Point2[3] < 0) Then
 		$Point2[3] = 0
 	EndIf
 
@@ -361,12 +361,12 @@ Func _checkInventoryopen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 1813)
 EndFunc   ;==>_checkInventoryopen OK
 
-Func _checkBountyRewardOpen() 
-	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 1969) 
+Func _checkBountyRewardOpen()
+	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 1969)
 EndFunc ;==>_checkBountyRewardOpen OK
 
-Func _checkQuestRewardOpen() 
-	Return fastcheckuiitemvisible("Root.NormalLayer.questreward_dialog", 1, 1612) 
+Func _checkQuestRewardOpen()
+	Return fastcheckuiitemvisible("Root.NormalLayer.questreward_dialog", 1, 1612)
 EndFunc ;==>_checkQuestRewardOpen OK
 
 Func GetLevelAreaId()
@@ -421,6 +421,59 @@ Func GetAct()
 
 	EndIf
 EndFunc   ;==>GetAct
+
+;;--------------------------------------------------------------------------------
+;;	Func listquest
+;;
+;;  Browse available quest
+;;
+;;  QuestId = id of the quest
+;;  Quest_Area_ID = Area id of the quest
+;;  Quest_State = Status of the quest (0 : NotReached // 1 : Current // 2 : Finished // 3 : Finished but failed)
+;;  Step = no idea
+;;  Area id and Quest Id can be found in lib/ area.txt quest.txt
+;;
+;; !! This is just a Demo function !!
+;;--------------------------------------------------------------------------------
+Func Listquest()
+$arealist = FileRead("lib\area.txt")
+
+$QuestMan_A=0x8b8
+$QuestMan_B=0x1c
+
+$_itrQuestManA     = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
+$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
+
+while $_Curr_Quest_Ofs <> 0
+
+_log("Current Quest Ofs : " & $_Curr_Quest_Ofs)
+
+	$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
+_log("Quest ID : " & hex($Quest_ID))
+	$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
+
+If $Quest_Area_ID > 0 Then
+	Local $pattern = "([\w'-]{5,80})\t\W\t" & $Quest_Area_ID
+	$asResult = StringRegExp($arealist, $pattern, 1)
+
+	 If not @error Then
+	_log("This Quest is in map : "  & $asResult[0])
+Else
+	_log("!!!! That Area Need to be determinated in the .txt file !!!!!!")
+	EndIf
+Endif
+
+_log("Quest Area id : " & $Quest_Area_ID)
+	$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
+_log("Quest State : " & $Quest_State)
+	$Quest_Step = _MemoryRead($_Curr_Quest_Ofs + 0x18 , $d3, 'int')
+_log("Quest Step : " & $Quest_Step)
+
+_log("=================================")
+$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
+Wend
+
+Endfunc ;==> Listquest
 
 ;;--------------------------------------------------------------------------------
 ; Function:			TownStateCheck()
@@ -1111,7 +1164,7 @@ EndFunc   ;==>startIterateObjectsList
 ;;--------------------------------------------------------------------------------
 Func FromD3toScreenCoords($_x, $_y, $_z)
 	Dim $return[2]
-	
+
 	;Disable costly check
 	;CheckWindowD3Size()
 
@@ -1394,8 +1447,8 @@ EndFunc
 Func GetItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, $position, $CurrentPosition = False)
 
 	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $GuidStruct)
-	
-	If $iterateObjectsStruct = False Then 
+
+	If $iterateObjectsStruct = False Then
 		Return False
 	EndIf
 
@@ -1890,7 +1943,7 @@ Func handle_Coffre(ByRef $item)
 		EndIf
 	Else
 		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
-			$result = Coffre($item) 
+			$result = Coffre($item)
 			If $result = 0 Then
 				_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
 				BanActor($item[1])
@@ -1953,7 +2006,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 
 	$itemDestination = CheckItem($item[0], $item[1])
 	$result = 0
-	
+
 	If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
 		; this loot is interesting
 		If IsArray($item_aff_verif) and $gestion_affixe_loot Then
@@ -2072,7 +2125,7 @@ Func Attack()
 		EndIf
 
 		$oldResult = $LastResult
-		$oldWait = $shouldWait 
+		$oldWait = $shouldWait
 		$LastResult = 0
 		$shouldWait = False
 		$wasLoot = False
@@ -2492,7 +2545,7 @@ Func checkForGlobes()
 		EndIf
 
 		$CurrentLoc = GetCurrentPos()
-		$SearchCount = UBound($Table_SearchObject) - 1 
+		$SearchCount = UBound($Table_SearchObject) - 1
 		For $i = 0 To $count
 			If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 				If ($item[9] > $range_health) Or (GetLifep() > $LifeForHealth / 100) Then
@@ -3022,7 +3075,7 @@ Func _resumegame()
 			_log("Sleep after too many _resumegame -> " & $wait_aftertoomanytry)
 			Sleep($wait_aftertoomanytry)
 		EndIf
-		
+
 		If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
 		   Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
 		   _Log("Break Time after xx games -> Sleep " & (formatTime($wait_BreakTimeafterxxgames)))
@@ -3031,7 +3084,7 @@ Func _resumegame()
 		   $BreakTimeCounter += 1;on compte les pause effectuer
 		   $tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
 		EndIf
-		
+
 		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
 		$Try_ResumeGame += 1
 	EndIf
@@ -3362,7 +3415,7 @@ Func Shrine($name, $offset, $Guid)
     Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 
 	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And Not _playerdead()
-		
+
 		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
@@ -3404,7 +3457,7 @@ Func Coffre($item)
     Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 
     While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And Not _playerdead()
-		
+
 		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
@@ -3701,7 +3754,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 
 	For $i = 0 To 5
 		Dim $buff_table[11]
-		
+
 		Switch $i
 			Case 0
 				$buff_table = $Skill1
@@ -3812,7 +3865,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								$buff_table[10] = TimerInit()
 							EndIf
 						Case $SPELL_TYPE_ZONE
-							If $buff_table[8] = "" Then ; TODO : Check that ! 
+							If $buff_table[8] = "" Then ; TODO : Check that !
 							   $dist = 20
 							Else
 							   $dist = $buff_table[8]
@@ -3826,7 +3879,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							EndIf
 						Case $SPELL_TYPE_ZONE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False then
-								If $buff_table[8] = "" Then ; TODO : Check that ! 
+								If $buff_table[8] = "" Then ; TODO : Check that !
 								   $dist = 20
 								Else
 								   $dist = $buff_table[8]
@@ -3844,12 +3897,12 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
-						Case $SPELL_TYPE_LIFE_OR_ATTACK 
+						Case $SPELL_TYPE_LIFE_OR_ATTACK
 							If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
-						Case $SPELL_TYPE_MOVE_OR_ATTACK 
+						Case $SPELL_TYPE_MOVE_OR_ATTACK
 							If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
@@ -3912,8 +3965,8 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 						Case $SPELL_TYPE_PERMANENT_BUFF
 							launch_spell($i)
 							$buff_table[10] = TimerInit()
-						Case $SPELL_TYPE_CHANNELING	
-							; See in unused  Removed_GestSpellcast! 
+						Case $SPELL_TYPE_CHANNELING
+							; See in unused  Removed_GestSpellcast!
 							; TODO : Handle this
 					Endswitch
 				Case 2 ; grab
@@ -3926,7 +3979,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 						Case $SPELL_TYPE_PERMANENT_BUFF
 							launch_spell($i)
 							$buff_table[10] = TimerInit()
-						Case $SPELL_TYPE_MOVE 
+						Case $SPELL_TYPE_MOVE
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
 								$timer_buff = TimerInit()
 								;if IsBuffActive($_MyGuid,$DemonHunter_Chakram )=False then
@@ -3970,7 +4023,7 @@ Func GestSpellInit()
 		Dim $buff_conf_table[6]
 
 		Switch $i
-			Case 0 
+			Case 0
 				$buff_conf_table = $Skill_conf1
 				$buff_table = $Skill1
 			Case 1
