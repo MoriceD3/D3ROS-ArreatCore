@@ -1814,6 +1814,8 @@ Func Is_Decor_Breakable(ByRef $item)
 			Return False
 		Case $item[6] = -1
 			Return False
+		Case IsItemInTable($Table_BanMonster, $item[1])
+			Return False
 		Case IsItemInTable($Table_Decor, $item[1])
 			Return True
 		Case Else
