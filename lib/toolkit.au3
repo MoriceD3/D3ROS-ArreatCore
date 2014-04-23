@@ -5136,6 +5136,7 @@ Func _TownPortalnew($mode=0)
 
 			If Detect_UI_error($MODE_BOSS_TP_DENIED) AND NOT _intown() Then
 			   If ($Choix_Act_Run < 100 And $Choix_Act_Run > -2) Then
+				  _Log('_TownPortalnew : Detection Asmo room', $LOG_LEVEL_WARNING)
 				  $Execute_TownPortalnew = False
 				  Return False
 			   Else
