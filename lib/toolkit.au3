@@ -1557,7 +1557,7 @@ Func IterateFilterAttackV4($IgnoreList)
 		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 			$handle = False
 
-			If Is_Interact($item, $IgnoreList) Then
+			If Not $Item[1] = "" And Is_Interact($item, $IgnoreList) Then
 				Select
 					Case Is_Shrine($item)
 						$handle = True
@@ -1954,14 +1954,20 @@ Func handle_Coffre(ByRef $item)
 				Sleep(2000)
 				_log("Cursed Chest opened : Waiting 2 s")
 			EndIf
+		Else
+			_log("Ban Opened cursed chest -> " & $item[1])
+			BanActor($item[1])
 		EndIf
 	Else
 		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
 			$result = Open_Chest($item)
 			If $result = 0 Then
-				_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
+				_log("Ban chest -> " & $item[1], $LOG_LEVEL_DEBUG)
 				BanActor($item[1])
 			EndIf
+		Else
+			_log("Ban Opened chest -> " & $item[1], $LOG_LEVEL_DEBUG)
+			BanActor($item[1])
 		EndIf
 	EndIf
 	Return $result
@@ -1977,6 +1983,9 @@ Func handle_Shrine(ByRef $item)
 			_log("Ban shrine -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
+	Else
+		_log("Ban opened shrine -> " & $item[1], $LOG_LEVEL_DEBUG)
+		BanActor($item[1])
 	EndIf
 	Return $result
 EndFunc   ;==>handle_Shrine
@@ -2146,11 +2155,11 @@ Func Attack()
 
 		If ($totalSkipped > 6) Then
 			BanActor($item[1])
-			_log("Attack : Ban " &  $item[1] & " too many skips", $LOG_LEVEL_DEBUG)
+			_log("Attack : Ban " & $item[1] & " too many skips", $LOG_LEVEL_DEBUG)
 			ExitLoop
 		ElseIf ($OldActor = $item[1]) And ($LastResult <> 2 Or $skipped > 2) Then
 			BanActor($item[1])
-			_log("Attack : Ban " &  $item[1] & " : Second passage", $LOG_LEVEL_DEBUG)
+			_log("Attack : Ban " & $item[1] & " : Second passage", $LOG_LEVEL_DEBUG)
 			ExitLoop
 		Else
 			$OldActor = $item[1]
@@ -2181,6 +2190,7 @@ Func Attack()
 				$shouldWait = True
 			Case $item[13] = $ITEM_TYPE_DECOR
 				$LastResult = handle_Decor($item, $IgnoreList, $test_iterateallobjectslist)
+				$shouldWait = True
 			Case $item[13] = $ITEM_TYPE_HEALTH
 				$LastResult = handle_Health($item)
 				If ($oldResult = 1 And $oldWait) Then
@@ -2189,6 +2199,8 @@ Func Attack()
 				EndIf
 			Case $item[13] = $ITEM_TYPE_POWER
 				$LastResult = handle_Power($item)
+			Case Else
+				BanActor($item[1])
 		EndSelect
 
 		Dim $test_iterateallobjectslist = IterateFilterAttackV4($IgnoreList)
