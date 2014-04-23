@@ -1977,6 +1977,21 @@ Func handle_Shrine(ByRef $item)
 	Return $result
 EndFunc   ;==>handle_Shrine
 
+Func handle_Decor(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
+	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+	Local $result = 0
+	If GetAttribute($CurrentIdAttrib, $Atrib_Hitpoints_Cur) > 0 And GetAttribute($CurrentIdAttrib, $Atrib_Invulnerable) = 0 Then
+		$result = KillMob($item[1], $item[8], $item[0], $test_iterateallobjectslist, True)
+		If $result = 0 Then
+			$IgnoreList = $IgnoreList & $item[8]
+		EndIf
+	Else
+		_log('No HP or Invulnerable : Ignoring ' & $item[1], $LOG_LEVEL_NONE)
+		$IgnoreList = $IgnoreList & $item[8]
+	EndIf
+	Return $result
+EndFunc   ;==>handle_Mob
 
 Func handle_Mob(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectslist)
 	; we have a monster
@@ -2161,8 +2176,7 @@ Func Attack()
 				$LastResult = handle_Coffre($item)
 				$shouldWait = True
 			Case $item[13] = $ITEM_TYPE_DECOR
-				; TODO : Gérer proprement pour un timeout different et pas d'utilisation de gros skills
-				$LastResult = handle_Mob($item, $IgnoreList, $test_iterateallobjectslist)
+				$LastResult = handle_Decor($item, $IgnoreList, $test_iterateallobjectslist)
 			Case $item[13] = $ITEM_TYPE_HEALTH
 				$LastResult = handle_Health($item)
 				If ($oldResult = 1 And $oldWait) Then
@@ -2206,7 +2220,7 @@ EndFunc   ;==>DetectElite
 ;;      KillMob()
 ;;--------------------------------------------------------------------------------
 
-Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
+Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2, $Decor = False);pacht 8.2e
     $return = 1
     $begin = TimerInit()
 
@@ -2237,7 +2251,11 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 	EndIf
 
 	;loop the attack until the mob is dead
-    _log("Attacking : " & $Name & " (Type : " & $elite & ")", $LOG_LEVEL_VERBOSE);
+	If $Decor Then
+		_log("Attacking Decor : " & $Name & " (Type : " & $elite & ")", $LOG_LEVEL_VERBOSE);
+	Else
+    	_log("Attacking Mob : " & $Name & " (Type : " & $elite & ")", $LOG_LEVEL_VERBOSE);
+	EndIf
 
     Local $maxhipi = Round(IterateActorAtribs($Guid, $Atrib_Hitpoints_Cur))
     Local $timerinit = TimerInit()
@@ -2312,7 +2330,12 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2);pacht 8.2e
 
         $Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
         MouseMove($Coords[0], $Coords[1], 3)
-        GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
+        If $Decor Then
+        	GestSpellcast($pos[3], 3, $elite, $Guid, $offset)
+        Else
+        	GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
+        EndIF
+
         If TimerDiff($begin) > $killTimeoutValue Then
             $killtimeout += 1
             _log($Name & " : Kill timeout (" & Round($killTimeoutValue / 1000) & " secs)", $LOG_LEVEL_WARNING)
@@ -3742,6 +3765,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 	; $action_spell = 0 -> movetopos
 	; $action_spell = 1 -> attack
 	; $action_spell = 2 -> grab
+	; $action_spell = 3 -> attack decor
 	checkForPotion()
 	checkForGlobes()
 	PauseToSurviveHC() ; pause HCSecurity
@@ -3951,7 +3975,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
 							EndIf
-						case $SPELL_TYPE_ELITE_OR_BUFF
+						Case $SPELL_TYPE_ELITE_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or $elite > 0 Then
 								launch_spell($i)
 								$buff_table[10] = TimerInit()
@@ -3989,6 +4013,81 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								$buff_table[10] = TimerInit()
 							EndIf
 					EndSwitch
+				Case 3 ; attack decor
+					If ($buff_table[5] = "" Or $buff_table[4] = "" Or $buff_table[4] = 0) Then
+						Switch $buff_table[3]
+							Case $SPELL_TYPE_LIFE
+								If GetLifep() <= $buff_table[7] / 100 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								 EndIf
+							Case $SPELL_TYPE_ATTACK
+								If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_PHYSICAL
+								launch_spell($i)
+							Case $SPELL_TYPE_LIFE_AND_ATTACK
+								If GetLifep() <= $buff_table[7] / 100 And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_LIFE_OR_ATTACK
+								If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_MOVE_OR_ATTACK
+								If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_LIFE_OR_BUFF
+								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_LIFE_OR_MOVE
+								If GetLifep() <= $buff_table[7] / 100 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								 EndIf
+							Case $SPELL_TYPE_LIFE_AND_BUFF
+								If IsBuffActive($_MyGuid, $buff_table[9]) = False And GetLifep() <= $buff_table[7] / 100 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_ATTACK_OR_BUFF
+								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_ATTACK_AND_BUFF
+								If IsBuffActive($_MyGuid, $buff_table[9]) = False And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_LIFE_OR_ELITE
+								If GetLifep() <= $buff_table[7] / 100 Or $elite > 0 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_ATTACK_OR_ELITE
+								If ($Distance <= $buff_table[8] Or $buff_table[8] = "") Or $elite > 0 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								EndIf
+							Case $SPELL_TYPE_ELITE_OR_BUFF
+								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or $elite > 0 Then
+									launch_spell($i)
+									$buff_table[10] = TimerInit()
+								 EndIf
+							Case $SPELL_TYPE_CHANNELING
+								; See in unused  Removed_GestSpellcast!
+								; TODO : Handle this
+						Endswitch
+					EndIf
 			EndSwitch
 		EndIf
 
