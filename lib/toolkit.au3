@@ -1814,6 +1814,8 @@ Func Is_Decor_Breakable(ByRef $item)
 			Return False
 		Case $item[6] = -1
 			Return False
+		Case IsItemInTable($Table_SpecialMonster, $item[1])
+			Return False
 		Case IsItemInTable($Table_BanMonster, $item[1])
 			Return False
 		Case IsItemInTable($Table_Decor, $item[1])
@@ -1826,6 +1828,8 @@ EndFunc   ;==>Is_Decor_Breakable
 Func Is_Loot(ByRef $item)
 	Select
 		Case $item[9] > $g_range
+			Return False
+		Case IsItemInTable($Table_SpecialMonster, $item[1])
 			Return False
 		Case ($item[5] = 2 And $item[6] = -1)
 			Return True

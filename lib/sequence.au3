@@ -348,8 +348,8 @@ EndFunc ;==>valeur attackRange
 Func SpecialML($String)
 	If Not $String = "" Then
 		$List_SpecialMonster = $String
-		LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster) ; Chargement de la nouvelle table
 		_log("Remplacement de la SpecialMonsterlist : " & $List_SpecialMonster, $LOG_LEVEL_VERBOSE)
+		LoadTableFromString($Table_SpecialMonster, $List_SpecialMonster) ; Chargement de la nouvelle table
 	EndIf
 EndFunc   ;==>SpecialMonsterList
 
