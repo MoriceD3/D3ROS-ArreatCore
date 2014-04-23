@@ -818,7 +818,7 @@ Func FilterBackpack()
 
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
-			If ($quality >= 9 And Not $itemDestination = "Inventory") Then
+			If ($quality >= 9 And $itemDestination = "Stash") Then
 				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality >= 6 And $itemDestination = "Stash") Then
