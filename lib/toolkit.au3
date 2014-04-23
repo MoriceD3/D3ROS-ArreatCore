@@ -2867,33 +2867,21 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 		Sleep(10)
 	WEnd
 
-	$WayPointFound = False
-
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $maxRange = 130
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], "Waypoint") Then
-			If $item[9] < $maxRange Then
-				_log("WayPoint OK, MaxRange OK", $LOG_LEVEL_VERBOSE)
-				$WayPointFound = true
-				ExitLoop
-			Else
-				_log("WayPoint OK, MaxRange FALSE", $LOG_LEVEL_WARNING)
-			EndIF
-		EndIf
-	WEnd
-
-	If $WayPointFound Then
-		_Log("WP Found", $LOG_LEVEL_VERBOSE)
-		OpenWp($item)
-
+	If $Mode = 0 Then
+		_Log("Opening map for Campain mode", $LOG_LEVEL_VERBOSE)
+		Send($KeyCloseWindows)
+		Sleep(250)
+		Send("M")
 		Sleep(1000)
+
 		Local $wptry = 0
 		While Not _checkWPopen() And Not _playerdead()
 			If $wptry <= 6 Then
 				_log('Fail to open wp', $LOG_LEVEL_WARNING)
 				$wptry += 1
-				OpenWp($item)
+				Send($KeyCloseWindows)
+				Sleep(200)
+				Send("M")
 				Sleep(1000)
 			EndIf
 			If $wptry > 6 Then
