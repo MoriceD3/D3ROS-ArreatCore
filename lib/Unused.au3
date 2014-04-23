@@ -265,6 +265,68 @@ Func LevelAreaConstants()
 	Global $A5todo = 0x41ebb
 EndFunc   ;==>LevelAreaConstants
 
+Func Health($name, $offset, $Guid)
+
+	$life = GetLifep()
+	Local $timeForHealth = TimerInit()
+	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+
+		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+		If $distance >= 8 Then
+			If $life < ($LifeForHealth / 100) Then
+				If TimerDiff($timeForHealth) > 2000 Then
+					_log('health is banned because time out', $LOG_LEVEL_WARNING)
+					Return 0
+				Else
+					$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+					MouseMove($Coords[0], $Coords[1], 3)
+				EndIf
+			ElseIf $life = 1 Then
+				_log('Health globe ignore (already full life)', $LOG_LEVEL_VERBOSE)
+				Return 0
+			Endif
+		ElseIf $distance < $pickupRadius Then
+			_log('Health globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+			Return 1
+		EndIf
+
+		If TimerDiff($timeForHealth) > 3000 Then
+			_log('Fake health', $LOG_LEVEL_WARNING)
+			Return 0
+		EndIf
+
+		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
+	Return 1
+EndFunc   ;==>health
+Func Power($name, $offset, $Guid)
+
+	Local $timeForPower = TimerInit()
+		While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
+
+		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+			If $distance >= 8 Then
+				If TimerDiff($timeForPower) > 2000 Then
+				_log('Power globe is banned because time out', $LOG_LEVEL_WARNING)
+				Return 0
+			Else
+				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+				MouseMove($Coords[0], $Coords[1], 3)
+			EndIf
+		ElseIf $distance < $pickupRadius Then
+			_log('Power globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+			Return 1
+		EndIf
+
+		If TimerDiff($timeForPower) > 3000 Then
+			_log('Fake power globe', $LOG_LEVEL_WARNING)
+			Return 0
+		EndIf
+
+		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+	WEnd
+	Return 1
+EndFunc   ;==>power
 
 ;;--------------------------------------------------------------------------------
 ;;      UiRatio()

@@ -1902,7 +1902,7 @@ Func handle_Power(ByRef $item)
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		$result = Power($item[1], $item[8], $item[0])
+		$result = Take_Globe($item)
 		If $result = 0 Then
 			_log("Ban power -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
@@ -1912,15 +1912,23 @@ Func handle_Power(ByRef $item)
 EndFunc   ;==>handle_Power
 
 Func handle_Health(ByRef $item)
-	$result = 0
-	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
-	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
-	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		$result = Health($item[1], $item[8], $item[0])
-		If $result = 0 Then
-			_log("Ban health -> " & $item[1], $LOG_LEVEL_DEBUG)
-			BanActor($item[1])
+	If GetLifep() < $LifeForHealth / 100 Then
+		$result = 0
+		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
+		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
+		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
+			If StringInStr($item[1], "HealthWell") Then
+				$result = Take_ShrineOrWell($item)
+			Else
+				$result = Take_Globe($item)
+			EndIf
+			If $result = 0 Then
+				_log("Ban health -> " & $item[1], $LOG_LEVEL_DEBUG)
+				BanActor($item[1])
+			EndIf
 		EndIf
+	Else
+		$result = 2
 	EndIf
 	Return $result
 EndFunc   ;==>handle_Health
@@ -1933,7 +1941,7 @@ Func handle_Coffre(ByRef $item)
 	If StringInStr($item[1],"x1_Global_Chest_CursedChest") then
 		_log("Handling cursed chest")
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-			$result = Shrine($item[1], $item[8], $item[0])
+			$result = Take_ShrineOrWell($item)
 			_log("Ban Cursed chest (" & $result & ") -> " & $item[1])
 			BanActor($item[1])
 			If $result = 1 Then
@@ -1943,7 +1951,7 @@ Func handle_Coffre(ByRef $item)
 		EndIf
 	Else
 		If GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 Then
-			$result = Coffre($item)
+			$result = Open_Chest($item)
 			If $result = 0 Then
 				_log("Ban coffre -> " & $item[1], $LOG_LEVEL_DEBUG)
 				BanActor($item[1])
@@ -1953,13 +1961,12 @@ Func handle_Coffre(ByRef $item)
 	Return $result
 EndFunc
 
-
 Func handle_Shrine(ByRef $item)
 	$result = 0
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 	If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-		$result = Shrine($item[1], $item[8], $item[0])
+		$result = Take_ShrineOrWell($item)
 		If $result = 0 Then
 			_log("Ban shrine -> " & $item[1], $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
@@ -2083,7 +2090,9 @@ Func Attack()
 		EndIf
 
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
-			_log("Attack : First Item skipped since same as last try", $LOG_LEVEL_DEBUG)
+			If $test_iterateallobjectslist[0][13] <> $ITEM_TYPE_HEALTH Then
+				_log("Attack : First Item skipped since same as last try", $LOG_LEVEL_DEBUG)
+			EndIf
 			$skipped += 1
 			$totalSkipped += 1
 			For $i = 0 To $TableSizeGuidStruct
@@ -2097,7 +2106,9 @@ Func Attack()
 		ElseIf $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor Then
 			$skipped += 1
 			$totalSkipped += 1
-			_log("Attack : Item was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
+			If $test_iterateallobjectslist[0][13] <> $ITEM_TYPE_HEALTH Then
+				_log("Attack : Item was skipped (attempt : " & $skipped & ")", $LOG_LEVEL_DEBUG)
+			EndIf
 			For $i = 0 To $TableSizeGuidStruct
 				$item[$i] = $test_iterateallobjectslist[0][$i]
 			Next
@@ -3405,22 +3416,25 @@ Func enoughtPotions() ; ok pour 2.0
 EndFunc   ;==>enoughtPotions
 
 ;;--------------------------------------------------------------------------------
-; Function:                     Shrine()
-; Description:    Take Bonus shrine
+; Function:       Take_Shrine()
+; Description:    Take Bonus Shrine or Well
 ;;--------------------------------------------------------------------------------
-Func Shrine($name, $offset, $Guid)
-
+Func Take_ShrineOrWell($item)
+	_log("Trying to take Shrine/Well : " & $item[1], $LOG_LEVEL_DEBUG)
 	Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
-    Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-
-	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And Not _playerdead()
-
-		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+	$objpos = UpdateObjectsPos($item[8])
+	Local $dist = $objpos[3]	
+	$CurrentACD = GetACDOffsetByACDGUID($item[0])
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
+				
+	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
+		$objpos = UpdateObjectsPos($item[8])
+		$dist2 = $objpos[3]
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
 			If TimerDiff($moveTimer) > 1500 Then
-				_log("Leaving Shrine() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
+				_log("Leaving Take_ShrineOrWell() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
 				Return 2
 			EndIf
 		Else
@@ -3430,39 +3444,83 @@ Func Shrine($name, $offset, $Guid)
 		$dist = $dist2
 
 		If $dist >= 8 Then
-			$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+			$Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
 			MouseMove($Coords[0], $Coords[1], 3)
 		EndIf
 
 		If TimerDiff($begin) > 6000 Then
-			_log('Leaving Shrine() : timeout', $LOG_LEVEL_WARNING)
+			_log('Leaving Take_ShrineOrWell() : timeout', $LOG_LEVEL_WARNING)
 			Return 0
 		EndIf
-		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+		Interact($objpos[4], $objpos[5], $objpos[6])
+		Sleep(10)
 	WEnd
-
-	$CheckTakeShrineTaken += 1 ;on compte les CheckTakeShrine qu'on prend
+	_log("Shrine/Well taken : " & $item[1], $LOG_LEVEL_VERBOSE)
+	$CheckTakeShrineTaken += 1 ;on compte les Shrine qu'on prend
 	Return 1
-EndFunc   ;==>shrine
+EndFunc   ;==>Take_ShrineOrWell
 
-
-Func Coffre($item)
-
-	$name = $item[1]
-	$offset = $item[8]
-	$Guid = $item[0]
-
+Func Open_Chest($item)
+	_log("Trying to open chest : " & $item[1], $LOG_LEVEL_DEBUG)
     Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
-    Local $dist = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+	$objpos = UpdateObjectsPos($item[8])
+	Local $dist = $objpos[3]	
+	$CurrentACD = GetACDOffsetByACDGUID($item[0])
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
 
-    While iterateactoratribs($Guid, $Atrib_Chest_Open) = 0 And Not _playerdead()
-
-		$dist2 = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
+    While GetAttribute($CurrentIdAttrib, $Atrib_Chest_Open) = 0 And Not _playerdead()
+		$objpos = UpdateObjectsPos($item[8])
+		$dist2 = $objpos[3]
 		; TODO : Use MoveToPos to try to find another path !
 		If (Round($dist2, 1) = Round($dist, 1)) Then
 			If TimerDiff($moveTimer) > 1500 Then
-				_log("Leaving Coffre() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
+				_log("Leaving Open_Chest() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
+				Return 2
+			EndIf
+		Else
+			$moveTimer = TimerInit()
+		EndIf
+		$dist = $dist2
+
+        If $dist >= 8 Then
+            $Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
+			MouseMove($Coords[0], $Coords[1], 3)
+        EndIf
+		If TimerDiff($begin) > 8000 Then
+	        _log('Leaving Open_Chest() : timeout', $LOG_LEVEL_WARNING)
+	        Return 0
+	    EndIf
+        Interact($objpos[4], $objpos[5], $objpos[6])
+        Sleep(150)
+	WEnd
+	_log("Chest opened : " & $item[1], $LOG_LEVEL_VERBOSE)
+	$CoffreTaken += 1;on compte les coffres qu'on ouvre
+
+	If StringInStr($item[1], "Global_Chest") Then
+		_log("Open_Chest() : Wait a litle, it's a demonic chest")
+		Sleep(1500)
+	EndIf
+
+	Return 1
+EndFunc ;==>Take_Chest
+
+Func Take_Globe($item)
+	_log("Trying to take Globe : " & $item[1], $LOG_LEVEL_DEBUG)
+	Local $begin = TimerInit()
+    Local $moveTimer = TimerInit()
+	$objpos = UpdateObjectsPos($item[8])
+	Local $dist = $objpos[3]	
+	$CurrentACD = GetACDOffsetByACDGUID($item[0])
+	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
+				
+	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
+		$objpos = UpdateObjectsPos($item[8])
+		$dist2 = $objpos[3]
+		; TODO : Use MoveToPos to try to find another path !
+		If (Round($dist2, 1) = Round($dist, 1)) Then
+			If TimerDiff($moveTimer) > 1500 Then
+				_log("Leaving Take_Globe() : no move since " & Round(TimerDiff($moveTimer) / 1000, 1) & " secs", $LOG_LEVEL_WARNING)
 				Return 2
 			EndIf
 		Else
@@ -3470,92 +3528,26 @@ Func Coffre($item)
 		EndIf
 
 		$dist = $dist2
-        If $dist >= 8 Then
-            $Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-            MouseMove($Coords[0], $Coords[1], 3)
-        EndIf
-		If TimerDiff($begin) > 8000 Then
-	        _log('Leaving Coffre() : timeout', $LOG_LEVEL_WARNING)
-	        Return 0
-	    EndIf
-        Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-        Sleep(150)
-	WEnd
 
-	$CoffreTaken += 1;on compte les coffres qu'on ouvre
-
-	If StringInStr($name , "Global_Chest") Then
-		_log("Coffre() : Wait a litle, it's a demonic chest")
-		Sleep(1500)
-	EndIf
-
-	Return 1
-EndFunc   ;==>shrine
-
-
-Func Health($name, $offset, $Guid)
-
-	$life = GetLifep()
-	Local $timeForHealth = TimerInit()
-	While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
-
-		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-		If $distance >= 8 Then
-			If $life < ($LifeForHealth / 100) Then
-				If TimerDiff($timeForHealth) > 2000 Then
-					_log('health is banned because time out', $LOG_LEVEL_WARNING)
-					Return 0
-				Else
-					$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-					MouseMove($Coords[0], $Coords[1], 3)
-				EndIf
-			ElseIf $life = 1 Then
-				_log('Health globe ignore (already full life)', $LOG_LEVEL_VERBOSE)
-				Return 0
-			Endif
-		ElseIf $distance < $pickupRadius Then
-			_log('Health globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
+		If $dist >= 8 Then
+			$Coords = FromD3toScreenCoords($objpos[4], $objpos[5], $objpos[6])
+			MouseMove($Coords[0], $Coords[1], 3)
+		ElseIf $dist < $pickupRadius Then
+			Interact($objpos[4], $objpos[5], $objpos[6])
+			_log('Globe taken (distance=' & $dist & ')', $LOG_LEVEL_VERBOSE)
 			Return 1
 		EndIf
 
-		If TimerDiff($timeForHealth) > 3000 Then
-			_log('Fake health', $LOG_LEVEL_WARNING)
+		If TimerDiff($begin) > 3000 Then
+			_log('Leaving Take_Globe() : timeout', $LOG_LEVEL_WARNING)
 			Return 0
 		EndIf
-
-		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
+		Interact($objpos[4], $objpos[5], $objpos[6])
+		Sleep(10)
 	WEnd
+	_log("Globe taken : " & $item[1], $LOG_LEVEL_VERBOSE)
 	Return 1
-EndFunc   ;==>health
-
-Func Power($name, $offset, $Guid)
-
-	Local $timeForPower = TimerInit()
-		While iterateactoratribs($Guid, $Atrib_gizmo_state) <> 1 And _playerdead() = False
-
-		Local $distance = getdistance(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-			If $distance >= 8 Then
-				If TimerDiff($timeForPower) > 2000 Then
-				_log('Power globe is banned because time out', $LOG_LEVEL_WARNING)
-				Return 0
-			Else
-				$Coords = FromD3toScreenCoords(_MemoryRead($offset + 0xB4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBC, $d3, 'float'))
-				MouseMove($Coords[0], $Coords[1], 3)
-			EndIf
-		ElseIf $distance < $pickupRadius Then
-			_log('Power globe taken (distance=' & $distance & ')', $LOG_LEVEL_VERBOSE)
-			Return 1
-		EndIf
-
-		If TimerDiff($timeForPower) > 3000 Then
-			_log('Fake power globe', $LOG_LEVEL_WARNING)
-			Return 0
-		EndIf
-
-		Interact(_MemoryRead($offset + 0xb4, $d3, 'float'), _MemoryRead($offset + 0xB8, $d3, 'float'), _MemoryRead($offset + 0xBc, $d3, 'float'))
-	WEnd
-	Return 1
-EndFunc   ;==>power
+EndFunc   ;==>Take_Globe()
 
 ;;--------------------------------------------------------------------------------
 ; Function:                     Die2Fast()
