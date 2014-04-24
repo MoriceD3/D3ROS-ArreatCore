@@ -27,8 +27,7 @@
 1#tuez Grogneur#1#Kill Growler#act1_ADV-champs_[1-8]
 1#tuez Lorzak le Puissant#1#Kill Lorzak the Powerfull#Act1_BOUNTY-Southern_Kill_1
 1#tuez le seigneur Brone#1#Kill Lord Brone#act1_ADV-putride_[1-6]
-
-1#Need FR#1#Kill Hrugowl the Defiant#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
+1#tuez Hrugrogne le Trublion#1#Kill Hrugowl the Defiant#Act1_BOUNTY-Northern|Act1_BOUNTY-Leoric_Hunting_1
 
 1#le frère de l’apothicaire#1#Apothecary's Brother#None
 1#un étranger en détresse#1#A Stranger in Need#None
@@ -51,27 +50,27 @@
 1#tuez Rathlin la Faiseuse de veuves#1#Kill Rathlin the widowmaker#None
 1#tuez Ragelutte le Pestiféré#1#Kill BattleRage the Plagued#None
 1#le bosquet maudit#1#The Cursed Grove#None
+1#guerre éternelle#1#Eternal War#None
+1#la chambre des Os maudite#1#The Cursed Chamber of bone#None
+1#nettoyez la crypte des Anciens#1#Clear the crypt of the ancients#None
+1#la jarre d’âmes#1#Clear the jar of souls#None
+1#nettoyez le Repos du guerrier#1#Clear the warrior's rest#None
+1#tuez Crassus le Tourmenteur#1#Kill Crassus the tormentor#None
+1#tuez le fossoyeur O’Dell#1#Kill Digger O'Dell#None
+1#tuez Brûlot#1#Kill FireStarter#None
+1#tuez Killian Damort#1#Kill Killian Damort#None
+1#tuez Pognebois Bûchecrâne#1#Kill Treefist Woodhead#None
+1#le soufflet maudit#1#The Cursed Bellows#None
+1#la cour maudite#1#The Cursed Court#None
+1#la chambre des Œufs maudite#1#The Cursed hatchery#None
+1#tuez le mineur de données#1#Kill the Dataminer#None
+1#tuez Qurash la Honnie#1#Kill Qurash the reviled#None
 
 1#Need FR#1#Kill Glidewing#None
 1#Need FR#1#Kill BludgeonSkull#None
 1#Need FR#1#Kill Sotnob the fool#None
-1#Need FR#1#Kill Crassus the tormentor#None
 1#Need FR#1#Kill Boneslag the Slayer#None
-1#Need FR#1#Kill Treefist Woodhead#None
-1#Need FR#1#The Cursed Bellows#None
 1#Need FR#1#Scavenged Scabbard#None
-1#Need FR#1#Eternal War#None
-1#Need FR#1#Clear the warrior's rest#None
-1#Need FR#1#Clear the crypt of the ancients#None
-1#Need FR#1#Clear the jar of souls#None
-1#Need FR#1#Kill Digger O'Dell#None
-1#Need FR#1#Kill the Dataminer#None
-1#Need FR#1#The Cursed Chamber of bone#None
-1#Need FR#1#Kill FireStarter#None
-1#Need FR#1#The Cursed Court#None
-1#Need FR#1#Kill Killian Damort#None
-1#Need FR#1#Kill Qurash the reviled#None
-1#Need FR#1#The Cursed hatchery#None
 1#Need FR#1#Kill Bludgeonskull #None
 1#tuez Venimite#1#Need EN#None
 1#le fourreau retrouvé#1#Need EN#None
