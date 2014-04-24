@@ -28,49 +28,44 @@ Func GetBountySequences($Table_BountyAct)
 		Return False
 	EndIf
 
-	Sleep(1500)
+	$snoSequencelist = FileRead("sequence\_sno_sequences.txt")
 
-	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
-		Send("M")
-		Sleep(100)
-	WEnd
+	$QuestMan_A = 0x8b8
+	$QuestMan_B = 0x1c
 
+	$_itrQuestManA   = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
+	$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
 	$SeqList = ""
-	$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.BountyContainer.Bounties._content._stackpanel._tilerow0._item"
-	For $i = 0 To UBound($Table_BountyAct) - 1
-		_log("Getting bounties for act : " & $Table_BountyAct[$i])
+	$acts = _ArrayToString($Table_BountyAct,"|")
 
-		$CurrentAct = GetNumActByWPUI()
-		If $CurrentAct <> $Table_BountyAct[$i] Then
-			SwitchAct($Table_BountyAct[$i])
-		EndIf
+	While $_Curr_Quest_Ofs <> 0
+		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
+		$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
+		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 
-		For $z = 0 To 4
-			ClickUI($NameUI & $z)
-			Sleep(100)
-			$bounty = GetTextUI(1251, 'Root.TopLayer.tooltip_dialog_background.tooltip_2.tooltip')
-			If $bounty <> False Then
-				$temp = StringSplit($bounty,Chr(0),2)
-				$bounty = $temp[0]
-				$bounty = StringReplace($bounty, "Bounty: ", "")
-				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
-				$bounty = $Table_BountyAct[$i] & "#" & $bounty
-				$seq = GetSequenceForBounty($bounty)
-				If $seq <> False Then
-					 _log("Sequence found for bounty : " & $bounty & " -> " & $seq, $LOG_LEVEL_DEBUG)
-					If $SeqList = "" Then
-						$SeqList = $seq
+		If $Quest_State = 0 Then
+			Local $pattern = $Quest_ID & "#[\d\w]*#(\d)#([\w_]*)#(.*)"
+			$asResult = StringRegExp($snoSequencelist, $pattern, 1)
+			If Not @error Then
+				If StringInStr($acts, $asResult[0]) Then
+					If $asResult[2] <> "" And $asResult[2] <> "None" Then
+						If $SeqList = "" Then
+							$SeqList = $asResult[2]
+						Else
+							$SeqList = $SeqList & "|" & $asResult[2]
+						EndIf
+						_log("Bounty with sequence : " & $asResult[1] & " -> " & $asResult[2], $LOG_LEVEL_VERBOSE)
 					Else
-						$SeqList = $SeqList & "|" & $seq
+						_log("Bounty without sequence : " & $asResult[1], $LOG_LEVEL_WARNING)
 					EndIf
 				EndIf
+			Else
+				_log("Unknown bounty : " & $Quest_ID)
 			EndIf
-		Next
-	Next
-
-	Send("M")
-	Sleep(150)
-
+		EndIf
+		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
+	Wend
+	
 	If $SeqList = "" Then
 		If $NoBountyFailbackToAdventure Then
 			_log("No supported sequences found !, Loading adventure ones", $LOG_LEVEL_WARNING)
@@ -83,38 +78,7 @@ Func GetBountySequences($Table_BountyAct)
 		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
 		Return $SeqList
 	EndIf
-
-EndFunc
-
-Func GetSequenceForBounty($bountyName)
-	_log("Searching For bounty : (" & $bountyname & ")", $LOG_LEVEL_DEBUG)
-	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
-	If $file = -1 Then
-		_log("File not found !")
-		Return False
-	EndIf
-	$Result = False
-	While 1
-		$line = FileReadLine($file)
-		If @error = -1 Then
-			ExitLoop
-		 EndIf
-		If StringInStr($line, $bountyName) Then
-			$temp = StringSplit($line,"#", 2)
-			If Ubound($temp) = 5 Then
-				$Result = $temp[4]
-				If $Result = "" Or $Result = "None" Then
-					$Result = False
-				Else
-					ExitLoop
-				EndIf
-			EndIf
-		EndIf
-	WEnd
-	FileClose($file)
-	Return $Result
-EndFunc
-
+Endfunc ;==> GetBountySequences
 
 Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 	If $arr_sequence[$index][0] = 2 And $mvtp = 1 Then

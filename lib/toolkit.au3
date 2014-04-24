@@ -423,59 +423,6 @@ Func GetAct()
 EndFunc   ;==>GetAct
 
 ;;--------------------------------------------------------------------------------
-;;	Func listquest
-;;
-;;  Browse available quest
-;;
-;;  QuestId = id of the quest
-;;  Quest_Area_ID = Area id of the quest
-;;  Quest_State = Status of the quest (0 : NotReached // 1 : Current // 2 : Finished // 3 : Finished but failed)
-;;  Step = no idea
-;;  Area id and Quest Id can be found in lib/ area.txt quest.txt
-;;
-;; !! This is just a Demo function !!
-;;--------------------------------------------------------------------------------
-Func Listquest()
-$arealist = FileRead("lib\area.txt")
-
-$QuestMan_A=0x8b8
-$QuestMan_B=0x1c
-
-$_itrQuestManA     = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
-$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
-
-while $_Curr_Quest_Ofs <> 0
-
-_log("Current Quest Ofs : " & $_Curr_Quest_Ofs)
-
-	$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
-_log("Quest ID : " & hex($Quest_ID))
-	$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
-
-If $Quest_Area_ID > 0 Then
-	Local $pattern = "([\w'-]{5,80})\t\W\t" & $Quest_Area_ID
-	$asResult = StringRegExp($arealist, $pattern, 1)
-
-	 If not @error Then
-	_log("This Quest is in map : "  & $asResult[0])
-Else
-	_log("!!!! That Area Need to be determinated in the .txt file !!!!!!")
-	EndIf
-Endif
-
-_log("Quest Area id : " & $Quest_Area_ID)
-	$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
-_log("Quest State : " & $Quest_State)
-	$Quest_Step = _MemoryRead($_Curr_Quest_Ofs + 0x18 , $d3, 'int')
-_log("Quest Step : " & $Quest_Step)
-
-_log("=================================")
-$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
-Wend
-
-Endfunc ;==> Listquest
-
-;;--------------------------------------------------------------------------------
 ; Function:			TownStateCheck()
 ; Description:		Check if we are in town or not by comparing distance from stash
 ;

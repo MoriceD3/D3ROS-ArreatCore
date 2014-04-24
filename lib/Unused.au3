@@ -265,6 +265,112 @@ Func LevelAreaConstants()
 	Global $A5todo = 0x41ebb
 EndFunc   ;==>LevelAreaConstants
 
+
+Func OldGetBountySequences($Table_BountyAct)
+	If Not IsArray($Table_BountyAct) Then
+		Return False
+	EndIf
+	If UBound($Table_BountyAct) = 0 Then
+		Return False
+	EndIf
+
+	Local $hTimer = TimerInit()
+	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
+		Sleep(40)
+	WEnd
+
+	If TimerDiff($hTimer) >= 60000 Then
+		Return False
+	EndIf
+
+	Sleep(1500)
+
+	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
+		Send("M")
+		Sleep(100)
+	WEnd
+
+	$SeqList = ""
+	$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.BountyContainer.Bounties._content._stackpanel._tilerow0._item"
+	For $i = 0 To UBound($Table_BountyAct) - 1
+		_log("Getting bounties for act : " & $Table_BountyAct[$i])
+
+		$CurrentAct = GetNumActByWPUI()
+		If $CurrentAct <> $Table_BountyAct[$i] Then
+			SwitchAct($Table_BountyAct[$i])
+		EndIf
+
+		For $z = 0 To 4
+			ClickUI($NameUI & $z)
+			Sleep(100)
+			$bounty = GetTextUI(1251, 'Root.TopLayer.tooltip_dialog_background.tooltip_2.tooltip')
+			If $bounty <> False Then
+				$temp = StringSplit($bounty,Chr(0),2)
+				$bounty = $temp[0]
+				$bounty = StringReplace($bounty, "Bounty: ", "")
+				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
+				$bounty = $Table_BountyAct[$i] & "#" & $bounty
+				$seq = GetSequenceForBounty($bounty)
+				If $seq <> False Then
+					 _log("Sequence found for bounty : " & $bounty & " -> " & $seq, $LOG_LEVEL_DEBUG)
+					If $SeqList = "" Then
+						$SeqList = $seq
+					Else
+						$SeqList = $SeqList & "|" & $seq
+					EndIf
+				EndIf
+			EndIf
+		Next
+	Next
+
+	Send("M")
+	Sleep(150)
+
+	If $SeqList = "" Then
+		If $NoBountyFailbackToAdventure Then
+			_log("No supported sequences found !, Loading adventure ones", $LOG_LEVEL_WARNING)
+			Return $SequenceFileAdventure
+		Else
+			_log("No supported sequences found !, Ending run", $LOG_LEVEL_WARNING)
+			Return False
+		EndIf
+	Else
+		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
+		Return $SeqList
+	EndIf
+
+EndFunc
+
+Func GetSequenceForBounty($bountyName)
+	_log("Searching For bounty : (" & $bountyname & ")", $LOG_LEVEL_DEBUG)
+	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
+	If $file = -1 Then
+		_log("File not found !")
+		Return False
+	EndIf
+	$Result = False
+	While 1
+		$line = FileReadLine($file)
+		If @error = -1 Then
+			ExitLoop
+		 EndIf
+		If StringInStr($line, $bountyName) Then
+			$temp = StringSplit($line,"#", 2)
+			If Ubound($temp) = 5 Then
+				$Result = $temp[4]
+				If $Result = "" Or $Result = "None" Then
+					$Result = False
+				Else
+					ExitLoop
+				EndIf
+			EndIf
+		EndIf
+	WEnd
+	FileClose($file)
+	Return $Result
+EndFunc
+
+
 Func Health($name, $offset, $Guid)
 
 	$life = GetLifep()
