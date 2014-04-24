@@ -182,7 +182,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		$temp = IniRead($datafile, "MeshData", "Mesh" & $i, -1)
 		If $temp <> -1 Then
 			$temp = StringSplit($temp, ",", 2)
-			If $temp[2] <> 0x00013CB6 And $temp[2] <> 0x00013C2E Then
+			If $temp[2] <> 0x00013CB6 And $temp[2] <> 0x00013C2E And $temp[2] <> 0x0000D50F And $temp[2] <> 0x00010A3D Then
 				$count_scene += 1
 				$Scene_table_totale[$count_scene - 1][0] = $temp[0]
 				$Scene_table_totale[$count_scene - 1][1] = $temp[1]
@@ -428,16 +428,14 @@ EndFunc
 
 Func SequencerMarkImportant()
 	$currentloc = GetCurrentPos()
-
-	$count_Important += 1
 	ConsoleWrite("Marking important position : " &  $currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & @CRLF);
-
-	Redim $table_Important[$count_Important][4]
-	$table_Important[$count_Important - 1][0] = $currentloc[0]
-	$table_Important[$count_Important - 1][1] = $currentloc[1]
-	$table_Important[$count_Important - 1][2] = $currentloc[2]
-	$table_Important[$count_Important - 1][3] = "Unknown"
-EndFunc   ;==>MarkPos
+	Redim $table_Important[$count_Important + 1][4]
+	$table_Important[$count_Important][0] = $currentloc[0]
+	$table_Important[$count_Important][1] = $currentloc[1]
+	$table_Important[$count_Important][2] = $currentloc[2]
+	$table_Important[$count_Important][3] = "Unknown"
+	$count_Important += 1
+EndFunc   ;==>SequencerMarkImportant
 
 Func SequencerMarkPos()
 	$currentloc = GetCurrentPos()
@@ -449,26 +447,25 @@ Func SequencerMarkPos()
 		_log("Enabled to open file, Script will shutdown")
 		Exit
 	EndIf
-	$count_mtp += 1
 
 	FileWriteLine($file, $currentloc[0] & "," & $currentloc[1] & "," & $currentloc[2] & ", 1, 25")
 	FileClose($file)
 
-	Redim $table_mtp[$count_mtp][5]
-	$table_mtp[$count_mtp - 1][0] = $currentloc[0]
-	$table_mtp[$count_mtp - 1][1] = $currentloc[1]
-	$table_mtp[$count_mtp - 1][2] = $currentloc[2]
-	$table_mtp[$count_mtp - 1][3] = 1
-	$table_mtp[$count_mtp - 1][4] = 25
+	Redim $table_mtp[$count_mtp + 1][5]
+	$table_mtp[$count_mtp][0] = $currentloc[0]
+	$table_mtp[$count_mtp][1] = $currentloc[1]
+	$table_mtp[$count_mtp][2] = $currentloc[2]
+	$table_mtp[$count_mtp][3] = 1
+	$table_mtp[$count_mtp][4] = 25
+	$count_mtp += 1
 EndFunc   ;==>MarkPos
 
 Func IndexSNONoLimit($_offset, $_displayInfo = 0)
 
-	Local $CurrentSnoOffset = 0x0
+	;Local $CurrentSnoOffset = 0x0
 	$_MainOffset = _MemoryRead($_offset, $d3, 'ptr')
 	$_Pointer = _MemoryRead($_MainOffset + $_defptr, $d3, 'ptr')
 	$_SnoCount = _MemoryRead($_Pointer + 0x108, $d3, 'int') ;//Doesnt seem to go beyond 256 for some wierd reason
-	$ignoreSNOcount = 0
 
 	$_SnoIndex = _MemoryRead($_Pointer + $_deflink, $d3, 'ptr') ;//Moving from the static into the index
 	$_SNOName = _MemoryRead($_Pointer, $d3, 'char[64]') ;//Usually something like "Something" + Def
@@ -479,16 +476,11 @@ Func IndexSNONoLimit($_offset, $_displayInfo = 0)
 	For $i = 1 To $_SnoCount Step +1 ;//Iterating through all the elements
 		$_CurSnoOffset = _MemoryRead($TempWindex, $d3, 'ptr') ;//Getting the offset for the item
 		$_CurSnoID = _MemoryRead($_CurSnoOffset, $d3, 'ptr') ;//Going into the item and grapping the GUID which is located at 0x0
-		If $ignoreSNOcount = 1 And $_CurSnoOffset = 0x00000000 And $_CurSnoID = 0x00000000 Then ExitLoop ;//Untill i find a way to get the real count we do this instead.
-		If $ignoreSNOcount = 1 Then $CurIndex = $i
 		$_OutPut[$i][0] = $_CurSnoOffset ;//Poping the data into the output array
 		$_OutPut[$i][1] = $_CurSnoID
 		If $_displayInfo = 1 Then _log($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID )
 		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x10 later
 	Next
-
-	If $ignoreSNOcount = 1 Then ReDim $_OutPut[$CurIndex][2] ;//Here we do the resizing of the array, to minimize memory footprint!?.
-
 	Return $_OutPut
 EndFunc   ;==>IndexSNO
 
@@ -514,23 +506,26 @@ Func Read_Scene()
 
 	While 1
 		$countScene = _MemoryRead($sceneCountPtr, $d3, "int")
-
 		;_log("Scene count : " & $countScene)
 
-		Dim $obj_scene[1][10]
 		Local $count = 0
-
 		Local $New_scene_record = False
-
+		Dim $sceneData[12]
 		;################################## ITERATION OBJ SCENE ########################################
-		For $i=0 To $countScene
+		For $i = 0 To $countScene
 			$scenePtr = _MemoryRead($sceneFirstPtr, $d3, "ptr") + ($i * 0x2BC)
 			$Structobj_scene = DllStructCreate("ptr;byte[4];ptr;byte[218];ptr;byte[16];float;float;byte[112];float;float")
 			;id_scene -> 1 | id_world -> 3 | id_sno_scene -> 5 | MeshMinX -> 7 | MeshMinY -> 8 | MeshMaxX -> 10 | MeshMaxY -> 11
 			DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $scenePtr, 'ptr', DllStructGetPtr($Structobj_scene), 'int', DllStructGetSize($Structobj_scene), 'int', '')
-			$correlation = true
+			$sceneData[1] = DllStructGetData($Structobj_scene, 1)
+			$sceneData[3] = DllStructGetData($Structobj_scene, 3)
+			$sceneData[5] = DllStructGetData($Structobj_scene, 5)
+			$sceneData[7] = DllStructGetData($Structobj_scene, 7)
+			$sceneData[8] = DllStructGetData($Structobj_scene, 8)
+			$sceneData[10] = DllStructGetData($Structobj_scene, 10)
+			$sceneData[11] = DllStructGetData($Structobj_scene, 11)
 
-			If DllStructGetData($Structobj_scene, 3) = $_MyACDWorld And DllStructGetData($Structobj_scene, 1) <> 0xFFFFFFFF Then ;id world
+			If $sceneData[3] = $_MyACDWorld And $sceneData[1] <> 0xFFFFFFFF Then ;id world
 				;_log("scene valide N°" & $i & " ACDWorld - > " & DllStructGetData($Structobj_scene, 3) & " Id World -> " &  DllStructGetData($Structobj_scene, 1))
 		   		;_log("Id_Sno_Scene : " & DllStructGetData($Structobj_scene, 5))
 				;_log("MinX : " & DllStructGetData($Structobj_scene, 7))
@@ -538,52 +533,42 @@ Func Read_Scene()
 				;_log("MaxX : " & DllStructGetData($Structobj_scene, 10))
 				;_log("MaxY : " & DllStructGetData($Structobj_scene, 11))
 
-				For $x = 0 To Ubound($Scene_table_totale) - 1
-					If $Scene_table_totale[$x][3] = DllStructGetData($Structobj_scene, 7) And $Scene_table_totale[$x][4] = DllStructGetData($Structobj_scene, 8) AND $Scene_table_totale[$x][2] = DllStructGetData($Structobj_scene, 5) Then
-						$correlation = false
+				For $x = 0 To $nb_totale_scene_record - 1 ;Ubound($Scene_table_totale) - 1
+					If $Scene_table_totale[$x][3] = $sceneData[7] And $Scene_table_totale[$x][4] = $sceneData[8] And $Scene_table_totale[$x][2] = $sceneData[5] Then
+						ContinueLoop 2
 					EndIf
 				Next
-				If DllStructGetData($Structobj_scene, 5) = 0x00013CB6 Or DllStructGetData($Structobj_scene, 5) = 0x00013C2E Or DllStructGetData($Structobj_scene, 5) = 0x0000D50F Then
-					$correlation = false
+				If $sceneData[5] = 0x00013CB6 Or $sceneData[5] = 0x00013C2E Or $sceneData[5] = 0x0000D50F Or $sceneData[5] = 0x00010A3D Then
 					;_log("Skipping known SNO : " & DllStructGetData($Structobj_scene, 5), $LOG_LEVEL_WARNING )
+					ContinueLoop
 				EndIf
 
-				If $correlation = True Then
-					$nb_totale_scene_record += 1
-					ReDim $Scene_table_totale[$nb_totale_scene_record][10]
-					$Scene_table_totale[$nb_totale_scene_record-1][0] = DllStructGetData($Structobj_scene, 1) ; Id_Scene
-					$Scene_table_totale[$nb_totale_scene_record-1][1] = DllStructGetData($Structobj_scene, 3) ; Id_World
-					$Scene_table_totale[$nb_totale_scene_record-1][2] = DllStructGetData($Structobj_scene, 5) ; Id_Sno_Scene
-					$Scene_table_totale[$nb_totale_scene_record-1][3] = DllStructGetData($Structobj_scene, 7) ; MesMinX
-					$Scene_table_totale[$nb_totale_scene_record-1][4] = DllStructGetData($Structobj_scene, 8) ; MesMinY
-					$Scene_table_totale[$nb_totale_scene_record-1][5] = DllStructGetData($Structobj_scene, 10) ; MeshMaxX
-					$Scene_table_totale[$nb_totale_scene_record-1][6] = DllStructGetData($Structobj_scene, 11) ; MeshMaxY
-					$Scene_table_totale[$nb_totale_scene_record-1][7] = false ;On connais ou pas les NavCell Associer a la Scene
+				ReDim $Scene_table_totale[$nb_totale_scene_record + 1][10]
+				$Scene_table_totale[$nb_totale_scene_record][0] = $sceneData[1] ; Id_Scene
+				$Scene_table_totale[$nb_totale_scene_record][1] = $sceneData[3] ; Id_World
+				$Scene_table_totale[$nb_totale_scene_record][2] = $sceneData[5] ; Id_Sno_Scene
+				$Scene_table_totale[$nb_totale_scene_record][3] = $sceneData[7] ; MesMinX
+				$Scene_table_totale[$nb_totale_scene_record][4] = $sceneData[8] ; MesMinY
+				$Scene_table_totale[$nb_totale_scene_record][5] = $sceneData[10] ; MeshMaxX
+				$Scene_table_totale[$nb_totale_scene_record][6] = $sceneData[11] ; MeshMaxY
+				$Scene_table_totale[$nb_totale_scene_record][7] = False ;On connais ou pas les NavCell Associer a la Scene
 
-					If $Scene_table_totale[$nb_totale_scene_record-1][3] < $Buff_MeshMinX Then
-						$Buff_MeshMinX = $Scene_table_totale[$nb_totale_scene_record-1][3]
-					EndIf
-
-					If $Scene_table_totale[$nb_totale_scene_record-1][4] < $Buff_MeshMinY Then
-						$Buff_MeshMinY = $Scene_table_totale[$nb_totale_scene_record-1][4]
-					EndIf
-
-					If $Scene_table_totale[$nb_totale_scene_record-1][5] > $Buff_MeshMaxX Then
-						$Buff_MeshMaxX = $Scene_table_totale[$nb_totale_scene_record-1][5]
-					EndIf
-
-					If $Scene_table_totale[$nb_totale_scene_record-1][6] > $Buff_MeshMaxY Then
-						$Buff_MeshMaxY = $Scene_table_totale[$nb_totale_scene_record-1][6]
-					EndIf
-
-					$New_scene_record = true
+				If $Scene_table_totale[$nb_totale_scene_record][3] < $Buff_MeshMinX Then
+					$Buff_MeshMinX = $Scene_table_totale[$nb_totale_scene_record][3]
 				EndIf
-				;_log("scene incorrect N°" & $i & " ACDWorld - > " & DllStructGetData($Structobj_scene, 3) & " Id World -> " &  DllStructGetData($Structobj_scene, 1))
+				If $Scene_table_totale[$nb_totale_scene_record][4] < $Buff_MeshMinY Then
+					$Buff_MeshMinY = $Scene_table_totale[$nb_totale_scene_record][4]
+				EndIf
+				If $Scene_table_totale[$nb_totale_scene_record][5] > $Buff_MeshMaxX Then
+					$Buff_MeshMaxX = $Scene_table_totale[$nb_totale_scene_record][5]
+				EndIf
+				If $Scene_table_totale[$nb_totale_scene_record][6] > $Buff_MeshMaxY Then
+					$Buff_MeshMaxY = $Scene_table_totale[$nb_totale_scene_record][6]
+				EndIf
+				$nb_totale_scene_record += 1
+				$New_scene_record = true
 			EndIf
 		Next
-
-
-
 		;################################################################################################
 		If $New_scene_record = True Then ;Si Une nouvelle scene à eté enregistrée
 			If $drawSceneButton <> 0 Then
@@ -592,11 +577,12 @@ Func Read_Scene()
 			_log("Scene Recorded : " & $nb_totale_scene_record)
 			Dim $list_sno_scene = IndexSNONoLimit(0x1CEF78C, 0)
 			;############################## ITERATION DU SNO ###########################################
-			For $i = 1 to Ubound($list_sno_scene) - 1
+			$Size = Ubound($list_sno_scene) - 1
+			For $i = 1 to $Size
 				$correlation = false
 				$current_obj_scene = 0
 
-				For $x = 0 To Ubound($Scene_table_totale)-1
+				For $x = 0 To Ubound($Scene_table_totale) - 1
 					;_log("Seek : " & $list_sno_scene[$i][1] & " - " & $Scene_table_totale[$x][2] & " / " & $Scene_table_totale[$x][7])
 					If $list_sno_scene[$i][1] = $Scene_table_totale[$x][2] And $Scene_table_totale[$x][7] = False Then
 						$correlation = True
@@ -652,7 +638,7 @@ Func Read_Scene()
 							$depart_count += 1
 						Next
 					EndIf
-					$Scene_table_Totale[$current_scene][7] = true
+					$Scene_table_Totale[$current_scene][7] = True
 				EndIf
 			Next
 			If $drawSceneButton <> 0 Then
@@ -660,7 +646,6 @@ Func Read_Scene()
 			EndIf
 			_log("Ready to draw scene")
 		EndIf
-
-		Sleep(200)
+		Sleep(50)
 	WEnd
 EndFunc
