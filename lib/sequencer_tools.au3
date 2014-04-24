@@ -10,6 +10,8 @@ Global $Buff_MeshMinX = 999999
 Global $Buff_MeshMinY = 999999
 Global $Buff_MeshMaxX = 0
 Global $Buff_MeshMaxY = 0
+Global $posNumberMod = 3
+Global $drawLineNumbers = False
 
 Global $Iterate_Objet[1]
 
@@ -237,24 +239,26 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		EndIf
 
 		$count_mtp = 0
-
+		$numLine = 0
 		While 1
 			$line = FileReadLine($file)
 			If @error = -1 Then
 				ExitLoop
 			 EndIf
+			 $numLine += 1
 			 If StringInStr($line , "attackrange=") Then
 			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
 			 Else
 				 $temp = StringSplit($line, ",", 2)
 				 If UBound($temp) = 5 Then
 					$count_mtp += 1
-					Redim $table_mtp[$count_mtp][5]
+					Redim $table_mtp[$count_mtp][6]
 					$table_mtp[$count_mtp - 1][0] = $temp[0]
 					$table_mtp[$count_mtp - 1][1] = $temp[1]
 					$table_mtp[$count_mtp - 1][2] = $temp[2]
 					$table_mtp[$count_mtp - 1][3] = $temp[3]
 					$table_mtp[$count_mtp - 1][4] = $temp[4]
+					$table_mtp[$count_mtp - 1][5] = $numLine
 				 EndIf
 			 EndIf
 		WEnd
@@ -263,7 +267,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $count_mtp > 0 Then
 			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
 			For $i = 0 To Ubound($Table_mtp) - 1
-				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3])
+				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][5] & "|" & $Table_mtp[$i][5])
 				If $DrawAttackRange And $Table_mtp[$i][3] = 1 Then
 					_GDIPlus_GraphicsDrawEllipse ($hGraphic, $Table_mtp[$i][1] - $buff_MeshMinY - ($attackRange / 2) , $Table_mtp[$i][0] - $buff_MeshMinX - ($attackRange / 2) , $attackRange, $attackRange, $color_rec)
 				EndIf

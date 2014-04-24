@@ -4,7 +4,7 @@
 		<property name="Left" vt="Int16">294</property>
 		<property name="Top" vt="Int16">206</property>
 		<property name="Width" vt="Int16">340</property>
-		<property name="Height" vt="Int16">291</property>
+		<property name="Height" vt="Int16">357</property>
 		<property name="Caption" vt="String">Sequence Checker</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
@@ -79,7 +79,7 @@
 			<properties>
 				<property name="Left" vt="Int16">136</property>
 				<property name="Top" vt="Int16">128</property>
-				<property name="Width" vt="Int8">73</property>
+				<property name="Width" vt="Int8">41</property>
 				<property name="Height" vt="Int8">21</property>
 				<property name="TabOrder" vt="Int8">3</property>
 				<property name="Text" vt="String">40</property>
@@ -123,7 +123,7 @@
 		<object type="TAButton" name="Button3">
 			<properties>
 				<property name="Left" vt="Int8">8</property>
-				<property name="Top" vt="Int16">208</property>
+				<property name="Top" vt="Int16">272</property>
 				<property name="Width" vt="Int16">307</property>
 				<property name="Height" vt="Int8">25</property>
 				<property name="Caption" vt="UTF8String">Générer l'image de validation</property>
@@ -148,6 +148,49 @@
 				<property name="TabOrder" vt="Int8">7</property>
 				<property name="CtrlStyle" vt="Int32">1342242819</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TACheckbox" name="Checkbox3">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">208</property>
+				<property name="Width" vt="Int16">305</property>
+				<property name="Height" vt="Int8">17</property>
+				<property name="Caption" vt="UTF8String">Afficher les numéros de lignes de la séquence</property>
+				<property name="TabOrder" vt="Int8">8</property>
+				<property name="CtrlStyle" vt="Int32">1342242819</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TALabel" name="Label3">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">232</property>
+				<property name="Width" vt="Int8">123</property>
+				<property name="Height" vt="Int8">17</property>
+				<property name="Caption" vt="UTF8String">Afficher numéro tous les :</property>
+				<property name="TabOrder" vt="Int8">9</property>
+				<property name="HaveVariable" vt="False">False</property>
+				<property name="CtrlStyle" vt="Int32">1342308608</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAInput" name="Input2">
+			<properties>
+				<property name="Left" vt="Int16">144</property>
+				<property name="Top" vt="Int16">232</property>
+				<property name="Width" vt="Int8">65</property>
+				<property name="Height" vt="Int8">21</property>
+				<property name="TabOrder" vt="Int8">10</property>
+				<property name="Text" vt="String">3</property>
+				<property name="CtrlStyle" vt="Int32">1342374016</property>
+				<property name="CtrlExStyle" vt="Int16">512</property>
 				<property name="Resizing" vt="Set">DockHeight</property>
 			</properties>
 			<components/>
