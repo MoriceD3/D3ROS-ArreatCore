@@ -82,7 +82,7 @@ Func Save_GDIpicture()
 	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $PictureScene & ".png")
 
 ;_arraydisplay($Table_mtp)
-	If $count_mtp > 1 Then
+	If $count_mtp > 0 Then
 		for $i=0 to Ubound($Table_mtp) - 1
 			Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3])
 		Next

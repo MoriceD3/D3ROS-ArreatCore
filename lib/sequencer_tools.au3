@@ -3,7 +3,7 @@
 Global $Table_mtp[1][5]
 Global $count_mtp = 0
 Global $Table_important[1][4]
-Global $count_Important
+Global $count_Important = 0
 Global $Scene_table_totale[1][8]
 Global $NavCell_table_totale[1][8]
 Global $Buff_MeshMinX = 999999
@@ -62,7 +62,7 @@ Func ShowSequencerTools()
     	& "Quand le bouton Dessiner la scene est désactiver, attendre un peu le temps que le bot finisse son scan." & @CRLF & @CRLF _
     	& "Quand tout est fini appuyer sur le bouton Dessiner la scène (ou F2)." & @CRLF  & @CRLF _
     	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 200, 180, 360)
-	
+
     $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 160, 180, 30)
     GUICtrlSetOnEvent($DrawSceneButton, "Draw_Scene")
     GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
@@ -163,14 +163,14 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $temp <> -1 Then
 			$temp = StringSplit($temp, ",", 2)
 			$count_navcell += 1
-			$NavCell_Table_Totale[$count_navcell-1][0] = $temp[0]
-			$NavCell_Table_Totale[$count_navcell-1][1] = $temp[1]
-			$NavCell_Table_Totale[$count_navcell-1][2] = $temp[2]
-			$NavCell_Table_Totale[$count_navcell-1][3] = $temp[3]
-			$NavCell_Table_Totale[$count_navcell-1][4] = $temp[4]
-			$NavCell_Table_Totale[$count_navcell-1][5] = $temp[5]
-			$NavCell_Table_Totale[$count_navcell-1][6] = $temp[6]
-			$NavCell_Table_Totale[$count_navcell-1][7] = $temp[7]
+			$NavCell_Table_Totale[$count_navcell - 1][0] = $temp[0]
+			$NavCell_Table_Totale[$count_navcell - 1][1] = $temp[1]
+			$NavCell_Table_Totale[$count_navcell - 1][2] = $temp[2]
+			$NavCell_Table_Totale[$count_navcell - 1][3] = $temp[3]
+			$NavCell_Table_Totale[$count_navcell - 1][4] = $temp[4]
+			$NavCell_Table_Totale[$count_navcell - 1][5] = $temp[5]
+			$NavCell_Table_Totale[$count_navcell - 1][6] = $temp[6]
+			$NavCell_Table_Totale[$count_navcell - 1][7] = $temp[7]
 		EndIf
 		If Mod($i, 1000) = 0 And $i <> 0 Then
 			_log("Loaded : " & $i & "/" & $navSize  & " navCells")
@@ -182,15 +182,17 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		$temp = IniRead($datafile, "MeshData", "Mesh" & $i, -1)
 		If $temp <> -1 Then
 			$temp = StringSplit($temp, ",", 2)
-			$count_scene += 1
-			$Scene_table_totale[$count_scene-1][0] = $temp[0]
-			$Scene_table_totale[$count_scene-1][1] = $temp[1]
-			$Scene_table_totale[$count_scene-1][2] = $temp[2]
-			$Scene_table_totale[$count_scene-1][3] = $temp[3]
-			$Scene_table_totale[$count_scene-1][4] = $temp[4]
-			$Scene_table_totale[$count_scene-1][5] = $temp[5]
-			$Scene_table_totale[$count_scene-1][6] = $temp[6]
-			$Scene_table_totale[$count_scene-1][7] = $temp[7]
+			If $temp[2] <> 0x00013CB6 And $temp[2] <> 0x00013C2E Then
+				$count_scene += 1
+				$Scene_table_totale[$count_scene - 1][0] = $temp[0]
+				$Scene_table_totale[$count_scene - 1][1] = $temp[1]
+				$Scene_table_totale[$count_scene - 1][2] = $temp[2]
+				$Scene_table_totale[$count_scene - 1][3] = $temp[3]
+				$Scene_table_totale[$count_scene - 1][4] = $temp[4]
+				$Scene_table_totale[$count_scene - 1][5] = $temp[5]
+				$Scene_table_totale[$count_scene - 1][6] = $temp[6]
+				$Scene_table_totale[$count_scene - 1][7] = $temp[7]
+			EndIf
 		EndIf
 	Next
 	If $positionCount > 0 Then
@@ -235,7 +237,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		EndIf
 
 		$count_mtp = 0
-		
+
 		While 1
 			$line = FileReadLine($file)
 			If @error = -1 Then
@@ -257,8 +259,8 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			 EndIf
 		WEnd
 		FileClose($file)
-		
-		If $count_mtp > 1 Then
+
+		If $count_mtp > 0 Then
 			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
 			For $i = 0 To Ubound($Table_mtp) - 1
 				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3])
@@ -270,7 +272,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		EndIF
 	EndIf
 
-	If $count_position > 1 Then
+	If $count_position > 0 Then
 		For $i = 0 to $count_position - 1
 			Draw_Nav($Table_position[$i][1] - $buff_MeshMinY, $Table_position[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, $Table_position[$i][3])
 		Next
@@ -281,7 +283,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
 		If $DrawScene = "true" Then
-			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
+			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $Scene_table_totale[$i][2])
 		EndIf
 	Next
 
@@ -307,7 +309,7 @@ Func Draw_Scene()
 		IniWrite($iniFile, "SceneInfo", "MeshMaxY", $Buff_MeshMaxY)
 	EndIf
 
-	If $count_Important > 1 Then
+	If $count_Important > 0 Then
 		For $i = 0 to Ubound($Table_Important) - 1
 			IniWrite($iniFile, "Positions", "Position" & $i, $Table_Important[$i][3] & "," & $Table_Important[$i][0] & "," & $Table_Important[$i][1] & "," & $Table_Important[$i][2])
 		Next
@@ -352,7 +354,7 @@ Func Draw_Scene()
 		If $DrawScene = "true" Then
 			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
 		EndIf
-		
+
 		_log(" -> " &  int((100 / Ubound($Scene_table_totale)))*$i & "%")
 	Next
 
@@ -365,7 +367,7 @@ Func Draw_Scene()
 		Next
 	EndIf
 	#ce
-	If $count_Important > 1 Then
+	If $count_Important > 0 Then
 		For $i = 0 to Ubound($Table_Important) - 1
 			Draw_Nav($Table_Important[$i][1] - $buff_MeshMinY, $Table_Important[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, "P" & $i)
 		Next
@@ -541,6 +543,10 @@ Func Read_Scene()
 						$correlation = false
 					EndIf
 				Next
+				If DllStructGetData($Structobj_scene, 5) = 0x00013CB6 Or DllStructGetData($Structobj_scene, 5) = 0x00013C2E Or DllStructGetData($Structobj_scene, 5) = 0x0000D50F Then
+					$correlation = false
+					;_log("Skipping known SNO : " & DllStructGetData($Structobj_scene, 5), $LOG_LEVEL_WARNING )
+				EndIf
 
 				If $correlation = True Then
 					$nb_totale_scene_record += 1
@@ -576,7 +582,7 @@ Func Read_Scene()
 			EndIf
 		Next
 
-		
+
 
 		;################################################################################################
 		If $New_scene_record = True Then ;Si Une nouvelle scene à eté enregistrée
@@ -654,7 +660,7 @@ Func Read_Scene()
 			EndIf
 			_log("Ready to draw scene")
 		EndIf
-		
+
 		Sleep(200)
 	WEnd
 EndFunc
