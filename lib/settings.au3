@@ -62,6 +62,7 @@ Global $List_Rack = "WeaponRack|ArmorRack|Weapon_Rack_trOut_Highlands"
 Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
 Global $List_BountyAct = "1|2|3"
 Global $NoBountyFailbackToAdventure = True
+Global $EndSequenceOnBountyCompletion = True
 Global $grabListFile = ""
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
@@ -372,6 +373,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	$Dummy = IniRead($profilFile, "Run info", "NoBountyFailbackToAdventure", $NoBountyFailbackToAdventure)
 	$NoBountyFailbackToAdventure = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($profilFile, "Run info", "EndSequenceOnBountyCompletion", $EndSequenceOnBountyCompletion)
+	$EndSequenceOnBountyCompletion = Trim(StringLower($Dummy)) == "true"
 
 	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
 	$debugBot = Trim(StringLower($Dummy)) == "true"

@@ -11,6 +11,51 @@ Global $autobuff = False
 Global $reverse = 0
 Global $PositionRange = 5
 
+Func GetActiveQuest()
+	$QuestMan_A = 0x8b8
+	$QuestMan_B = 0x1c
+
+	$_itrQuestManA   = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
+	$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
+
+	While $_Curr_Quest_Ofs <> 0
+		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
+		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
+
+		If $Quest_State = 1 And $Quest_ID <> 0x4C46D And StringInStr($BountyQuestIDs, $Quest_ID) Then
+			_Log("Active questID : " & $ActiveQuest)
+			Return $Quest_ID
+		EndIf
+		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
+	Wend
+	Return -1
+EndFunc
+
+Func IsQuestFinished($QuestId)
+	If $QuestId = -1 Then
+		Return False
+	EndIf
+
+	$QuestMan_A = 0x8b8
+	$QuestMan_B = 0x1c
+
+	$_itrQuestManA   = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
+	$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
+	$SeqList = ""
+	$acts = _ArrayToString($Table_BountyAct,"|")
+
+	While $_Curr_Quest_Ofs <> 0
+		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
+		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
+		If $Quest_State > 1 And $Quest_ID = $QuestId Then
+			_log("Quest completed : " & $QuestId & "(" & $Quest_State & ")")
+			Return True
+		EndIf
+		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
+	Wend
+	Return False
+EndFunc
+
 Func GetBountySequences($Table_BountyAct)
 	If Not IsArray($Table_BountyAct) Then
 		Return False
@@ -43,7 +88,7 @@ Func GetBountySequences($Table_BountyAct)
 		$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
 		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 
-		If $Quest_State = 0 Then
+		If $Quest_State = 0 And $Quest_ID <> 0x4C46D Then
 			Local $pattern = $Quest_ID & "#[\d\w]*#(\d)#([\w_]*)#(.*)"
 			$asResult = StringRegExp($snoSequencelist, $pattern, 1)
 			If Not @error Then
@@ -54,6 +99,7 @@ Func GetBountySequences($Table_BountyAct)
 						Else
 							$SeqList = $SeqList & "|" & $asResult[2]
 						EndIf
+						$BountyQuestIDs = $BountyQuestIDs & "|" & $Quest_ID
 						_log("Bounty with sequence : " & $asResult[1] & " -> " & $asResult[2], $LOG_LEVEL_VERBOSE)
 					Else
 						_log("Bounty without sequence : " & $asResult[1], $LOG_LEVEL_WARNING)
@@ -87,6 +133,16 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		If Not $looking = False Then
 			Return $looking
 		EndIf
+		If $EndSequenceOnBountyCompletion Then
+			If $Choix_Act_Run = -3 And IsQuestFinished($ActiveQuest) Then
+				_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
+				Sleep(1000)
+				Attack()
+				Sleep(1000)
+				Attack()
+				Return "endsequence()"
+			EndIf
+		EndIf
 	Else
 		If $arr_sequence[$index][1] = "sleep" Then
 			Sleep($arr_sequence[$index][2])
@@ -96,6 +152,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			InteractWithDoor($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractWithPortal" Then
 			InteractWithPortal($arr_sequence[$index][2])
+			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
 			_log("Buffinit sequence")
 			BuffInit()
@@ -110,8 +167,10 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
 			TakeWPV2($arr_sequence[$index][2], 0)
+			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "takewpadv" Then
 			TakeWPV2($arr_sequence[$index][2], 1)
+			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			if Not _TownPortalnew() Then
 				$GameFailed = 1
@@ -263,15 +322,15 @@ Func SendSequence(ByRef $arr_sequence)
 		;**TEMPORAIRE**
 		$result = bloc_sequence($arr_sequence)
 		If Not $result = False Then
-			_log("Object found and command is : " & $result, $LOG_LEVEL_ERROR)
+			_log("Object found or quest completed and command is : " & $result, $LOG_LEVEL_ERROR)
 			If StringInStr($result, "loadsequence=", 2) Then
 				$temp = StringReplace($result, "loadsequence=", "")
-				_log("[Ob] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
+				_log("Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
 				Sequence($temp)
 			ElseIf StringInStr($result, "endsequence()", 2) Then
-				_log("[Ob] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
+				_log("End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
 			ElseIf StringInStr($result, "terminate()", 2) Then
-				_log("[Ob] Terminate detected. Stopping script!.", $LOG_LEVEL_ERROR)
+				_log("Terminate detected. Stopping script!.", $LOG_LEVEL_ERROR)
 			Else
 				_log("Invalid command found for ifobjectfound")
 			EndIf
@@ -575,6 +634,7 @@ Func sequence($sequence_list)
 							$array_sequence = ArrayInit($array_sequence)
 							_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							TakeWPV2($table_wp, 1)
+							$ActiveQuest = GetActiveQuest()
 							$line = ""
 						Else
 							$end_sequence = True
@@ -869,6 +929,7 @@ Func sequence($sequence_list)
 						If $sequence_save = 0 Then
 							_log("Enclenchement d'un InteractWithPortal direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							InteractWithPortal($line)
+							$ActiveQuest = GetActiveQuest()
 						Else
 							_log("Mise en array d'un InteractWithPortal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)

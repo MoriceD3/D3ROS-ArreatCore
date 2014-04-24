@@ -59,6 +59,19 @@ Func UsePath(ByRef $path)
 			Return $looking
 		EndIf
 
+		If $EndSequenceOnBountyCompletion Then
+			If $Choix_Act_Run = -3 And IsQuestFinished($ActiveQuest) Then
+				MouseUp($MouseMoveClick)
+				_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
+				Sleep(1000)
+				Attack()
+				Sleep(1000)
+				Attack()
+				Return "endsequence()"
+			EndIf
+		EndIf
+
+
 		$Distance = GetDistance($path[$posIndex][1], $path[$posIndex][2], $path[$posIndex][3])
 		If $Distance < $path[$posIndex][5] Then
 			If ($posIndex = $lastIndexPos) Then ExitLoop

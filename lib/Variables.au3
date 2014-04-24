@@ -12,6 +12,10 @@ Global $_MyCharType 		  = 0
 Global $hotkeycheck 		  = False
 Global $ZoneCheckTimer 		  = 0
 
+; Variables pour la gestion des quêtes
+Global $ActiveQuest			  = -1
+Global $BountyQuestIDs		  = ""
+
 ; Variable contenant le stuff actuel
 Global $allSNOitems
 
