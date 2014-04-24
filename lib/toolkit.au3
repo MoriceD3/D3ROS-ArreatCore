@@ -3032,20 +3032,29 @@ Func TakeWpByKey($num, $try = 0)
 		  EndIf
 
 
-		  If Not $compt_while And Not _intown() And $WPopen Then
-			 $CurrentLoc = getcurrentpos()
-			 MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
-			 _Log("TakeWpByKey : On se deplace, pas de detection de la barre de TP")
+		  If Not _intown() Then
+			 If Not $compt_while And $WPopen Then
+				$CurrentLoc = getcurrentpos()
+				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
+				_Log("TakeWpByKey : On se deplace, pas de detection de la barre de TP")
+			 Else
+			    _Log("TakeWpByKey : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ")
+			 EndIf
+			 If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
+				While GetLevelAreaId() = $Curentarea And $compt_wait < 7
+				   _Log("TakeWpByKey : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive dans la nouvelle area, tentative -> " & $compt_wait)
+				   $compt_wait += 1
+				   sleep(1000)
+				WEnd
+			 EndIf
 		  Else
-		     _Log("TakeWpByKey : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ")
-		  EndIf
-
-		  If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
-			 While GetLevelAreaId() = $Curentarea And $compt_wait < 7
-				_Log("on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $compt_wait)
-				$compt_wait += 1
-				sleep(1000)
-			 WEnd
+			 If $WPopen Then
+				While GetLevelAreaId() = $Curentarea And $compt_wait < 7
+				   _Log("TakeWpByKey In Town : on reste inerte pendant 6sec voir si on arrive dans la nouvelle area, tentative -> " & $compt_wait)
+				   $compt_wait += 1
+				   sleep(1000)
+				WEnd
+			 EndIf
 		  EndIf
 
 		  Sleep(500)
