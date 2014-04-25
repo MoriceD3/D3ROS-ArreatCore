@@ -433,7 +433,7 @@ Global $WitchDoctor_skill_Table[22][8] =	[ _
 						[$Witchdoctor_CorpseSpider, "Witchdoctor_CorpseSpider", 0, "physical", 5, "mana", "", 45], _
 						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "buff", 0, "mana", "", ""], _
 						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 0, "attack", 98, "mana", "", 10], _
-						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 10, "mana", "", 45], _
+						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 147, "mana", "", ""], _
 						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 122, "mana", "", 10], _
 						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 50, "mana", "", 10], _
