@@ -35,6 +35,10 @@ Anonymous69 :
 - Ajout d'un outil sequenceChecker
 - Ajout prise de globe en combat
 
+Euclide : 
+- Version officielle 8.2x
+- Lecture mémoire des quetes
+
 bilabou :
 
 - Séquences tuer les bos ADV et campagne

@@ -1,5 +1,20 @@
 Changelog : 
 
+- Version 1.5 : 25/04/2014
+
+- Amélioration et ajouts de nombreuses fonctions dans sequencer et sequenceChecker
+- Fix bug compte des légendaires dans les stats
+- Lecture mémoire des bountys pour gain de temps (Nouveau fichier de mapping _sno_sequences.txt)
+- Fix de certains bug de TP
+- Fix bug de login
+- Ajout d'une option pour finir les séquences dès la complétion du bounty (Settings.ini)
+- Ajout d'une option pour ne pas utiliser de sort a énergie pour casser le décor (SettingsHero.ini)
+- Forçage des parties en mode privé en mode auto et semi auto
+- Doublement du maxgamelenght en mode bounty
+- Modification du gamefailed pour continuer les bounty même si on rate un
+- Fix et correction de certains bounty
+- Optimisation de code
+
 - Version 1.4 : 22/04/2014
 
 - Correction problème pré buff
