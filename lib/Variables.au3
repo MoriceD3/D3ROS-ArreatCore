@@ -165,7 +165,6 @@ Global $Die2FastCount   = 0
 
 ; Variables pour la gestion de la durée des games / run
 Global $timermaxgamelength   = 0
-Global $timedifmaxgamelength = 0
 Global $GameOverTime         = False
 Global $Paused 			     = False
 

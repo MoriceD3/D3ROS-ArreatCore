@@ -3285,8 +3285,7 @@ Func GetDistanceWithoutReadPosition($CurrentLoc, $x, $y, $z)
 Endfunc
 
 Func GameOverTime()
-	Global $timedifmaxgamelength = TimerDiff($timermaxgamelength)
-	If $timedifmaxgamelength > $maxgamelength Then
+	If TimerDiff($timermaxgamelength) > $maxgamelength Then
 		_log('game over time !', $LOG_LEVEL_WARNING)
 		Global $GameOverTime = True
 	EndIf

@@ -126,6 +126,10 @@ Func _botting()
 
 		If Not _onloginscreen() And Not _playerdead() And _ingame() Then
 			If $Choix_Act_Run = -3 Then
+				If $Totalruns = 1 Then
+	            	$maxgamelength = $maxgamelength * 2
+	         		_log("Change Max Game Length Bounty Mode : " & ($maxgamelength / 60000) & " Min" , $LOG_LEVEL_DEBUG)
+	    		EndIf
 				$Table_BountyAct = StringSplit($List_BountyAct,"|",2)
 				_ArraySortRandom($Table_BountyAct)
 				$temp = GetBountySequences($Table_BountyAct)
