@@ -430,7 +430,7 @@ Global $Crusader_skill_Table[24][8] = [ _
 Global $WitchDoctor_skill_Table[22][8] =	[ _
 						[$Witchdoctor_AcidCloud, "Witchdoctor_AcidCloud", 1500, "attack", 172, "mana", "", 45], _
 						[$Witchdoctor_BigBadVoodoo, "Witchdoctor_BigBadVoodoo", 120000, "buff", 0, "mana", "", ""], _
-						[$Witchdoctor_CorpseSpider, "Witchdoctor_CorpseSpider", 0, "physical", 5, "mana", "", 45], _
+						[$Witchdoctor_CorpseSpider, "Witchdoctor_CorpseSpider", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "buff", 0, "mana", "", ""], _
 						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 0, "attack", 98, "mana", "", 10], _
 						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 0, "mana", "", 45], _
@@ -441,8 +441,8 @@ Global $WitchDoctor_skill_Table[22][8] =	[ _
 						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 16000, "attack", 37, "mana", "", 12], _
 						[$Witchdoctor_Locust_Swarm, "Witchdoctor_Locust_Swarm", 0, "attack", 196, "mana", "", 10], _
 						[$Witchdoctor_MassConfusion, "Witchdoctor_MassConfusion", 60000, "attack", 74, "mana", "", 20], _
-						[$Witchdoctor_PlagueOfToads, "Witchdoctor_PlagueOfToads", 0 , "physical", 12, "mana", "", 35], _
-						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 10, "mana", "", 45], _
+						[$Witchdoctor_PlagueOfToads, "Witchdoctor_PlagueOfToads", 0 , "physical", 0, "mana", "", 35], _
+						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Sacrifice, "Witchdoctor_Sacrifice", 0, "attack&elite", 0, "mana", "", 10], _
 						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 16000, "attack", 59, "mana", "", 16], _
                         [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 108, "mana", "", 45], _
