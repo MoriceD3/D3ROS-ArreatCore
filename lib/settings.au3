@@ -31,6 +31,7 @@ Global $Unidentified = False
 Global $WaitForLoot = True
 Global $ShouldPreBuff = False
 Global $TakeGlobeInFight = False
+Global $NoEnergyForDecor = True
 ; gestion items
 Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
@@ -478,6 +479,9 @@ Func InitSkillHeros($skillHeros)
 
 	$Dummy = IniRead($skillHeros, "Run info", "TakeShrines", $TakeShrines)
 	$TakeShrines = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($skillHeros, "Run info", "NoEnergyForDecor", $NoEnergyForDecor)
+	$NoEnergyForDecor = Trim(StringLower($Dummy)) == "true"
 
 	$repairafterxxgames = IniRead($skillHeros, "Run info", "repairafterxxgames", $repairafterxxgames)
 

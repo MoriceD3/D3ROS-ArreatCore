@@ -2296,7 +2296,7 @@ Func KillMob($Name, $offset, $Guid, $test_iterateallobjectslist2, $Decor = False
 
         $Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
         MouseMove($Coords[0], $Coords[1], 3)
-        If $Decor Then
+        If $Decor And $NoEnergyForDecor Then
         	GestSpellcast($pos[3], 3, $elite, $Guid, $offset)
         Else
         	GestSpellcast($pos[3], 1, $elite, $Guid, $offset)
