@@ -4,7 +4,7 @@
 		<property name="Left" vt="Int16">294</property>
 		<property name="Top" vt="Int16">206</property>
 		<property name="Width" vt="Int16">340</property>
-		<property name="Height" vt="Int16">357</property>
+		<property name="Height" vt="Int16">370</property>
 		<property name="Caption" vt="String">Sequence Checker</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
@@ -123,7 +123,7 @@
 		<object type="TAButton" name="Button3">
 			<properties>
 				<property name="Left" vt="Int8">8</property>
-				<property name="Top" vt="Int16">272</property>
+				<property name="Top" vt="Int16">296</property>
 				<property name="Width" vt="Int16">307</property>
 				<property name="Height" vt="Int8">25</property>
 				<property name="Caption" vt="UTF8String">Générer l'image de validation</property>
@@ -191,6 +191,20 @@
 				<property name="Text" vt="String">3</property>
 				<property name="CtrlStyle" vt="Int32">1342374016</property>
 				<property name="CtrlExStyle" vt="Int16">512</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TACheckbox" name="Checkbox4">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">264</property>
+				<property name="Width" vt="Int16">305</property>
+				<property name="Height" vt="Int8">17</property>
+				<property name="Caption" vt="String">Consolider les mapData en une seule image</property>
+				<property name="TabOrder" vt="Int8">11</property>
+				<property name="CtrlStyle" vt="Int32">1342242819</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
 				<property name="Resizing" vt="Set">DockHeight</property>
 			</properties>
 			<components/>

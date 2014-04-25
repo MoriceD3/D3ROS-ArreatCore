@@ -54,7 +54,7 @@ TraySetIcon($icon)
 #include <FileConstants.au3>
 #include <MsgBoxConstants.au3>
 #Region ### START Koda GUI section ### Form=c:\games\d3ros-arreatcore\lib\extra\sequencechecker.kxf
-$Form1 = GUICreate("Sequence Checker", 325, 319, 294, 206)
+$Form1 = GUICreate("Sequence Checker", 325, 332, 294, 206)
 $Label1 = GUICtrlCreateLabel("Bienvenu dans l'outil de validation des séquences :", 8, 8, 245, 17, $SS_CENTER)
 $Button1 = GUICtrlCreateButton("Charger des fichiers mapData", 8, 40, 307, 25)
 $Button2 = GUICtrlCreateButton("Charger un fichier de séquence", 8, 88, 307, 25)
@@ -62,13 +62,14 @@ $Input1 = GUICtrlCreateInput("40", 136, 128, 41, 21)
 $Label2 = GUICtrlCreateLabel("Attack range par défaut : ", 8, 128, 125, 17)
 $Checkbox1 = GUICtrlCreateCheckbox("Dessiner les zones d'attaques sur la séquence", 8, 160, 305, 17)
 GUICtrlSetState($Checkbox1, $GUI_CHECKED)
-$Button3 = GUICtrlCreateButton("Générer l'image de validation", 8, 272, 307, 25)
+$Button3 = GUICtrlCreateButton("Générer l'image de validation", 8, 296, 307, 25)
 GUICtrlSetState($Button3, $GUI_DISABLE)
 $Checkbox2 = GUICtrlCreateCheckbox("Afficher les noms des points importants", 8, 184, 241, 17)
 GUICtrlSetState($Checkbox2, $GUI_CHECKED)
 $Checkbox3 = GUICtrlCreateCheckbox("Afficher les numéros de lignes de la séquence", 8, 208, 305, 17)
 $Label3 = GUICtrlCreateLabel("Afficher numéro tous les :", 8, 232, 123, 17)
 $Input2 = GUICtrlCreateInput("3", 144, 232, 65, 21)
+$Checkbox4 = GUICtrlCreateCheckbox("Consolider les mapData en une seule image", 8, 264, 305, 17)
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
 
@@ -112,12 +113,20 @@ While 1
    			$DrawAttackRange = (GUICtrlRead ($Checkbox1) = $GUI_CHECKED)
    			$DrawPositionName = (GUICtrlRead ($Checkbox2) = $GUI_CHECKED)
    			$drawLineNumbers = (GUICtrlRead ($Checkbox3) = $GUI_CHECKED)
+   			$consolidate = (GUICtrlRead ($Checkbox4) = $GUI_CHECKED)
    			
    			If UBound($mapFiles) > 1 Then
-	   			For $i = 1 To UBound($mapFiles) - 1
-	   				_log("Handling mapFile : " & $mapFiles[0] & "\" & $mapFiles[$i])
-	   				Draw_MapData($mapFiles[0]  & "\" & $mapFiles[$i], $sequenceFile)
-	   			Next
+   				If Not $consolidate Then
+		   			For $i = 1 To UBound($mapFiles) - 1
+		   				_log("Handling mapFile : " & $mapFiles[0] & "\" & $mapFiles[$i])
+		   				Draw_MapData($mapFiles[0]  & "\" & $mapFiles[$i], $sequenceFile)
+		   			Next
+	   			Else
+		   			For $i = 1 To UBound($mapFiles) - 1
+		   				$mapFiles[$i] = $mapFiles[0]  & "\" & $mapFiles[$i]
+		   			Next
+		   			Draw_MultipleMapData($mapFiles, $sequenceFile)
+	   			EndIf
 	   		Else
    				_log("Handling mapFile : " & $mapFiles[0])
    				Draw_MapData($mapFiles[0], $sequenceFile)

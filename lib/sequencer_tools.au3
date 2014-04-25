@@ -138,6 +138,202 @@ Global $hImage
 Global $hGraphic
 Global $attackRange = 50
 
+Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
+
+	$filescount = UBound($datafiles)
+
+	$area = -1
+	$Buff_MeshMinX = 0
+	$Buff_MeshMaxX = 0
+	$Buff_MeshMinY = 0
+	$Buff_MeshMaxY = 0
+
+	Local $count_position = 0
+
+	For $z = 1 to $filescount - 1
+		_log("Loading file : " & $datafiles[$z])
+		$temp = IniRead($datafiles[$z], "SceneInfo", "AreaId", -1)
+		If $area <> -1 And $area <> $temp Then
+			_log("Erreur : Mélange de plusieurs areaID ! ", $LOG_LEVEL_ERROR)
+			MsgBox(0, "Erreur : ", "Plusiers areaID différents ! Vérifier votre sélection.")
+			Return
+		EndIf
+		$temp_Buff_MeshMinX = IniRead($datafiles[$z], "SceneInfo", "MeshMinX", -1)
+		$temp_Buff_MeshMaxX = IniRead($datafiles[$z], "SceneInfo", "MeshMaxX", -1)
+		$temp_Buff_MeshMinY = IniRead($datafiles[$z], "SceneInfo", "MeshMinY", -1)
+		$temp_Buff_MeshMaxY = IniRead($datafiles[$z], "SceneInfo", "MeshMaxY", -1)
+
+		If $temp_Buff_MeshMinX < $Buff_MeshMinX Then
+			$Buff_MeshMinX = $temp_Buff_MeshMinX
+		EndIf
+		If $temp_Buff_MeshMinY < $Buff_MeshMinY Then
+			$Buff_MeshMinY = $temp_Buff_MeshMinY
+		EndIf
+		If $temp_Buff_MeshMaxX > $Buff_MeshMaxX Then
+			$Buff_MeshMaxX = $temp_Buff_MeshMaxX
+		EndIf
+		If $temp_Buff_MeshMaxY > $Buff_MeshMaxY Then
+			$Buff_MeshMaxY = $temp_Buff_MeshMaxY
+		EndIf
+
+	Next
+
+	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
+
+	For $z = 1 to $filescount - 1
+
+		Local $count_scene = 0
+		Local $count_navcell = 0
+
+		$meshSize = IniRead($datafiles[$z], "SceneInfo", "SceneSize", -1)
+		$navSize = IniRead($datafiles[$z], "SceneInfo", "NavSize", -1)
+		$positionCount = IniRead($datafiles[$z], "SceneInfo", "PositionCount", 0)
+
+		Dim $Scene_table_totale[$meshSize + 1][8]
+		Dim $NavCell_Table_Totale[$navSize + 1][8]
+
+		If $z = 1 Then
+			Dim $Table_position[$positionCount + 1][4]
+		Else
+			ReDim $Table_position[$count_position + $positionCount + 1][4]
+		EndIf
+
+		_log("Loading cell data", $LOG_LEVEL_DEBUG)
+		For $i = 0 To $navSize
+			$temp = IniRead($datafiles[$z], "CellData", "Cell" & $i, -1)
+			If $temp <> -1 Then
+				$temp = StringSplit($temp, ",", 2)
+				$count_navcell += 1
+				$NavCell_Table_Totale[$count_navcell - 1][0] = $temp[0]
+				$NavCell_Table_Totale[$count_navcell - 1][1] = $temp[1]
+				$NavCell_Table_Totale[$count_navcell - 1][2] = $temp[2]
+				$NavCell_Table_Totale[$count_navcell - 1][3] = $temp[3]
+				$NavCell_Table_Totale[$count_navcell - 1][4] = $temp[4]
+				$NavCell_Table_Totale[$count_navcell - 1][5] = $temp[5]
+				$NavCell_Table_Totale[$count_navcell - 1][6] = $temp[6]
+				$NavCell_Table_Totale[$count_navcell - 1][7] = $temp[7]
+			EndIf
+			If Mod($i, 1000) = 0 And $i <> 0 Then
+				_log("Loaded : " & $i & "/" & $navSize  & " navCells")
+			EndIf
+		Next
+
+		_log("Loading mesh data", $LOG_LEVEL_DEBUG)
+		For $i = 0 To $meshSize
+			$temp = IniRead($datafiles[$z], "MeshData", "Mesh" & $i, -1)
+			If $temp <> -1 Then
+				$temp = StringSplit($temp, ",", 2)
+				If $temp[2] <> 0x00013CB6 And $temp[2] <> 0x00013C2E And $temp[2] <> 0x0000D50F And $temp[2] <> 0x00010A3D Then
+					$count_scene += 1
+					$Scene_table_totale[$count_scene - 1][0] = $temp[0]
+					$Scene_table_totale[$count_scene - 1][1] = $temp[1]
+					$Scene_table_totale[$count_scene - 1][2] = $temp[2]
+					$Scene_table_totale[$count_scene - 1][3] = $temp[3]
+					$Scene_table_totale[$count_scene - 1][4] = $temp[4]
+					$Scene_table_totale[$count_scene - 1][5] = $temp[5]
+					$Scene_table_totale[$count_scene - 1][6] = $temp[6]
+					$Scene_table_totale[$count_scene - 1][7] = $temp[7]
+				EndIf
+			EndIf
+		Next
+
+		If $positionCount > 0 Then
+			_log("Loading position data", $LOG_LEVEL_DEBUG)
+			For $i = 0 To $positionCount - 1
+				$temp = IniRead($datafiles[$z], "Positions", "Position" & $i, -1)
+				If $temp <> -1 Then
+					$temp = StringSplit($temp, ",", 2)
+					$count_position += 1
+					$Table_position[$count_position - 1][0] = $temp[1]
+					$Table_position[$count_position - 1][1] = $temp[2]
+					$Table_position[$count_position - 1][2] = $temp[3]
+					$Table_position[$count_position - 1][3] = $temp[0]
+				EndIf
+			Next
+		EndIf
+
+		For $i = 0 To Ubound($Scene_table_totale) - 1
+			For $y = 0 To Ubound($NavCell_Table_Totale) - 1
+				If $Scene_table_totale[$i][0] = $NavCell_Table_Totale[$y][7] Then
+					$vx = ($Scene_table_totale[$i][3] - $buff_MeshMinX) + $NavCell_Table_Totale[$y][0]
+					$vy = ($Scene_table_totale[$i][4] - $buff_MeshMinY) + $NavCell_Table_Totale[$y][1]
+					$tx = $NavCell_Table_Totale[$y][3] - $NavCell_Table_Totale[$y][0]
+					$ty = $NavCell_Table_Totale[$y][4] - $NavCell_Table_Totale[$y][1]
+					$flag = $NavCell_Table_Totale[$y][6]
+					If $flag = 1 And $DrawNavCellWalkable = "true" Then
+						Draw_Nav($vy, $vx, $flag, $ty, $tx)
+					ElseIf $flag = 0 And $DrawNavCellUnWalkable = "true" Then
+						Draw_Nav($vy, $vx, $flag, $ty, $tx)
+					EndIf
+				EndIf
+			Next
+		Next
+	Next
+
+	If Not $sequenceFile = False Then
+		$file = FileOpen($sequenceFile)
+		If $file = -1 Then
+			_log("Error openning sequenceFile !", $LOG_LEVEL_ERROR)
+			Return
+		EndIf
+
+		$count_mtp = 0
+		$numLine = 0
+		While 1
+			$line = FileReadLine($file)
+			If @error = -1 Then
+				ExitLoop
+			 EndIf
+			 $numLine += 1
+			 If StringInStr($line , "attackrange=") Then
+			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			 Else
+				 $temp = StringSplit($line, ",", 2)
+				 If UBound($temp) = 5 Then
+					$count_mtp += 1
+					Redim $table_mtp[$count_mtp][6]
+					$table_mtp[$count_mtp - 1][0] = $temp[0]
+					$table_mtp[$count_mtp - 1][1] = $temp[1]
+					$table_mtp[$count_mtp - 1][2] = $temp[2]
+					$table_mtp[$count_mtp - 1][3] = $temp[3]
+					$table_mtp[$count_mtp - 1][4] = $temp[4]
+					$table_mtp[$count_mtp - 1][5] = $numLine
+				 EndIf
+			 EndIf
+		WEnd
+		FileClose($file)
+
+		If $count_mtp > 0 Then
+			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
+			For $i = 0 To Ubound($Table_mtp) - 1
+				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3] & "|" & $Table_mtp[$i][5])
+				If $DrawAttackRange And $Table_mtp[$i][3] = 1 Then
+					_GDIPlus_GraphicsDrawEllipse ($hGraphic, $Table_mtp[$i][1] - $buff_MeshMinY - ($attackRange / 2) , $Table_mtp[$i][0] - $buff_MeshMinX - ($attackRange / 2) , $attackRange, $attackRange, $color_rec)
+				EndIf
+			Next
+			_GDIPlus_PenDispose($color_rec)
+		EndIF
+	EndIf
+
+	If $count_position > 0 Then
+		For $i = 0 to $count_position - 1
+			Draw_Nav($Table_position[$i][1] - $buff_MeshMinY, $Table_position[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, $Table_position[$i][3])
+		Next
+	EndIF
+
+
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
+
+	For $i = 0 To Ubound($Scene_table_totale) - 1
+		If $DrawScene = "true" Then
+			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, -1)
+		EndIf
+	Next
+
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
+
+EndFunc
+
 Func Draw_MapData($datafile, $sequenceFile = False)
 	$area = IniRead($datafile, "SceneInfo", "AreaId", -1)
 	$meshSize = IniRead($datafile, "SceneInfo", "SceneSize", -1)
@@ -267,7 +463,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		If $count_mtp > 0 Then
 			$color_rec = _GDIPlus_PenCreate($MtpColor, 1)
 			For $i = 0 To Ubound($Table_mtp) - 1
-				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][5] & "|" & $Table_mtp[$i][5])
+				Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3] & "|" & $Table_mtp[$i][5])
 				If $DrawAttackRange And $Table_mtp[$i][3] = 1 Then
 					_GDIPlus_GraphicsDrawEllipse ($hGraphic, $Table_mtp[$i][1] - $buff_MeshMinY - ($attackRange / 2) , $Table_mtp[$i][0] - $buff_MeshMinX - ($attackRange / 2) , $attackRange, $attackRange, $color_rec)
 				EndIf
