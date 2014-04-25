@@ -48,12 +48,25 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 		_log("dessine une pos")
 	ElseIf $type = 11 Then
 		$color_rec = _GDIPlus_BrushCreateSolid(0xFF7A4DE4)
-		_GDIPlus_GraphicsFillEllipse ($hGraphic, $x - $sizex / 2, $y - $sizey / 2, 8, 8, $color_rec)
+		_GDIPlus_GraphicsFillEllipse ($hGraphic, $x - $sizex / 2, $y - $sizey / 2, $sizex, $sizey, $color_rec)
 		If $DrawPositionName Then
 			_GDIPlus_GraphicsDrawString($hGraphic, $count, $x, $y)
 		EndIf
 		_GDIPlus_BrushDispose($color_rec)
 		_log('dessine un emplacement important')
+	ElseIf $type = 12 Then
+		$color_rec = _GDIPlus_BrushCreateSolid(0xFF237C9E)
+		_GDIPlus_GraphicsFillEllipse ($hGraphic, $x - $sizex / 2, $y - $sizey / 2, $sizex, $sizey, $color_rec)
+		
+		_GDIPlus_BrushDispose($color_rec)
+		$temp = StringSplit($count,"|",2)
+		If $temp[1] = -1 Then
+			_GDIPlus_GraphicsDrawString($hGraphic, $temp[0], $x, $y - 15)
+		Else
+			_GDIPlus_GraphicsDrawString($hGraphic, $temp[0], $x, $y)
+		EndIf
+
+		_log('dessine un event')
 	ElseIf $type = 10 Then
 		$color_rec = _GDIPlus_PenCreate(0xFFFF03FC, 1)
 		_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)

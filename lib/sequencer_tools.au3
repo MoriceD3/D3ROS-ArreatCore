@@ -18,6 +18,7 @@ Global $Iterate_Objet[1]
 Global $SaveSequenceData = True
 Global $DrawAttackRange = True
 Global $DrawPositionName = True
+Global $DrawEvents = True
 Global $DrawScene = "True"
 Global $DrawNavCellWalkable = "False"
 Global $DrawNavCellUnWalkable = "True"
@@ -285,7 +286,9 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 			Return
 		EndIf
 
+		Dim $table_event[1][6]
 		$count_mtp = 0
+		$count_event = 0
 		$numLine = 0
 		While 1
 			$line = FileReadLine($file)
@@ -295,6 +298,50 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 			 $numLine += 1
 			 If StringInStr($line , "attackrange=") Then
 			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			 ElseIf StringInStr($line , "sleep=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Sleep"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = -1
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractWithDoor=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Door"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractWithPortal=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Portal"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractByActorName=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Actor"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
 			 Else
 				 $temp = StringSplit($line, ",", 2)
 				 If UBound($temp) = 5 Then
@@ -329,8 +376,13 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 		Next
 	EndIF
 
+	If $count_event > 0 And $DrawEvents Then
+		For $i = 0 to $count_event - 1
+			Draw_Nav($table_event[$i][1] - $buff_MeshMinY, $table_event[$i][0] - $buff_MeshMinX, 12, 8, 8, $i, $table_event[$i][3] & "|" & $table_event[$i][5])
+		Next
+	EndIF
 
-	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_consolidated_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
 		If $DrawScene = "true" Then
@@ -338,7 +390,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 		EndIf
 	Next
 
-	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
+	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_consolidated_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
 
 EndFunc
 
@@ -442,7 +494,9 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			Return
 		EndIf
 
+		Dim $table_event[1][6]
 		$count_mtp = 0
+		$count_event = 0
 		$numLine = 0
 		While 1
 			$line = FileReadLine($file)
@@ -452,6 +506,50 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			 $numLine += 1
 			 If StringInStr($line , "attackrange=") Then
 			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			 ElseIf StringInStr($line , "sleep=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Sleep"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = -1
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractWithDoor=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Door"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractWithPortal=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Portal"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
+			 ElseIf StringInStr($line , "InteractByActorName=") Then
+			 	If $count_mtp > 0 Then
+					$count_event += 1
+					Redim $table_event[$count_event][6]
+					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
+					$table_event[$count_event - 1][1] = $table_mtp[$count_mtp - 1][1]
+					$table_event[$count_event - 1][2] = $table_mtp[$count_mtp - 1][2]
+					$table_event[$count_event - 1][3] = "Actor"
+					$table_event[$count_event - 1][4] = ""
+					$table_event[$count_event - 1][5] = 0
+			 	EndIf
 			 Else
 				 $temp = StringSplit($line, ",", 2)
 				 If UBound($temp) = 5 Then
@@ -486,7 +584,12 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		Next
 	EndIF
 
-
+	If $count_event > 0 And $DrawEvents Then
+		For $i = 0 to $count_event - 1
+			Draw_Nav($table_event[$i][1] - $buff_MeshMinY, $table_event[$i][0] - $buff_MeshMinX, 12, 8, 8, $i, $table_event[$i][3] & "|" & $table_event[$i][5])
+		Next
+	EndIF
+	
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
