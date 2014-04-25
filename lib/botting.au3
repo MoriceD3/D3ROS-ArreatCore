@@ -61,7 +61,6 @@ Func _dorun()
 	Sleep(100)
 
 	enoughtPotions()
-	init_sequence()
 
 	sequence($File_Sequence)
 	_log("End Run. Gamefailed : " & $GameFailed, $LOG_LEVEL_VERBOSE)

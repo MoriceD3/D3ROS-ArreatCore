@@ -201,6 +201,8 @@ Global $Table_SearchObject = False
 Global $SearchForObject    = False
 
 ;statistique
+Global $FailedSequences		 = 0
+Global $TotalSequences		 = 0
 Global $CheckTakeShrineTaken = 0
 Global $CptElite 			 = 0
 Global $ItemToRecycle 		 = 0

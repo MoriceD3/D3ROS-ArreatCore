@@ -131,6 +131,7 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Coffres Ouverts : " & $CoffreTaken & @CRLF
 		$DebugMessage = $DebugMessage & "Elites Rencontres : " & $CptElite & @CRLF
 		$DebugMessage = $DebugMessage & "Success Runs : " & Round($successratio * 100) & "%   ( " & ($Totalruns - $success) & " Avortés )" & @CRLF
+		$DebugMessage = $DebugMessage & "Séquences : " & $FailedSequences & " échouées sur " & $TotalSequences & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 		$DebugMessage = $DebugMessage & "                                 INFOS COFFRE" & @CRLF
 		$DebugMessage = $DebugMessage & "Nombre Objets Recycles : " & $ItemToRecycle & @CRLF

@@ -1165,8 +1165,12 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	$killtimeout = 0
 
 	If Not $Execute_StashAndRepair Then
-	   If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
+	   If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Then
 			$GameFailed = 1
+			Return
+	   EndIf
+   	   If $SkippedMove > 6 Then
+			$GameFailed = 2
 			Return
 	   EndIf
 	EndIf
@@ -1265,7 +1269,6 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			If _checkdisconnect() Then
 				$GameFailed = 1
 			EndIf
-
 			ExitLoop
 		EndIf
 	WEnd
@@ -2818,7 +2821,7 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 
     Attack()
 
-	If $GameFailed = 1 Then
+	If $GameFailed > 1 Then
 		Return False
 	EndIf
 
@@ -2854,7 +2857,7 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 			; We are in adventure mode
 			If $mode = 0 Then
 				_log("We are in adventure mode and tries to open a campain waypoint !", $LOG_LEVEL_ERROR)
-				$GameFailed = 1;
+				$GameFailed = 2;
 				Return False
 			EndIf
 			VerifAct($WPNumber)
@@ -2864,7 +2867,7 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 			; We are in campain mode
 			If $mode = 1 Then
 				_log("We are in campain mode and tries to open an adventure waypoint !", $LOG_LEVEL_ERROR)
-				$GameFailed = 1;
+				$GameFailed = 2;
 				Return False
 			EndIf
 			$BucketUI = GetBucketForWP($WPNumber)
@@ -4289,7 +4292,7 @@ Func TpRepairAndBack()
 
 	While Not _intown()
 		If Not _TownPortalnew() Then
-			$GameFailed=1
+			$GameFailed = 1
 			Return False
 		EndIf
 	WEnd

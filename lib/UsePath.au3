@@ -31,19 +31,24 @@ Func UsePath(ByRef $path)
 		If $res = 2 Then
 			Return
 		ElseIf $res = 3 Then
-			$GameFailed = 1
+			$GameFailed = 2
 		EndIF
 
 		GestSpellcast(0, 0, 0)
 
-		If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Or $SkippedMove > 6 Then
+		If _playerdead() Or $GameOverTime = True Or $GameFailed = 1 Then
 			$GameFailed = 1
+			ExitLoop
+		EndIf
+
+		If $SkippedMove > 6 Then
+			$GameFailed = 2
 			ExitLoop
 		EndIf
 
 		If TimerDiff($TimeOut) > 175000 Then
 			_log("UsePath Timed out ! ! ! ")
-			$GameFailed = 1
+			$GameFailed = 2
 			ExitLoop
 		EndIf
 

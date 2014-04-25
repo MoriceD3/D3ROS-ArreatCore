@@ -173,7 +173,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			if Not _TownPortalnew() Then
-				$GameFailed = 1
+				$GameFailed = 2
 				Return False
 			EndIf
 		ElseIf $arr_sequence[$index][1] = "offsetlist" Then
@@ -226,7 +226,7 @@ Func revive(ByRef $path)
 				if fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
 					_log("Res At Corp and buffinit", $LOG_LEVEL_VERBOSE)
-					Sleep(Random(6000, 7000))
+					Sleep(Random(7000, 8000))
 					buffinit()
 					Return 1
 				Else ;On ne peut pas revive sur le corp
@@ -536,6 +536,8 @@ Func sequence($sequence_list)
 		Local $old_Table_Coffre = $Table_Coffre
 		Local $old_Table_Rack = $Table_Rack
 
+		init_sequence()
+
 		$autobuff = $ShouldPreBuff
 
 		Local $compt_line = 0
@@ -572,10 +574,16 @@ Func sequence($sequence_list)
 		Local $end_sequence = False
 		$SearchForObject = False 
 		$Table_SearchObject = False
+		$TotalSequences += 1
 
 		For $i = 0 To UBound($txttoarray) - 1
-			If $GameFailed = 1 Then
+			If $GameFailed > 1 Then
+				$FailedSequences += 1
 				_log("Game failed exiting sequence()", $LOG_LEVEL_WARNING)
+				If $GameFailed = 2 Then
+					_log("Game failure maybe recoverable, continuing to next sequence.", $LOG_LEVEL_WARNING)
+					$GameFailed = 0
+				EndIf
 				ExitLoop
 			EndIf
 
@@ -656,7 +664,7 @@ Func sequence($sequence_list)
 							_log("Enclenchement d'un _townportal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							If Not _checkdisconnect() Then
 							   If Not _TownPortalnew() Then
-								  $GameFailed = 1
+								  $GameFailed = 2
 								  Return False
 							   EndIf
 							Else
@@ -1091,7 +1099,7 @@ Func InteractWithPortal($NamePortal)
 	   _log('Succesfully Portal Try', $LOG_LEVEL_VERBOSE)
     Else
 	   _log('We failed Portal Try', $LOG_LEVEL_ERROR)
-	   $GameFailed = 1
+	   $GameFailed = 2
     EndIf
 EndFunc   ;==> InteractWithPortal
 
