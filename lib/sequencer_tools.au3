@@ -43,19 +43,27 @@ Global $recordImportantButton = 0
 Global $DrawSceneButton = 0
 
 Func ShowSequencerTools()
-	$SequencerToolsHandle = GUICreate("Sequencer tools", 200, 500, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
+	$SequencerToolsHandle = GUICreate("Sequencer tools", 300, 620, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
 	If $SequencerToolsHandle = 0 Then
 		_Log("Problem starting debug tools", $LOG_LEVEL_ERROR)
 		Return
 	EndIf
 	GUISetOnEvent($GUI_EVENT_CLOSE, "On_SequencerTools_Close")
 
-	$recordSceneButton = GUICtrlCreateLabel("Enregistrer la scène : F1", 10, 10, 180, 20)
-    $recordObjectButton = GUICtrlCreateLabel("Enregistrer les objets : F3", 10, 30, 180, 20)
+	$recordSceneButton = GUICtrlCreateLabel("Enregistrer la scène : F1", 10, 10, 280, 20)
+    $recordObjectButton = GUICtrlCreateLabel("Enregistrer les objets : F3", 10, 30, 280, 20)
 
-    $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 60, 180, 30)
+    $hButton3 = GUICtrlCreateButton("Marquer une position (ù)", 10, 60, 280, 30)
 	GUICtrlSetOnEvent($hButton3, "SequencerMarkPos")
-	$recordImportantButton = GUICtrlCreateButton("Marquer une emplacement (F10)", 10, 100, 180, 30)
+	$hButton3 = GUICtrlCreateButton("Marquer un sleep (F6)", 10, 120, 280, 30)
+	GUICtrlSetOnEvent($hButton3, "SequencerAddSleep")
+	$hButton3 = GUICtrlCreateButton("Marquer un interact Acteur (F7)", 10, 160, 280, 30)
+	GUICtrlSetOnEvent($hButton3, "SequencerAddInteractActor")
+	$hButton3 = GUICtrlCreateButton("Marquer un interact Porte (F8)", 10, 200, 280, 30)
+	GUICtrlSetOnEvent($hButton3, "SequencerAddInteractDoor")
+	$hButton3 = GUICtrlCreateButton("Marquer un interact Portail (F9)", 10, 240, 280, 30)
+	GUICtrlSetOnEvent($hButton3, "SequencerAddInteractPortal")
+	$recordImportantButton = GUICtrlCreateButton("Marquer une emplacement (F10)", 10, 280, 280, 30)
 	GUICtrlSetOnEvent($recordImportantButton, "SequencerMarkImportant")
 
     GUICtrlCreateLabel("Bienvenue dans le sequencer :" & @CRLF & @CRLF & "Appuyer sur F1 et ou F3 pour commencer l'enregistrement." & @CRLF  _
@@ -63,9 +71,9 @@ Func ShowSequencerTools()
     	& "Appuyer sur F10 pour marquer des positions importantes." & @CRLF & @CRLF _
     	& "Quand le bouton Dessiner la scene est désactiver, attendre un peu le temps que le bot finisse son scan." & @CRLF & @CRLF _
     	& "Quand tout est fini appuyer sur le bouton Dessiner la scène (ou F2)." & @CRLF  & @CRLF _
-    	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 200, 180, 360)
+    	& "Vérifier le contenu du répertoire sequencer et améliorer les séquences si nécessaire.", 10, 380, 280, 260)
 
-    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 160, 180, 30)
+    $DrawSceneButton = GUICtrlCreateButton("Dessiner la scene et quitter (F2)", 10, 340, 280, 30)
     GUICtrlSetOnEvent($DrawSceneButton, "Draw_Scene")
     GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
 
@@ -637,6 +645,55 @@ Func SequencerMarkImportant()
 	$count_Important += 1
 EndFunc   ;==>SequencerMarkImportant
 
+Func SequencerAddSleep()
+	$area = GetLevelAreaId()
+	ConsoleWrite("Ajout d'un sleep : Valeur a définir dans la séquence ! " & @CRLF);
+	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
+	If $file = -1 Then
+		_log("Enabled to open file, Script will shutdown")
+		Exit
+	EndIf
+	FileWriteLine($file, "sleep=1000")
+	FileClose($file)
+EndFunc   ;==>SequencerAddSleep
+
+Func SequencerAddInteractActor()
+	$area = GetLevelAreaId()
+	ConsoleWrite("Ajout d'un InteractByActorName : Valeur a définir dans la séquence ! " & @CRLF);
+	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
+	If $file = -1 Then
+		_log("Enabled to open file, Script will shutdown")
+		Exit
+	EndIf
+	FileWriteLine($file, "InteractByActorName=VALEURADEFINIR")
+	FileClose($file)
+EndFunc   ;==>SequencerAddInteractActor
+
+Func SequencerAddInteractDoor()
+	$area = GetLevelAreaId()
+	ConsoleWrite("Ajout d'un InteractWithDoor : Valeur a définir dans la séquence ! " & @CRLF);
+	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
+	If $file = -1 Then
+		_log("Enabled to open file, Script will shutdown")
+		Exit
+	EndIf
+	FileWriteLine($file, "InteractWithDoor=VALEURADEFINIR")
+	FileClose($file)
+EndFunc   ;==>SequencerAddInteractDoor
+
+Func SequencerAddInteractPortal()
+	$area = GetLevelAreaId()
+	ConsoleWrite("Ajout d'un InteractWithPortal : Valeur a définir dans la séquence ! " & @CRLF);
+	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
+	If $file = -1 Then
+		_log("Enabled to open file, Script will shutdown")
+		Exit
+	EndIf
+	FileWriteLine($file, "InteractWithPortal=VALEURADEFINIR")
+	FileWriteLine($file, "offsetlist()")
+	FileClose($file)
+EndFunc   ;==>SequencerAddInteractPortal
+
 Func SequencerMarkPos()
 	$currentloc = GetCurrentPos()
 	$area = GetLevelAreaId()
@@ -658,7 +715,7 @@ Func SequencerMarkPos()
 	$table_mtp[$count_mtp][3] = 1
 	$table_mtp[$count_mtp][4] = 25
 	$count_mtp += 1
-EndFunc   ;==>MarkPos
+EndFunc   ;==>SequencerMarkPos
 
 Func IndexSNONoLimit($_offset, $_displayInfo = 0)
 

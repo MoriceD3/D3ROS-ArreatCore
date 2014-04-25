@@ -83,6 +83,10 @@ HotKeySet("{F3}", "Sequencer_IterateObj")
 HotKeySet("{F4}", "Terminate")
 
 HotKeySet("{ù}", "SequencerMarkPos")
+HotKeySet("{F6}", "SequencerAddSleep")
+HotKeySet("{F7}", "SequencerAddInteractActor")
+HotKeySet("{F8}", "SequencerAddInteractDoor")
+HotKeySet("{F9}", "SequencerAddInteractPortal")
 HotKeySet("{F10}", "SequencerMarkImportant")
 ;;--------------------------------------------------------------------------------
 ;;      Initialize the data and offsets
