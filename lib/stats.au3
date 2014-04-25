@@ -122,7 +122,12 @@ Func StatsDisplay()
 
 
 	    GetAct()
-        $DebugMessage = "                                 INFOS RUN ACTE " & $Act & @CRLF
+		If $Choix_Act_Run = -3
+			$DebugMessage = "                                   INFOS RUN" & @CRLF
+		Else
+			$DebugMessage = "                                 INFOS RUN ACTE " & $Act & @CRLF
+		EndIf
+        ;$DebugMessage = "                                 INFOS RUN ACTE " & $Act & @CRLF
 		$DebugMessage = $DebugMessage & "Runs : " & $Totalruns & @CRLF
         $DebugMessage = $DebugMessage & "Morts : " & $Death & @CRLF
         $DebugMessage = $DebugMessage & "Resurrections : " & $Res_compt & @CRLF
@@ -200,6 +205,10 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
 	    $DebugMessage = $DebugMessage & "Heure début run: " & @HOUR & ":" & @MIN & @CRLF
 		Switch $Choix_Act_Run
+			Case -3
+				$DebugMessage = $DebugMessage & "Mode Bounty" & @CRLF
+			Case -2
+				$DebugMessage = $DebugMessage & "Mode Aventure" & @CRLF
 			Case -1
 				  $file = FileOpen($fileLog, 0)
 				  $line = FileReadLine($file, 1)
