@@ -83,7 +83,7 @@ Func _botting()
 			_logind3()
 			
 			Local $WaitingTime = 0
-			While Not _inmenu() And $WaitingTime < 155
+			While _onloginscreen() And $WaitingTime < 155
 			   Sleep(500)
 			   $WaitingTime +=1
 			WEnd
