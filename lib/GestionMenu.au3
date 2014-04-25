@@ -76,28 +76,29 @@ Func SelectGameType($SelectGameType, $auto)
 		WEnd
 
 		If IsGameSettingsOpened() Then
-
 			If ($Totalruns = 1) Then
-			   If $SelectGameType > -2 Then
-				  _log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
-				  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
-				  Sleep(1000)
-				  ;Selection de la difficulte et de la puissance des monstres
-				  If $TypedeBot = 1 Then
-					 SelectDifficultyMonsterPower()
-				  EndIf
-			   Else
-				  _log("Passage en mode Aventure", $LOG_LEVEL_DEBUG)
-				  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
-				  Sleep(Random(600, 800, 1))
-				  ;Selection de la difficulte et de la puissance des monstres
-				  If $TypedeBot = 1 Then
-					 SelectDifficultyMonsterPower()
-				  EndIf
-				  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
-				  Sleep(Random(600, 800, 1))
-				  Return
-			   EndIf
+				_log("Passage de la partie en mode privé", $LOG_LEVEL_DEBUG)
+				ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeContent.PrivateGameButton" , 1647)
+				If $SelectGameType > -2 Then
+					_log("Passage en mode Campagne", $LOG_LEVEL_DEBUG)
+					ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 199)
+					Sleep(1000)
+					;Selection de la difficulte et de la puissance des monstres
+					If $TypedeBot = 1 Then
+						SelectDifficultyMonsterPower()
+					EndIf
+				Else
+					_log("Passage en mode Aventure", $LOG_LEVEL_DEBUG)
+					ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeButton", 1581)
+					Sleep(Random(600, 800, 1))
+					;Selection de la difficulte et de la puissance des monstres
+					If $TypedeBot = 1 Then
+						SelectDifficultyMonsterPower()
+					EndIf
+					ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
+					Sleep(Random(600, 800, 1))
+					Return
+				EndIf
 			EndIf
 
 		   Local $Waiting_Time = 0
