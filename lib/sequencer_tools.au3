@@ -487,6 +487,8 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 		Next
 	Next
 
+	$count_event = 0
+
 	If Not $sequenceFile = False Then
 		$file = FileOpen($sequenceFile)
 		If $file = -1 Then
@@ -496,7 +498,6 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 
 		Dim $table_event[1][6]
 		$count_mtp = 0
-		$count_event = 0
 		$numLine = 0
 		While 1
 			$line = FileReadLine($file)
@@ -589,7 +590,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			Draw_Nav($table_event[$i][1] - $buff_MeshMinY, $table_event[$i][0] - $buff_MeshMinX, 12, 8, 8, $i, $table_event[$i][3] & "|" & $table_event[$i][5])
 		Next
 	EndIF
-	
+
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & ".png"))
 
 	For $i = 0 To Ubound($Scene_table_totale) - 1
