@@ -44,7 +44,7 @@
 347070#0x54BBE#1#X1_Bounty_A1_Fields_Kill_Charger#act1_ADV-champs_[1-8]
 347073#0x54BC1#1#X1_Bounty_A1_Fields_Kill_Dreadclaw#act1_ADV-champs_[1-8]
 369243#0x5A25B#1#X1_Bounty_A1_Fields_Kill_Growler#act1_ADV-champs_[1-8]
-369246#0x5A25E#1#X1_Bounty_A1_Fields_Kill_Krelm#Nact1_ADV-champs_[1-8]
+369246#0x5A25E#1#X1_Bounty_A1_Fields_Kill_Krelm#act1_ADV-champs_[1-8]
 345498#0x5459A#1#X1_Bounty_A1_Fields_Kill_Melmak#act1_ADV-champs_[1-8]
 347077#0x54BC5#1#X1_Bounty_A1_Fields_Kill_Odeg#None
 347075#0x54BC3#1#X1_Bounty_A1_Fields_Kill_OldMan#None
