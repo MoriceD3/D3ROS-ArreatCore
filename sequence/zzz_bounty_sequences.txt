@@ -224,37 +224,31 @@
 3#Need FR#3#Kill Groak the Brawler#None
 
 4#tuez Rakanoth#4#Kill Rakanoth#act4_ADV-Tuer_Rakanoth
-4#le dais maudit#4#Need EN#None
-4#tuez Oah’ Tash#4#Kill Oah' Tash#None
-4#nettoyez la faille infernale#4#Need EN#None
+4#tuez Allume Torch#4#Kill Torchlighter#act4-BOUNTY-GardenHope_lvl1
+4#tuez Khatun#4#Kill Khatun#act4-BOUNTY-GardenHope_lvl1
+4#le dais maudit#4#The Cursed Dais#act4-BOUNTY-GardenHope_lvl1
+4#tuez Oah’ Tash#4#Kill Oah' Tash#act4-BOUNTY-GardenHope_lvl2
+4#nettoyez la faille infernale#4#Clear the Hell Rift#None
 4#tuez Izual#4#Kill Izual#None
-4#tuez l’aspect du Péché#4#Need EN#None
-4#tuez l’aspect de l’Angoisse#4#Need EN#None
+4#tuez l’aspect du Péché#4#Kill the Aspect of Sin#None
+4#tuez l’aspect de l’Angoisse#4#Kill the Aspect of Anguish#act4-BOUNTY-GardenHope_lvl2
+4#tuez l'aspect de la destruction#4#Kill the Aspect of Destruction#act4-BOUNTY-GardenHope_lvl2
 4#tuez Slarg le béhémoth#4#Kill Slarg the Behemoth#None
 4#tuez Diablo#4#Kill Diablo#None
-4#tuez l’aspect de la Souffrance#4#Need EN#None
-4#tuez Martel#4#Need EN#None
-4#la chapelle maudite#4#Need EN#None
-4#tuez Kao’ Ahn#4#Kill Kao' Ahn#None
-4#tuez Rhau’Kye#4#Need EN#None
-4#tuez Pyrus le Damné#4#Need EN#None
+4#tuez l’aspect de la Souffrance#4#Kill the Aspect of Pain#act4-BOUNTY-GardenHope_lvl2
+4#tuez Martel#4#Kill Sledge#None
+4#la chapelle maudite#4#The Cursed Chapel#None
+4#tuez Kao’ Ahn#4#Kill Kao' Ahn#act4-BOUNTY-GardenHope_lvl2
+4#tuez Rhau’Kye#4#Kill Rhau'Kye#None
+4#tuez Pyrus le Damné#4#Kill Pyres the Damned#None
 4#tuez Veshan le Féroce#4#Kill Veshan the Fierce#None
-4#tuez Presse-Purée#4#Need EN#None
+4#tuez Presse-Purée#4#Kill Hammersmash#None
 4#tuez Nuit-Sinistre le Sans-âme#4#Need EN#None
+4#tuez Haures#4#Kill Haures#None
 
-4#Need FR#4#Kill Haures#None
 4#Need FR#4#Kill the Aspect of Lies#None
-4#Need FR#4#Kill Hammermash#None
-4#Need FR#4#Kill Pyres the Damned#None
-4#Need FR#4#Kill the Aspect of Pain#None
-4#Need FR#4#Kill the Aspect of Anguish#None
-4#Need FR#4#The Cursed Dais#None
-4#Need FR#4#Kill Sledge#None
 4#Need FR#4#Kill the Aspect of Hatred#None
-4#Need FR#4#Clear the Hell Rift#None
 4#Need FR#4#Kill Kysindra the Wretched#None
-4#Need FR#4#The Cursed Chapel#None
-4#Need FR#4#Kill Torchlighter#None
 
 5#la patrouille perdue#5#Need EN#None
 5#tuez Urzaël#5#Need EN#None
