@@ -122,7 +122,7 @@ Func StatsDisplay()
 
 
 	    GetAct()
-		If $Choix_Act_Run = -3
+		If $Choix_Act_Run = -3 Then
 			$DebugMessage = "                                   INFOS RUN" & @CRLF
 		Else
 			$DebugMessage = "                                 INFOS RUN ACTE " & $Act & @CRLF
