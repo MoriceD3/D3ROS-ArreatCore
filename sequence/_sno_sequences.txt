@@ -33,7 +33,7 @@
 345507#0x545A3#1#X1_Bounty_A1_FesteringWoods_Kill_Grimshack#act1_ADV-putride_[1-6]
 347054#0x54BAE#1#X1_Bounty_A1_FesteringWoods_Kill_HawthorneGable#act1_ADV-putride_[1-6]
 369249#0x5A261#1#X1_Bounty_A1_FesteringWoods_Kill_LordBrone#act1_ADV-putride_[1-6]
-347065#0x54BB9#1#X1_Bounty_A1_Fields_Clear_KhazraDen#None
+347065#0x54BB9#1#X1_Bounty_A1_Fields_Clear_KhazraDen#Act1_BOUNTY-Field_Khazra
 345496#0x54598#1#X1_Bounty_A1_Fields_Clear_ScavengerDen2#None
 365401#0x59359#1#X1_Bounty_A1_Fields_Event_CultistLegion#act1_ADV-champs_[1-8]
 347058#0x54BB2#1#X1_Bounty_A1_Fields_Event_FamilyRathe#None
