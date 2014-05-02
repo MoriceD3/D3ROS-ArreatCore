@@ -111,7 +111,7 @@ Func GetBountySequences($Table_BountyAct)
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 	Wend
-	
+
 	If $SeqList = "" Then
 		If $NoBountyFailbackToAdventure Then
 			_log("No supported sequences found !, Loading adventure ones", $LOG_LEVEL_WARNING)
@@ -145,33 +145,43 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		EndIf
 	Else
 		If $arr_sequence[$index][1] = "sleep" Then
+			_log("Sleep : " & $arr_sequence[$index][2])
 			Sleep($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "interactbyactorname" Then
+			_log("Start : InteractByActorName " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
 			InteractByActorName($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractWithDoor" Then
+			_log("Start : InteractWithDoor " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
 			InteractWithDoor($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractWithPortal" Then
+			_log("Start : InteractWithPortal " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
 			InteractWithPortal($arr_sequence[$index][2])
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
-			_log("Buffinit sequence")
+			_log("Buffinit sequence", $LOG_LEVEL_DEBUG)
 			BuffInit()
 		ElseIf $arr_sequence[$index][1] = "unbuff" Then
-			_log("Unbuff sequence")
+			_log("Unbuff sequence", $LOG_LEVEL_DEBUG)
 			Unbuff()
 		ElseIf $arr_sequence[$index][1] = "send" Then
+			_log("Send : " & $arr_sequence[$index][2])
 			Send($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "closewindows" Then
+			_log("Close Windows", $LOG_LEVEL_DEBUG)
 			Send($KeyCloseWindows)
 		ElseIf $arr_sequence[$index][1] = "closeconfirm" Then
+			_log("Close Confirm", $LOG_LEVEL_DEBUG)
 			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
+			_log("Start : TakeWP", $LOG_LEVEL_DEBUG)
 			TakeWPV2($arr_sequence[$index][2], 0)
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "takewpadv" Then
+			_log("Start : TakeWPADV", $LOG_LEVEL_DEBUG)
 			TakeWPV2($arr_sequence[$index][2], 1)
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
+			_log("Start : TownPortal", $LOG_LEVEL_DEBUG)
 			if Not _TownPortalnew() Then
 				$GameFailed = 2
 				Return False
@@ -490,7 +500,7 @@ Func LookForObjects()
 	EndIf
 
 	$CurrentLoc = GetCurrentPos()
-	$SearchCount = UBound($Table_SearchObject) - 1 
+	$SearchCount = UBound($Table_SearchObject) - 1
 	For $i = 0 To $count
 		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
 			For $z = 0 to $SearchCount
@@ -572,7 +582,7 @@ Func sequence($sequence_list)
 		Dim $array_sequence[1][6]
 		$sequence_save = 0
 		Local $end_sequence = False
-		$SearchForObject = False 
+		$SearchForObject = False
 		$Table_SearchObject = False
 		$TotalSequences += 1
 
@@ -672,7 +682,7 @@ Func sequence($sequence_list)
 							   Return False
 							EndIf
 							$line = ""
-						Else 
+						Else
 							$end_sequence = True
 							$line = ""
 						EndIf
@@ -1075,26 +1085,26 @@ Func InteractWithPortal($NamePortal)
 	Local $Newarea = $Curentarea
 	Local $PortalTry = 0
 	Local $NewAreaOk = 0
-	
-	While $NewAreaOk = 0 And $PortalTry < 5	   
+
+	While $NewAreaOk = 0 And $PortalTry < 5
 	   _Log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
 	   InteractByActorName($NamePortal)
-	   
+
 	   Local $areatry = 0
 	   While $Newarea = $Curentarea And $areatry <= 10
 		  $Newarea = GetLevelAreaId()
 		  Sleep(500)
 		  $areatry += 1
 	   WEnd
-	   
+
 	   If $Newarea <> $Curentarea Then
 		  $NewAreaOk = 1
 	   Else
 		  $PortalTry += 1
 	   EndIf
-	  
+
     WEnd
-	
+
 	If $Newarea <> $Curentarea Then
 	   _log('Succesfully Portal Try', $LOG_LEVEL_VERBOSE)
     Else
