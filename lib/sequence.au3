@@ -174,11 +174,11 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
 			_log("Start : TakeWP", $LOG_LEVEL_DEBUG)
-			TakeWPV2($arr_sequence[$index][2], 0)
+			TakeWPV3($arr_sequence[$index][2], 0)
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "takewpadv" Then
 			_log("Start : TakeWPADV", $LOG_LEVEL_DEBUG)
-			TakeWPV2($arr_sequence[$index][2], 1)
+			TakeWPV3($arr_sequence[$index][2], 1)
 			$ActiveQuest = GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			_log("Start : TownPortal", $LOG_LEVEL_DEBUG)
@@ -623,7 +623,7 @@ Func sequence($sequence_list)
 						If SendSequence($array_sequence) Then
 							$array_sequence = ArrayInit($array_sequence)
 							_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
-							TakeWPV2($table_wp, 0)
+							TakeWPV3($table_wp, 0)
 							$line = ""
 						Else
 							$end_sequence = True
@@ -651,7 +651,7 @@ Func sequence($sequence_list)
 						If SendSequence($array_sequence) Then
 							$array_sequence = ArrayInit($array_sequence)
 							_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
-							TakeWPV2($table_wp, 1)
+							TakeWPV3($table_wp, 1)
 							$ActiveQuest = GetActiveQuest()
 							$line = ""
 						Else

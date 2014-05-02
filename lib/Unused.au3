@@ -433,7 +433,116 @@ Func Power($name, $offset, $Guid)
 	WEnd
 	Return 1
 EndFunc   ;==>power
+#cs
+; $Mode : 0 pour Campagne et 1 pour aventure
+Func TakeWPV2Old($WPNumber = 0, $Mode = 0)
+    Local $Curentarea = GetLevelAreaId()
+    Local $Newarea = $Curentarea
 
+    Attack()
+
+	If $GameFailed > 1 Then
+		Return False
+	EndIf
+
+	While Not offsetlist()
+		Sleep(10)
+	WEnd
+
+	If $Mode = 0 Then
+		_Log("Opening map for Campain mode", $LOG_LEVEL_VERBOSE)
+		Send($KeyCloseWindows)
+		Sleep(250)
+		Send("M")
+		Sleep(1000)
+
+		Local $wptry = 0
+		While Not _checkWPopen() And Not _playerdead()
+			If $wptry <= 6 Then
+				_log('Fail to open wp', $LOG_LEVEL_WARNING)
+				$wptry += 1
+				Send($KeyCloseWindows)
+				Sleep(200)
+				Send("M")
+				Sleep(1000)
+			EndIf
+			If $wptry > 6 Then
+				$GameFailed = 1
+				_log('Failed to open wp after 6 try', $LOG_LEVEL_ERROR)
+				Return False
+			EndIf
+		WEnd
+
+		If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
+			; We are in adventure mode
+			If $mode = 0 Then
+				_log("We are in adventure mode and tries to open a campain waypoint !", $LOG_LEVEL_ERROR)
+				$GameFailed = 2;
+				Return False
+			EndIf
+			VerifAct($WPNumber)
+			$BucketUI = GiveBucketWp($WPNumber)
+			$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Interest"
+		Else
+			; We are in campain mode
+			If $mode = 1 Then
+				_log("We are in campain mode and tries to open an adventure waypoint !", $LOG_LEVEL_ERROR)
+				$GameFailed = 2;
+				Return False
+			EndIf
+			$BucketUI = GetBucketForWP($WPNumber)
+			If $WPNumber = 0 Then
+				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
+			Else
+				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
+			EndIf
+		EndIf
+
+		sleep(500)
+		_log("clicking wp UI", $LOG_LEVEL_VERBOSE)
+
+		If ($BucketUI = 0) Then
+			ClickUI($NameUI)
+		Else
+			ClickUI($NameUI, $BucketUI)
+		EndIf
+
+		Local $areatry = 0
+		While $Newarea = $Curentarea And $areatry <= 30 ; on attend d'avoir une nouvelle Area environ 15 sec
+			$Newarea = GetLevelAreaId()
+			Sleep(500)
+			$areatry += 1
+		WEnd
+
+		Sleep(500)
+
+		While Not offsetlist()
+			Sleep(10)
+		WEnd
+
+		$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
+
+		Return True
+	Else
+		$Res = TakeWpAdventure($WPNumber)
+		_log("Result : TakeWpAdventure " & $Res)
+		If $Res = True Then
+			Sleep(500)
+			While Not offsetlist()
+				Sleep(10)
+			WEnd
+			$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
+			Return True
+		Else
+			_log("WP Not Found", $LOG_LEVEL_ERROR)
+			$GameFailed = 1
+			_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
+			Return False
+		EndIf
+	EndIf
+	Return False
+EndFunc
+#ce
 ;;--------------------------------------------------------------------------------
 ;;      UiRatio()
 ;;--------------------------------------------------------------------------------

@@ -1264,6 +1264,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 			MouseDown($MouseMoveClick)
 		EndIf
 		MouseMove($Coords[0], $Coords[1], 3)
+		; TODO : Add a no move no hit taken lower timeout !
 		If TimerDiff($TimeOut) > 75000 Then
 			_log("MoveToPos Timed out ! ! ! ", $LOG_LEVEL_WARNING)
 			If _checkdisconnect() Then
@@ -2655,7 +2656,7 @@ Func OpenWp(ByRef $item)
 
 EndFunc   ;==>OpenWp
 
-Func GiveBucketWp($num)
+Func GetBucketForWPAdv($num)
 	$bucket = ""
 	Switch $num
 		Case 0
@@ -2771,7 +2772,7 @@ Func GiveBucketWp($num)
 		Case 55
 			$bucket = "1"
 	EndSwitch
-	_log("GiveBucketWp : " & $num & " -> " & $bucket, $LOG_LEVEL_DEBUG)
+	;_log("GetBucketForWPAdv : " & $num & " -> " & $bucket, $LOG_LEVEL_DEBUG)
 	Return $bucket
 EndFunc
 
@@ -2814,32 +2815,49 @@ Func GetBucketForWP($WPNumber)
 	EndSwitch
 EndFunc
 
-; $Mode : 0 pour Campagne et 1 pour aventure
-Func TakeWPV2($WPNumber = 0, $Mode = 0)
-    Local $Curentarea = GetLevelAreaId()
+Func TakeWpV3($WPNumber = 0, $Mode = 0)
+	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE) 
+	Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
+    Local $try = 0
 
-    Attack()
+	If Not $PartieSolo Then 
+		WriteMe($WRITE_ME_TP) ; TChat
+	EndIf
 
-	If $GameFailed > 1 Then
-		Return False
+	If _playerdead() Then
+	   Return False
 	EndIf
 
 	While Not offsetlist()
-		Sleep(10)
+		Sleep(40)
 	WEnd
 
-	If $Mode = 0 Then
-		_Log("Opening map for Campain mode", $LOG_LEVEL_VERBOSE)
+	While $try < 10 And $Newarea = $Curentarea And Not _checkdisconnect()
+		Local $TPtimer = 0
+		Local $compt_while = 0
+		Local $compt_wait = 0
+
+		$try += 1
+
+		Attack()
+
+		If $GameFailed > 1 Then
+			Return False
+		EndIf
+
+		CheckZoneBeforeTP()
+
+		_Log("TakeWpV3 : Opening map (try : " & $try & ")", $LOG_LEVEL_VERBOSE)
 		Send($KeyCloseWindows)
 		Sleep(250)
 		Send("M")
 		Sleep(1000)
 
 		Local $wptry = 0
-		While Not _checkWPopen() And Not _playerdead()
+		While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
 			If $wptry <= 6 Then
-				_log('Fail to open wp', $LOG_LEVEL_WARNING)
+				_log('TakeWpV3 : Failed to open map', $LOG_LEVEL_WARNING)
 				$wptry += 1
 				Send($KeyCloseWindows)
 				Sleep(200)
@@ -2848,190 +2866,105 @@ Func TakeWPV2($WPNumber = 0, $Mode = 0)
 			EndIf
 			If $wptry > 6 Then
 				$GameFailed = 1
-				_log('Failed to open wp after 6 try', $LOG_LEVEL_ERROR)
+				_log('TakeWpV3 : Failed to open map after 6 try', $LOG_LEVEL_ERROR)
 				Return False
 			EndIf
 		WEnd
 
-		If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
-			; We are in adventure mode
-			If $mode = 0 Then
-				_log("We are in adventure mode and tries to open a campain waypoint !", $LOG_LEVEL_ERROR)
-				$GameFailed = 2;
-				Return False
-			EndIf
-			VerifAct($WPNumber)
-			$BucketUI = GiveBucketWp($WPNumber)
-			$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Interest"
-		Else
-			; We are in campain mode
-			If $mode = 1 Then
-				_log("We are in campain mode and tries to open an adventure waypoint !", $LOG_LEVEL_ERROR)
-				$GameFailed = 2;
-				Return False
-			EndIf
-			$BucketUI = GetBucketForWP($WPNumber)
-			If $WPNumber = 0 Then
-				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
+		If Not _playerdead() And Not _checkdisconnect() Then
+			If _checkWPopen() Then
+				If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
+					; We are in adventure mode
+					If $mode = 0 Then
+						_log("TakeWpV3 :We are in adventure mode and tries to open a campain waypoint !", $LOG_LEVEL_ERROR)
+						$GameFailed = 2;
+						Return False
+					EndIf
+					VerifAct($WPNumber)
+					$BucketUI = GetBucketForWPAdv($WPNumber)
+					$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Interest"
+				Else
+					; We are in campain mode
+					If $mode = 1 Then
+						_log("TakeWpV3 : We are in campain mode and tries to open an adventure waypoint !", $LOG_LEVEL_ERROR)
+						$GameFailed = 2;
+						Return False
+					EndIf
+					$BucketUI = GetBucketForWP($WPNumber)
+					If $WPNumber = 0 Then
+						$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Town"
+					Else
+						$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
+					EndIf
+				EndIf
+				_Log("TakeWpV3 : clicking wp UI")
+				If ($BucketUI = 0) Then
+					ClickUI($NameUI)
+				Else
+					ClickUI($NameUI, $BucketUI)
+				EndIf
 			Else
-				$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
+				$GameFailed = 1
+				_log('TakeWpV3 : Map not opened !', $LOG_LEVEL_ERROR)
+				Return False
 			EndIf
-		EndIf
 
-		sleep(500)
-		_log("clicking wp UI", $LOG_LEVEL_VERBOSE)
+		  	If Not _intown() Then
+				_Log("TakeWpV3 : Not in town -> Enclenchement fastCheckui de la barre de loading")
+				Sleep(400)
+				While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+					If $compt_while = 0 Then
+				 		_log("TakeWpV3 : Enclenchement du timer")
+						$TPtimer = TimerInit()
+					EndIf
+					$compt_while += 1
 
-		If ($BucketUI = 0) Then
-			ClickUI($NameUI)
-		Else
-			ClickUI($NameUI, $BucketUI)
-		EndIf
+					checkForPotion()
+					checkForGlobes()
 
-		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry <= 30 ; on attend d'avoir une nouvelle Area environ 15 sec
-			$Newarea = GetLevelAreaId()
-			Sleep(500)
-			$areatry += 1
-		WEnd
+					Attack()
+					Sleep(300)
+				WEnd
 
-		Sleep(500)
+				If $compt_while = 0 Then
+					$CurrentLoc = getcurrentpos()
+					MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
+					_Log("TakeWpV3 : On se deplace, pas de detection de la barre de TP")
+					ContinueLoop
+				ElseIf TimerDiff($TPtimer) < 3300 Then
+					_Log("TakeWpV3 : Barre de TP pas assez visible, TP surement failed on retry")
+					ContinueLoop
+				EndIf 
+			EndIf
 
-		While Not offsetlist()
-			Sleep(10)
-		WEnd
+			Sleep(1000)
 
-		$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
-
-		Return True
-	Else
-		$Res = TakeWpByKey($WPNumber)
-		_log("Result : TakeWpByKey " & $Res)
-		If $Res = True Then
-			Sleep(500)
-			While Not offsetlist()
-				Sleep(10)
+			While GetLevelAreaId() = $Curentarea And $compt_wait < 20
+				_Log("TakeWpV3 : On a peut etre reussi a tp, vérification si nouvelle area, tentative -> " & $compt_wait)
+				$compt_wait += 1
+				sleep(500)
 			WEnd
-			$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
-			Return True
+
+			$Newarea = GetLevelAreaId()
+			If $Newarea <> $Curentarea Then
+				_Log("TakeWpV3 : New area found : " & $Newarea, $LOG_LEVEL_DEBUG)
+				Sleep(500)
+				While Not offsetlist()
+					Sleep(40)
+				WEnd
+				$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
+				_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
+ 				Return True
+			EndIf
 		Else
-			_log("WP Not Found", $LOG_LEVEL_ERROR)
-			$GameFailed = 1
-			_log("$GameFailed = 1 $GameFailed = 1 $GameFailed = 1")
+	    	_Log("TakeWpV3 : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
 			Return False
 		EndIf
-	EndIf
-	Return False
-EndFunc
-
-Func TakeWpByKey($num, $try = 0)
-
-	Local $Curentarea = GetLevelAreaId()
-    Local $Newarea = $Curentarea
-
-	If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
-
-	If _playerdead() Then
-	   Return False
-	EndIf
-
-	While $try < 20 And $Newarea = $Curentarea And Not _checkdisconnect()
-
-	   Local $WPopen = 0
-	   Local $TPtimer = 0
-	   Local $Attacktimer = 0
-	   Local $compt_while = 0
-	   Local $compt_wait = 0
-
-	   _Log("TakeWpByKey : Enclenche attack during TakeWpByKey")
-	   Attack()
-	   Sleep(250)
-
-	   If Not _playerdead() Then
-
-		  CheckZoneBeforeTP()
-
-		  Sleep(250)
-		  Send("M")
-		  Sleep(1000)
-
-		  If _checkWPopen() Then
-			 _Log("TakeWpByKey : clicking wp UI")
-			 VerifAct($num)
-			 ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $num & ".LayoutRoot.Interest", GiveBucketWp($num))
-			 Sleep(300)
-			 $WPopen = 1
-		  EndIf
-
-		  If $WPopen Then
-			 _Log("TakeWpByKey : enclenchement fastCheckui de la barre de loading")
-			 While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-				If $compt_while = 0 Then
-				   _log("enclenchement du timer")
-				   $TPtimer = timerinit()
-				EndIf
-				$compt_while += 1
-
-				checkforpotion()
-				checkForGlobes()
-
-				$Attacktimer = TimerInit()
-				Attack()
-				Sleep(300)
-				TimerDiff($Attacktimer)
-			 WEnd
-		  EndIf
-
-
-		  If Not _intown() Then
-			 If Not $compt_while And $WPopen Then
-				$CurrentLoc = getcurrentpos()
-				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
-				_Log("TakeWpByKey : On se deplace, pas de detection de la barre de TP")
-			 Else
-			    _Log("TakeWpByKey : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ")
-			 EndIf
-			 If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
-				While GetLevelAreaId() = $Curentarea And $compt_wait < 7
-				   _Log("TakeWpByKey : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive dans la nouvelle area, tentative -> " & $compt_wait)
-				   $compt_wait += 1
-				   sleep(1000)
-				WEnd
-			 EndIf
-		  Else
-			 If $WPopen Then
-				While GetLevelAreaId() = $Curentarea And $compt_wait < 7
-				   _Log("TakeWpByKey In Town : on reste inerte pendant 6sec voir si on arrive dans la nouvelle area, tentative -> " & $compt_wait)
-				   $compt_wait += 1
-				   sleep(1000)
-				WEnd
-			 EndIf
-		  EndIf
-
-		  Sleep(500)
-
-		  $Newarea = GetLevelAreaId()
-		  If $Newarea <> $Curentarea Then
-			 _Log("TakeWpByKey : New area found", $LOG_LEVEL_DEBUG)
-			 Sleep(500)
-			 ExitLoop
-		  Else
-		     _Log("TakeWpByKey : New try -> " & $try + 1, $LOG_LEVEL_DEBUG)
-			 $try += 1
-		  EndIf
-	   Else
-	      _Log("TakeWpByKey : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
-		  Return False
-	   EndIf
 	WEnd
 
-	If $try > 19 Or _checkdisconnect() Then
-	   _log("TakeWpByKey : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
-	   Return False
-	EndIf
-
- 	_Log("TakeWpByKey : On a renvoyer true, quite bien la fonction")
- 	Return True
-Endfunc ; ==> TakeWpByKey
+	_log("TakeWpV3 : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
+	Return False
+Endfunc ; ==> TakeWpAdventure
 
 ;;--------------------------------------------------------------------------------
 ;;      _resumegame()
@@ -5130,10 +5063,10 @@ Func CheckZoneBeforeTP()
 
 	Dim $Item_Affix_Verify = IterateFilterAffixV2()
 	If IsArray($Item_Affix_Verify) Then
-	   _Log("Affix detecter, on verifie si l'on est trop pres avant de TP", $LOG_LEVEL_DEBUG)
+	   _Log("Affix détecté, on vérifie si l'on est trop pres avant de TP", $LOG_LEVEL_DEBUG)
 
 	   Local $CurrentLoc = getcurrentpos()
-	   while Not is_zone_safe($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $Item_Affix_Verify) and $try < 15 ; try < 15 si jamais on bloque dans la map
+	   While Not is_zone_safe($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $Item_Affix_Verify) and $try < 15 ; try < 15 si jamais on bloque dans la map
 		  $CurrentLoc = getcurrentpos()
 		  Dim $pos = UpdateObjectsPos($Item_Affix_Verify)
 		  maffmove($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $pos[0], $pos[1])
@@ -5211,7 +5144,7 @@ Func _TownPortalnew($mode=0)
 			   EndIf
 			   $compt_while += 1
 
-			   checkforpotion()
+			   checkForPotion()
 			   checkForGlobes()
 
 			   $Attacktimer = TimerInit()
