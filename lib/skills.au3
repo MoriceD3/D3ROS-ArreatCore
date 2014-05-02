@@ -453,7 +453,8 @@ Global $WitchDoctor_skill_Table[22][8] =	[ _
 							]
 
 
-Global $Barbarian_Skill_Table[22][8] = [ _
+Global $Barbarian_Skill_Table[23][8] = [ _
+						[$X1_Barbarian_Avalanche_v2,"Barbarian_Avalanche",30000,"attack&elite",0,"fury","",30], _
 						[$Barbarian_Bash,"Barbarian_Bash",0,"physical","","","",""], _
 						[$Barbarian_HammerOfTheAncients,"Barbarian_HammerOfTheAncients",0,"attack",20,"fury","",""], _
 						[$Barbarian_Cleave,"Barbarian_Cleave",0,"physical","","","",""], _

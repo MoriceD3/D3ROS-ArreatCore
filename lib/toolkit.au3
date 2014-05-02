@@ -2976,7 +2976,7 @@ Func TakeWpByKey($num, $try = 0)
 
 				$Attacktimer = TimerInit()
 				Attack()
-				Sleep(100)
+				Sleep(300)
 				TimerDiff($Attacktimer)
 			 WEnd
 		  EndIf
