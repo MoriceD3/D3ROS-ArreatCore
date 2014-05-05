@@ -380,6 +380,12 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "EndSequenceOnBountyCompletion", $EndSequenceOnBountyCompletion)
 	$EndSequenceOnBountyCompletion = Trim(StringLower($Dummy)) == "true"
 
+	$Dummy = IniRead($profilFile, "Run info", "BountyAndSequence", $BountyAndSequence)
+	$BountyAndSequence = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($profilFile, "Run info", "StopAfterBounty", $StopAfterBounty)
+	$StopAfterBounty = Trim(StringLower($Dummy)) == "true"
+
 	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
 	$debugBot = Trim(StringLower($Dummy)) == "true"
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
