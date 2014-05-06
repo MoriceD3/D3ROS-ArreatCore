@@ -54,8 +54,8 @@ Func StatsDisplay()
 			$dif_timer_stat_game = ($dif_timer_stat - $dif_timer_stat_pause);calcule (temps totale - temps total pause)=Temps de jeu
 			$dif_timer_stat_game_Ratio = ($dif_timer_stat_game / $dif_timer_stat * 100);ratio temps total jeu
 			$dif_timer_stat_pause_Ratio = ($dif_timer_stat_pause / $dif_timer_stat * 100);ration temps de pause total
-			$GOLDMOYbyH = $GOLDInthepocket * 3600000 / $dif_timer_stat;calcule du gold à l'heure temps total
-			$GOLDMOYbyHgame = $GOLDInthepocket * 3600000 / $dif_timer_stat_game;calcule du gold à l'heure temp de jeu
+			$GOLDMOYbyH = $GOLDInthepocket * (3600000 / $dif_timer_stat);calcule du gold à l'heure temps total
+			$GOLDMOYbyHgame = $GOLDInthepocket * (3600000 / $dif_timer_stat_game);calcule du gold à l'heure temp de jeu
 			$LossGoldMoyH = (($GOLDMOYbyHgame - $GOLDMOYbyH) / $GOLDMOYbyHgame * 100);ratio de la perte d'or due à la pause
         EndIf
 
@@ -91,15 +91,15 @@ Func StatsDisplay()
 
 			$Xp_Total = $Xp_Total + $Xp_Run
 			$Xp_Moy_Run = $Xp_Total / ($Totalruns - 1)
-			$Xp_Moy_Hrs = $Xp_Total * 3600000 / $dif_timer_stat;on calcule l'xp/heure en temps total
-			$Xp_Moy_Hrsgame = $Xp_Total * 3600000 / $dif_timer_stat_game;on calcule l'xp/heure en temps de jeu
+			$Xp_Moy_Hrs = $Xp_Total * (3600000 / $dif_timer_stat);on calcule l'xp/heure en temps total
+			$Xp_Moy_Hrsgame = $Xp_Total * (3600000 / $dif_timer_stat_game);on calcule l'xp/heure en temps de jeu
 			$Xp_Moy_HrsPerte = ($Xp_Moy_Hrsgame - $Xp_Moy_Hrs);on calcule la perte due aux pauses
 			$Xp_Moy_HrsPerte_Ratio = ($Xp_Moy_HrsPerte / $Xp_Moy_Hrsgame * 100);ratio de la perte xp/heure due aux pauses
 			$NiveauParagon = GetAttributeSelf($Atrib_Alt_Level)
 			$ExperienceNextLevel = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
 
 			;calcul temps avant prochain niveau
-			$Xp_Moy_Sec = $Xp_Total * 1000 / $dif_timer_stat
+			$Xp_Moy_Sec = $Xp_Total * (1000 / $dif_timer_stat)
 			$time_Xp = Int($ExperienceNextLevel / $Xp_Moy_Sec) * 1000
 			$time_Xp = formatTime($time_Xp)
 
