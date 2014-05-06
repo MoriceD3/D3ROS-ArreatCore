@@ -65,14 +65,16 @@ Func UsePath(ByRef $path)
 		EndIf
 
 		If $EndSequenceOnBountyCompletion Then
-			If $Choix_Act_Run = -3 And IsQuestFinished($ActiveQuest) Then
-				MouseUp($MouseMoveClick)
-				_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
-				Sleep(1000)
-				Attack()
-				Sleep(1000)
-				Attack()
-				Return "endsequence()"
+			If $Choix_Act_Run = -3 Then
+				If IsQuestFinished($ActiveQuest) Then
+					MouseUp($MouseMoveClick)
+					_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
+					Sleep(1000)
+					Attack()
+					Sleep(1000)
+					Attack()
+					Return "endsequence()"
+				EndIf
 			EndIf
 		EndIf
 

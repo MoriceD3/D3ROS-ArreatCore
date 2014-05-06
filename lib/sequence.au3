@@ -22,7 +22,7 @@ Func GetActiveQuest()
 		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 
 		If $Quest_State = 1 And $Quest_ID <> 0x4C46D And StringInStr($BountyQuestIDs, $Quest_ID) Then
-			_Log("Active questID : " & $ActiveQuest)
+			_Log("Active questID : " & $Quest_ID)
 			Return $Quest_ID
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
@@ -32,6 +32,7 @@ EndFunc
 
 Func IsQuestFinished($QuestId)
 	If $QuestId = -1 Then
+		$ActiveQuest = GetActiveQuest()
 		Return False
 	EndIf
 
@@ -133,13 +134,15 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			Return $looking
 		EndIf
 		If $EndSequenceOnBountyCompletion Then
-			If $Choix_Act_Run = -3 And IsQuestFinished($ActiveQuest) Then
-				_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
-				Sleep(1000)
-				Attack()
-				Sleep(1000)
-				Attack()
-				Return "endsequence()"
+			If $Choix_Act_Run = -3 Then
+				If IsQuestFinished($ActiveQuest) Then
+					_log("Bounty completed : Waiting a little for loots then end sequence", $LOG_LEVEL_WARNING)
+					Sleep(1000)
+					Attack()
+					Sleep(1000)
+					Attack()
+					Return "endsequence()"
+				EndIf
 			EndIf
 		EndIf
 	Else
