@@ -96,7 +96,7 @@ endsave()
 418.65283203125, 406.396911621094, 0.173418015241623,1,25
 427.061798095703, 408.313720703125, 0.10000067949295,1,25
 sleep=5500
-InteractByActorName=Azmodan_BSS_soul
+InteractWithActor=Azmodan_BSS_soul
 sleep=1500
 closewindows()
 sleep=500

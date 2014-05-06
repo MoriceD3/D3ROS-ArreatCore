@@ -331,7 +331,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractByActorName=") Then
+			 ElseIf StringInStr($line , "InteractWithActor=") Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -540,7 +540,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractByActorName=") Then
+			 ElseIf StringInStr($line , "InteractWithActor=") Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -763,13 +763,13 @@ EndFunc   ;==>SequencerAddSleep
 
 Func SequencerAddInteractActor()
 	$area = GetLevelAreaId()
-	ConsoleWrite("Ajout d'un InteractByActorName : Valeur a définir dans la séquence ! " & @CRLF);
+	ConsoleWrite("Ajout d'un InteractWithActor : Valeur a définir dans la séquence ! " & @CRLF);
 	$file = FileOpen( @scriptDir & "\sequencer\" & $area & $nameSequenceTxt & ".txt", 1)
 	If $file = -1 Then
 		_log("Enabled to open file, Script will shutdown")
 		Exit
 	EndIf
-	FileWriteLine($file, "InteractByActorName=VALEURADEFINIR")
+	FileWriteLine($file, "InteractWithActor=VALEURADEFINIR")
 	FileClose($file)
 EndFunc   ;==>SequencerAddInteractActor
 

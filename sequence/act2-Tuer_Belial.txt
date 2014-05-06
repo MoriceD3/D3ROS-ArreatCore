@@ -164,7 +164,7 @@ specialml=Belial|a2dun_Cald_Belial_Room_A_Breakable_section_|a2dun_Cald_Belial_R
 804.469482421875, 795.482299804688, 0.100000753998756,1,25
 804.330139160156, 794.150756835938, 0.100000701844692,1,25
 sleep=5000
-InteractByActorName=Belial_BSS_soul
+InteractWithActor=Belial_BSS_soul
 sleep=3000
 closewindows()
 sleep=500

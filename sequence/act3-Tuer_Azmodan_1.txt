@@ -96,7 +96,7 @@ endsave()
 418.65283203125, 406.396911621094, 0.173418015241623,1,25
 427.061798095703, 408.313720703125, 0.10000067949295,1,25
 sleep=5500
-InteractByActorName=Azmodan_BSS_soul
+InteractWithActor=Azmodan_BSS_soul
 sleep=1500
 closewindows()
 sleep=500
@@ -117,7 +117,7 @@ sleep=1000
 endsave()
 usepath=false
 sleep=2000
-InteractByActorName=a3_rampart_guard_captain_Alt
+InteractWithActor=a3_rampart_guard_captain_Alt
 sleep=500
 closewindows()
 sleep=500
@@ -160,7 +160,7 @@ usepath=false
 133.980239868164, 102.186889648438, 25.1000022888184,1,25
 125.907043457031, 100.926078796387, 25.1000022888184,1,25
 sleep=500
-InteractByActorName=event47_BigPortal
+InteractWithActor=event47_BigPortal
 sleep=1000
 closeconfirm()
 sleep=3000

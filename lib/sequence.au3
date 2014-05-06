@@ -146,8 +146,8 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		If $arr_sequence[$index][1] = "sleep" Then
 			_log("Sleep : " & $arr_sequence[$index][2])
 			Sleep($arr_sequence[$index][2])
-		ElseIf $arr_sequence[$index][1] = "interactbyactorname" Then
-			_log("Start : InteractByActorName " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
+		ElseIf $arr_sequence[$index][1] = "InteractWithActor" Then
+			_log("Start : InteractWithActor " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
 			InteractByActorName($arr_sequence[$index][2])
 		ElseIf $arr_sequence[$index][1] = "InteractWithDoor" Then
 			_log("Start : InteractWithDoor " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
@@ -964,16 +964,16 @@ Func sequence($sequence_list)
 						EndIf
 					ElseIf StringInStr($line, "nobloc()", 2) Then ;nobloc detected
 						$noblocline = 1
-					ElseIf StringInStr($line, "interactbyactorname=", 2) Then ;InteractByActorName detected
-						$line = StringReplace($line, "interactbyactorname=", "", 0, 2)
+					ElseIf StringInStr($line, "InteractWithActor=", 2) Then ;InteractWithActor detected
+						$line = StringReplace($line, "InteractWithActor=", "", 0, 2)
 						If $sequence_save = 0 Then
 							InteractByActorName($line)
-							_log("Enclenchement d'un interact direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							_log("Enclenchement d'un InteractWithActor direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
-							_log("Mise en array d'un interact() line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							_log("Mise en array d'un InteractWithActor() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
 							$array_sequence[UBound($array_sequence) - 1][0] = 1
-							$array_sequence[UBound($array_sequence) - 1][1] = "interactbyactorname"
+							$array_sequence[UBound($array_sequence) - 1][1] = "InteractWithActor"
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 						EndIf
 					ElseIf StringInStr($line, "InteractWithDoor=", 2) Then ;InteractWithDoor
@@ -1194,7 +1194,7 @@ EndFunc   ;==> InteractWithPortal
 ; -> sleep=                     (definition d'un sleep)
 ; -> offsetlist()               (rafraichissement de la memoire)
 ; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appeler qu'au dessus d'un takewp ou d'un _townportal())
-; -> interactbyactorname=       (Interagit avec un npc / porte / objet)
+; -> InteractWithActor=       (Interagit avec un npc / porte / objet)
 ; -> InteractWithDoor=          (Interagit avec porte / grille )
 ; -> InteractWithPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
 ; -> buffinit()                 (Force l'initialisation des buffs)

@@ -3,7 +3,7 @@ autobuff=True
 attackrange=40 
 TakeWP=13
 Sleep=2000
-InteractByActorName=Highlands_Manor_Cain_Door
+InteractWithActor=Highlands_Manor_Cain_Door
 Sleep=500
 369.194946289063, 351.767211914063, 12.6371154785156,1,25
 372.752075195313, 377.405883789063, 10.710955619812,1,25
@@ -106,8 +106,8 @@ usepath=false
 1080.36364746094, 3547.59155273438, 78.0912628173828,1,25
 1079.20263671875, 3562.79296875, 78.0912628173828,1,25
 Sleep=1000
-InteractByActorName=TrOut_Highlands_Manor_Front_Gate
-InteractByActorName=TrOut_Highlands_Manor_Front_Gate
+InteractWithActor=TrOut_Highlands_Manor_Front_Gate
+InteractWithActor=TrOut_Highlands_Manor_Front_Gate
 Sleep=500
 1083.20263671875, 3611.77075195313, 83.8070755004883,1,25
 1082.11401367188, 3642.07446289063, 83.8070831298828,1,25

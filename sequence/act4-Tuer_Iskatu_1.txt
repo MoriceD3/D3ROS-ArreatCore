@@ -15,7 +15,7 @@ closewindows()
 sleep=500
 closewindows()
 sleep=3000
-InteractByActorName=Tyrael
+InteractWithActor=Tyrael
 sleep=500
 closewindows()
 sleep=500
@@ -122,7 +122,7 @@ sleep=500
 345.292785644531, 327.720458984375, 0.100000448524952,1,25
 355.169738769531, 323.151672363281, 0.450847029685974,1,25
 sleep=1500
-InteractByActorName=Fate
+InteractWithActor=Fate
 sleep=1000
 closewindows()
 sleep=500

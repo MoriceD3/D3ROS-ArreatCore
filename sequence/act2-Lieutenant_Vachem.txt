@@ -21,7 +21,7 @@ TakeWP=3
 1314.04345703125, 358.329193115234, 161.841918945313,1,25
 1319.23498535156, 376.445922851563, 161.841827392578,1,25
 sleep=500
-InteractByActorName=DavydImpostor
+InteractWithActor=DavydImpostor
 sleep=500
 closewindows()
 sleep=500
@@ -63,7 +63,7 @@ sleep=3500
 159.372360229492, 168.432647705078, 0.100000008940697,1,25
 163.68798828125, 170.214721679688, 0.100000001490116,1,25
 sleep=500
-InteractByActorName=caOut_Cage
+InteractWithActor=caOut_Cage
 sleep=5000
 closewindows()
 sleep=500
@@ -91,7 +91,7 @@ usepath=false
 1322.31481933594, 368.206726074219, 161.841735839844,1,25
 1322.359375, 383.155181884766, 161.841720581055,1,25
 sleep=1500
-InteractByActorName=Davyd
+InteractWithActor=Davyd
 sleep=500
 closewindows()
 sleep=500

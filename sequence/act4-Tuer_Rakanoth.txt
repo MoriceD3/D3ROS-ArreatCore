@@ -177,9 +177,9 @@ sleep=500
 360.874633789063, 346.282135009766, 0.114986576139927,1,25
 361.450439453125, 322.829528808594, 0.114988014101982,1,25
 sleep=2000
-InteractByActorName=Hope
+InteractWithActor=Hope
 sleep=7000
-InteractByActorName=Hope
+InteractWithActor=Hope
 sleep=500
 closewindows()
 sleep=500
