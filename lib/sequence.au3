@@ -1110,18 +1110,17 @@ Func InteractWithDoor($NameDoor, $dist = 30)
 		While iterateObjectsList($index, $offset, $count, $item)
 			If StringInStr($item[1], $NameDoor) And $item[9] < $dist Then
 				_log("InteractWithDoor : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
-				While getDistance($item[2], $item[3], $item[4]) > 8 And $maxtry <= 15
+				While getDistance($item[2], $item[3], $item[4]) > 15 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
 					MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 					$maxtry += 1
 					_log('InteractWithDoor : Move click x : ' & $Coords[0] & " y : " & $Coords[1], $LOG_LEVEL_VERBOSE)
 					Sleep(450)
 				WEnd
-				Sleep(450)
 				Interact($item[2], $item[3], $item[4])
 				; TODO : Check gizmo state for open door ?
 				$foundobject = 1
-				; Sleep(100)
+				Sleep(450)
 				ExitLoop
 			EndIf
 		WEnd
