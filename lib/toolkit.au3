@@ -3377,6 +3377,12 @@ Func Take_ShrineOrWell($item)
 		Interact($objpos[4], $objpos[5], $objpos[6])
 		Sleep(10)
 	WEnd
+
+	If StringInStr($item[1], "CursedShrine") Then
+		_log("Cursed Shrine event : Waiting 2 s")
+		Sleep(2000)
+	EndIf
+
 	_log("Shrine/Well taken : " & $item[1], $LOG_LEVEL_VERBOSE)
 	$CheckTakeShrineTaken += 1 ;on compte les Shrine qu'on prend
 	Return 1
