@@ -1,19 +1,19 @@
 TakeWPadv=41
 MonsterList=crowd_angelDemonImpact_angelTrail|crowd_coreEliteDemon_podRocket_near|crowd_angelDemonImpact_angelTrail|crowd_angelDemonImpact_angelTrail_thicker|crowd_demonAttack_battle|BileCrawler_A|a4dun_spire_tealFall|MastaBlasta_Rider_A|demonFlyer_C|gibClusters_frost_humanoid|gibClusters_frost_humanoid_fat|monsterAffix_Vortex_model|Succubus_B|gibClusters_fire_humanoid|crowd_coreEliteDemon_podRocket_|BigRed_death_skeleton|CoreEliteDemon_A|BigRed_A|CoreEliteDemon_A_Unique_01|BigRed_A_Unique_01|a4dun_Garden_Corruption_Monster
-specialML=demonFlyer_C_Challenge
+specialML=demonFlyer_C_Challenge|Aspect_Destruction
 BanList=common_angel
 DecorList=_Props_Barrel_A|_Props_Barrel_C|_Props_Barrel_B|_spire_AngelCorpse_Barrel_B|a4dun_spire_AngelCorpse_Barrel_C|crowd_commonAngel_falling|a4dun_spire_barrel_C
 AutoBuff=True
 attackrange=40
 usepath=false
 sleep=500
-873.784790039063,1114.03247070313,-14.9000015258789, 1, 25
-850.651672363281,1101.10656738281,-14.9000015258789, 1, 25
-841.415954589844,1120.55395507813,-14.9000015258789, 1, 25
-827.746520996094,1136.24877929688,-14.9000005722046, 1, 25
-805.86279296875,1136.091796875,-14.9000015258789, 1, 25
-778.59521484375,1122.60864257813,-14.9000005722046, 1, 25
-752.7041015625,1096.46594238281,-14.9000005722046, 1, 25
+879.955383300781, 1160.30908203125, -14.9000005722046,1,25
+849.477355957031, 1148.79724121094, -14.8999996185303,1,25
+824.476379394531, 1138.02587890625, -14.8999996185303,1,25
+804.025451660156, 1136.24597167969, -14.8999996185303,1,25
+787.8232421875, 1127.775390625, -14.9000005722046,1,25
+768.876342773438, 1110.30346679688, -14.8999996185303,1,25
+749.363952636719, 1090.96618652344, -14.9000015258789,1,25
 744.667541503906,1079.32495117188,-14.9000005722046, 1, 25
 746.32861328125,1076.17504882813,-14.9000005722046, 1, 25
 749.677490234375,1071.98779296875,-14.8762874603271, 1, 25
