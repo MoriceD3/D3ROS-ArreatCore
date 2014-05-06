@@ -59,7 +59,6 @@ sleep=500
 181.943405151367, 723.930114746094, -47.8554992675781,1,25
 endsave()
 offsetlist()
-sleep=500
 InteractWithPortal=Boss_Portal_Azmodan
 sleep=1000
 offsetlist()

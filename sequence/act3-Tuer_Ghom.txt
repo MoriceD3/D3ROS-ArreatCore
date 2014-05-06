@@ -5,7 +5,7 @@ attackrange=45
 revive=false
 usepath=false
 TakeWP=3
-sleep=1500
+sleep=750
 InteractWithPortal=Boss_Portal_Gluttony
 sleep=2500
 offsetlist()
