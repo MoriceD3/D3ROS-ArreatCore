@@ -1,5 +1,18 @@
 Changelog : 
 
+- Version 1.6 : 06/05/2014
+
+- Modifications de certaines commandes de séquences : 
+* suppression du positionrange=
+* ifposition prends le range en 4ieme arguement : ifposition=x,y,z,range:....
+* Renommage interactbyactorname par InteractWithActor
+* Passage de attackrange / loadsequence / endsequence / endgame / terminate / ifposition en mode blocant
+- Correction de nombreuses séquences
+- Ajout de séquences Acte 4 (Modification Settings.ini)
+- Ajout de séquences diverses et de mapping de bounty
+- Correction de bugs divers
+- Optimisations diverses
+
 - Version 1.5 : 25/04/2014
 
 - Amélioration et ajouts de nombreuses fonctions dans sequencer et sequenceChecker

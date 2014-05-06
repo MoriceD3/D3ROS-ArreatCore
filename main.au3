@@ -2,7 +2,7 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=lib\ico\icon.ico
 #AutoIt3Wrapper_Compression=0
-#AutoIt3Wrapper_Res_Fileversion=1.5.1.0
+#AutoIt3Wrapper_Res_Fileversion=1.6.0.0
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
