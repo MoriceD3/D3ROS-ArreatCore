@@ -2952,6 +2952,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 				While Not offsetlist()
 					Sleep(40)
 				WEnd
+				Sleep(1000)
 				$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
 				_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
  				Return True
