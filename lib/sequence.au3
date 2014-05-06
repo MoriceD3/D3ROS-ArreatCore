@@ -694,6 +694,113 @@ Func sequence($sequence_list)
 						$noblocline = 0
 						$line = ""
 					EndIf
+				ElseIf StringInStr($line, "safeportback()", 2) Then; safeportback() detected
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						SafePortBack()
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportstart() detected
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						Sleep(500)
+						buffinit() ; on Buff avant de prendre le portal
+						SafePortStart()
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr(StringLeft($line,14), "loadsequence=", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$end_sequence = True
+						$line = StringReplace($line, "loadsequence=", "")
+						_log("Lancement de la sequence : " & $line & " et arrêt de la séquence en cours")
+						Sequence($line)
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr(StringLeft($line,12), "ifposition=", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						_log("Testing current position with range : " & $PositionRange)
+						$pos = GetCurrentPos()
+						$line = StringReplace($line, "ifposition=", "", 0, 2)
+						$temp = StringSplit($line, ":", 2)
+						$checkpos = StringSplit($temp[0], ",", 2)
+						If (Abs($pos[0] - $checkpos[0]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) Then
+							_log("Position found ! ", $LOG_LEVEL_VERBOSE)
+							If StringInStr($temp[1], "loadsequence=", 2) Then
+								$end_sequence = True
+								$temp = StringReplace($temp[1], "loadsequence=", "")
+								_log("[If] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
+								Sequence($temp)
+							ElseIf StringInStr($temp[1], "endsequence()", 2) Then
+								_log("[If] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+							ElseIf StringInStr($temp[1], "endgame()", 2) Then
+								_log("[If] End game detected. Stopping current run!.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+								$end_game = True
+							Else
+								_log("Invalid command found for ifposition")
+							EndIf
+						Else
+							_log("Position not found !", $LOG_LEVEL_WARNING)
+						EndIf
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$line = StringReplace($line, "attackrange=", "", 0, 2)
+						_log("Modification de l'attackRange line : " & $i + 1, $LOG_LEVEL_DEBUG)
+						attackRange($line)
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr(StringLeft($line,12), "terminate()", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						_log("Terminate detected. Ending script !", $LOG_LEVEL_ERROR)
+						Terminate()
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr(StringLeft($line,10), "endgame()", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$end_sequence = True
+						$end_game = True
+						_log("End game detected. Stopping current run !", $LOG_LEVEL_WARNING)
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
+				ElseIf StringInStr(StringLeft($line,14), "endsequence()", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$end_sequence = True
+						_log("End sequence detected. Stopping current sequence file", $LOG_LEVEL_WARNING)
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
 				ElseIf StringInStr($line, "endsave()", 2) Then; endsave() detected
 					If SendSequence($array_sequence) Then
 						$array_sequence = ArrayInit($array_sequence)
@@ -746,12 +853,6 @@ Func sequence($sequence_list)
 					$line = StringReplace($line, "maxgamelength=", "", 0, 2)
 					MaxGameLength($line)
 					_log("Enclenchement d'un MaxGameLength() Line : " & $i + 1, $LOG_LEVEL_DEBUG)
-					$line = ""
-					$definition = 1
-				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
-					$line = StringReplace($line, "attackrange=", "", 0, 2)
-					_log("Detection de la modification de l'attackRange line : " & $i + 1, $LOG_LEVEL_DEBUG)
-					attackRange($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "autobuff=", 2) Then
@@ -859,7 +960,7 @@ Func sequence($sequence_list)
 							While Not offsetlist()
 								Sleep(40)
 							WEnd
-							_log("Enclecnhement d'un offsetlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
+							_log("Enclenchement d'un offsetlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
 							_log("Mise en array d'un offsetlist line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
@@ -867,55 +968,6 @@ Func sequence($sequence_list)
 							$array_sequence[UBound($array_sequence) - 1][2] = $line
 							$array_sequence[UBound($array_sequence) - 1][1] = "offsetlist"
 						EndIf
-					ElseIf StringInStr($line, "ifposition=", 2) Then; ifposition detected
-						_log("Testing current position with range : " & $PositionRange)
-						$pos = GetCurrentPos()
-						$line = StringReplace($line, "ifposition=", "", 0, 2)
-						$temp = StringSplit($line, ":", 2)
-						$checkpos = StringSplit($temp[0], ",", 2)
-						If (Abs($pos[0] - $checkpos[0]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) Then
-							_log("Position found ! ", $LOG_LEVEL_VERBOSE)
-							If StringInStr($temp[1], "loadsequence=", 2) Then
-								$end_sequence = True
-								$temp = StringReplace($temp[1], "loadsequence=", "")
-								_log("[If] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
-								Sequence($temp)
-							ElseIf StringInStr($temp[1], "endsequence()", 2) Then
-								_log("[If] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
-								$end_sequence = True
-							ElseIf StringInStr($temp[1], "endgame()", 2) Then
-								_log("[If] End game detected. Stopping current run!.", $LOG_LEVEL_WARNING)
-								$end_sequence = True
-								$end_game = True
-							Else
-								_log("Invalid command found for ifposition")
-							EndIf
-						Else
-							_log("Position not found !", $LOG_LEVEL_WARNING)
-						EndIf
-					ElseIf StringInStr($line, "endsequence()", 2) Then
-						$end_sequence = True
-						_log("End sequence detected. Stopping current sequence file", $LOG_LEVEL_WARNING)
-					ElseIf StringInStr($line, "endgame()", 2) Then
-						$end_sequence = True
-						$end_game = True
-						_log("End game detected. Stopping current run !", $LOG_LEVEL_WARNING)
-					ElseIf StringInStr($line, "terminate()", 2) Then
-						_log("Terminate detected. Ending script !", $LOG_LEVEL_ERROR)
-						Terminate()
-					ElseIf StringInStr($line, "loadsequence=", 2) Then
-						$end_sequence = True
-						$line = StringReplace($line, "loadsequence=", "")
-						_log("Lancement de la sequence : " & $line & " et arrêt de la séquence en cours")
-						Sequence($line)
-					ElseIf StringInStr($line, "safeportback()", 2) Then; safeportback() detected
-						SafePortBack()
-					ElseIf StringInStr($line, "safeportstart()", 2) Then; safeportstart() detected
-						Sleep(500)
-						buffinit() ; on Buff avant de prendre le portal
-						_Log("Enclenchement auto du buffinit()", $LOG_LEVEL_DEBUG)
-						Sleep(500)
-						SafePortStart()
 					ElseIf StringInStr($line, "nobloc()", 2) Then ;nobloc detected
 						$noblocline = 1
 					ElseIf StringInStr($line, "interactbyactorname=", 2) Then ;InteractByActorName detected
@@ -1061,17 +1113,18 @@ Func InteractWithDoor($NameDoor, $dist = 30)
 		While iterateObjectsList($index, $offset, $count, $item)
 			If StringInStr($item[1], $NameDoor) And $item[9] < $dist Then
 				_log("InteractWithDoor : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
-				While getDistance($item[2], $item[3], $item[4]) > 15 And $maxtry <= 15
+				While getDistance($item[2], $item[3], $item[4]) > 8 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
 					MouseClick($MouseMoveClick, $Coords[0], $Coords[1], 1, 10)
 					$maxtry += 1
-					_log('InteractWithDoor : click x : ' & $Coords[0] & " y : " & $Coords[1], $LOG_LEVEL_VERBOSE)
-					Sleep(800)
+					_log('InteractWithDoor : Move click x : ' & $Coords[0] & " y : " & $Coords[1], $LOG_LEVEL_VERBOSE)
+					Sleep(450)
 				WEnd
-				Sleep(800)
+				Sleep(450)
 				Interact($item[2], $item[3], $item[4])
+				; TODO : Check gizmo state for open door ?
 				$foundobject = 1
-				Sleep(100)
+				; Sleep(100)
 				ExitLoop
 			EndIf
 		WEnd
@@ -1084,50 +1137,51 @@ Func InteractWithPortal($NamePortal)
 	Local $Curentarea = GetLevelAreaId()
 	Local $Newarea = $Curentarea
 	Local $PortalTry = 0
-	Local $NewAreaOk = 0
 
-	While $NewAreaOk = 0 And $PortalTry < 5
-	   _Log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
-	   InteractByActorName($NamePortal)
+	While $PortalTry < 5
+		_Log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
+		InteractByActorName($NamePortal)
 
-	   Local $areatry = 0
-	   While $Newarea = $Curentarea And $areatry <= 10
-		  $Newarea = GetLevelAreaId()
-		  Sleep(500)
-		  $areatry += 1
-	   WEnd
+		Local $areatry = 0
+		While $Newarea = $Curentarea And $areatry <= 20
+			$Newarea = GetLevelAreaId()
+			Sleep(250)
+			$areatry += 1
+		WEnd
 
-	   If $Newarea <> $Curentarea Then
-		  $NewAreaOk = 1
-	   Else
-		  $PortalTry += 1
-	   EndIf
-
-    WEnd
+		If $Newarea <> $Curentarea Then
+			ExitLoop
+		Else
+			$PortalTry += 1
+		EndIf
+	WEnd
 
 	If $Newarea <> $Curentarea Then
-	   _log('Succesfully Portal Try', $LOG_LEVEL_VERBOSE)
-    Else
-	   _log('We failed Portal Try', $LOG_LEVEL_ERROR)
-	   $GameFailed = 2
-    EndIf
+		_log('Succesfully Portal Try', $LOG_LEVEL_VERBOSE)
+	Else
+		_log('We failed Portal Try', $LOG_LEVEL_ERROR)
+		$GameFailed = 2
+	EndIf
 EndFunc   ;==> InteractWithPortal
 
 ;***************** CMD ************
 ;
+; Toute ligne contenant // est desactivé, les lignes vierge sont detectées parfois comme étant des lignes erronée et donc reporté dans les logs !
 ;
-; Toute ligne contenant // est desactivé, les lignes vierge sont detecté parfois comme étant des lignes erronée et donc reporté dans les logs !
-;
-;
-; CMD BLOQUANTE                 (les cmd dite bloquante, force l'envoie de l'array, elles definissent donc un point de sauvegarde pour le code si revive on)
-; -> _townportal()              (force un tp en ville, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
-; -> takewp=X            		(prend un teleporteur mode campagne, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
-; -> takewpadv=X            	(prend un teleporteur mode aventure, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
+; CMD BLOQUANTE                 (les cmd dite bloquantes, forcent l'envoi de l'array, elles definissent donc un point de sauvegarde pour le code si revive on)
+; -> _townportal()              (force un tp en ville, si précédée de nobloc() ne force pas l'envoi de l'array)
+; -> takewp=X            		(prend un teleporteur mode campagne, si précédée de nobloc() ne force pas l'envoi de l'array)
+; -> takewpadv=X            	(prend un teleporteur mode aventure, si précédée de nobloc() ne force pas l'envoi de l'array)
 ; -> endsave()                  (force l'envoie de l'array, et donc definit un point de sauvegarde si revive on)
-
+; -> attackrange=				(definition d'un nouvel attackrange)
+; -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
+; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
+; -> endgame()					(Arrête la game en cours)
+; -> terminate()				(Arrête le script !)
+; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) (Commande supportée : loadsequence=xxx / endsequence() / endgame() )
+;
 ; CMD DEFINITION
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
-; -> attackrange=				(definition d'un nouvel attackrange)
 ; -> positionrange=				(definition de la précision en yard du ifposition)
 ; -> monsterlist=               (definition des monstres à tuer)
 ; -> specialml=					(definition de la special monsterlist)
@@ -1145,24 +1199,18 @@ EndFunc   ;==> InteractWithPortal
 ; CMD PASSIVE
 ; -> sleep=                     (definition d'un sleep)
 ; -> offsetlist()               (rafraichissement de la memoire)
-; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appelé uniquement au dessus d'un takewp ou d'un _townportal())
+; -> nobloc()                   (Rend la prochaine commande bloquante passive, cette fonction n'est a appeler qu'au dessus d'un takewp ou d'un _townportal())
 ; -> interactbyactorname=       (Interagit avec un npc / porte / objet)
 ; -> InteractWithDoor=          (Interagit avec porte / grille )
 ; -> InteractWithPortal= 		(Interagit avec un portail : Attention détection de changement de zone ne pas utiliser pour une simple porte)
 ; -> buffinit()                 (Force l'initialisation des buffs)
 ; -> unbuff()                   (force l'unbuff)
 ; -> send=                      (Envoie une Key)
-; -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
-; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
-; -> endgame()					(Arrête la game en cours)
-; -> terminate()				(Arrête le script !)
-; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) (Commande supportée : loadsequence=xxx / endsequence() / endgame() )
 ; -> closewindows()			 	(Ferme toutes les fenêtres ouvertes)
 ; -> closeconfirm()				(Click ok dans les dialogues de confirmation (Par Ex : Annulation de vidéo))
 ; -> x, y, z, w, y              (movetopos, composé de 5 argument)
 ;
 ; L'array renvoyé par la fonction SendSequence() (array[X][6])
-;
 ;
 ; array[x][0] -> 1 ou 2 (Si 1, l'enregistrement suivant contient une commande, si 2, les autres "case" contiennent )
 ; array[x][1] -> Si commande, contient le nom de la commande, les cases suivante contiennent la/les valeurs associé

@@ -1,15 +1,20 @@
- Toute ligne contenant // est desactivé, les lignes vierge sont detecté parfois comme étant des lignes erronée et donc reporté dans les logs !
+ Toute ligne contenant // est desactivé, les lignes vierge sont detectées parfois comme étant des lignes erronée et donc reporté dans les logs !
 
 
- CMD BLOQUANTE                 	(les cmd dite bloquante, force l'envoie de l'array, elles definissent donc un point de sauvegarde pour le code si revive on)
- -> _townportal()              	(force un tp en ville, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
- -> takewp=X            		(prend un teleporteur mode campagne, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
- -> takewpadv=X            		(prend un teleporteur mode aventure, commande bloquante, si pas précédé de nobloc(), cette commande force l'envoie de l'array)
+ CMD BLOQUANTE                 	(les cmd dite bloquantes, forcent l'envoi de l'array, elles definissent donc un point de sauvegarde pour le code si revive on)
+ -> _townportal()              	(force un tp en ville, si précédée de nobloc() ne force pas l'envoi de l'array)
+ -> takewp=X            		(prend un teleporteur mode campagne, si précédée de nobloc() ne force pas l'envoi de l'array)
+ -> takewpadv=X            		(prend un teleporteur mode aventure, si précédée de nobloc() ne force pas l'envoi de l'array)
  -> endsave()                  	(force l'envoie de l'array, et donc definit un point de sauvegarde si revive on)
-
+ -> attackrange=				(definition d'un nouvel attackrange)
+ -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
+ -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
+ -> endgame()					(Arrête la game en cours)
+ -> terminate()					(Arrête le script !)
+ -> ifposition=					(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) 
+ 								(Commandes supportées : loadsequence=xxx / endsequence() / endgame() )
  CMD DEFINITION
  -> maxgamelength=				(definition d'un nouveau maxgamelength)
- -> attackrange=				(definition d'un nouvel attackrange)
  -> positionrange=				(definition de la précision en yard du ifposition)
  -> monsterlist=               	(definition des monstres à tuer)
  -> specialml=					(definition de la special monsterlist)
@@ -34,12 +39,6 @@
  -> buffinit()                 	(Force l'initialisation des buffs)
  -> unbuff()                   	(force l'unbuff)
  -> send=                      	(Envoie une Key)
- -> loadsequence=				(Arrête la séquence en cours et charge la séquence indiquée)
- -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
- -> endgame()					(Arrête la game en cours)
- -> terminate()					(Arrête le script !)
- -> ifposition=					(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) 
- 								(Commandes supportées : loadsequence=xxx / endsequence() / endgame() )
  -> closewindows()				(Ferme toutes les fenêtres ouvertes)
  -> closeconfirm()	       		(Click ok dans les dialogues de confirmation (Par Ex : Annulation de vidéo))
  -> x, y, z, a, d              	(movetopos, composé de 5 argument : a = 1 pour attaquer en se déplaçant, d = distance)
