@@ -21,7 +21,7 @@ Func GetActiveQuest()
 		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
 		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 
-		If $Quest_State = 1 And $Quest_ID <> 0x4C46D And StringInStr($BountyQuestIDs, $Quest_ID) Then
+		If $Quest_State = 1 And $Quest_ID <> 0x4C46D And StringInStr($BountyQuestIDs, $Quest_ID, 2) Then
 			_Log("Active questID : " & $Quest_ID)
 			Return $Quest_ID
 		EndIf
@@ -92,7 +92,7 @@ Func GetBountySequences($Table_BountyAct)
 			Local $pattern = $Quest_ID & "#[\d\w]*#(\d)#([\w_]*)#(.*)"
 			$asResult = StringRegExp($snoSequencelist, $pattern, 1)
 			If Not @error Then
-				If StringInStr($acts, $asResult[0]) Then
+				If StringInStr($acts, $asResult[0], 2) Then
 					If $asResult[2] <> "" And $asResult[2] <> "None" Then
 						If $SeqList = "" Then
 							$SeqList = $asResult[2]
@@ -509,7 +509,7 @@ Func LookForObjects()
 				If $item[9] > $Table_SearchObject[$z][1] Then
 					ContinueLoop
 				EndIf
-				If StringInStr($item[1], $Table_SearchObject[$z][0]) Then
+				If StringInStr($item[1], $Table_SearchObject[$z][0], 2) Then
 					Return $Table_SearchObject[$z][2]
 				EndIf
 			Next
@@ -1108,7 +1108,7 @@ Func InteractWithDoor($NameDoor, $dist = 30)
 	startIterateObjectsList($index, $offset, $count)
 	If _playerdead() = False Then
 		While iterateObjectsList($index, $offset, $count, $item)
-			If StringInStr($item[1], $NameDoor) And $item[9] < $dist Then
+			If StringInStr($item[1], $NameDoor, 2) And $item[9] < $dist Then
 				_log("InteractWithDoor : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
 				While getDistance($item[2], $item[3], $item[4]) > 15 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])

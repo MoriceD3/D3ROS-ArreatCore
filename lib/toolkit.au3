@@ -76,7 +76,7 @@ Func FindActor($name, $maxRange = 400)
 	startIterateObjectsList($index, $offset, $count)
 	_log("FindActor : " & $name & " in " & $count & " item(s)", $LOG_LEVEL_DEBUG)
 	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], $name) And $item[9] < $maxRange Then
+		If StringInStr($item[1], $name, 2) And $item[9] < $maxRange Then
 			Return True
 		EndIf
 	WEnd
@@ -387,15 +387,15 @@ Func GetAct()
 	If @error == 0 Then
 		Global $MyArea = $asResult[0]
 
-		If StringInStr($MyArea, "a1") Then
+		If StringInStr($MyArea, "a1", 2) Then
 			$Act = 1
-		ElseIf StringInStr($MyArea, "a2") Then
+		ElseIf StringInStr($MyArea, "a2", 2) Then
 			$Act = 2
-		ElseIf StringInStr($MyArea, "a3") Then
+		ElseIf StringInStr($MyArea, "a3", 2) Then
 			$Act = 3
-		ElseIf StringInStr($MyArea, "a4") Then
+		ElseIf StringInStr($MyArea, "a4", 2) Then
 			$Act = 4
-		ElseIf StringInStr($MyArea, "a5") Then
+		ElseIf StringInStr($MyArea, "a5", 2) Then
 			$Act = 5
 		EndIf
 
@@ -840,7 +840,7 @@ EndFunc   ;==>FilterBackpack
 
 
 Func _filter2attrib($CurrentIdAttrib, $filter2read)
-	If StringInStr($filter2read, "DPS") Then
+	If StringInStr($filter2read, "DPS", 2) Then
 		;_log("Handling special attrib : "& $filter2read)
 		$result = GetAttribute($CurrentIdAttrib, $Atrib_Damage_Weapon_Average_Total_All) * GetAttribute($CurrentIdAttrib, $Atrib_Attacks_Per_Second_Item_Total)
 		;_log("the value you search is : "& $result)
@@ -1299,7 +1299,7 @@ Func InteractByActorName($a_name, $dist = 300)
 	startIterateObjectsList($index, $offset, $count)
 	If _playerdead() = False Then
 		While iterateObjectsList($index, $offset, $count, $item)
-			If StringInStr($item[1], $a_name) And $item[9] < $dist Then
+			If StringInStr($item[1], $a_name, 2) And $item[9] < $dist Then
 				_log("InteractByActorName : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)
 				While getDistance($item[2], $item[3], $item[4]) > 40 And $maxtry <= 15
 					$Coords = FromD3toScreenCoords($item[2], $item[3], $item[4])
@@ -1737,7 +1737,7 @@ Func Is_Shrine(ByRef $item)
 			Return False
 		Case $item[9] > $range_shrine
 			Return False
-		Case (StringInStr($item[1], "shrine") Or StringInStr($item[1], "PoolOfReflection") Or StringInStr($item[1], "Purification_Well_"))
+		Case (StringInStr($item[1], "shrine", 2) Or StringInStr($item[1], "PoolOfReflection", 2) Or StringInStr($item[1], "Purification_Well_", 2))
 			Return True
 		Case Else
 			Return False
@@ -1784,7 +1784,7 @@ Func Is_Loot(ByRef $item)
 			Return False
 		Case ($item[5] = 2 And $item[6] = -1)
 			Return True
-		Case (StringInStr($item[1], "unique") And (StringInStr($item[1], "orb") Or StringInStr($item[1], "Spear")))
+		Case (StringInStr($item[1], "unique", 2) And (StringInStr($item[1], "orb", 2) Or StringInStr($item[1], "Spear", 2)))
 			Return True
 		Case Else
 			Return False
@@ -1797,13 +1797,13 @@ Func Is_Interact(ByRef $item, $IgnoreList)
 			Return False
 		Case ($item[9] > $g_range And $item[9] > $a_range) ; Trop loin
 			Return False
-		Case (StringInStr($IgnoreList, $item[8]) <> 0) ; Objet ignoré
+		Case (StringInStr($IgnoreList, $item[8], 2) <> 0) ; Objet ignoré
 			Return False
 		Case IsBannedActor($item[1]) ; Objet banni
 			Return False
 		Case IsItemStartInTable($Table_BanItemStartName, $item[1]) ; Banned known items
 			Return False
-		Case (StringInStr($item[1], "_projectile") <> 0) ; Projectile
+		Case (StringInStr($item[1], "_projectile", 2) <> 0) ; Projectile
 			Return False
 		Case Else
 			Return True
@@ -1836,7 +1836,7 @@ Func Is_Health(ByRef $item)
 	Select
 		Case $item[9] > $range_health
 			Return False
-		Case (StringInStr($item[1], "HealthWell") Or StringInStr($item[1], "HealthGlobe"))
+		Case (StringInStr($item[1], "HealthWell", 2) Or StringInStr($item[1], "HealthGlobe", 2))
 			Return True
 		Case Else
 			Return False
@@ -1847,7 +1847,7 @@ Func Is_Power(ByRef $item)
 	Select
 		Case $item[9] > $range_power
 			Return False
-		Case StringInStr($item[1], "PowerGlobe")
+		Case StringInStr($item[1], "PowerGlobe", 2)
 			Return True
 		Case Else
 			Return False
@@ -1874,7 +1874,7 @@ Func handle_Health(ByRef $item)
 		$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 		$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
-			If StringInStr($item[1], "HealthWell") Then
+			If StringInStr($item[1], "HealthWell", 2) Then
 				$result = Take_ShrineOrWell($item)
 			Else
 				$result = Take_Globe($item)
@@ -1895,7 +1895,7 @@ Func handle_Coffre(ByRef $item)
 	$CurrentACD = GetACDOffsetByACDGUID($item[0]); ###########
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr"); ###########
 
-	If StringInStr($item[1],"x1_Global_Chest_CursedChest") then
+	If StringInStr($item[1],"x1_Global_Chest_CursedChest", 2) then
 		_log("Handling cursed chest")
 		If GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 Then
 			$result = Take_ShrineOrWell($item)
@@ -2344,7 +2344,7 @@ Func Grabit($name, $offset)
 
 	Dim $pos = UpdateObjectsPos($offset)
 
-	If (StringInStr($name, "gold") Or StringInStr($name, "_Console")) Then
+	If (StringInStr($name, "gold", 2) Or StringInStr($name, "_Console", 2)) Then
 		$Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
 		$CoordVerif[0] = $pos[4]
 		$CoordVerif[1] = $pos[5]
@@ -2388,7 +2388,7 @@ Func Grabit($name, $offset)
 			$moveTimer = TimerInit()
 		EndIf
 
-		If (StringInStr($name, "gold") Or StringInStr($name, "_Console")) Then
+		If (StringInStr($name, "gold", 2) Or StringInStr($name, "_Console", 2)) Then
 			$Coords = FromD3toScreenCoords($pos[4], $pos[5], $pos[6])
 			;Check if the coord X y z havn't changed.
 			If ($CoordVerif[0] <> $pos[4] Or $CoordVerif[1] <> $pos[5] Or $CoordVerif[2] <> $pos[6]) Then
@@ -2554,7 +2554,7 @@ Func checkForGlobes()
 				If ($item[9] > $range_health) Or (GetLifep() > $LifeForHealth / 100) Then
 					ContinueLoop
 				EndIf
-				If (StringInStr($item[1], "HealthGlobe") Or StringInStr($item[1], "PowerGlobe")) Then
+				If (StringInStr($item[1], "HealthGlobe", 2) Or StringInStr($item[1], "PowerGlobe", 2)) Then
 					_log("Globe found !", $LOG_LEVEL_WARNING)
 					$CurrentACD = GetACDOffsetByACDGUID($item[0])
 					$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
@@ -2569,7 +2569,7 @@ Func checkForGlobes()
 								_log('Globe taken (range=' & $pickupRadius & ')', $LOG_LEVEL_VERBOSE)
 								Return
 							EndIf
-							If TimerDiff($timeForGlobe) > 1700 Then
+							If TimerDiff($timeForGlobe) > 1200 Then
 								_log('Fake globe or timeout', $LOG_LEVEL_WARNING)
 								BanActor($item[1])
 								Return
@@ -3378,7 +3378,7 @@ Func Take_ShrineOrWell($item)
 		Sleep(10)
 	WEnd
 
-	If StringInStr($item[1], "CursedShrine") Then
+	If StringInStr($item[1], "CursedShrine", 2) Then
 		_log("Cursed Shrine event : Waiting 2 s")
 		Sleep(2000)
 	EndIf
@@ -3425,7 +3425,7 @@ Func Open_Chest($item)
 	_log("Chest opened : " & $item[1], $LOG_LEVEL_VERBOSE)
 	$CoffreTaken += 1;on compte les coffres qu'on ouvre
 
-	If StringInStr($item[1], "Global_Chest") Then
+	If StringInStr($item[1], "Global_Chest", 2) Then
 		_log("Open_Chest() : Wait a litle, it's a demonic chest")
 		Sleep(1500)
 	EndIf
@@ -4077,37 +4077,37 @@ Func GestSpellInit()
 				$type = $SPELL_TYPE_BUFF
 			Case $buff_table[3] = "zone"
 				$type = $SPELL_TYPE_ZONE
-			Case StringInStr($buff_table[3], "zone") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "zone", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_ZONE_AND_BUFF
 			Case $buff_table[3] = "move"
 				$type = $SPELL_TYPE_MOVE
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "attack")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "attack", 2)
 				$type = $SPELL_TYPE_LIFE_AND_ATTACK
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "attack", 2)
 				$type = $SPELL_TYPE_LIFE_OR_ATTACK
-			Case StringInStr($buff_table[3], "move") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "attack")
+			Case StringInStr($buff_table[3], "move", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "attack", 2)
 				$type = $SPELL_TYPE_MOVE_OR_ATTACK
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_LIFE_OR_BUFF
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "move")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "move", 2)
 				$type = $SPELL_TYPE_LIFE_OR_MOVE
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_LIFE_AND_BUFF
-			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_ATTACK_OR_BUFF
-			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_ATTACK_AND_BUFF
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "elite", 2)
 				$type = $SPELL_TYPE_LIFE_OR_ELITE
-			Case StringInStr($buff_table[3], "life") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
+			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "elite", 2)
 				$type = $SPELL_TYPE_LIFE_AND_ELITE
-			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "elite")
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "elite", 2)
 				$type = $SPELL_TYPE_ATTACK_OR_ELITE
-			Case StringInStr($buff_table[3], "attack") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "elite")
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "elite", 2)
 				$type = $SPELL_TYPE_ATTACK_AND_ELITE
-			Case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "&") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "elite", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_ELITE_AND_BUFF
-			Case StringInStr($buff_table[3], "elite") And StringInStr($buff_table[3], "|") And StringInStr($buff_table[3], "buff")
+			Case StringInStr($buff_table[3], "elite", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "buff", 2)
 				$type = $SPELL_TYPE_ELITE_OR_BUFF
 			Case $buff_table[3] = "buff_permanent"
 				$type = $SPELL_TYPE_PERMANENT_BUFF
@@ -4745,7 +4745,7 @@ Func fastcheckuiitemvisiblesize($valuetocheckfor, $visibility, $bucket)
     While $uielementpointer <> 0
         $npnt = _memoryread($uielementpointer + 528, $d3, "ptr")
         $name = BinaryToString(_memoryread($npnt + 56, $d3, "byte[256]"), 4)
-        If StringInStr($name, $valuetocheckfor) Then
+        If StringInStr($name, $valuetocheckfor, 2) Then
                 If _memoryread($npnt + 40, $d3, "int") = $visibility Then
                     $x = _memoryread($npnt + 0x508, $d3, "float") ;left
                     $y = _memoryread($npnt + 0x50C, $d3, "float") ;top
@@ -5446,7 +5446,7 @@ Func getGold()
     Sleep(500)
 	startIterateLocalActor($index, $offset, $count)
     While iterateLocalActorList($index, $offset, $count, $item)
-	   If StringInStr($item[1], "GoldCoin-") Then
+	   If StringInStr($item[1], "GoldCoin-", 2) Then
 		  Return IterateActorAtribs($item[0], $Atrib_ItemStackQuantityLo)
 		  ExitLoop
 	   EndIf
@@ -5635,7 +5635,7 @@ EndFunc
 
 Func IsItemInTable(ByRef $table, ByRef $itemName)
 	For $i = 1 To $table[0]
-		If StringInStr($itemName, $table[$i]) Then
+		If StringInStr($itemName, $table[$i], 2) Then
 			return True
 		EndIf
 	Next

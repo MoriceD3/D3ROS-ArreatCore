@@ -54,79 +54,79 @@ Func GetAffixRange($item, $pv = 0) ; Anciennement Is_Affix
 			Return -1
 		Case IsItemInTable($Table_BanAffix, $item[1])
 			Return -1
-		Case StringInStr($item[1], "bomb_buildup")
+		Case StringInStr($item[1], "bomb_buildup", 2)
 			$range = $range_explo
 			$life  = $Life_explo
-		Case StringInStr($item[1], "demonmine_C")
+		Case StringInStr($item[1], "demonmine_C", 2)
 			$range = $range_mine
 			$life  = $Life_mine
-		Case StringInStr($item[1], "Corpulent_suicide_blood")
+		Case StringInStr($item[1], "Corpulent_suicide_blood", 2)
 			$range = $range_explo
 			$life  = $Life_explo
-		Case StringInStr($item[1], "creepMobArm")
+		Case StringInStr($item[1], "creepMobArm", 2)
 			$range = $range_arm
 			$life  = $Life_arm
-		Case StringInStr($item[1], "woodWraith_explosion")
+		Case StringInStr($item[1], "woodWraith_explosion", 2)
 			$range = $range_spore
 			$life  = $Life_spore
-		Case StringInStr($item[1], "WoodWraith_sporeCloud_emitter")
+		Case StringInStr($item[1], "WoodWraith_sporeCloud_emitter", 2)
 			$range = $range_spore
 			$life  = $Life_spore
-		Case StringInStr($item[1], "sandwasp_projectile")
+		Case StringInStr($item[1], "sandwasp_projectile", 2)
 			$range = $range_proj
 			$life  = $Life_proj
-		Case StringInStr($item[1], "succubus_bloodStar_projectile")
+		Case StringInStr($item[1], "succubus_bloodStar_projectile", 2)
 			$range = $range_proj
 			$life  = $Life_proj
-		Case StringInStr($item[1], "Crater_DemonClawBomb")
+		Case StringInStr($item[1], "Crater_DemonClawBomb", 2)
 			$range = $range_mine
 			$life  = $Life_mine
-		Case StringInStr($item[1], "Molten_deathExplosion")
+		Case StringInStr($item[1], "Molten_deathExplosion", 2)
 			$range = $range_explo
 			$life  = $Life_explo
-		Case StringInStr($item[1], "Molten_deathStart")
+		Case StringInStr($item[1], "Molten_deathStart", 2)
 			$range = $range_explo
 			$life  = $Life_explo
-		Case StringInStr($item[1], "iceClusters")
+		Case StringInStr($item[1], "iceClusters", 2)
 			$range = $range_ice
 			$life  = $Life_ice
-		Case StringInStr($item[1], "Orbiter_Projectile")
+		Case StringInStr($item[1], "Orbiter_Projectile", 2)
 			$range = $range_lightning
 			$life  = $Life_lightning
-		Case StringInStr($item[1], "Thunderstorm_Impact")
+		Case StringInStr($item[1], "Thunderstorm_Impact", 2)
 			$range = $range_lightning
 			$life  = $Life_lightning
-		Case StringInStr($item[1], "CorpseBomber_projectile")
+		Case StringInStr($item[1], "CorpseBomber_projectile", 2)
 			$range = $range_poison
 			$life  = $Life_poison
-		Case StringInStr($item[1], "CorpseBomber_bomb_start")
+		Case StringInStr($item[1], "CorpseBomber_bomb_start", 2)
 			$range = $range_poison
 			$life  = $Life_poison
-		Case StringInStr($item[1], "Battlefield_demonic_forge")
+		Case StringInStr($item[1], "Battlefield_demonic_forge", 2)
 			$range = $range_lave
 			$life  = $Life_lave
-		Case StringInStr($item[1], "frozenPulse")
+		Case StringInStr($item[1], "frozenPulse", 2)
 			$range = $range_ice
 			$life  = $Life_ice
-		Case StringInStr($item[1], "spore")
+		Case StringInStr($item[1], "spore", 2)
 			$range = $range_spore
 			$life  = $Life_spore
-		Case StringInStr($item[1], "ArcaneEnchanted_petsweep")
+		Case StringInStr($item[1], "ArcaneEnchanted_petsweep", 2)
 			$range = $range_arcane
 			$life  = $Life_arcane
-		Case StringInStr($item[1], "Desecrator")
+		Case StringInStr($item[1], "Desecrator", 2)
 			$range = $range_profa
 			$life  = $Life_profa
-		Case StringInStr($item[1], "Plagued_endCloud")
+		Case StringInStr($item[1], "Plagued_endCloud", 2)
 			$range = $range_peste
 			$life  = $Life_peste
-		Case StringInStr($item[1], "Poison")
+		Case StringInStr($item[1], "Poison", 2)
 			$range = $range_poison
 			$life  = $Life_poison
-		Case StringInStr($item[1], "molten_trail")
+		Case StringInStr($item[1], "molten_trail", 2)
 			$range = $range_lave
 			$life  = $Life_lave
-		Case (StringInStr($item[1], "Corpulent_") And ($nameCharacter = "demonhunter" Or $nameCharacter = "witchdoctor" Or $nameCharacter = "wizard"))
+		Case (StringInStr($item[1], "Corpulent_", 2) And ($nameCharacter = "demonhunter" Or $nameCharacter = "witchdoctor" Or $nameCharacter = "wizard"))
 			$range = $range_explo
 			$life  = $Life_explo
 		Case Else

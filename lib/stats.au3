@@ -29,7 +29,7 @@ Func StatsDisplay()
 
 		startIterateLocalActor($index, $offset, $count)
         While iterateLocalActorList($index, $offset, $count, $item)
-		   If StringInStr($item[1], "GoldCoin-") Then
+		   If StringInStr($item[1], "GoldCoin-", 2) Then
 			  $GOLD = IterateActorAtribs($item[0], $Atrib_ItemStackQuantityLo)
 			  ExitLoop
 		   EndIf

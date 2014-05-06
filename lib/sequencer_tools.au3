@@ -296,9 +296,9 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 				ExitLoop
 			 EndIf
 			 $numLine += 1
-			 If StringInStr($line , "attackrange=") Then
+			 If StringInStr($line , "attackrange=", 2) Then
 			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
-			 ElseIf StringInStr($line , "sleep=") Then
+			 ElseIf StringInStr($line , "sleep=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -309,7 +309,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = -1
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithDoor=") Then
+			 ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -320,7 +320,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithPortal=") Then
+			 ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -331,7 +331,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithActor=") Then
+			 ElseIf StringInStr($line , "InteractWithActor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -505,9 +505,9 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 				ExitLoop
 			 EndIf
 			 $numLine += 1
-			 If StringInStr($line , "attackrange=") Then
+			 If StringInStr($line , "attackrange=", 2) Then
 			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
-			 ElseIf StringInStr($line , "sleep=") Then
+			 ElseIf StringInStr($line , "sleep=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -518,7 +518,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = -1
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithDoor=") Then
+			 ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -529,7 +529,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithPortal=") Then
+			 ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -540,7 +540,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithActor=") Then
+			 ElseIf StringInStr($line , "InteractWithActor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
