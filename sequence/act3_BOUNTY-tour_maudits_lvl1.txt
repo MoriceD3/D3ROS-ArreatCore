@@ -111,6 +111,5 @@ endsave()
 InteractWithPortal=g_Portal_ArchTall_Orange
 sleep=1000
 offsetlist()
-positionrange=20
-ifposition=870,1127,67:loadsequence=act3_BOUNTY-tour_maudits_lvl2_v1
-ifposition=1039,1094,25:loadsequence=act3_BOUNTY-tour_maudits_lvl2_v2
+ifposition=870,1127,67,20:loadsequence=act3_BOUNTY-tour_maudits_lvl2_v1
+ifposition=1039,1094,25,20:loadsequence=act3_BOUNTY-tour_maudits_lvl2_v2

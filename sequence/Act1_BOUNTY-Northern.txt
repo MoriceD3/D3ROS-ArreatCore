@@ -1,6 +1,5 @@
 Takewpadv=14
 offsetlist()
-Positionrange=20
-Ifposition=1689,3889,42:loadsequence=Act1_BOUNTY-Northern_tpSO
-Ifposition=1698,4121,42:loadsequence=Act1_BOUNTY-Northern_tpSE
-Ifposition=1569,3889,42:loadsequence=Act1_BOUNTY-Northern_tpE
+Ifposition=1689,3889,42,20:loadsequence=Act1_BOUNTY-Northern_tpSO
+Ifposition=1698,4121,42,20:loadsequence=Act1_BOUNTY-Northern_tpSE
+Ifposition=1569,3889,42,20:loadsequence=Act1_BOUNTY-Northern_tpE

@@ -11,11 +11,10 @@
  -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
  -> endgame()					(Arrête la game en cours)
  -> terminate()					(Arrête le script !)
- -> ifposition=					(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) 
+ -> ifposition=					(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande) 
  								(Commandes supportées : loadsequence=xxx / endsequence() / endgame() )
  CMD DEFINITION
  -> maxgamelength=				(definition d'un nouveau maxgamelength)
- -> positionrange=				(definition de la précision en yard du ifposition)
  -> monsterlist=               	(definition des monstres à tuer)
  -> specialml=					(definition de la special monsterlist)
  -> banlist=                   	(banlist)

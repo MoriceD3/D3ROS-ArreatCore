@@ -9,7 +9,6 @@
 Global $sequence_save = 0
 Global $autobuff = False
 Global $reverse = 0
-Global $PositionRange = 5
 
 Func GetActiveQuest()
 	$QuestMan_A = 0x8b8
@@ -729,11 +728,12 @@ Func sequence($sequence_list)
 				ElseIf StringInStr(StringLeft($line,12), "ifposition=", 2) Then
 					If SendSequence($array_sequence) Then
 						$array_sequence = ArrayInit($array_sequence)
-						_log("Testing current position with range : " & $PositionRange)
 						$pos = GetCurrentPos()
 						$line = StringReplace($line, "ifposition=", "", 0, 2)
 						$temp = StringSplit($line, ":", 2)
 						$checkpos = StringSplit($temp[0], ",", 2)
+						$PositionRange = $checkpos[3]
+						_log("Testing current position with range : " & $PositionRange)
 						If (Abs($pos[0] - $checkpos[0]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) And (Abs($pos[1] - $checkpos[1]) <= $PositionRange) Then
 							_log("Position found ! ", $LOG_LEVEL_VERBOSE)
 							If StringInStr($temp[1], "loadsequence=", 2) Then
@@ -872,12 +872,6 @@ Func sequence($sequence_list)
 						$reverse = 1
 						_log("Reverse mod line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					EndIf
-					$line = ""
-					$definition = 1
-				ElseIf StringInStr($line, "positionrange=", 2) Then
-					$line = StringReplace($line, "positionrange=", "", 0, 2)
-					_log("Changing PositionRange to : " & $line, $LOG_LEVEL_DEBUG)
-					$PositionRange = Number($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "ifobjectfound=", 2) Then
@@ -1178,11 +1172,11 @@ EndFunc   ;==> InteractWithPortal
 ; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
 ; -> endgame()					(Arrête la game en cours)
 ; -> terminate()				(Arrête le script !)
-; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z:Commande) (Commande supportée : loadsequence=xxx / endsequence() / endgame() )
+; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande) 
+;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame() )
 ;
 ; CMD DEFINITION
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
-; -> positionrange=				(definition de la précision en yard du ifposition)
 ; -> monsterlist=               (definition des monstres à tuer)
 ; -> specialml=					(definition de la special monsterlist)
 ; -> banlist=                   (banlist)

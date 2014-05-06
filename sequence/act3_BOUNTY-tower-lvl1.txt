@@ -120,6 +120,5 @@ endsave()
 InteractWithPortal=g_Portal_ArchTall_Orange
 sleep=2000
 offsetlist()
-positionrange=20
-ifposition=857,1124,31:loadsequence=act3_BOUNTY-tower-lvl2_v1
-ifposition=1044,1105,21:loadsequence=act3_BOUNTY-tower-lvl2_v2
+ifposition=857,1124,31,20:loadsequence=act3_BOUNTY-tower-lvl2_v1
+ifposition=1044,1105,21,20:loadsequence=act3_BOUNTY-tower-lvl2_v2

@@ -1,8 +1,7 @@
 InteractWithPortal=g_Portal_Circle_Blue
 Sleep=1000
 offsetlist()
-PositionRange=25
-Ifposition=405,604,0:loadsequence=Act1_BOUNTY-Khazra_tpNO
-Ifposition=582,1002,0:Loadsequence=Act1_BOUNTY-Khazra_tpSO
-Ifposition=831,758,0:Loadsequence=Act1_BOUNTY-Khazra_tpSE
-Ifposition=342,762,0:Loadsequence=Act1_BOUNTY-Khazra_tpE
+Ifposition=405,604,0,20:loadsequence=Act1_BOUNTY-Khazra_tpNO
+Ifposition=582,1002,0,20:Loadsequence=Act1_BOUNTY-Khazra_tpSO
+Ifposition=831,758,0,20:Loadsequence=Act1_BOUNTY-Khazra_tpSE
+Ifposition=342,762,0,20:Loadsequence=Act1_BOUNTY-Khazra_tpE

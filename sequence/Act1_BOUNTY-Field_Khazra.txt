@@ -1,7 +1,6 @@
 TakeWPadv=8
 offsetlist()
-positionrange=25
-ifposition=2098,611,2:loadsequence=Act1_BOUNTY-Field_Khazra_tpeast
-ifposition=1743,367,2:loadsequence=Act1_BOUNTY-Field_Khazra_tpnorth
-ifposition=2038,910,2:loadsequence=Act1_BOUNTY-Field_Khazra_tpmid
-ifposition=2216,1064,0:loadsequence=Act1_BOUNTY-Field_Khazra_tpsouth
+ifposition=2098,611,2,20:loadsequence=Act1_BOUNTY-Field_Khazra_tpeast
+ifposition=1743,367,2,20:loadsequence=Act1_BOUNTY-Field_Khazra_tpnorth
+ifposition=2038,910,2,20:loadsequence=Act1_BOUNTY-Field_Khazra_tpmid
+ifposition=2216,1064,0,20:loadsequence=Act1_BOUNTY-Field_Khazra_tpsouth

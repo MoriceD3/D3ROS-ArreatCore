@@ -5,6 +5,5 @@ AutoBuff=True
 attackrange=40
 usepath=false
 sleep=500
-positionrange=20
-ifposition=2073,2759,-29:loadsequence=act4-BOUNTY-GardenHope_lvl2_v1
-ifposition=2530,1973,15:loadsequence=act4-BOUNTY-GardenHope_lvl2_v2
+ifposition=2073,2759,-29,20:loadsequence=act4-BOUNTY-GardenHope_lvl2_v1
+ifposition=2530,1973,15,20:loadsequence=act4-BOUNTY-GardenHope_lvl2_v2
