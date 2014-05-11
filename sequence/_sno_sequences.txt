@@ -90,7 +90,7 @@
 345524#0x545B4#1#X1_Bounty_A1_SpiderCaves_Kill_Venimite#None
 345522#0x545B2#1#X1_Bounty_A1_SpiderCaves_Kill_Zhelobb#None
 345488#0x54590#1#X1_Bounty_A1_Wilderness_Clear_DenOfTheFallen2#None
-369399#0x5A2F7#1#X1_Bounty_A1_Wilderness_Kill_Horrus#None
+369399#0x5A2F7#1#X1_Bounty_A1_Wilderness_Kill_Horrus#act1_ADV-Val_[1-8]
 369404#0x5A2FC#1#X1_Bounty_A1_Wilderness_Kill_Kankerrot#act1_ADV-Val_[1-8]
 345490#0x54592#1#X1_Bounty_A1_Wilderness_Kill_Mange#act1_ADV-Val_[1-8]
 347099#0x54BDB#1#X1_Bounty_A1_Wilderness_Kill_MiraEamon#act1_ADV-Val_[1-8]
