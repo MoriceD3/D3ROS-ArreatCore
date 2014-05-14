@@ -663,7 +663,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 ;# Wizard_ArcaneOrb                    / Orbe arcanique
 ;# Wizard_ArcaneTorrent                / Torrent arcanique
 ;# Wizard_Archon                       / Archonte
-;# Wizard_Archon_DisintegrationWave    / Archonte -
+;# Wizard_Archon_DisintegrationWave    / Archonte - vague destructrice
 ;# Wizard_Archon_SlowTime              / Archonte - ralentissement du temps
 ;# Wizard_Archon_Teleport              / Archonte - teleportation
 ;# Wizard_Disintegrate                 / Desintegration
