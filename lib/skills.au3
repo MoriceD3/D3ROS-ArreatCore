@@ -521,7 +521,7 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 150, "mana", "", 10], _
 						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 50, "mana", "", 10], _
 						[$Witchdoctor_Hex, "Witchdoctor_Hex", 15000, "buff", 0, "mana", "", ""], _
-						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 16000, "attack", 0, "mana", "", 12], _
+						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 12000, "attack", 0, "mana", "", 12], _
 						[$Witchdoctor_Locust_Swarm, "Witchdoctor_Locust_Swarm", 0, "attack", 300, "mana", "", 15], _
 						[$Witchdoctor_MassConfusion, "Witchdoctor_MassConfusion", 60000, "attack", 0, "mana", "", 20], _
 						[$Witchdoctor_PlagueOfToads, "Witchdoctor_PlagueOfToads", 0 , "physical", 0, "mana", "", 35], _
@@ -706,7 +706,7 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_ShockPulse, "Wizard_ShockPulse", "", "physical", "", "", 100, 45], _
 						[$Wizard_SlowTime, "Wizard_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_StormArmor, "Wizard_StormArmor", 110000, "buff", 25, "arcane", "", ""], _
-						[$Wizard_Teleport, "Wizard_Teleport", 16000, "life", "", "", 50, ""], _
+						[$Wizard_Teleport, "Wizard_Teleport", 11000, "life|move", "", "", 50, ""], _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
