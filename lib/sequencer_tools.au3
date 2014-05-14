@@ -821,30 +821,6 @@ Func SequencerMarkPos()
 	$count_mtp += 1
 EndFunc   ;==>SequencerMarkPos
 
-Func IndexSNONoLimit($_offset, $_displayInfo = 0)
-
-	;Local $CurrentSnoOffset = 0x0
-	$_MainOffset = _MemoryRead($_offset, $d3, 'ptr')
-	$_Pointer = _MemoryRead($_MainOffset + $_defptr, $d3, 'ptr')
-	$_SnoCount = _MemoryRead($_Pointer + 0x108, $d3, 'int') ;//Doesnt seem to go beyond 256 for some wierd reason
-
-	$_SnoIndex = _MemoryRead($_Pointer + $_deflink, $d3, 'ptr') ;//Moving from the static into the index
-	$_SNOName = _MemoryRead($_Pointer, $d3, 'char[64]') ;//Usually something like "Something" + Def
-	$TempWindex = $_SnoIndex + 0x10 ;//The header is 0xC in size
-	If $_displayInfo = 1 Then _log("-----* Indexing " & $_SNOName & " *-----")
-	Dim $_OutPut[$_SnoCount + 1][2] ;//Setting the size of the output array
-
-	For $i = 1 To $_SnoCount Step +1 ;//Iterating through all the elements
-		$_CurSnoOffset = _MemoryRead($TempWindex, $d3, 'ptr') ;//Getting the offset for the item
-		$_CurSnoID = _MemoryRead($_CurSnoOffset, $d3, 'ptr') ;//Going into the item and grapping the GUID which is located at 0x0
-		$_OutPut[$i][0] = $_CurSnoOffset ;//Poping the data into the output array
-		$_OutPut[$i][1] = $_CurSnoID
-		If $_displayInfo = 1 Then _log($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID )
-		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x10 later
-	Next
-	Return $_OutPut
-EndFunc   ;==>IndexSNO
-
 Func Read_Scene()
 
 	If $recordSceneButton <> 0 Then
@@ -935,8 +911,8 @@ Func Read_Scene()
 			If $drawSceneButton <> 0 Then
 				GUICtrlSetState($drawSceneButton, $GUI_DISABLE)
 			EndIf
-			_log("Scene Recorded : " & $nb_totale_scene_record)
-			Dim $list_sno_scene = IndexSNONoLimit(0x1CEF78C, 0)
+			_log("Scene Recorded : " & $nb_totale_scene_record))
+			Dim $list_sno_scene = IndexSNO($SNOscene, 0)
 			;############################## ITERATION DU SNO ###########################################
 			$Size = Ubound($list_sno_scene) - 1
 			For $i = 1 to $Size
