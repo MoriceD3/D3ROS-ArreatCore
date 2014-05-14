@@ -369,7 +369,7 @@ Global $Monk_LethalDecoy_Taunt = 0x1AFEF
 
 ;# skill_table_monk
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN                                           /  FR
+;# EN                                           / FR
 ;# Monk_BlindingFlash                           / Eclair aveuglant
 ;# Monk_BreathOfHeaven                          / Soufle divin
 ;# Monk_CripplingWave                           / Vague affaiblissante
@@ -425,12 +425,13 @@ Global $Monk_skill_Table[27][8] = [ _
 						[$Monk_TempestRush, "Monk_TempestRush", 2000, "move", 25, "spirit", "", ""], _
 						[$Monk_WaveOfLight, "Monk_WaveOfLight", 2000, "attack", 75, "spirit", "", 15], _
 						[$Monk_WayOfTheHundredFists, "WayOfTheHundredFists", "", "physical", "", "", "", ""], _
-						[$X1_Monk_Epiphany, "Epiphany", 60000, "attack", 0, "spirit",  "", ""] _
+						[$X1_Monk_Epiphany, "Epiphany", 60000, "attack&elite", 0, "spirit",  "", ""] _
 						]
+
 
 ;# skill_table_crusader
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN                        /  FR
+;# EN                        / FR
 ;# Crusader_Punish           / Correction
 ;# Crusader_ShieldBash2      / Coup de bouclier
 ;# Crusader_Slash            / Cautere
@@ -455,6 +456,7 @@ Global $Monk_skill_Table[27][8] = [ _
 ;# Crusader_Phalanx3         / Phalange
 ;# Crusader_HeavensFury3     / Fureur des cieux
 ;# Crusader_Bombardment      / Grele
+
 
 Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Punish, "Crusader_Punish", 0, "physical", "", "", "", ""], _
@@ -483,11 +485,12 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Bombardment, "Crusader_Bombardment", 60000, "elite", "", "", 100, 45] _
                                                 ]
 
+
 ;# skill_table_witchdoctor
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN / FR
+;# EN                          / FR
 ;# Witchdoctor_AcidCloud       / Nuage acide
-;# Witchdoctor_BigBadVoodoo    /  Le grand mechant vaudou
+;# Witchdoctor_BigBadVoodoo    / Le grand mechant vaudou
 ;# Witchdoctor_CorpseSpider    / Araignees necrophage
 ;# Witchdoctor_FetishArmy      / Armee de fetish
 ;# Witchdoctor_Firebats        / Chauve souris
@@ -509,6 +512,7 @@ Global $Crusader_skill_Table[24][8] = [ _
 ;# Witchdoctor_SummonZombieDog / Chien zombie
 ;# Witchdoctor_WallOfZombies   / Mur de zombies
 ;# Witchdoctor_ZombieCharger   / Zombie surprise
+
 
 Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_AcidCloud, "Witchdoctor_AcidCloud", 1500, "attack", 175, "mana", "", 45], _
@@ -536,9 +540,10 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_ZombieCharger, "Witchdoctor_ZombieCharger", 2000, "attack&elite", 150, "mana", "", 20] _
 						]
 
+
 ;# skill_table_barbarian
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN / FR
+;# EN                            / FR
 ;# Barbarian_Avalanche           / Avalanche
 ;# Barbarian_Bash                / Raclee
 ;# Barbarian_HammerOfTheAncients / Marteau des anciens
@@ -576,7 +581,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 						[$Barbarian_SeismicSlam,"Barbarian_SeismicSlam",0,"attack",30,"fury","",45], _
 						[$Barbarian_Revenge,"Barbarian_Revenge",0,"attack","","",80,15], _
 						[$X1_Barbarian_WeaponThrow,"Barbarian_WeaponThrow",0,"attack",0,"fury","",""], _
-						[$Barbarian_Sprint,"Barbarian_Sprint",2000,"move",20,"fury","",""], _
+						[$Barbarian_Sprint,"Barbarian_Sprint",3000,"move",20,"fury","",""], _
 						[$Barbarian_ThreateningShout,"Barbarian_ThreateningShout",15000,"attack","","","",25], _
 						[$Barbarian_Earthquake,"Barbarian_Earthquake",60000,"attack&elite",50,"fury","",18], _
 						[$Barbarian_Whirlwind,"Barbarian_Whirlwind",0,"attack",10,"fury","",30], _
@@ -591,7 +596,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 
 ;# skill_table_demonhunter
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN / FR
+;# EN                           / FR
 ;# DemonHunter_BolaShot         / Bolas
 ;# DemonHunter_Caltrops         / Chausse trappe
 ;# DemonHunter_Chakram          / Chakram
@@ -648,7 +653,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 
 ;# skill_table_wizard
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
-;# EN / FR
+;# EN                                  / FR
 ;# Wizard_Blizzard                     / Blizzard
 ;# Wizard_DiamondSkin                  / Peau de diamant
 ;# Wizard_EnergyArmor                  / Armure d energie
