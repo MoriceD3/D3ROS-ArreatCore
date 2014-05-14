@@ -664,7 +664,7 @@ Func Draw_Scene()
 			EndIf
 		Next
 		If $DrawScene = "true" Then
-			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $i)
+			Draw_Nav(($Scene_table_totale[$i][4] - $buff_MeshMinY), ($Scene_table_totale[$i][3] - $buff_MeshMinX), 3, $Scene_table_totale[$i][6] - $Scene_table_totale[$i][4], $Scene_table_totale[$i][5] - $Scene_table_totale[$i][3], 0, $Scene_table_totale[$i][2])
 		EndIf
 
 		_log(" -> " &  int((100 / Ubound($Scene_table_totale)))*$i & "%")

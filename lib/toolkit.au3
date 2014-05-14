@@ -623,6 +623,51 @@ Func Verif_Attrib_GlobalStuff()
 	EndIF
 EndFunc
 
+Func getPlayerCurrentScene() 
+	$ObManStoragePtr = _MemoryRead($ofs_objectmanager, $d3, "ptr")
+	$offset = $ObManStoragePtr + 0x954
+	$sceneCountPtr = _MemoryRead($offset, $d3, "ptr") + 0x108
+	$sceneFirstPtr = _MemoryRead($offset, $d3, "ptr") + 0x11c
+	$countScene = _MemoryRead($sceneCountPtr, $d3, "int")
+	$pos = getCurrentPos()
+
+	For $i = 0 To $countScene
+		$scenePtr = _MemoryRead($sceneFirstPtr, $d3, "ptr") + ($i * 0x2BC)
+		$Structobj_scene = DllStructCreate("ptr;byte[4];ptr;byte[218];ptr;byte[16];float;float;byte[112];float;float")
+		;id_scene -> 1 | id_world -> 3 | id_sno_scene -> 5 | MeshMinX -> 7 | MeshMinY -> 8 | MeshMaxX -> 10 | MeshMaxY -> 11
+		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $scenePtr, 'ptr', DllStructGetPtr($Structobj_scene), 'int', DllStructGetSize($Structobj_scene), 'int', '')
+
+		If DllStructGetData($Structobj_scene, 3) = $_MyACDWorld And DllStructGetData($Structobj_scene, 1) <> 0xFFFFFFFF Then ;id world
+			If $pos[0] >= DllStructGetData($Structobj_scene, 7) And $pos[0] <= DllStructGetData($Structobj_scene, 10) And $pos[1] >= DllStructGetData($Structobj_scene, 8) And $pos[1] <= DllStructGetData($Structobj_scene, 11) Then
+				Return DllStructGetData($Structobj_scene, 5)
+			EndIf
+		EndIf
+	Next
+	Return False
+EndFunc
+
+Func isScenePresent($sceneSno)
+	$ObManStoragePtr = _MemoryRead($ofs_objectmanager, $d3, "ptr")
+	$offset = $ObManStoragePtr + 0x954
+	$sceneCountPtr = _MemoryRead($offset, $d3, "ptr") + 0x108
+	$sceneFirstPtr = _MemoryRead($offset, $d3, "ptr") + 0x11c
+	$countScene = _MemoryRead($sceneCountPtr, $d3, "int")
+	$pos = getCurrentPos()
+
+	For $i = 0 To $countScene
+		$scenePtr = _MemoryRead($sceneFirstPtr, $d3, "ptr") + ($i * 0x2BC)
+		$Structobj_scene = DllStructCreate("ptr;byte[4];ptr;byte[218];ptr;byte[16];float;float;byte[112];float;float")
+		;id_scene -> 1 | id_world -> 3 | id_sno_scene -> 5 | MeshMinX -> 7 | MeshMinY -> 8 | MeshMaxX -> 10 | MeshMaxY -> 11
+		DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $scenePtr, 'ptr', DllStructGetPtr($Structobj_scene), 'int', DllStructGetSize($Structobj_scene), 'int', '')
+		If DllStructGetData($Structobj_scene, 3) = $_MyACDWorld And DllStructGetData($Structobj_scene, 1) <> 0xFFFFFFFF Then ;id world
+			If $sceneSno = DllStructGetData($Structobj_scene, 5) Then
+				Return True
+			EndIf
+		EndIf
+	Next
+	Return False
+EndFunc
+
 Func antiidle()
 	$warnloc = GetCurrentPos()
 	$warnarea = GetLevelAreaId()
@@ -1637,7 +1682,7 @@ Func TriObjectMonster($item)
 ;~ 			$compt_elite += 1
 
 ;~ 		Else
-		   If Is_Mob($item_temp) Then
+		If Is_Mob($item_temp) Then
 			If UBound($tab_monster) > 1 Or $compt_monster <> 0 Then
 				ReDim $tab_monster[UBound($tab_monster) + 1][$TableSizeGuidStruct+1]
 			EndIf

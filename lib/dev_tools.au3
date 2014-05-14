@@ -128,6 +128,154 @@ $_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 Wend
 
 Endfunc ;==> Listquest
+Func GizmoType($Guid)
+	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x180, $d3, 'int')
+EndFunc   ;==>DetectElite
+
+Func ActorType($Guid)
+	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x184, $d3, 'int')
+EndFunc   ;==>DetectElite
+
+Func ActorName($Guid)
+	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x4, $d3, 'char[128]')
+EndFunc   ;==>DetectElite
+Func GetFullItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, $position, $CurrentPosition = False)
+ 	$FullGuidStruct =  "int;char[128];int;int;int;int;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;int;int;int;int;byte[240];int;byte[88];int;byte[44];int;byte[488]"
+
+	$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $position, $FullGuidStruct)
+
+	If $iterateObjectsStruct = False Then
+		Return False
+	EndIf
+; 5 snoId
+; 6 7 8 9 10 unused
+; 11 12 13 world pos
+; 14 world radius 
+; 15 16 17 collision pos
+; 18 collision radius 
+; 19 20 21 bottom pos
+; 22 bottom radius 
+
+
+	If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+		;If @Error > 0 Then Return False
+		$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+		;If @Error > 0 Then Return False
+		$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+		;If @Error > 0 Then Return False
+		$item[2] = DllStructGetData($iterateObjectsStruct, 15) ; x
+		;If @Error > 0 Then Return False
+		$item[3] = DllStructGetData($iterateObjectsStruct, 16) ; y
+		;If @Error > 0 Then Return False
+		$item[4] = DllStructGetData($iterateObjectsStruct, 17) ; z
+		If @Error > 0 Then Return False
+		$item[5] = ActorType($item[0])
+		If @Error > 0 Then Return False
+		$item[6] = DllStructGetData($iterateObjectsStruct, 18) ; radius collision
+		If @Error > 0 Then Return False
+		$item[7] = DllStructGetData($iterateObjectsStruct, 22) ; radius bottom
+		If @Error > 0 Then Return False
+		$item[8] = $offset + $position * DllStructGetSize($iterateObjectsStruct)
+		;If @Error > 0 Then Return False
+		$item[10] = DllStructGetData($iterateObjectsStruct, 19) ; x Foot
+		;If @Error > 0 Then Return False
+		$item[11] = DllStructGetData($iterateObjectsStruct, 20) ; y Foot
+		;If @Error > 0 Then Return False
+		$item[12] = DllStructGetData($iterateObjectsStruct, 21) ; z Foot
+		;If @Error > 0 Then Return False
+
+		If Not $CurrentPosition Then
+			$item[9] = GetDistance($Item[2], $Item[3], $Item[4])
+		Else
+			$item[9] = GetDistanceWithoutReadPosition($CurrentPosition, $Item[2], $Item[3], $Item[4])
+		EndIf
+	Else
+		Return False
+	EndIf
+
+	;If $item[9] < 50 Then
+	;	_Log("Item : " & $item[1] & " Pos collision : " & $item[2] & " / " & $item[3] & " / " & $item[4] & " - " &  DllStructGetData($iterateObjectsStruct, 18) )
+	;	_Log("Item : " & $item[1] & " Pos bottom : " & $item[10] & " / " & $item[11] & " / " & $item[12] & " - " &  DllStructGetData($iterateObjectsStruct, 22) )
+	;EndIf
+
+	Return True
+EndFunc
+
+Func GetCurrentPosCollision()
+	Dim $return[4]
+
+	Local $PosPlayerStruct = DllStructCreate("byte[180];float;float;float;float")
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $_Myoffset, 'ptr', DllStructGetPtr($PosPlayerStruct), 'int', DllStructGetSize($PosPlayerStruct), 'int', '')
+	
+	$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
+	$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
+	$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
+	$return[3] = DllStructGetData($PosPlayerStruct, 5) ; Radius
+	Return $return
+EndFunc  ;==>GetCurrentPos
+Func IterateObjectListTest()
+ 	$GuidStruct =  "int;char[128];int;int;int;int;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;int;int;int;int;byte[240];int;byte[88];int;byte[44];int;byte[488]"
+ 	$TableSizeGuidStruct = 13
+
+
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+	startIterateObjectsList($index, $offset, $count)
+	Dim $item_buff_2D[1][$TableSizeGuidStruct]
+	Local $z = 0
+
+	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
+	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
+
+	dim $item[$TableSizeGuidStruct]
+
+	$CurrentLoc = GetCurrentPos()
+
+	for $i=0 to $count
+		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
+
+		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
+			_log("Item : " & DllStructGetData($iterateObjectsStruct, 2) & " - " & DllStructGetData($iterateObjectsStruct, 1) & " / " & DllStructGetData($iterateObjectsStruct, 5))
+			;_log("Positions : " & DllStructGetData($iterateObjectsStruct, 11) & " / " & DllStructGetData($iterateObjectsStruct, 12) & " / " & DllStructGetData($iterateObjectsStruct, 13) & " / " & DllStructGetData($iterateObjectsStruct, 14) & " / ")
+			_log("Positions : " & DllStructGetData($iterateObjectsStruct, 15) & " / " & DllStructGetData($iterateObjectsStruct, 16) & " / " & DllStructGetData($iterateObjectsStruct, 17) & " / " & DllStructGetData($iterateObjectsStruct, 18) & " / ")
+			;_log("Positions : " & DllStructGetData($iterateObjectsStruct, 19) & " / " & DllStructGetData($iterateObjectsStruct, 20) & " / " & DllStructGetData($iterateObjectsStruct, 21) & " / " & DllStructGetData($iterateObjectsStruct, 22) & " / ")
+			_log(Hex(DllStructGetData($iterateObjectsStruct, 3)) & " / " & Hex(DllStructGetData($iterateObjectsStruct, 24) & " / ") & " / " & Hex(DllStructGetData($iterateObjectsStruct, 25)) & " / " & Hex(DllStructGetData($iterateObjectsStruct, 26) & " / "))
+
+			_log("Info : "  & ActorName(DllStructGetData($iterateObjectsStruct, 4)) & " / " & GizmoType(DllStructGetData($iterateObjectsStruct, 4)) & " / " & ActorType(DllStructGetData($iterateObjectsStruct, 4)) )
+			;$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
+			;$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
+			;$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
+			;$item[3] = DllStructGetData($iterateObjectsStruct, 7) ; y Head
+			;$item[4] = DllStructGetData($iterateObjectsStruct, 8) ; z Head
+			;$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
+			;$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
+			;$Item[12] = DllStructGetData($iterateObjectsStruct, 12) ; z Foot
+			;$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
+			;$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
+			;$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
+			;$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+
+
+
+			;$item[9] = GetDistanceWithoutReadPosition($CurrentLoc, $Item[10], $Item[11], $Item[12])
+
+			;		ReDim $item_buff_2D[$z + 1][$TableSizeGuidStruct]
+
+			;		For $x = 0 To $TableSizeGuidStruct - 1
+			;			$item_buff_2D[$z][$x] = $item[$x]
+			;		Next
+			;		$z += 1
+
+
+		EndIf
+		;$iterateObjectsStruct = ""
+	Next
+
+	;$iterateObjectsListStruct = ""
+
+	;return $item_buff_2D
+
+EndFunc
+
 
 Func IterateObjectListV2()
 
@@ -223,7 +371,7 @@ Func IsBountyKnown($bountyName)
 		If @error = -1 Then
 			ExitLoop
 		 EndIf
-		If StringInStr($line, $bountyName) Then
+		If StringInStr($line, $bountyName, 2) Then
 			Return True
 		EndIf
 	WEnd
@@ -493,7 +641,11 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
-ListBounties()
+;IterateObjectListTest()
+_log("Scene : " & getPlayerCurrentScene(), $LOG_LEVEL_ERROR)
+_log("Scene Test : " & isScenePresent(0x00024124))
+_log("Scene Test : " & isScenePresent(0x00024102))
+
 ;consoleLog(GetTextUI(1346,"Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Content.List.Title"))
 EndFunc   ;==>Testing ##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******##*******###
 

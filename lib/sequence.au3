@@ -762,6 +762,49 @@ Func sequence($sequence_list)
 						$end_sequence = True
 						$line = ""
 					EndIf
+				ElseIf StringInStr(StringLeft($line,16), "ifscenepresent=", 2) Then
+					If SendSequence($array_sequence) Then
+						$array_sequence = ArrayInit($array_sequence)
+						$pos = GetCurrentPos()
+						$line = StringReplace($line, "ifscenepresent=", "", 0, 2)
+						$temp = StringSplit($line, ":", 2)
+						$scenes = StringSplit($temp[0], ",", 2)
+						$found = True
+						$count = UBound($scenes) -1
+
+						_log("Checking scenes presences")
+						For $scenespos = 0 To $count 
+							If Not isScenePresent($scenes[$scenespos]) Then
+								$found = False
+								ExitLoop
+							EndIf
+						Next
+
+						If $found Then
+							_log("All scenes found ! ", $LOG_LEVEL_VERBOSE)
+							If StringInStr($temp[1], "loadsequence=", 2) Then
+								$end_sequence = True
+								$temp = StringReplace($temp[1], "loadsequence=", "")
+								_log("[Scenes] Lancement de la sequence : " & $temp, $LOG_LEVEL_WARNING)
+								Sequence($temp)
+							ElseIf StringInStr($temp[1], "endsequence()", 2) Then
+								_log("[Scenes] End sequence detected. Stopping current sequence file.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+							ElseIf StringInStr($temp[1], "endgame()", 2) Then
+								_log("[Scenes] End game detected. Stopping current run!.", $LOG_LEVEL_WARNING)
+								$end_sequence = True
+								$end_game = True
+							Else
+								_log("Invalid command found for ifscenepresent")
+							EndIf
+						Else
+							_log("Scenes not found !", $LOG_LEVEL_WARNING)
+						EndIf
+						$line = ""
+					Else
+						$end_sequence = True
+						$line = ""
+					EndIf
 				ElseIf StringInStr($line, "attackrange=", 2) Then; Définition de l'attackRange
 					If SendSequence($array_sequence) Then
 						$array_sequence = ArrayInit($array_sequence)
@@ -1175,7 +1218,10 @@ EndFunc   ;==> InteractWithPortal
 ; -> endgame()					(Arrête la game en cours)
 ; -> terminate()				(Arrête le script !)
 ; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande) 
-;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame() )
+;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
+; -> ifscenepresent=			(Vérifie les scènes en cours et lance la commande indiquée si elles sont toutes présentes : ifscenepresent=a,b,c,d,...:Commande) 
+;								(Remarque : il faut le sno en hexa complet des scènes : 0x0000D1DD)
+;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
 ;
 ; CMD DEFINITION
 ; -> maxgamelength=				(definition d'un nouveau maxgamelength)
