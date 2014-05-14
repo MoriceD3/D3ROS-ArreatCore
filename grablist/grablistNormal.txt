@@ -1,10 +1,22 @@
-weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|handXbow_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Mace
-head=voodooMask_|spiritStone_|WizardHat_|Helm_
+tweapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Axe_|x1_ceremonialDagger_|x1_Dagger_|x1_fistWeapon_|x1_mightyWeapon_1H_|x1_Mace_|x1_spear_|x1_Sword_|x1_Wand_|handXbow_|x1_handXbow
+tweapon2h=twoHandedAxe_|Bow_|XBow_|twoHandedMace_|Polearm_|Staff_|twoHandedSword_|combatStaff_|x1_twoHandedAxe_|x1_Bow_|x1_XBow_|x1_twoHandedMace_|x1_Polearm_|x1_Staff_|x1_twoHandedSword_|x1_combatStaff_|mightyWeapon_2H_|x1_mightyWeapon_2H
+tlefthandcaster=Mojo_|orb_|Quiver_|Shield_|x1_Mojo_|x1_orb_|x1_Quiver_|x1_Shield_
+thelm=voodooMask_|spiritStone_|WizardHat_|Helm_|x1_voodooMask|x1_spiritStone|x1_WizardHat|x1_Helm
+tfollower=FollowerItem_Templar_|FollowerItem_Scoundrel_|FollowerItem_Enchantress_|x1_FollowerItem_Templar_|x1_FollowerItem_Scoundrel_|x1_FollowerItem_Enchantress_
+tamulet=Amulet_|x1_Amulet
+tring=Ring_|x1_Ring
+tgloves=Gloves_|x1_Gloves
+tbracers=Bracers_|x1_Bracers
+tbelt=Belt_|x1_Belt
+tpants=Pants_|x1_Pants
+tboots=Boots_|x1_Boots
+tchest=chestArmor_|Cloak_|x1_chestArmor|x1_Cloak
+tshoulder=ShoulderPads_|x1_ShoulderPads
 
 GoldLarge|CraftingMaterials_|Crafting_|Console_PowerGlobe|CraftingPlan_|Crafting_Tier_|CraftingReagent_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|key
 
-Amulet_[q:6]
-Ring_[q:6]
-Head[q:6](sockets:1)
-weapon1h[q:6](sockets:1) 
+tamulet[q:6]
+tring[q:6]
+thelm[q:6](sockets:1)
+tweapon1h[q:6](sockets:1) 
 

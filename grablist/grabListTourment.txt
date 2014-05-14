@@ -1,20 +1,46 @@
-fweapon=dps:1000 and WeaponAttacksPerSecond:1.20 and (Sockets:1 or Sockets:2)
-fweapon2h=dps:2500 and (Sockets:1 or Sockets:2)
-famu=CritChance:6 or CritDamage:20 or AtkSpeedBonus:6
-fring=CritChance:5 or CritDamage:20 or AtkSpeedBonus:6
-fgloves=CritChance:9 and (CritDamage:20 or AtkSpeedBonus:6)
-fbracers=CritChance:5
-fhelm=CritChance:5 and Sockets:1
+tweapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Axe_|x1_ceremonialDagger_|x1_Dagger_|x1_fistWeapon_|x1_mightyWeapon_1H_|x1_Mace_|x1_spear_|x1_Sword_|x1_Wand_|handXbow_|x1_handXbow
+tweapon2h=twoHandedAxe_|Bow_|XBow_|twoHandedMace_|Polearm_|Staff_|twoHandedSword_|combatStaff_|x1_twoHandedAxe_|x1_Bow_|x1_XBow_|x1_twoHandedMace_|x1_Polearm_|x1_Staff_|x1_twoHandedSword_|x1_combatStaff_|mightyWeapon_2H_|x1_mightyWeapon_2H
+tlefthand=Mojo_|orb_|Quiver_|Shield_|x1_Mojo_|x1_orb_|x1_Quiver_|x1_Shield_
+thelm=voodooMask_|spiritStone_|WizardHat_|Helm_|x1_voodooMask|x1_spiritStone|x1_WizardHat|x1_Helm
+tfollower=FollowerItem_Templar_|FollowerItem_Scoundrel_|FollowerItem_Enchantress_|x1_FollowerItem_Templar_|x1_FollowerItem_Scoundrel_|x1_FollowerItem_Enchantress_
+tamulet=Amulet_|x1_Amulet
+tring=Ring_|x1_Ring
+tgloves=Gloves_|x1_Gloves
+tbracers=Bracers_|x1_Bracers
+tbelt=Belt_|x1_Belt
+tpants=Pants_|x1_Pants
+tboots=Boots_|x1_Boots
+tchest=chestArmor_|Cloak_|x1_chestArmor|x1_Cloak
+tshoulder=ShoulderPads_|x1_ShoulderPads
 
-weapon1h=Axe_|ceremonialDagger_|Dagger_|fistWeapon_|mightyWeapon_1H_|Mace_|spear_|Sword_|Wand_|x1_Mace
-weapon2h=twoHandedAxe_|Bow_|XBow_|twoHandedMace_|Polearm_|Staff_|twoHandedSword_|combatStaff_
+fweapon1h=dps:2100 and Sockets:1
+fweapon2h=dps:2500 and Sockets:1
+famulet=CritChance:6 and (CritDamage:20 or AtkSpeedBonus:6)
+fring=CritChance:5 and (CritDamage:20 or AtkSpeedBonus:6)
+fgloves=CritChance:9 and (CritDamage:20 or AtkSpeedBonus:6)
+fbracers=CritChance:5 or AtkSpeedBonus:5
+fhelm=CritChance:5 and Sockets:1
+fbelt=CritChance:5 or AtkSpeedBonus:5
+fpants=Sockets:2 and (int:450 or dex:450 or str:450)
+fchest=Sockets:3 and (int:450 or dex:450 or str:450)
+fboots=vita:450 and (int:450 or dex:450 or str:450)
+fshoulder=vita:400 and (int:400 or dex:400 or str:400)
+flefthand=CritChance:9 and (CritDamage:20 or AtkSpeedBonus:6)
+ffollower=CritDamage:90 and (int:550 or dex:550 or str:550)
 
 GoldLarge|CraftingMaterials_|Crafting_|Console_PowerGlobe|CraftingPlan_|Crafting_Tier_|CraftingReagent_|Emerald_|Ruby_|Diamond_|Topaz_|Amethyst_|key
 
-weapon1h[q:6][ilvl:60](fweapon)
-weapon2h[q:6][ilvl:60](fweapon2h)
-Amulet_[q:6][ilvl:60](famu)
-Ring_[q:6][ilvl:60](fring)
-Gloves_[q:6][ilvl:60](fgloves)
-Bracers_[q:6][ilvl:60](fbracers)
-Helm_[q:6][ilvl:60](fhelm)
+tweapon1h[q:6][ilvl:70](fweapon1h)
+tweapon2h[q:6][ilvl:70](fweapon2h)
+tlefthand[q:6][ilvl:70](flefthand)
+tamulet[q:6][ilvl:70](famulet)
+tring[q:6][ilvl:70](fring)
+tgloves[q:6][ilvl:70](fgloves)
+tbracers[q:6][ilvl:70](fbracers)
+thelm[q:6][ilvl:70](fhelm)
+tbelt[q:6][ilvl:70](fbelt)
+tpants[q:6][ilvl:70](fpants)
+tchest[q:6][ilvl:70](fchest)
+tboots[q:6][ilvl:70](fboots)
+tshoulder[q:6][ilvl:70](fshoulder)
+tfollower[q:6][ilvl:70](ffollower)

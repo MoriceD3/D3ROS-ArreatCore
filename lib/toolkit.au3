@@ -4662,8 +4662,8 @@ EndFunc   ;==>LoadingSNOExtended
 
 Func give_str_from_filter($str)
 	Local $result = ""
-	$str = StringReplace($str, "and", " ", 0, 2)
-	$str = StringReplace($str, "or", " ", 0, 2)
+	$str = StringReplace($str, " and ", " ", 0, 2)
+	$str = StringReplace($str, " or ", " ", 0, 2)
 
 	While StringRegExp($str, '(?i)([a-z]+)') = 1
 		$list = StringRegExp($str, '(?i)([a-z]+)', 2)

@@ -581,8 +581,8 @@ EndFunc   ;==>InitSkillHeros
 		If StringRegExp($tab_buff, $rules_filtre) = 1 Then ;patern declaration filtre
 			$tab_RegExp = StringRegExp($tab_buff, $rules_filtre, 2)
 			$tab_buff = StringReplace($tab_buff, $tab_RegExp[0], "", 0, 2)
-			$tab_RegExp[1] = StringReplace($tab_RegExp[1], "and", " and ", 0, 2)
-			$tab_RegExp[1] = StringReplace($tab_RegExp[1], "or", " or ", 0, 2)
+			;$tab_RegExp[1] = StringReplace($tab_RegExp[1], "and", " and ", 0, 2)
+			;$tab_RegExp[1] = StringReplace($tab_RegExp[1], "or", " or ", 0, 2)
 
 			For $x = 0 To UBound($tab_grablist) - 1
 				If StringInStr($tab_RegExp[1], $tab_grablist[$x][0], 0) Then
@@ -626,7 +626,6 @@ EndFunc   ;==>InitSkillHeros
 			$GrabListTab[$i][4] = $curr_filtre_str
 			$i += 1
 		EndIf
-
 		$detect = 0
 	Next
 EndFunc   ;==>Init_GrabListTab
