@@ -1046,38 +1046,28 @@ EndFunc   ;==>IterateActorAtribs
 ;					is set to a specified count and then the array will be scaled
 ;					after when data will stop being available.
 ;==================================================================================
+
 Func IndexSNO($_offset, $_displayInfo = 0)
 
-	Local $CurrentSnoOffset = 0x0
+	;Local $CurrentSnoOffset = 0x0
 	$_MainOffset = _MemoryRead($_offset, $d3, 'ptr')
 	$_Pointer = _MemoryRead($_MainOffset + $_defptr, $d3, 'ptr')
-	$_SnoCount = _MemoryRead($_Pointer + $_defcount, $d3, 'ptr') ;//Doesnt seem to go beyond 256 for some wierd reason
-	If $_SnoCount >= 256 Then ;//So incase it goes beyond...
-		$ignoreSNOcount = 1 ;//This enables a redim after the for loop
-		$_SnoCount = 4056 ;//We put a limit to avoid overflow here
-	Else
-		$ignoreSNOcount = 0
-	EndIf
+	$_SnoCount = _MemoryRead($_Pointer + $_defcount, $d3, 'int')
 
 	$_SnoIndex = _MemoryRead($_Pointer + $_deflink, $d3, 'ptr') ;//Moving from the static into the index
 	$_SNOName = _MemoryRead($_Pointer, $d3, 'char[64]') ;//Usually something like "Something" + Def
-	$TempWindex = $_SnoIndex + 0x10 ;//The header is 0xC in size
+	$TempWindex = $_SnoIndex + 0x10 ;//The header is 0x10 in size
 	If $_displayInfo = 1 Then _log("-----* Indexing " & $_SNOName & " *-----")
 	Dim $_OutPut[$_SnoCount + 1][2] ;//Setting the size of the output array
 
 	For $i = 1 To $_SnoCount Step +1 ;//Iterating through all the elements
 		$_CurSnoOffset = _MemoryRead($TempWindex, $d3, 'ptr') ;//Getting the offset for the item
 		$_CurSnoID = _MemoryRead($_CurSnoOffset, $d3, 'ptr') ;//Going into the item and grapping the GUID which is located at 0x0
-		If $ignoreSNOcount = 1 And $_CurSnoOffset = 0x00000000 And $_CurSnoID = 0x00000000 Then ExitLoop ;//Untill i find a way to get the real count we do this instead.
-		If $ignoreSNOcount = 1 Then $CurIndex = $i
 		$_OutPut[$i][0] = $_CurSnoOffset ;//Poping the data into the output array
 		$_OutPut[$i][1] = $_CurSnoID
 		If $_displayInfo = 1 Then _log($i & " Offset: " & $_CurSnoOffset & " SNOid: " & $_CurSnoID )
-		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x10 later
+		$TempWindex = $TempWindex + 0x14 ;//Next item is located 0x14 later
 	Next
-
-	If $ignoreSNOcount = 1 Then ReDim $_OutPut[$CurIndex][2] ;//Here we do the resizing of the array, to minimize memory footprint!?.
-
 	Return $_OutPut
 EndFunc   ;==>IndexSNO
 

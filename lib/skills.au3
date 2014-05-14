@@ -688,7 +688,7 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_SpectralBlade, "Wizard_SpectralBlade", "", "physical", "", "", 100, 1], _
 						[$Wizard_ArcaneOrb, "Wizard_ArcaneOrb", "", "attack", 30, "arcane", 100, 45], _
 						[$Wizard_ArcaneTorrent, "Wizard_ArcaneTorrent", "", "attack", 16, "arcane", 100, 45], _
-						[$Wizard_Archon, "Wizard_Archon", 120000, "elite", "", "", "", ""], _
+						[$Wizard_Archon, "Wizard_Archon", "", "elite", "", "", "", ""], _
 						[$Wizard_Archon_DisintegrationWave, "Wizard_Archon_DisintegrationWave", "", "attack", 18, "arcane", 100, 45], _
 						[$Wizard_Archon_SlowTime, "Wizard_Archon_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_Archon_Teleport, "Wizard_Archon_Teleport", 15000, "life", "", "", 35, ""], _
