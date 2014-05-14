@@ -34,6 +34,7 @@ Anonymous69 :
 - Remise en route d'une sequence maker valide + backup des données des map en format mapData
 - Ajout d'un outil sequenceChecker
 - Ajout prise de globe en combat
+- Ajout de la fonction ifscenepresent dans les sequences
 
 Euclide : 
 - Version officielle 8.2x

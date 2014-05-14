@@ -1,5 +1,15 @@
 Changelog : 
 
+- Version 1.7 : 14/05/2014
+
+- Mise à jour des offsets pour le patch 2.0.5
+- Ajout de la commande ifscenepresent dans les sequences 
+- Ajout de sequences pour les bounty Hellrift
+- Ajout de mapping de bounty
+- Update fichier skills.au3 (Merci rpingut)
+- Correction de bugs divers
+- Optimisations diverses
+
 - Version 1.6 : 06/05/2014
 
 - Modifications de certaines commandes de séquences : 
