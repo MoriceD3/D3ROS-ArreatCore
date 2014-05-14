@@ -64,6 +64,8 @@ Global $List_Potions = "healthPotion_Console|healthPotion_Legendary"
 Global $List_BountyAct = "1|2|3"
 Global $NoBountyFailbackToAdventure = True
 Global $EndSequenceOnBountyCompletion = True
+Global $BountyAndSequence = False
+Global $StopAfterBounty = False
 Global $grabListFile = ""
 Global $repairafterxxgames = Round(Random(4, 8))
 Global $maxgamelength = 560000
@@ -377,6 +379,12 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	$Dummy = IniRead($profilFile, "Run info", "EndSequenceOnBountyCompletion", $EndSequenceOnBountyCompletion)
 	$EndSequenceOnBountyCompletion = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($profilFile, "Run info", "BountyAndSequence", $BountyAndSequence)
+	$BountyAndSequence = Trim(StringLower($Dummy)) == "true"
+
+	$Dummy = IniRead($profilFile, "Run info", "StopAfterBounty", $StopAfterBounty)
+	$StopAfterBounty = Trim(StringLower($Dummy)) == "true"
 
 	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
 	$debugBot = Trim(StringLower($Dummy)) == "true"

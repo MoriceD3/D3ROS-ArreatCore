@@ -12,7 +12,7 @@ Func _dorun()
         Return False
     EndIf
 
-	If $Totalruns = 1 And Not $PartieSolo Then 
+	If $Totalruns = 1 And Not $PartieSolo Then
 		SetConfigPartieSolo(); TChat configuration du settings
 	EndIf
 
@@ -45,10 +45,10 @@ Func _dorun()
 		CheckAndDefineSize()
 	EndIf
 
-	If Not $PartieSolo Then 
+	If Not $PartieSolo Then
 		WriteMe($WRITE_ME_WELCOME) ; TChat
 	EndIf
-	
+
 	GetAct()
 	EmergencyStopCheck()
 
@@ -80,7 +80,7 @@ Func _botting()
 		If _onloginscreen() Then
 			_log("LOGIN", $LOG_LEVEL_WARNING)
 			_logind3()
-			
+
 			Local $WaitingTime = 0
 			While _onloginscreen() And $WaitingTime < 155
 			   Sleep(500)
@@ -166,7 +166,13 @@ Func _botting()
 			EndIf
 
 			If Not _checkdisconnect() Then
-				_leavegame()
+			   if Not $StopAfterBounty Then
+				  _leavegame()
+			   Else
+				  ; Alerte pour finir la game a la main
+				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+				  MsgBox(0, "ERREUR", " Vous pouvez finir vos bountys!")
+			   EndIf
 			Else
 				_log("Disconnected dc2", $LOG_LEVEL_WARNING)
 				ReConnect()
@@ -273,7 +279,7 @@ Func CheckGameMode()
 	WEnd
 	Sleep(500)
 EndFunc
- 
+
 ;;--------------------------------------------------------------------------------
 ;;     Check KeyTo avoid sell of equiped stuff
 ;;--------------------------------------------------------------------------------

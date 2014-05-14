@@ -120,7 +120,10 @@ Func GetBountySequences($Table_BountyAct)
 			_log("No supported sequences found !, Ending run", $LOG_LEVEL_WARNING)
 			Return False
 		EndIf
-	Else
+	 Else
+		if $BountyAndSequence Then
+			   $SeqList = $SeqList & "|" & $SequenceFileAdventure
+		EndIf
 		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
 		Return $SeqList
 	EndIf
