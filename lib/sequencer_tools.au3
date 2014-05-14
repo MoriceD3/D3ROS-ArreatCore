@@ -911,7 +911,7 @@ Func Read_Scene()
 			If $drawSceneButton <> 0 Then
 				GUICtrlSetState($drawSceneButton, $GUI_DISABLE)
 			EndIf
-			_log("Scene Recorded : " & $nb_totale_scene_record))
+			_log("Scene Recorded : " & $nb_totale_scene_record)
 			Dim $list_sno_scene = IndexSNO($SNOscene, 0)
 			;############################## ITERATION DU SNO ###########################################
 			$Size = Ubound($list_sno_scene) - 1
