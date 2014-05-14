@@ -367,37 +367,94 @@ Global $X1_Monk_MantraOfHealing_v2_Passive = 0x5B1A2
 Global $ItemPassive_x1_Amulet_norm_unique_25_Monk = 0x5B6E8
 Global $Monk_LethalDecoy_Taunt = 0x1AFEF
 
+;# skill_table_monk
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN                                           /  FR
+;# Monk_BlindingFlash                           / Eclair aveuglant
+;# Monk_BreathOfHeaven                          / Soufle divin
+;# Monk_CripplingWave                           / Vague affaiblissante
+;# Monk_CycloneStrike                           / Frappe cyclone
+;# Monk_DashingStrike                           / Frappe eclair
+;# Monk_DeadlyReach                             / Frappe mortelle
+;# Monk_ExplodingPalm                           / Paume explosive
+;# Monk_FistsofThunder                          / Poing de tonnerre
+;# Monk_InnerSanctuary                          / Sanctuaire interieur
+;# Monk_LashingTailKick                         / la griffe du dragon
+;# Monk_MantraOfConviction                      / Mantra de condamnation
+;# Monk_MantraOfEvasion                         / Mantra d evitement
+;# Monk_MantraOfHealing                         / Mantra de guerison
+;# Monk_MantraOfRetribution                     / Mantra de vindicte
+;# Monk_MysticAlly                              / Allie mystique
+;# Monk_MysticAlly_Pet_RuneA_Kick
+;# Monk_MysticAlly_Pet_RuneB_WaveAttack
+;# Monk_MysticAlly_Pet_RuneC_GroundPunch
+;# Monk_MysticAlly_Pet_RuneD_AOEAttack
+;# Monk_MysticAlly_Pet_Weapon_Melee_Instant
+;# Monk_Serenity                                / Serenite
+;# Monk_SevenSidedStrike                        / Les sept frappes
+;# Monk_SweepingWind                            / vent tournoyant
+;# Monk_TempestRush                             / Ruee de la tempete
+;# Monk_WaveOfLight                             / Onde de lumiere
+;# WayOfTheHundredFists                         / La voie des mille poings
+;# Epiphany                                     / Epiphanie
 
 Global $Monk_skill_Table[27][8] = [ _
-								[$Monk_BlindingFlash, "Monk_BlindingFlash", 15000, "attack&elite", 10, "spirit", "", ""], _
-								[$Monk_BreathOfHeaven, "Monk_BreathOfHeaven", 13000, "buff|life", 25, "spirit", 60, ""], _
-								[$Monk_CripplingWave, "Monk_CripplingWave", "", "physical", "", "", "", ""], _
-								[$Monk_CycloneStrike, "Monk_CycloneStrike", 2000, "attack", 50, "spirit", "", 20], _
-								[$X1_Monk_DashingStrike, "Monk_DashingStrike", 2000, "attack", 25, "spirit", "", 10], _
-								[$Monk_DeadlyReach, "Monk_DeadlyReach", "", "physical", "", "", "", ""], _
-								[$Monk_ExplodingPalm, "Monk_ExplodingPalm", 2000, "attack&elite", 40, "spirit", "", 10], _
-								[$Monk_FistsofThunder, "Monk_FistsofThunder", "", "physical", "", "", "", ""], _
-								[$X1_Monk_InnerSanctuary, "Monk_InnerSanctuary", 20000, "life", 30, "spirit", 40, ""], _
-								[$Monk_LashingTailKick, "Monk_LashingTailKick", 2000, "attack", 30, "spirit", "", 10], _
-								[$X1_Monk_MantraOfConviction_v2, "Monk_MantraOfConviction", 30000, "buff&elite", 50, "spirit", "", ""], _
-								[$X1_Monk_MantraOfEvasion_v2, "Monk_MantraOfEvasion", 30000, "buff", 50, "spirit", "", ""], _
-								[$X1_Monk_MantraOfHealing_v2, "Monk_MantraOfHealing", 30000, "buff", 50, "spirit", "", ""], _
-								[$X1_Monk_MantraOfRetribution_v2, "Monk_MantraOfRetribution", 30000, "buff", 50, "spirit", "", ""], _
-								[$X1_Monk_MysticAlly_v2, "Monk_MysticAlly", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_MysticAlly_Pet_RuneA_Kick, "Monk_MysticAlly_Pet_RuneA_Kick", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_MysticAlly_Pet_RuneB_WaveAttack, "Monk_MysticAlly_Pet_RuneB_WaveAttack", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_MysticAlly_Pet_RuneC_GroundPunch, "Monk_MysticAlly_Pet_RuneC_GroundPunch", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_MysticAlly_Pet_RuneD_AOEAttack, "Monk_MysticAlly_Pet_RuneD_AOEAttack", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_MysticAlly_Pet_Weapon_Melee_Instant, "Monk_MysticAlly_Pet_Weapon_Melee_Instant", "", "buff", 25, "spirit", "", ""], _
-								[$Monk_Serenity, "Monk_Serenity", 20000, "life", 10, "spirit", 40, ""], _
-								[$Monk_SevenSidedStrike, "Monk_SevenSidedStrike", 29000, "attack&elite", 50, "spirit", "", 20], _
-								[$Monk_SweepingWind, "Monk_SweepingWind", 2000, "buff&attack", 40, "spirit", "", 30], _
-								[$Monk_TempestRush, "Monk_TempestRush", "", "move", 25, "spirit", "", ""], _
-								[$Monk_WaveOfLight, "Monk_WaveOfLight", 2000, "attack", 75, "spirit", "", 15], _
-								[$Monk_WayOfTheHundredFists, "WayOfTheHundredFists", "", "physical", "", "", "", ""], _
-								[$X1_Monk_Epiphany, "Epiphany", 65000, "attack", 0, "spirit",  "", ""] _
-							]
+						[$Monk_BlindingFlash, "Monk_BlindingFlash", 15000, "attack&elite", "", "spirit", "", ""], _
+						[$Monk_BreathOfHeaven, "Monk_BreathOfHeaven", 15000, "buff|life", "", "spirit", 60, ""], _
+						[$Monk_CripplingWave, "Monk_CripplingWave", "", "physical", "", "", "", ""], _
+						[$Monk_CycloneStrike, "Monk_CycloneStrike", 2000, "attack", 50, "spirit", "", 20], _
+						[$X1_Monk_DashingStrike, "Monk_DashingStrike", 6000, "attack", "", "spirit", "", 10], _
+						[$Monk_DeadlyReach, "Monk_DeadlyReach", "", "physical", "", "", "", ""], _
+						[$Monk_ExplodingPalm, "Monk_ExplodingPalm", 2000, "attack&elite", 40, "spirit", "", 10], _
+						[$Monk_FistsofThunder, "Monk_FistsofThunder", "", "physical", "", "", "", ""], _
+						[$X1_Monk_InnerSanctuary, "Monk_InnerSanctuary", 20000, "life", "", "spirit", 40, ""], _
+						[$Monk_LashingTailKick, "Monk_LashingTailKick", 2000, "attack", 30, "spirit", "", 10], _
+						[$X1_Monk_MantraOfConviction_v2, "Monk_MantraOfConviction", 30000, "buff&elite", 50, "spirit", "", ""], _
+						[$X1_Monk_MantraOfEvasion_v2, "Monk_MantraOfEvasion", 30000, "buff", 50, "spirit", "", ""], _
+						[$X1_Monk_MantraOfHealing_v2, "Monk_MantraOfHealing", 30000, "buff", 50, "spirit", "", ""], _
+						[$X1_Monk_MantraOfRetribution_v2, "Monk_MantraOfRetribution", 30000, "buff", 50, "spirit", "", ""], _
+						[$X1_Monk_MysticAlly_v2, "Monk_MysticAlly", 30000, "buff", "", "spirit", "", ""], _
+						[$Monk_MysticAlly_Pet_RuneA_Kick, "Monk_MysticAlly_Pet_RuneA_Kick", "", "buff", 25, "spirit", "", ""], _
+						[$Monk_MysticAlly_Pet_RuneB_WaveAttack, "Monk_MysticAlly_Pet_RuneB_WaveAttack", "", "buff", 25, "spirit", "", ""], _
+						[$Monk_MysticAlly_Pet_RuneC_GroundPunch, "Monk_MysticAlly_Pet_RuneC_GroundPunch", "", "buff", 25, "spirit", "", ""], _
+						[$Monk_MysticAlly_Pet_RuneD_AOEAttack, "Monk_MysticAlly_Pet_RuneD_AOEAttack", "", "buff", 25, "spirit", "", ""], _
+						[$Monk_MysticAlly_Pet_Weapon_Melee_Instant, "Monk_MysticAlly_Pet_Weapon_Melee_Instant", "", "buff", 25, "spirit", "", ""], _
+						[$Monk_Serenity, "Monk_Serenity", 20000, "life", "", "spirit", 35, ""], _
+						[$Monk_SevenSidedStrike, "Monk_SevenSidedStrike", 30000, "attack&elite", 50, "spirit", "", 20], _
+						[$Monk_SweepingWind, "Monk_SweepingWind", 2000, "buff&attack", 75, "spirit", "", 30], _
+						[$Monk_TempestRush, "Monk_TempestRush", 2000, "move", 25, "spirit", "", ""], _
+						[$Monk_WaveOfLight, "Monk_WaveOfLight", 2000, "attack", 75, "spirit", "", 15], _
+						[$Monk_WayOfTheHundredFists, "WayOfTheHundredFists", "", "physical", "", "", "", ""], _
+						[$X1_Monk_Epiphany, "Epiphany", 60000, "attack", 0, "spirit",  "", ""] _
+						]
 
+;# skill_table_crusader
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN                        /  FR
+;# Crusader_Punish           / Correction
+;# Crusader_ShieldBash2      / Coup de bouclier
+;# Crusader_Slash            / Cautere
+;# Crusader_ShieldGlare      / Eblouissement
+;# Crusader_SweepAttack      / Fustigation
+;# Crusader_IronSkin         / Galvanisation
+;# Crusader_Provoke          / Persiflage
+;# Crusader_Smite            / Expiation
+;# Crusader_BlessedHammer    / Marteau beni
+;# Crusader_SteedCharge      / Charge de destrier
+;# Crusader_LawsOfValor      / Loi de la vaillance
+;# Crusader_Justice          / Justice
+;# Crusader_Consecration     / Sacre
+;# Crusader_LawsOfJustice    / Loi de la justice
+;# Crusader_FallingSword     / Couperet
+;# Crusader_BlessedShield    / Bouclier divin
+;# Crusader_Condemn          / Blame
+;# Crusader_Judgment         / Jugement
+;# Crusader_LawsOfHope       / Loi de l espoir
+;# Crusader_AkaratsChampion  / Champion d akarat
+;# Crusader_FistOfTheHeavens / Poing des cieux
+;# Crusader_Phalanx3         / Phalange
+;# Crusader_HeavensFury3     / Fureur des cieux
+;# Crusader_Bombardment      / Grele
 
 Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_Punish, "Crusader_Punish", 0, "attack", "", "", "", ""], _
@@ -417,95 +474,210 @@ Global $Crusader_skill_Table[24][8] = [ _
                         [$X1_Crusader_FallingSword, "Crusader_FallingSword", 30000, "attack", 25, "wrath", 100, 35], _
                         [$X1_Crusader_BlessedShield, "Crusader_BlessedShield", "", "attack", 20, "wrath", 100, 45], _
                         [$X1_Crusader_Condemn, "Crusader_Condemn", 15000, "attack", "", "", "", 10], _
-                        [$X1_Crusader_Judgment, "Crusader_Judgment", 5000, "attack", "", "", 100, 35], _
+                        [$X1_Crusader_Judgment, "Crusader_Judgment", 20000, "attack", "", "", 100, 35], _
                         [$X1_Crusader_LawsOfHope2, "Crusader_LawsOfHope", 45000, "life", 0, "", 80, ""], _
                         [$X1_Crusader_AkaratsChampion, "Crusader_AkaratsChampion", 90000, "elite", "", "", 100, 45], _
                         [$X1_Crusader_FistOfTheHeavens, "Crusader_FistOfTheHeavens", 0, "attack", 30, "wrath", 100, 45], _
                         [$x1_Crusader_Phalanx3, "Crusader_Phalanx3", 0, "attack", 30, "wrath", 100, 45], _
                         [$X1_Crusader_HeavensFury3, "Crusader_HeavensFury3", 20000, "attack", 0, "wrath", 100, 45], _
                         [$X1_Crusader_Bombardment, "Crusader_Bombardment", 60000, "elite", "", "", 100, 45] _
-                    ]
+						]
 
+;# skill_table_witchdoctor
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN / FR
+;# Witchdoctor_AcidCloud       / Nuage acide
+;# Witchdoctor_BigBadVoodoo    /  Le grand mechant vaudou
+;# Witchdoctor_CorpseSpider    / Araignees necrophage
+;# Witchdoctor_FetishArmy      / Armee de fetish
+;# Witchdoctor_Firebats        / Chauve souris
+;# Witchdoctor_Firebomb        / Bombe incendiaire
+;# Witchdoctor_Gargantuan      / Gargantua
+;# Witchdoctor_GraspOfTheDead  / Poigne des morts
+;# Witchdoctor_Haunt           / Hantise
+;# Witchdoctor_Hex             / Malefice
+;# Witchdoctor_Horrify         / Epouvante
+;# Witchdoctor_Locust_Swarm    / Nuee de sauterelles
+;# Witchdoctor_MassConfusion   / confusion de masse
+;# Witchdoctor_PlagueOfToads   / Invasion de grenouilles
+;# Witchdoctor_Piranhas        / Piranhas
+;# Witchdoctor_PoisonDart      / Flechette empoisonnee
+;# Witchdoctor_Sacrifice       / Sacrifice
+;# Witchdoctor_SoulHarvest     / Moisson d ames
+;# Witchdoctor_SpiritBarrage   / Rafale d esprit
+;# Witchdoctor_SpiritWalk      / Marche fantome
+;# Witchdoctor_SummonZombieDog / Chien zombie
+;# Witchdoctor_WallOfZombies   / Mur de zombies
+;# Witchdoctor_ZombieCharger   / Zombie surprise
 
-Global $WitchDoctor_skill_Table[22][8] =	[ _
-						[$Witchdoctor_AcidCloud, "Witchdoctor_AcidCloud", 1500, "attack", 172, "mana", "", 45], _
+Global $WitchDoctor_skill_Table[23][8] =	[ _
+						[$Witchdoctor_AcidCloud, "Witchdoctor_AcidCloud", 1500, "attack", 175, "mana", "", 45], _
 						[$Witchdoctor_BigBadVoodoo, "Witchdoctor_BigBadVoodoo", 120000, "buff", 0, "mana", "", ""], _
 						[$Witchdoctor_CorpseSpider, "Witchdoctor_CorpseSpider", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "buff", 0, "mana", "", ""], _
-						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 0, "attack", 98, "mana", "", 10], _
+						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 2000, "attack", 300, "mana", "", 10], _
 						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 0, "mana", "", 45], _
-						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 147, "mana", "", ""], _
-						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 122, "mana", "", 10], _
+						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 0, "mana", "", ""], _
+						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 150, "mana", "", 10], _
 						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 50, "mana", "", 10], _
-						[$Witchdoctor_Hex, "Witchdoctor_Hex", 15000, "buff", 49, "mana", "", ""], _
-						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 16000, "attack", 37, "mana", "", 12], _
-						[$Witchdoctor_Locust_Swarm, "Witchdoctor_Locust_Swarm", 0, "attack", 196, "mana", "", 10], _
-						[$Witchdoctor_MassConfusion, "Witchdoctor_MassConfusion", 60000, "attack", 74, "mana", "", 20], _
+						[$Witchdoctor_Hex, "Witchdoctor_Hex", 15000, "buff", 0, "mana", "", ""], _
+						[$Witchdoctor_Horrify, "Witchdoctor_Horrify", 16000, "attack", 0, "mana", "", 12], _
+						[$Witchdoctor_Locust_Swarm, "Witchdoctor_Locust_Swarm", 0, "attack", 300, "mana", "", 15], _
+						[$Witchdoctor_MassConfusion, "Witchdoctor_MassConfusion", 60000, "attack", 0, "mana", "", 20], _
 						[$Witchdoctor_PlagueOfToads, "Witchdoctor_PlagueOfToads", 0 , "physical", 0, "mana", "", 35], _
+						[$Witchdoctor_Piranhas, "Witchdoctor_Piranhas", 8000, "attack&buff", 250 , "mana" , "" , 20], _
 						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Sacrifice, "Witchdoctor_Sacrifice", 0, "attack&elite", 0, "mana", "", 10], _
-						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 16000, "attack", 59, "mana", "", 16], _
-                        [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 108, "mana", "", 45], _
-						[$Witchdoctor_SpiritWalk, "Witchdoctor_SpiritWalk", 2000, "buff_permanent", 49, "mana", 80, ""], _
-						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 45000, "move", 49, "mana", "", ""], _
-						[$Witchdoctor_WallOfZombies, "Witchdoctor_WallOfZombies", 20000, "attack&elite", 130, "mana", "", 45], _
-						[$Witchdoctor_ZombieCharger, "Witchdoctor_ZombieCharger", 0, "attack&elite", 140, "mana", "", 20] _
-							]
+						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 15000, "attack", 0, "mana", "", 16], _
+                        [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 100, "mana", "", 45], _
+						[$Witchdoctor_SpiritWalk, "Witchdoctor_SpiritWalk", 15000, "buff_permanent", 0, "mana", 80, ""], _
+						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 45000, "move", 0, "mana", "", ""], _
+						[$Witchdoctor_WallOfZombies, "Witchdoctor_WallOfZombies", 8000, "attack&elite", 0, "mana", "", 45], _
+						[$Witchdoctor_ZombieCharger, "Witchdoctor_ZombieCharger", 2000, "attack&elite", 150, "mana", "", 20] _
+						]
 
+;# skill_table_barbarian
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN / FR
+;# Barbarian_Avalanche           / Avalanche
+;# Barbarian_Bash                / Raclee
+;# Barbarian_HammerOfTheAncients / Marteau des anciens
+;# Barbarian_Cleave              / Fendoir
+;# Barbarian_GroundStomp         / Choc terrestre
+;# Barbarian_Rend                / Dechirure
+;# Barbarian_Leap                / Bond
+;# Barbarian_AncientSpear        / Lance des anciens
+;# Barbarian_Frenzy              / Frenesie
+;# Barbarian_SeismicSlam         / Secousse sismique
+;# Barbarian_Revenge             / Vangeance
+;# Barbarian_WeaponThrow         / Lancer d arme
+;# Barbarian_Sprint              / Sprint
+;# Barbarian_ThreateningShout    / Cri d intimidation
+;# Barbarian_Earthquake          / Tremblement de terre
+;# Barbarian_Whirlwind           / Trombe
+;# Barbarian_FuriousCharge       / Charge furieuse
+;# Barbarian_IgnorePain          / Dur au mal
+;# Barbarian_BattleRage          / Fureur guerriere
+;# Barbarian_CallOfTheAncients   / Appel des anciens
+;# Barbarian_Overpower           / Dominance
+;# Barbarian_WarCry              / Cri de guerre
+;# Barbarian_WrathOfTheBerserker / Courroux du berserker
 
 Global $Barbarian_Skill_Table[23][8] = [ _
 						[$X1_Barbarian_Avalanche_v2,"Barbarian_Avalanche",30000,"attack&elite",0,"fury","",30], _
 						[$Barbarian_Bash,"Barbarian_Bash",0,"physical","","","",""], _
 						[$Barbarian_HammerOfTheAncients,"Barbarian_HammerOfTheAncients",0,"attack",20,"fury","",""], _
 						[$Barbarian_Cleave,"Barbarian_Cleave",0,"physical","","","",""], _
-						[$Barbarian_GroundStomp,"Barbarian_GroundStomp",12000,"physical","","","",""], _
-						[$Barbarian_Rend,"Barbarian_Rend",4000,"attack",20,"fury","",10], _
-						[$Barbarian_Leap,"Barbarian_Leap",10000,"physical","","","",""], _
-						[$X1_Barbarian_AncientSpear,"Barbarian_AncientSpear",0,"attack","25","fury","",50], _
+						[$Barbarian_GroundStomp,"Barbarian_GroundStomp",12000,"physical","","","",14], _
+						[$Barbarian_Rend,"Barbarian_Rend",4000,"attack",20,"fury","",12], _
+						[$Barbarian_Leap,"Barbarian_Leap",10000,"physical","","","",8], _
+						[$X1_Barbarian_AncientSpear,"Barbarian_AncientSpear",0,"attack",25,"fury","",50], _
 						[$Barbarian_Frenzy,"Barbarian_Frenzy",0,"physical","","","",""], _
-						[$Barbarian_SeismicSlam,"Barbarian_SeismicSlam",0,"attack",30,"fury","",""], _
+						[$Barbarian_SeismicSlam,"Barbarian_SeismicSlam",0,"attack",30,"fury","",45], _
 						[$Barbarian_Revenge,"Barbarian_Revenge",0,"attack","","",80,15], _
 						[$X1_Barbarian_WeaponThrow,"Barbarian_WeaponThrow",0,"attack",0,"fury","",""], _
 						[$Barbarian_Sprint,"Barbarian_Sprint",2000,"move",20,"fury","",""], _
-						[$Barbarian_ThreateningShout,"Barbarian_ThreateningShout",10000,"attack","","","",25], _
-						[$Barbarian_Earthquake,"Barbarian_Earthquake",120000,"attack&elite",50,"fury","",18], _
+						[$Barbarian_ThreateningShout,"Barbarian_ThreateningShout",15000,"attack","","","",25], _
+						[$Barbarian_Earthquake,"Barbarian_Earthquake",60000,"attack&elite",50,"fury","",18], _
 						[$Barbarian_Whirlwind,"Barbarian_Whirlwind",0,"attack",10,"fury","",30], _
 						[$Barbarian_FuriousCharge,"Barbarian_FuriousCharge",10000,"attack","","","",""], _
 						[$Barbarian_IgnorePain,"Barbarian_IgnorePain",30000,"life","","",60,""], _
-						[$Barbarian_BattleRage,"Barbarian_BattleRage",40000,"buff",20,"fury","",""], _
+						[$Barbarian_BattleRage,"Barbarian_BattleRage",120000,"buff",20,"fury","",""], _
 						[$Barbarian_CallOfTheAncients,"Barbarian_CallOfTheAncients",120000,"attack&elite",0,"fury","",50], _
 						[$Barbarian_Overpower,"Barbarian_Overpower",12000,"attack","0","fury","",9], _
 						[$X1_Barbarian_WarCry_v2,"Barbarian_WarCry",20000,"buff_permanent","","","",""], _
 						[$Barbarian_WrathOfTheBerserker,"Barbarian_WrathOfTheBerserker",120000,"attack&elite",0,"fury","",40] _
-							]
+						]
+
+;# skill_table_demonhunter
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN / FR
+;# DemonHunter_BolaShot         / Bolas
+;# DemonHunter_Caltrops         / Chausse trappe
+;# DemonHunter_Chakram          / Chakram
+;# DemonHunter_ClusterArrow     / Tir multiple
+;# DemonHunter_Companion        / Compagnon
+;# DemonHunter_ElementalArrow   / Fleche des elements
+;# DemonHunter_EntanglingShot   / Tir constricteur
+;# DemonHunter_EvasiveFire      / Tir de repli
+;# X1_DemonHunter_Vengeance     / Vendetta
+;# DemonHunter_EvasiveFireFlip  / Tir de repli
+;# DemonHunter_FanOfKnives      / Tourbillon de lames
+;# DemonHunter_Grenades         / Grenades
+;# DemonHunter_HungeringArrow   / Fleche vorace
+;# DemonHunter_Impale           / Empaleur
+;# DemonHunter_MarkedForDeath   / Marque de la mort
+;# DemonHunter_Multishot        / rafale
+;# DemonHunter_Preparation      / Preparation
+;# DemonHunter_RainOfVengeance  / Pluie de vangeance
+;# DemonHunter_RapidFire        / Tir rapide
+;# DemonHunter_Sentry           / Sentinelle
+;# DemonHunter_ShadowPower      / Puissance de l ombre
+;# DemonHunter_SmokeScreen      / Ecran de fumee
+;# DemonHunter_SpikeTrap        / Piege a pointes
+;# DemonHunter_Strafe           / Fleche a fragmentation
+;# DemonHunter_Vault            / acrobatie
 
 Global $DemonHunter_skill_Table[25][8] = [ _
 						[$DemonHunter_Bolas, "DemonHunter_BolaShot", 0, "attack&elite", "", "", "", ""], _
 						[$DemonHunter_Caltrops, "DemonHunter_Caltrops", 3000, "life&elite", 6, "discipline", 80, 50], _
-						[$DemonHunter_Chakram, "DemonHunter_Chakram", 0, "physical", "", "", "", ""], _
-						[$DemonHunter_ClusterArrow, "DemonHunter_ClusterArrow", 0, "attack", 45, "hatred", 100, 50], _
-						[$X1_DemonHunter_Companion, "DemonHunter_Companion", 30000, "buff", 10, "discipline", "", ""], _
-						[$DemonHunter_ElementalArrow, "DemonHunter_ElementalArrow", 0, "physical", "", "", "", ""], _
+						[$DemonHunter_Chakram, "DemonHunter_Chakram", 0, "physical", 10, "hatred", "", ""], _
+						[$DemonHunter_ClusterArrow, "DemonHunter_ClusterArrow", 0, "attack", 25, "hatred", 100, 50], _
+						[$X1_DemonHunter_Companion, "DemonHunter_Companion", 30000, "buff", 0, "discipline", "", ""], _
+						[$DemonHunter_ElementalArrow, "DemonHunter_ElementalArrow", 0, "physical", 10, "hatred", "", ""], _
 						[$X1_DemonHunter_EntanglingShot, "DemonHunter_EntanglingShot", 0, "physical", "", "", "", ""], _
 						[$X1_DemonHunter_EvasiveFire, "DemonHunter_EvasiveFire", 3000, "life&attack", 4, "discipline", 80, 30], _
-						[$X1_DemonHunter_Vengeance, "X1_DemonHunter_Vengeance", 0, "elite", "", "", "", ""], _
+						[$X1_DemonHunter_Vengeance, "X1_DemonHunter_Vengeance", 90000, "elite", "", "", "", ""], _
 						[$DemonHunter_EvasiveFire_Flip, "DemonHunter_EvasiveFireFlip", 3000, "life&attack", 4, "discipline", 80, 30], _
 						[$DemonHunter_FanOfKnives, "DemonHunter_FanOfKnives", 10000, "life&attack", 20, "hatred", 80, 10], _
 						[$DemonHunter_Grenades, "DemonHunter_Grenades" , 0, "attack", "", "", "", ""], _
 						[$DemonHunter_HungeringArrow, "DemonHunter_HungeringArrow", 0, "physical", "", "", "", ""], _
-						[$DemonHunter_Impale, "DemonHunter_Impale", 0, "elite", 25, "hatred", "", ""], _
-						[$DemonHunter_MarkedForDeath, "DemonHunter_MarkedForDeath", 15000, "elite", 4, "discipline", "", ""], _
-						[$DemonHunter_Multishot, "DemonHunter_Multishot", 0, "attack", 30, "hatred", "", 30], _
+						[$DemonHunter_Impale, "DemonHunter_Impale", 0, "elite", 20, "hatred", "", ""], _
+						[$DemonHunter_MarkedForDeath, "DemonHunter_MarkedForDeath", 0, "elite", 3, "discipline", "", ""], _
+						[$DemonHunter_Multishot, "DemonHunter_Multishot", 0, "attack",12, "hatred", "", 30], _
 						[$DemonHunter_Preparation, "DemonHunter_Preparation", 45000, "buff", "", "", "", ""], _
-						[$DemonHunter_RainOfVengeance, "DemonHunter_RainOfVengeance", 10000, "buff", "", "", "", 50], _
-						[$DemonHunter_RapidFire, "DemonHunter_RapidFire", 0, "elite", "", "", "", ""], _
-						[$DemonHunter_Sentry, "DemonHunter_Sentry", 8000, "life", 30, "hatred", 80, ""], _
+						[$DemonHunter_RainOfVengeance, "DemonHunter_RainOfVengeance", 30000, "buff", "", "", "", 50], _
+						[$DemonHunter_RapidFire, "DemonHunter_RapidFire", 0, "elite", 26, "hatred", "", ""], _
+						[$DemonHunter_Sentry, "DemonHunter_Sentry", 6000, "life", 30, "hatred", 80, ""], _
 						[$DemonHunter_ShadowPower, "DemonHunter_ShadowPower", 5000, "life", 14, "discipline", 75, ""], _
 						[$DemonHunter_SmokeScreen, "DemonHunter_SmokeScreen", 3000, "life", 14, "discipline", 50, ""], _
 						[$DemonHunter_SpikeTrap, "DemonHunter_SpikeTrap", 5000, "attack&life", 30, "hatred", 90, 50], _
-						[$DemonHunter_Strafe, "DemonHunter_Strafe", 0, "physical", 12, "hatred",  "", ""], _
+						[$DemonHunter_Strafe, "DemonHunter_Strafe", 0, "physical", 40, "hatred",  "", ""], _
 						[$DemonHunter_Vault, "DemonHunter_Vault", 3000, "life", 8, "discipline", 85, ""] _
-							]
+						]
+
+;# skill_table_wizard
+;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
+;# EN / FR
+;# Wizard_Blizzard                     / Blizzard
+;# Wizard_DiamondSkin                  / Peau de diamant
+;# Wizard_EnergyArmor                  / Armure d energie
+;# Wizard_Familiar                     / Familier
+;# Wizard_MagicWeapon                  / Enchantement de l arme
+;# Wizard_SpectralBlade                / Lame spectrale
+;# Wizard_ArcaneOrb                    / Orbe arcanique
+;# Wizard_ArcaneTorrent                / Torrent arcanique
+;# Wizard_Archon                       / Archonte
+;# Wizard_Archon_DisintegrationWave    / Archonte -
+;# Wizard_Archon_SlowTime              / Archonte - ralentissement du temps
+;# Wizard_Archon_Teleport              / Archonte - teleportation
+;# Wizard_Disintegrate                 / Desintegration
+;# Wizard_Electrocute                  / Electrocution
+;# Wizard_EnergyTwister                / Tornade d energie
+;# Wizard_ExplosiveBlast               / Decharge explosive
+;# Wizard_FrostNova                    / Nova de givre
+;# Wizard_Hydra                        / Hydre
+;# Wizard_IceArmor                     / Armure de glace
+;# Wizard_MagicMissile                 / Projectile magique
+;# Wizard_Meteor                       / Meteor
+;# Wizard_MirrorImage                  / Image miroir
+;# Wizard_RayOfFrost                   / Rayon de givre
+;# Wizard_ShockPulse                   / Onde electrique
+;# Wizard_SlowTime                     / Ralentissement du temps
+;# Wizard_StormArmor                   / Armure des tempetes
+;# Wizard_Teleport                     / Teleportation
+;# Wizard_WaveOfForce                  / Onde de choc
+;# Wizard_BlackHole                    / Trou noir
 
 Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Blizzard, "Wizard_Blizzard", 2500, "attack", 40, "arcane", 100, 45], _
@@ -514,9 +686,9 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Familiar, "Wizard_Familiar", 600000, "buff", 20, "arcane", "", ""], _
 						[$Wizard_MagicWeapon, "Wizard_MagicWeapon", 600000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_SpectralBlade, "Wizard_SpectralBlade", "", "physical", "", "", 100, 1], _
-						[$Wizard_ArcaneOrb, "Wizard_ArcaneOrb", "", "attack", 35, "arcane", 100, 45], _
+						[$Wizard_ArcaneOrb, "Wizard_ArcaneOrb", "", "attack", 30, "arcane", 100, 45], _
 						[$Wizard_ArcaneTorrent, "Wizard_ArcaneTorrent", "", "attack", 16, "arcane", 100, 45], _
-						[$Wizard_Archon, "Wizard_Archon", "", "elite", "", "", "", ""], _
+						[$Wizard_Archon, "Wizard_Archon", 120000, "elite", "", "", "", ""], _
 						[$Wizard_Archon_DisintegrationWave, "Wizard_Archon_DisintegrationWave", "", "attack", 18, "arcane", 100, 45], _
 						[$Wizard_Archon_SlowTime, "Wizard_Archon_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_Archon_Teleport, "Wizard_Archon_Teleport", 15000, "life", "", "", 35, ""], _
@@ -524,19 +696,18 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_Electrocute, "Wizard_Electrocute", "", "physical", "", "", "100", 45], _
 						[$Wizard_EnergyTwister, "Wizard_EnergyTwister", 6000, "attack", 35, "arcane", 100, 20], _
 						[$Wizard_ExplosiveBlast, "Wizard_ExplosiveBlast", 6000, "life", 20, "arcane", 50, ""], _
-						[$Wizard_FrostNova, "Wizard_FrostNova", 12000, "life", "", "", "45", 10], _
-						[$Wizard_Hydra, "Wizard_Hydra", 5000, "buff", 15, "arcane", "", ""], _
+						[$Wizard_FrostNova, "Wizard_FrostNova", 11000, "life", "", "", "45", 10], _
+						[$Wizard_Hydra, "Wizard_Hydra", 15000, "buff", 15, "arcane", "", ""], _
 						[$Wizard_IceArmor, "Wizard_IceArmor", 110000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_MagicMissile, "Wizard_MagicMissile", "", "physical", "", "", 100, 45], _
 						[$Wizard_Meteor, "Wizard_Meteor", 2500, "attack", 40, "arcane", 100, 45], _
-						[$Wizard_MirrorImage, "Wizard_MirrorImage", 14000, "attack", "", "arcane", 100, 45], _
+						[$Wizard_MirrorImage, "Wizard_MirrorImage", 15000, "attack", "", "arcane", 100, 45], _
 						[$Wizard_RayOfFrost, "Wizard_RayOfFrost", "", "attack", 16, "arcane", 100, 45], _
 						[$Wizard_ShockPulse, "Wizard_ShockPulse", "", "physical", "", "", 100, 45], _
 						[$Wizard_SlowTime, "Wizard_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_StormArmor, "Wizard_StormArmor", 110000, "buff", 25, "arcane", "", ""], _
-						[$Wizard_Teleport, "Wizard_Teleport", 15000, "life", "", "", 50, ""], _
+						[$Wizard_Teleport, "Wizard_Teleport", 16000, "life", "", "", 50, ""], _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
-
 ;[ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE]
