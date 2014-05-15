@@ -1,5 +1,9 @@
 Changelog : 
 
+- Version 1.7.6 : 15/05/2014
+
+- Fix bug detection fin de bounty dans certains cas
+
 - Version 1.7.5 : 15/05/2014
 
 - Améliorations skills.au3 pour le nouveau patch
