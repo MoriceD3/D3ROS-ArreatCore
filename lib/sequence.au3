@@ -44,14 +44,13 @@ Func IsQuestFinished($QuestId)
 
 	$_itrQuestManA   = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
 	$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
-	$SeqList = ""
-	$acts = _ArrayToString($Table_BountyAct,"|")
 
 	While $_Curr_Quest_Ofs <> 0
 		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
 		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 		If $Quest_State > 1 And $Quest_ID = $QuestId Then
 			_log("Quest completed : " & $QuestId & "(" & $Quest_State & ")")
+			$ActiveQuest = -1
 			Return True
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
