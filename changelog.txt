@@ -1,5 +1,15 @@
 Changelog : 
 
+- Version 1.7.5 : 15/05/2014
+
+- Améliorations skills.au3 pour le nouveau patch
+- Amélioration détection de la quête en cours pour fin de bounty 
+- Correction des bugs and / or dans les grablist et mise à jour de la grablist par défaut pour plus d'exemples
+-- Remarque : Attention a bien mettre des espaces entre vos and / or et les () !
+- Correction et optimisation de la fonction MonsterPriority
+- Correction de bugs divers
+- Optimisations diverses
+
 - Version 1.7 : 14/05/2014
 
 - Mise à jour des offsets pour le patch 2.0.5
