@@ -1576,8 +1576,7 @@ Func IterateFilterAttackV4($IgnoreList)
 		EndIf
 
 		If $MonsterPriority Then
-			Dim $item_buff_2D_buff = TriObjectMonster($item_buff_2D)
-			Dim $item_buff_2D = $item_buff_2D_buff
+			$item_buff_2D = TriObjectMonster($item_buff_2D)
 		EndIf
 
 		Return $item_buff_2D
@@ -1626,89 +1625,27 @@ EndFunc
 
 Func TriObjectMonster($item)
 
-	Dim $tab_monster[1][$TableSizeGuidStruct+1]
-	Dim $tab_other[1][$TableSizeGuidStruct+1]
-	Dim $tab_mixte[1][$TableSizeGuidStruct+1]
-	Dim $tab_elite[1][$TableSizeGuidStruct+1]
-	Dim $item_temp[$TableSizeGuidStruct+1]
-	$compt_monster = 0
-	$compt_other = 0
-	$compt_elite = 0
-	$compt_mixte = 0
+	Dim $result_table[UBound($item)][$TableSizeGuidStruct + 1]
+
+	$Position = 0
+	For $i = 0 To UBound($item) - 1
+		If $item[$i][13] == $ITEM_TYPE_MOB Then
+			For $y = 0 To $TableSizeGuidStruct
+				$result_table[$Position][$y] = $item[$i][$y]
+			Next
+			$Position += 1
+		EndIf
+	Next
 
 	For $i = 0 To UBound($item) - 1
-
-		For $z = 0 to $TableSizeGuidStruct
-			$item_temp[$z] = $item[$i][$z]
-		Next
-
-
-;~
-;~ 		If DetectElite($item[$i][0]) then
-
-;~ 			If UBound($tab_elite) > 1 Or $compt_elite <> 0 Then
-;~ 				ReDim $tab_elite[UBound($tab_elite) + 1][10]
-;~ 			EndIf
-;~ 			For $y = 0 To 9
-;~ 				$tab_elite[UBound($tab_elite) - 1][$y] = $item[$i][$y]
-;~ 			Next
-;~ 			$compt_elite += 1
-
-;~ 		Else
-		If Is_Mob($item_temp) Then
-			If UBound($tab_monster) > 1 Or $compt_monster <> 0 Then
-				ReDim $tab_monster[UBound($tab_monster) + 1][$TableSizeGuidStruct+1]
-			EndIf
+		If Not ($item[$i][13] == $ITEM_TYPE_MOB) Then
 			For $y = 0 To $TableSizeGuidStruct
-				$tab_monster[UBound($tab_monster) - 1][$y] = $item[$i][$y]
+				$result_table[$Position][$y] = $item[$i][$y]
 			Next
-			$compt_monster += 1
-
-		Else
-			If UBound($tab_other) > 1 Or $compt_other <> 0 Then
-				ReDim $tab_other[UBound($tab_other) + 1][$TableSizeGuidStruct+1]
-			EndIf
-			For $y = 0 To $TableSizeGuidStruct
-				$tab_other[UBound($tab_other) - 1][$y] = $item[$i][$y]
-			Next
-			$compt_other += 1
+			$Position += 1
 		EndIf
-
 	Next
-
-;~ 	For $i = 0 To UBound($tab_elite) - 1
-
-;~ 		If UBound($tab_mixte) > 1 Or $compt_mixte <> 0 Then
-;~ 			ReDim $tab_mixte[UBound($tab_mixte) + 1][10]
-;~ 		EndIf
-;~ 		For $y = 0 To 9
-;~ 			$tab_mixte[UBound($tab_mixte) - 1][$y] = $tab_elite[$i][$y]
-;~ 		Next
-;~ 		$compt_mixte += 1
-;~ 	Next
-
-
-	For $i = 0 To UBound($tab_monster) - 1
-
-		If UBound($tab_mixte) > 1 Or $compt_mixte <> 0 Then
-			ReDim $tab_mixte[UBound($tab_mixte) + 1][$TableSizeGuidStruct+1]
-		EndIf
-		For $y = 0 To $TableSizeGuidStruct
-			$tab_mixte[UBound($tab_mixte) - 1][$y] = $tab_monster[$i][$y]
-		Next
-		$compt_mixte += 1
-	Next
-
-	For $i = 0 To UBound($tab_other) - 1
-		If UBound($tab_mixte) > 1 Or $compt_mixte <> 0 Then
-			ReDim $tab_mixte[UBound($tab_mixte) + 1][$TableSizeGuidStruct+1]
-		EndIf
-		For $y = 0 To $TableSizeGuidStruct
-			$tab_mixte[UBound($tab_mixte) - 1][$y] = $tab_other[$i][$y]
-		Next
-		$compt_mixte += 1
-	Next
-	Return $tab_mixte
+	Return $result_table
 EndFunc   ;==>TriObjectMonster
 
 Func UpdateObjectsList($item)
