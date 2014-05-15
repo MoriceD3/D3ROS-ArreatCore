@@ -830,7 +830,7 @@ Func FilterBackpack()
 
 		Send($KeyCloseWindows) ; make sure we close everything
 		Send($KeyInventory) ; open the inventory
-		Sleep(100)
+		Sleep(2000)
 
 		CheckWindowD3Size()
 
@@ -4263,7 +4263,7 @@ Func StashAndRepair()
 		Send($KeyCloseWindows)
 		Sleep(500)
 		InteractByActorName('Player_Shared_Stash')
-		Sleep(700)
+		Sleep(500)
 
 		Local $stashtry = 0
 		While _checkStashopen() = False
@@ -4281,6 +4281,8 @@ Func StashAndRepair()
 				Terminate()
 			EndIf
 		WEnd
+
+		Sleep(2000)
 		$tabfull = 0
 		CheckWindowD3Size()
 
@@ -4341,7 +4343,7 @@ Func StashAndRepair()
 		MoveTo($MOVETO_SMITH)
 
 		InteractByActorName("PT_Blacksmith_RepairShortcut")
-		Sleep(700)
+		Sleep(500)
 
 		Local $BlacksmithTry = 0
 		While _checkSalvageopen() = False
@@ -4363,6 +4365,8 @@ Func StashAndRepair()
 				ExitLoop
 			EndIf
 		WEnd
+
+		Sleep(2000)
 
 		$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 		$ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
@@ -4433,9 +4437,9 @@ Func StashAndRepair()
 		If $ToTrash <> -1 Or $ToSell <> -1 Then
 			_log("Start selling", $LOG_LEVEL_DEBUG)
 			Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
-			Sleep(500)
+			Sleep(1000)
 			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
-			Sleep(500)
+			Sleep(2000)
 			CheckWindowD3Size()
 
 			For $i = 0 To UBound($ToTrash) - 1
