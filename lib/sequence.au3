@@ -22,17 +22,20 @@ Func GetActiveQuest()
 		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
 
 		If $Quest_State = 1 And $Quest_ID <> 0x4C46D And StringInStr($BountyQuestIDs, $Quest_ID, 2) Then
-			_Log("Active questID : " & $Quest_ID)
-			Return $Quest_ID
+			; Check AreaId to trash started unfinished quest
+			; Will need refresh until we actually get to the area since bounty may fit under multiple ones
+			If (_MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int') == GetLevelAreaId()) Then
+				_Log("Active questID : " & $Quest_ID)
+				$ActiveQuest = $Quest_ID
+			EndIf
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 	Wend
-	Return -1
 EndFunc
 
 Func IsQuestFinished($QuestId)
 	If $QuestId = -1 Then
-		$ActiveQuest = GetActiveQuest()
+		GetActiveQuest()
 		Return False
 	EndIf
 
@@ -158,7 +161,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		ElseIf $arr_sequence[$index][1] = "InteractWithPortal" Then
 			_log("Start : InteractWithPortal " & $arr_sequence[$index][2], $LOG_LEVEL_DEBUG)
 			InteractWithPortal($arr_sequence[$index][2])
-			$ActiveQuest = GetActiveQuest()
+			GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "buffinit" Then
 			_log("Buffinit sequence", $LOG_LEVEL_DEBUG)
 			BuffInit()
@@ -177,11 +180,11 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
 			_log("Start : TakeWP", $LOG_LEVEL_DEBUG)
 			TakeWPV3($arr_sequence[$index][2], 0)
-			$ActiveQuest = GetActiveQuest()
+			GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "takewpadv" Then
 			_log("Start : TakeWPADV", $LOG_LEVEL_DEBUG)
 			TakeWPV3($arr_sequence[$index][2], 1)
-			$ActiveQuest = GetActiveQuest()
+			GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			_log("Start : TownPortal", $LOG_LEVEL_DEBUG)
 			if Not _TownPortalnew() Then
@@ -654,7 +657,7 @@ Func sequence($sequence_list)
 							$array_sequence = ArrayInit($array_sequence)
 							_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							TakeWPV3($table_wp, 1)
-							$ActiveQuest = GetActiveQuest()
+							GetActiveQuest()
 							$line = ""
 						Else
 							$end_sequence = True
@@ -1039,7 +1042,7 @@ Func sequence($sequence_list)
 						If $sequence_save = 0 Then
 							_log("Enclenchement d'un InteractWithPortal direct line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							InteractWithPortal($line)
-							$ActiveQuest = GetActiveQuest()
+							GetActiveQuest()
 						Else
 							_log("Mise en array d'un InteractWithPortal() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							$array_sequence = ArrayUp($array_sequence)
