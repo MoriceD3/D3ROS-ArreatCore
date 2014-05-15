@@ -26,7 +26,7 @@ Func _dorun()
 	$SkippedMove = 0
 	$PortBack = False
 
-	StatsDisplay()
+	
 
 	If Not $hotkeycheck Then
 		CheckHotkeys()
@@ -43,13 +43,18 @@ Func _dorun()
 		Sleep(500)
 		Detect_Str_full_inventory()
 		CheckAndDefineSize()
+	Else
+		Sleep(1500)
 	EndIf
 
 	If Not $PartieSolo Then 
 		WriteMe($WRITE_ME_WELCOME) ; TChat
 	EndIf
-	
+
+
 	GetAct()
+	StatsDisplay()
+
 	EmergencyStopCheck()
 
 	If _checkRepair() Then

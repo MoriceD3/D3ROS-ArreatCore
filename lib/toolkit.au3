@@ -377,49 +377,32 @@ EndFunc   ;==>GetLevelAreaId
 ;;     Find which Act we are in
 ;;--------------------------------------------------------------------------------
 Func GetAct()
-
-	$arealist = FileRead("lib\area.txt")
-	Local $area = GetLevelAreaId()
-
-	_log("We are in map : " & $area, $LOG_LEVEL_VERBOSE)
-	Local $pattern = "([\w'-]{5,80})\t\W\t" & $area
-	$asResult = StringRegExp($arealist, $pattern, 1)
-	If @error == 0 Then
-		Global $MyArea = $asResult[0]
-
-		If StringInStr($MyArea, "a1", 2) Then
+	$actid = _MemoryRead($OfsMapActId, $d3, 'int')
+	;set our vendor according to the act we are in as we know it.
+	Switch $actid
+		Case 0
+			Global $RepairVendor = "UniqueVendor_miner_InTown"
+			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 1
-		ElseIf StringInStr($MyArea, "a2", 2) Then
+		Case 100
+			Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
+			Global $PotionVendor = "UniqueVendor_Peddler_InTown"
 			$Act = 2
-		ElseIf StringInStr($MyArea, "a3", 2) Then
+		Case 200
+			Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
+			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 3
-		ElseIf StringInStr($MyArea, "a4", 2) Then
+		Case 300
+			Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
+			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 4
-		ElseIf StringInStr($MyArea, "a5", 2) Then
+		Case 400
+			Global $RepairVendor = "X1_A5_UniqueVendor_InnKeeper" ; act 5
+			Global $PotionVendor = "X1_A5_UniqueVendor_InnKeeper"
 			$Act = 5
-		EndIf
-
-		;set our vendor according to the act we are in as we know it.
-		Switch $Act
-			Case 1
-				Global $RepairVendor = "UniqueVendor_miner_InTown"
-				Global $PotionVendor = "UniqueVendor_Collector_InTown"
-			Case 2
-				Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
-				Global $PotionVendor = "UniqueVendor_Peddler_InTown"
-			Case 3
-				Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
-				Global $PotionVendor = "UniqueVendor_Collector_InTown"
-			Case 4
-				Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
-				Global $PotionVendor = "UniqueVendor_Collector_InTown"
-			Case 5
-				Global $RepairVendor = "X1_A5_UniqueVendor_InnKeeper" ; act 5
-				Global $PotionVendor = "X1_A5_UniqueVendor_InnKeeper"
-		EndSwitch
-		_log("Our Current Act is : " & $Act & " ---> So our vendor is : " & $RepairVendor, $LOG_LEVEL_DEBUG)
-
-	EndIf
+	EndSwitch
+	_log("Our Current Act is (" & $actid & ") : " & $Act & " ---> So our vendor is : " & $RepairVendor, $LOG_LEVEL_WARNING)
+	Return $Act
 EndFunc   ;==>GetAct
 
 ;;--------------------------------------------------------------------------------

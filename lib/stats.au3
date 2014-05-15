@@ -120,8 +120,6 @@ Func StatsDisplay()
 			$timer_stat_run_moyen = formatTime($dif_timer_stat_game / ($Totalruns - 1));on recalcule le temps moyen d'un run par rapport au temps de jeu
         EndIf
 
-
-	    GetAct()
 		If $Choix_Act_Run = -3 Then
 			$DebugMessage = "                                   INFOS RUN" & @CRLF
 		Else

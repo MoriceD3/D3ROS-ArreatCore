@@ -29,6 +29,7 @@ Global $gameBalance = $SnoGroupsByCode + $SnoGroupId_GameBalance * 4 ; 2.0.4 : 0
 Global $SNOscene = $SnoGroupsByCode + $SnoGroupId_Scene * 4
 
 Global $OfsLevelAreaId = 0x01C3B400 ; 2.0.4 : 0x1C4D498 ; 2.0.3 : 0x1C36260 ;0x1C34250
+Global $OfsMapActId = 0x01AF9628
 
 Global $ofs_MonsterDef                                  = 0x18EC4C0 ; 0x18CBE70 ;1.0.6 0x15DBE00 ;0x015DCE00 ;0x15DBE00
 Global $ofs_StringListDef                               = 0x1CDA3B0 ; 2.0.3 : 0x1CEC778 ;0x17E4EE8 ;ou alors 0x17f8568;0x18DD188;0x18DC188;0x18A2558 ; 0x0158C240 ;0x015E8808 ;0x015E9808
