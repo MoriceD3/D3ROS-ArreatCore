@@ -3570,6 +3570,7 @@ Func launch_spell($i)
 				Send($buff_table[6])
 		EndSwitch
 		Sleep(10)
+		Return True
    ElseIf $buff_table[1] and IsPowerReady($_MyGuid, $buff_table[9]) Then
 		Switch $buff_table[6]
 	 	Case "right"
@@ -3580,7 +3581,9 @@ Func launch_spell($i)
 			Send($buff_table[6])
 		EndSwitch
  		Sleep(10)
+		Return True
 	EndIf
+	Return False
 EndFunc   ;==>launch_spell
 
 Func GetResource($idAttrib, $resource)
@@ -3674,8 +3677,9 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
     				Switch $buff_table[3]
 						Case $SPELL_TYPE_LIFE
 							If GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_MOVE
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
@@ -3685,61 +3689,72 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								;		Send("1")
 								;	Endif
 								;Endif
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_ATTACK
 							If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_MOVE_OR_ATTACK
 							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") Or $action_spell <> 1 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_MOVE
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_ELITE
 							If GetLifep() <= $buff_table[7] / 100 Or $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_PERMANENT_BUFF
-							launch_spell($i)
-							$buff_table[10] = TimerInit()
+							If launch_spell($i) Then
+								$buff_table[10] = TimerInit()
+							EndIf
 					EndSwitch
 				Case 1 ; attack
 					Switch $buff_table[3]
 						Case $SPELL_TYPE_LIFE
 							If GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							 EndIf
 						Case $SPELL_TYPE_ATTACK
 							If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_PHYSICAL
 							launch_spell($i)
 						Case $SPELL_TYPE_ELITE
 						  	If $elite > 0  then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							 Endif
 						Case $SPELL_TYPE_BUFF
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_ZONE
 							If $buff_table[8] = "" Then ; TODO : Check that !
@@ -3749,8 +3764,9 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							EndIf
 							If TimerDiff($ZoneCheckTimer) > 500 Then
 								If IterateFilterZoneV2($dist) Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 								$ZoneCheckTimer = TimerInit()
 							EndIf
@@ -3763,85 +3779,101 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								EndIf
 								If TimerDiff($ZoneCheckTimer) > 500 Then
 									If IterateFilterZoneV2($dist) Then
-										launch_spell($i)
-										$buff_table[10] = TimerInit()
+										If launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									EndIf
 									$ZoneCheckTimer = TimerInit()
 								EndIf
 						 	Endif
 						Case $SPELL_TYPE_LIFE_AND_ATTACK
 							If GetLifep() <= $buff_table[7] / 100 And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_ATTACK
 							If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								 EndIf
 							EndIf
 						Case $SPELL_TYPE_MOVE_OR_ATTACK
 							If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								 EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_MOVE
 							If GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								 EndIf
 							 EndIf
 						Case $SPELL_TYPE_LIFE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False And GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_ATTACK_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_ATTACK_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_ELITE
 							If GetLifep() <= $buff_table[7] / 100 Or $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_AND_ELITE
 							If GetLifep() <= $buff_table[7] / 100 And $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_ATTACK_OR_ELITE
 							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") Or $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_ATTACK_AND_ELITE
 							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") And $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								 EndIf
 							EndIf
 						Case $SPELL_TYPE_ELITE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False And $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_ELITE_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or $elite > 0 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+								EndIf
 							 EndIf
 						Case $SPELL_TYPE_PERMANENT_BUFF
-							launch_spell($i)
-							$buff_table[10] = TimerInit()
+							If launch_spell($i) Then
+								$buff_table[10] = TimerInit()
+ 							EndIf
 						Case $SPELL_TYPE_CHANNELING
 							; See in unused  Removed_GestSpellcast!
 							; TODO : Handle this
@@ -3850,26 +3882,29 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 					Switch $buff_table[3]
 						Case $SPELL_TYPE_LIFE
 							If GetLifep() <= $buff_table[7] / 100 Then
-								launch_spell($i)
-								$buff_table[10] = TimerInit()
+								If launch_spell($i) Then
+									$buff_table[10] = TimerInit()
+ 								EndIf
 							EndIf
 						Case $SPELL_TYPE_PERMANENT_BUFF
-							launch_spell($i)
-							$buff_table[10] = TimerInit()
+							If launch_spell($i) Then
+								$buff_table[10] = TimerInit()
+ 								EndIf
 						Case $SPELL_TYPE_MOVE
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
 								$timer_buff = TimerInit()
 								;if IsBuffActive($_MyGuid,$DemonHunter_Chakram )=False then
 								;   If $nameCharacter = "DemonHunter" Then Send("1")
 								;endif
-			 					launch_spell($i)
+			 					If launch_spell($i) Then
 			 					;Send("{" & $buff_table[6] & " down}")
 			 					;While Not IsBuffActive($_MyGuid, $buff_table[9])
 			 					;	If TimerDiff($timer_buff) > 350 Then ExitLoop
 			 					;	Sleep(50)
 			 					;WEnd
 			 					;Send("{" & $buff_table[6] & " up}")
-								$buff_table[10] = TimerInit()
+									$buff_table[10] = TimerInit()
+								EndIf
 							EndIf
 					EndSwitch
 				Case 3 ; attack decor
@@ -3877,70 +3912,83 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 						Switch $buff_table[3]
 							Case $SPELL_TYPE_LIFE
 								If GetLifep() <= $buff_table[7] / 100 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								 EndIf
 							Case $SPELL_TYPE_ATTACK
 								If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_PHYSICAL
 								launch_spell($i)
 							Case $SPELL_TYPE_LIFE_AND_ATTACK
 								If GetLifep() <= $buff_table[7] / 100 And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_LIFE_OR_ATTACK
 								If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_MOVE_OR_ATTACK
 								If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_LIFE_OR_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+ 									EndIf
 								EndIf
 							Case $SPELL_TYPE_LIFE_OR_MOVE
 								If GetLifep() <= $buff_table[7] / 100 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+ 									EndIf
 								 EndIf
 							Case $SPELL_TYPE_LIFE_AND_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False And GetLifep() <= $buff_table[7] / 100 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+ 									EndIf
 								EndIf
 							Case $SPELL_TYPE_ATTACK_OR_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+ 									EndIf
 								EndIf
 							Case $SPELL_TYPE_ATTACK_AND_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False And ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_LIFE_OR_ELITE
 								If GetLifep() <= $buff_table[7] / 100 Or $elite > 0 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_ATTACK_OR_ELITE
 								If ($Distance <= $buff_table[8] Or $buff_table[8] = "") Or $elite > 0 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								EndIf
 							Case $SPELL_TYPE_ELITE_OR_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False Or $elite > 0 Then
-									launch_spell($i)
-									$buff_table[10] = TimerInit()
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
 								 EndIf
 							Case $SPELL_TYPE_CHANNELING
 								; See in unused  Removed_GestSpellcast!
