@@ -123,6 +123,14 @@ Func GetBountySequences($Table_BountyAct)
 			Return False
 		EndIf
 	Else
+		 If $BountyAndSequence And $PauseAfterBounty Then
+			Local $TabAdventure = StringSplit($SequenceFileAdventure,"|")
+			For $i = 1 To $TabAdventure[0]
+			   If StringInStr($SeqList,$TabAdventure[$i],0) = 0 Then
+				  $SeqList = $SeqList & "|" & $TabAdventure[$i]
+			   EndIf
+			Next
+		 EndIf
 		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
 		Return $SeqList
 	EndIf
@@ -775,7 +783,7 @@ Func sequence($sequence_list)
 						$count = UBound($scenes) -1
 
 						_log("Checking scenes presences")
-						For $scenespos = 0 To $count 
+						For $scenespos = 0 To $count
 							If Not isScenePresent($scenes[$scenespos]) Then
 								$found = False
 								ExitLoop
@@ -1219,9 +1227,9 @@ EndFunc   ;==> InteractWithPortal
 ; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
 ; -> endgame()					(Arrête la game en cours)
 ; -> terminate()				(Arrête le script !)
-; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande) 
+; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande)
 ;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
-; -> ifscenepresent=			(Vérifie les scènes en cours et lance la commande indiquée si elles sont toutes présentes : ifscenepresent=a,b,c,d,...:Commande) 
+; -> ifscenepresent=			(Vérifie les scènes en cours et lance la commande indiquée si elles sont toutes présentes : ifscenepresent=a,b,c,d,...:Commande)
 ;								(Remarque : il faut le sno en hexa complet des scènes : 0x0000D1DD)
 ;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
 ;
