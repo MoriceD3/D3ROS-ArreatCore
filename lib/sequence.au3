@@ -123,6 +123,14 @@ Func GetBountySequences($Table_BountyAct)
 			Return False
 		EndIf
 	Else
+		If $BountyAndSequence And $PauseAfterBounty Then
+			Local $TabAdventure = StringSplit($SequenceFileAdventure,"|")
+			For $i = 1 To $TabAdventure[0]
+			   If StringInStr($SeqList,$TabAdventure[$i],0) = 0 Then
+				  $SeqList = $SeqList & "|" & $TabAdventure[$i]
+			   EndIf
+			Next
+		 EndIf
 		_log("Sequence generated : " & $Seqlist, $LOG_LEVEL_VERBOSE)
 		Return $SeqList
 	EndIf
