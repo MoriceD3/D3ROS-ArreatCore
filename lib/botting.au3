@@ -171,7 +171,14 @@ Func _botting()
 			EndIf
 
 			If Not _checkdisconnect() Then
-				_leavegame()
+			   If $Choix_Act_Run = -3 And $PauseAfterBounty Then
+				  ; Alerte pour finir la game a la main
+				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+				  MsgBox(0, "Information", " Pause en cours, Vous pouvez finir vos bountys! quittez la partie pour relancer le bot")
+				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 1)
+			   Else
+				  _leavegame()
+			   EndIf
 			Else
 				_log("Disconnected dc2", $LOG_LEVEL_WARNING)
 				ReConnect()
