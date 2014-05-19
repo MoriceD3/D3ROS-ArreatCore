@@ -3295,8 +3295,13 @@ Func enoughtPotions() ; ok pour 2.0
 		_log("I have more than " & $PotionStock & " potions. I will not take more until next check " & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
 		$takepot = False
 	Else
-		_log("I have less than " & $PotionStock & " potions. I will grab them until next check " & "pot:" & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
-		$takepot = True
+		If Not $potinstock And $LegenderyPotion Then ; git 1
+		   _log("You Are Equipped With The Legendary Potion. I will not take more potion)" , $LOG_LEVEL_VERBOSE)
+		   $takepot = False
+		Else
+		   _log("I have less than " & $PotionStock & " potions. I will grab them until next check " & "pot:" & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
+		   $takepot = True
+		EndIf
 	EndIf
 EndFunc   ;==>enoughtPotions
 
@@ -5482,7 +5487,7 @@ EndFunc	;==>getGold
 
 Func BuyPotion()
 
-	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
+	If $NbPotionBuy > 0 And Not $LegenderyPotion Then ; NbPotionBuy = 0 on déactive la fonction
 
     	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
 		Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic

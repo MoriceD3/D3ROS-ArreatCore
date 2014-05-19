@@ -91,6 +91,7 @@ Global $TakeShrines = False
 
 ;équipement spécial
 Global $AllIndestructibleObject = False
+Global $LegenderyPotion = False
 ; PauseToSurviveHC
 Global $HCSecurity = False
 Global $MinHCLife = 0
@@ -481,6 +482,7 @@ Func InitSkillHeros($skillHeros)
 
 	; Routines
 	$LifeForPotion = IniRead($skillHeros, "Run info", "LifeForPotion", $LifeForPotion)
+	$LegenderyPotion = IniRead($skillHeros, "Run info", "LegenderyPotion", $LegenderyPotion)
 	$PotionStock = IniRead($skillHeros, "Run info", "PotionStock", $PotionStock)
 	$LifeForHealth = IniRead($skillHeros, "Run info", "LifeForHealth", $LifeForHealth)
 
