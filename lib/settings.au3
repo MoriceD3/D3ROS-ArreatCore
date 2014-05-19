@@ -91,7 +91,7 @@ Global $TakeShrines = False
 
 ;équipement spécial
 Global $AllIndestructibleObject = False
-Global $LegenderyPotion = False
+Global $LegendaryPotion = False
 ; PauseToSurviveHC
 Global $HCSecurity = False
 Global $MinHCLife = 0
@@ -482,7 +482,8 @@ Func InitSkillHeros($skillHeros)
 
 	; Routines
 	$LifeForPotion = IniRead($skillHeros, "Run info", "LifeForPotion", $LifeForPotion)
-	$LegenderyPotion = IniRead($skillHeros, "Run info", "LegenderyPotion", $LegenderyPotion)
+	$Dummy = IniRead($skillHeros, "Run info", "LegendaryPotion", $LegendaryPotion)
+	$LegendaryPotion = Trim(StringLower($Dummy)) == "true"
 	$PotionStock = IniRead($skillHeros, "Run info", "PotionStock", $PotionStock)
 	$LifeForHealth = IniRead($skillHeros, "Run info", "LifeForHealth", $LifeForHealth)
 
@@ -496,7 +497,8 @@ Func InitSkillHeros($skillHeros)
 	$NoEnergyForDecor = Trim(StringLower($Dummy)) == "true"
 
 	$repairafterxxgames = IniRead($skillHeros, "Run info", "repairafterxxgames", $repairafterxxgames)
-	$AllIndestructibleObject = IniRead($skillHeros, "Run info", "AllIndestructibleObject", $AllIndestructibleObject)
+	$Dummy = IniRead($skillHeros, "Run info", "AllIndestructibleObject", $AllIndestructibleObject)
+	$AllIndestructibleObject = Trim(StringLower($Dummy)) == "true"
 
 	$maxgamelength = IniRead($skillHeros, "Run info", "maxgamelength", $maxgamelength)
 	$a_range = IniRead($skillHeros, "Run info", "attackRange", $a_range)
