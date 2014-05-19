@@ -4149,7 +4149,7 @@ Func GetPlayerOffset()
 
 	$ptr1bis = _memoryread($ofs_objectmanager, $d3, "ptr")
 	$ptr2bis = _memoryread($ptr1 + 0x87c, $d3, "ptr") ; 2.0.3 : 0x88c    ;0x874
-	$id = _memoryread($ptr2bis + 0x5c + $index * 0xD138, $d3, "int")
+	$id = _memoryread($ptr2bis + 0x5c + $index * $localPlayerStructSize, $d3, "int")
 
 	Return GetActorFromId($id)
 EndFunc   ;==>GetPlayerOffset
@@ -5667,7 +5667,7 @@ Func GetLocalPlayer()
 	$v1 = _MemoryRead(_MemoryRead($ofs_objectmanager, $d3, 'int') + 0x87c, $d3, 'int') ; 2.0.3 : 0x88c
 
 	If $v0 <> 0 And _MemoryRead($v0, $d3, 'int') <> -1 And $v1 <> 0 Then
-		Return 0xD138 * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
+		Return $localPlayerStructSize * _MemoryRead($v0, $d3, 'int') + $v1 + 0x58
 	Else
 		Return 0
 	EndIf

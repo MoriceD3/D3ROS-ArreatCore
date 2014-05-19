@@ -20,10 +20,14 @@ Global $_Const_MonsterRace[12] = ["Unknown", "Unknown(INDEX ME!)", "Fallen", "Go
 Global $_MonsterNameStringListID = 0x0000CB35 ;We use this to get local Names on monsters and NPC's
 Global $_GizmoNameStringListID = 0x0000CB23 ;We use this to get local Names on Gizmos
 
-Global $SnoGroupsByCode = 0x01CDD6A8
+Global $localPlayerStructSize = 0xD148 ; 2.0.4 : 0xD138
 
+Global $SnoGroupsByCode = 0x01CDD6A8
+Global $SnoGroupId_Actor = 1
 Global $SnoGroupId_GameBalance = 20
+Global $SnoGroupId_Monster = 25
 Global $SnoGroupId_Scene = 33
+Global $SnoGroupId_StringList = 42
 
 Global $gameBalance = $SnoGroupsByCode + $SnoGroupId_GameBalance * 4 ; 2.0.4 : 0x1CEF758 ; 2.0.3 0x1CD8320 ;0x1CD62F0 ;0x1cd7908 ;0x18E0198 ;0x18DF198 ;0x18A5550 ;0x0189E4D8 ;0x1884F98
 Global $SNOscene = $SnoGroupsByCode + $SnoGroupId_Scene * 4
@@ -206,7 +210,7 @@ Global $Atrib_Magic_Find_Capped_Subtotal[2] = [0x0000003e, "float"]
 Global $Atrib_Magic_Find_Total[2] = [0x0000003f, "float"]
 Global $Atrib_Magic_And_Gold_Find_Suppressed[2] = [0x00000040, "int"]
 Global $Atrib_Treasure_Find[2] = [0x00000041, "float"]
-Global $Atrib_Legendary_Find_Community_Buff[2] = [0x00000042, "float"] ; Change id here ! 
+Global $Atrib_Legendary_Find_Community_Buff[2] = [0x00000042, "float"]
 Global $Atrib_Resource_Cost_Reduction_Amount[2] = [0x00000043, "int"]
 Global $Atrib_Resource_Cost_Reduction_Total[2] = [0x00000044, "float"]
 Global $Atrib_Resource_Set_Point_Bonus[2] = [0x00000045, "float"]
@@ -1532,9 +1536,6 @@ Global $ManaRegen[2] = [$UNKNOW_VALUE, 1]
 Global $SpiritRegen[2] = [$UNKNOW_VALUE, 1]
 Global $ArcaneOnCrit[2] = [$UNKNOW_VALUE, 1]
 Global $HealthPerSpirit[2] = [$UNKNOW_VALUE, 1]
-
-
-;Global $GuidStruct =  "int;char[128];byte[4];ptr;byte[40];float;float;float;byte[276];int;byte[88];int;byte[44];int;byte[488]"
 
 Global $GuidStruct =  "int;char[128];byte[4];ptr;byte[40];float;float;float;byte[4];float;float;float;byte[260];int;byte[88];int;byte[44];int;byte[488]"
 Global $TableSizeGuidStruct = 13

@@ -174,7 +174,7 @@ Func _botting()
 			   If $Choix_Act_Run = -3 And $PauseAfterBounty Then
 				  ; Alerte pour finir la game a la main
 				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
-				  MsgBox(0, "Information", " Pause en cours, Vous pouvez finir vos bountys! quittez la partie pour relancer le bot")
+				  MsgBox(0, "Information", "Pause en cours, vous pouvez finir vos bountys! \nQuittez la partie et appuyez sur OK pour relancer le bot")
 				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 1)
 			   Else
 				  _leavegame()
