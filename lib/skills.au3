@@ -712,7 +712,7 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_SlowTime, "Wizard_SlowTime", 15000, "life", "", "", 60, ""], _
 						[$Wizard_StormArmor, "Wizard_StormArmor", 110000, "buff", 25, "arcane", "", ""], _
 						[$Wizard_Teleport, "Wizard_Teleport", 11000, "life|move", "", "", 50, ""], _
-						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life", 25, "arcane", 35, ""], _
+						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life|attack", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
 ;[ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE]
