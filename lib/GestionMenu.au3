@@ -121,7 +121,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  While Not IsQuestOpened() And $TryOpened < 6
 				 ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton" , 954)
 				 $TryOpened += 1
-				 _log("Try " & $TryOpened " Open Quest Menu", $LOG_LEVEL_DEBUG)
+				 _log("Try " & $TryOpened & " Open Quest Menu", $LOG_LEVEL_DEBUG)
 				 Sleep(2000)
 			  WEnd
 		   EndIf
