@@ -606,7 +606,7 @@ Func Verif_Attrib_GlobalStuff()
 	EndIF
 EndFunc
 
-Func getPlayerCurrentScene() 
+Func getPlayerCurrentScene()
 	$ObManStoragePtr = _MemoryRead($ofs_objectmanager, $d3, "ptr")
 	$offset = $ObManStoragePtr + 0x954
 	$sceneCountPtr = _MemoryRead($offset, $d3, "ptr") + 0x108
@@ -2771,12 +2771,12 @@ Func GetBucketForWP($WPNumber)
 EndFunc
 
 Func TakeWpV3($WPNumber = 0, $Mode = 0)
-	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE) 
+	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
 	Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
     Local $try = 0
 
-	If Not $PartieSolo Then 
+	If Not $PartieSolo Then
 		WriteMe($WRITE_ME_TP) ; TChat
 	EndIf
 
@@ -2889,7 +2889,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 				ElseIf TimerDiff($TPtimer) < 3300 Then
 					_Log("TakeWpV3 : Barre de TP pas assez visible, TP surement failed on retry")
 					ContinueLoop
-				EndIf 
+				EndIf
 			EndIf
 
 			Sleep(1000)
@@ -2919,6 +2919,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 	WEnd
 
 	_log("TakeWpV3 : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
+	$GameFailed = 2
 	Return False
 Endfunc ; ==> TakeWpAdventure
 
@@ -3061,23 +3062,27 @@ Func _leavegame()
 		_log("Leave Game", $LOG_LEVEL_VERBOSE)
 
 		While Not $EscMenu_OK And $Try_Send_Esc < 11
-		   _Log("try n° " & $Try_Send_Esc + 1 & " Escape Menu")
-		   Sleep(500)
-		   Send($KeyCloseWindows) ; to make sure everything is closed
-		   sleep(500)
-		   Send("{ESCAPE}")
-		   Sleep(500)
+		   If Not _checkdisconnect() Then
+			  _Log("try --> " & $Try_Send_Esc + 1 & " Escape Menu")
+			  Sleep(500)
+			  Send($KeyCloseWindows) ; to make sure everything is closed
+			  sleep(500)
+			  Send("{ESCAPE}")
+			  Sleep(500)
 
-		   If _escmenu() Then
-			  $EScMenu_Is = 1
-		   EndIf
+			  If _escmenu() Then
+				 $EScMenu_Is = 1
+			  EndIf
 
-		   If $EScMenu_Is Then
-			  $EscMenu_OK = 1
-		   Else
-			  _log("Menu Is Not Open", $LOG_LEVEL_VERBOSE)
-			  $Try_Send_Esc += 1
-		   EndIf
+			  If $EScMenu_Is Then
+				 $EscMenu_OK = 1
+			  Else
+			    _log("Menu Is Not Open", $LOG_LEVEL_VERBOSE)
+				$Try_Send_Esc += 1
+			 EndIf
+		  Else
+			 ExitLoop
+		  EndIf
 		WEnd
 
 		If $EscMenu_OK Then
@@ -3095,7 +3100,7 @@ Func _leavegame()
 			  Sleep(1000)
 		   EndIf
 	   Else
-		  _log("Can Not Leave Game", $LOG_LEVEL_ERROR);elle seras rattraper par le reste du code,mais elle ne devrait plus causer d'error
+		  _log("Can Not Open Menu, Because Disconnected", $LOG_LEVEL_ERROR)
 	   EndIf
 	EndIf
 EndFunc   ;==>_leavegame
@@ -3134,12 +3139,15 @@ Func Repair()
 		EndIf
 	WEnd
 
-	DefineVendorTab()
-
-	ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair)
-	Sleep(100)
-	ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
-	Sleep(100)
+	If Not $AllIndestructibleObject Then
+	   DefineVendorTab()
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair)
+	   Sleep(100)
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
+	   Sleep(100)
+	Else
+	   _log("Not Repair, All Indestructible Object Activate")
+	EndIf
 EndFunc   ;==>Repair
 
 Func DefineVendorTab()
@@ -3288,8 +3296,13 @@ Func enoughtPotions() ; ok pour 2.0
 		_log("I have more than " & $PotionStock & " potions. I will not take more until next check " & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
 		$takepot = False
 	Else
-		_log("I have less than " & $PotionStock & " potions. I will grab them until next check " & "pot:" & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
-		$takepot = True
+		If Not $potinstock And $LegenderyPotion Then ; git 1
+		   _log("You Are Equipped With The Legendary Potion. I will not take more potion)" , $LOG_LEVEL_VERBOSE)
+		   $takepot = False
+		Else
+		   _log("I have less than " & $PotionStock & " potions. I will grab them until next check " & "pot:" & "(" & $potinstock & ")", $LOG_LEVEL_VERBOSE)
+		   $takepot = True
+		EndIf
 	EndIf
 EndFunc   ;==>enoughtPotions
 
@@ -3302,10 +3315,10 @@ Func Take_ShrineOrWell($item)
 	Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
-				
+
 	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
 		$objpos = UpdateObjectsPos($item[8])
 		$dist2 = $objpos[3]
@@ -3349,7 +3362,7 @@ Func Open_Chest($item)
     Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
 
@@ -3394,10 +3407,10 @@ Func Take_Globe($item)
 	Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
-				
+
 	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
 		$objpos = UpdateObjectsPos($item[8])
 		$dist2 = $objpos[3]
@@ -4204,9 +4217,14 @@ Func GoToTown()
 			Attack()
 			_leaveGame()
 			$nbTriesTownPortal = 0
-			Sleep(10000)
-			While Not _inmenu()
-				Sleep(10)
+			If Not _checkdisconnect() Then
+			   Sleep(10000)
+			Else
+			   _log("Disconnected dc1.c", $LOG_LEVEL_ERROR)
+			   ReConnect()
+			EndIf
+			While Not _inmenu() And Not _onloginscreen()
+				Sleep(100)
 			WEnd
 			ExitLoop
 		EndIf
@@ -4419,15 +4437,19 @@ Func StashAndRepair()
 		$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 		$ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
 		If $ToTrash = -1 And $ToSell = -1 Then ; si pas items a aller vendre on répare au forgeron
-			Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
-			ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
-			Sleep(100)
-			ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
-			Sleep(100)
-			$Repair = 1
-
-			Local $GoldAfterRepaire = GetGold();on mesure l'or apres
-			$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+			If Not $AllIndestructibleObject Then
+			   Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
+			   Sleep(100)
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
+			   Sleep(100)
+			   $Repair = 1
+			   Local $GoldAfterRepaire = GetGold();on mesure l'or apres
+			   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+			Else
+			   $Repair = 1
+			   _log("Not Repair, All Indestructible Object Activate")
+			EndIf
 		EndIf
 
 
@@ -5466,7 +5488,7 @@ EndFunc	;==>getGold
 
 Func BuyPotion()
 
-	If $NbPotionBuy > 0 Then ; NbPotionBuy = 0 on déactive la fonction
+	If $NbPotionBuy > 0 And Not $LegenderyPotion Then ; NbPotionBuy = 0 on déactive la fonction
 
     	Local $potinstock = Number(GetTextUI(221,'Root.NormalLayer.game_dialog_backgroundScreenPC.game_potion.text')) ; récupéré les potions en stock
 		Local $ClickPotion = Round($NbPotionBuy / 5) ; nombre de clic

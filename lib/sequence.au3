@@ -248,7 +248,7 @@ Func revive(ByRef $path)
 				if fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
 					_log("Res At Corp and buffinit", $LOG_LEVEL_VERBOSE)
-					Sleep(Random(7000, 8000))
+					Sleep(Random(8000, 8500))
 					buffinit()
 					Return 1
 				Else ;On ne peut pas revive sur le corp
@@ -783,7 +783,7 @@ Func sequence($sequence_list)
 						$count = UBound($scenes) -1
 
 						_log("Checking scenes presences")
-						For $scenespos = 0 To $count 
+						For $scenespos = 0 To $count
 							If Not isScenePresent($scenes[$scenespos]) Then
 								$found = False
 								ExitLoop
@@ -1227,9 +1227,9 @@ EndFunc   ;==> InteractWithPortal
 ; -> endsequence()				(Arrête la séquence en cours et passe à la suivante)
 ; -> endgame()					(Arrête la game en cours)
 ; -> terminate()				(Arrête le script !)
-; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande) 
+; -> ifposition=				(Vérifie la position en cours et lance la commande indiquée si l'on s'y trouve : ifposition=x,y,z,range:Commande)
 ;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
-; -> ifscenepresent=			(Vérifie les scènes en cours et lance la commande indiquée si elles sont toutes présentes : ifscenepresent=a,b,c,d,...:Commande) 
+; -> ifscenepresent=			(Vérifie les scènes en cours et lance la commande indiquée si elles sont toutes présentes : ifscenepresent=a,b,c,d,...:Commande)
 ;								(Remarque : il faut le sno en hexa complet des scènes : 0x0000D1DD)
 ;								(Commandes supportées : loadsequence=xxx / endsequence() / endgame())
 ;
