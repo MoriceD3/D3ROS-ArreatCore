@@ -89,6 +89,8 @@ Global $KeyPotions = "q"
 Global $KeyPortal = "t"
 Global $TakeShrines = False
 
+;équipement spécial
+Global $AllIndestructibleObject = False
 ; PauseToSurviveHC
 Global $HCSecurity = False
 Global $MinHCLife = 0
@@ -385,7 +387,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	$Dummy = IniRead($profilFile, "Run info", "PauseAfterBounty", $PauseAfterBounty)
 	$PauseAfterBounty = Trim(StringLower($Dummy)) == "true"
-	
+
 	$Dummy = IniRead($profilFile, "Run info", "debug", $debugBot)
 	$debugBot = Trim(StringLower($Dummy)) == "true"
 	;$Act = IniRead($profilFile,"Run info","Act", $Act)
@@ -492,6 +494,7 @@ Func InitSkillHeros($skillHeros)
 	$NoEnergyForDecor = Trim(StringLower($Dummy)) == "true"
 
 	$repairafterxxgames = IniRead($skillHeros, "Run info", "repairafterxxgames", $repairafterxxgames)
+	$AllIndestructibleObject = IniRead($skillHeros, "Run info", "AllIndestructibleObject", $AllIndestructibleObject)
 
 	$maxgamelength = IniRead($skillHeros, "Run info", "maxgamelength", $maxgamelength)
 	$a_range = IniRead($skillHeros, "Run info", "attackRange", $a_range)

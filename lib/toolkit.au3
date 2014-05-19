@@ -3138,12 +3138,15 @@ Func Repair()
 		EndIf
 	WEnd
 
-	DefineVendorTab()
-
-	ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair)
-	Sleep(100)
-	ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
-	Sleep(100)
+	If Not $AllIndestructibleObject Then
+	   DefineVendorTab()
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair)
+	   Sleep(100)
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
+	   Sleep(100)
+	Else
+	   _log("Not Repair, All Indestructible Object Activate")
+	EndIf
 EndFunc   ;==>Repair
 
 Func DefineVendorTab()
@@ -4428,15 +4431,19 @@ Func StashAndRepair()
 		$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 		$ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
 		If $ToTrash = -1 And $ToSell = -1 Then ; si pas items a aller vendre on répare au forgeron
-			Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
-			ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
-			Sleep(100)
-			ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
-			Sleep(100)
-			$Repair = 1
-
-			Local $GoldAfterRepaire = GetGold();on mesure l'or apres
-			$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+			If Not $AllIndestructibleObject Then
+			   Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
+			   Sleep(100)
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
+			   Sleep(100)
+			   $Repair = 1
+			   Local $GoldAfterRepaire = GetGold();on mesure l'or apres
+			   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
+			Else
+			   $Repair = 1
+			   _log("Not Repair, All Indestructible Object Activate")
+			EndIf
 		EndIf
 
 
