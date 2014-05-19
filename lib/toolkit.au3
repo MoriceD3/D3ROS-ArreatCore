@@ -606,7 +606,7 @@ Func Verif_Attrib_GlobalStuff()
 	EndIF
 EndFunc
 
-Func getPlayerCurrentScene() 
+Func getPlayerCurrentScene()
 	$ObManStoragePtr = _MemoryRead($ofs_objectmanager, $d3, "ptr")
 	$offset = $ObManStoragePtr + 0x954
 	$sceneCountPtr = _MemoryRead($offset, $d3, "ptr") + 0x108
@@ -2771,12 +2771,12 @@ Func GetBucketForWP($WPNumber)
 EndFunc
 
 Func TakeWpV3($WPNumber = 0, $Mode = 0)
-	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE) 
+	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
 	Local $Curentarea = GetLevelAreaId()
     Local $Newarea = $Curentarea
     Local $try = 0
 
-	If Not $PartieSolo Then 
+	If Not $PartieSolo Then
 		WriteMe($WRITE_ME_TP) ; TChat
 	EndIf
 
@@ -2889,7 +2889,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 				ElseIf TimerDiff($TPtimer) < 3300 Then
 					_Log("TakeWpV3 : Barre de TP pas assez visible, TP surement failed on retry")
 					ContinueLoop
-				EndIf 
+				EndIf
 			EndIf
 
 			Sleep(1000)
@@ -3061,23 +3061,27 @@ Func _leavegame()
 		_log("Leave Game", $LOG_LEVEL_VERBOSE)
 
 		While Not $EscMenu_OK And $Try_Send_Esc < 11
-		   _Log("try n° " & $Try_Send_Esc + 1 & " Escape Menu")
-		   Sleep(500)
-		   Send($KeyCloseWindows) ; to make sure everything is closed
-		   sleep(500)
-		   Send("{ESCAPE}")
-		   Sleep(500)
+		   If Not _checkdisconnect() Then
+			  _Log("try --> " & $Try_Send_Esc + 1 & " Escape Menu")
+			  Sleep(500)
+			  Send($KeyCloseWindows) ; to make sure everything is closed
+			  sleep(500)
+			  Send("{ESCAPE}")
+			  Sleep(500)
 
-		   If _escmenu() Then
-			  $EScMenu_Is = 1
-		   EndIf
+			  If _escmenu() Then
+				 $EScMenu_Is = 1
+			  EndIf
 
-		   If $EScMenu_Is Then
-			  $EscMenu_OK = 1
-		   Else
-			  _log("Menu Is Not Open", $LOG_LEVEL_VERBOSE)
-			  $Try_Send_Esc += 1
-		   EndIf
+			  If $EScMenu_Is Then
+				 $EscMenu_OK = 1
+			  Else
+			    _log("Menu Is Not Open", $LOG_LEVEL_VERBOSE)
+				$Try_Send_Esc += 1
+			 EndIf
+		  Else
+			 ExitLoop
+		  EndIf
 		WEnd
 
 		If $EscMenu_OK Then
@@ -3095,7 +3099,7 @@ Func _leavegame()
 			  Sleep(1000)
 		   EndIf
 	   Else
-		  _log("Can Not Leave Game", $LOG_LEVEL_ERROR);elle seras rattraper par le reste du code,mais elle ne devrait plus causer d'error
+		  _log("Can Not Open Menu, Because Disconnected", $LOG_LEVEL_ERROR)
 	   EndIf
 	EndIf
 EndFunc   ;==>_leavegame
@@ -3302,10 +3306,10 @@ Func Take_ShrineOrWell($item)
 	Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
-				
+
 	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
 		$objpos = UpdateObjectsPos($item[8])
 		$dist2 = $objpos[3]
@@ -3349,7 +3353,7 @@ Func Open_Chest($item)
     Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
 
@@ -3394,10 +3398,10 @@ Func Take_Globe($item)
 	Local $begin = TimerInit()
     Local $moveTimer = TimerInit()
 	$objpos = UpdateObjectsPos($item[8])
-	Local $dist = $objpos[3]	
+	Local $dist = $objpos[3]
 	$CurrentACD = GetACDOffsetByACDGUID($item[0])
 	$CurrentIdAttrib = _memoryread($CurrentACD + 0x120, $d3, "ptr")
-				
+
 	While GetAttribute($CurrentIdAttrib, $Atrib_gizmo_state) <> 1 And Not _playerdead()
 		$objpos = UpdateObjectsPos($item[8])
 		$dist2 = $objpos[3]
@@ -4204,9 +4208,14 @@ Func GoToTown()
 			Attack()
 			_leaveGame()
 			$nbTriesTownPortal = 0
-			Sleep(10000)
-			While Not _inmenu()
-				Sleep(10)
+			If Not _checkdisconnect() Then
+			   Sleep(10000)
+			Else
+			   _log("Disconnected dc1.c", $LOG_LEVEL_ERROR)
+			   ReConnect()
+			EndIf
+			While Not _inmenu() And Not _onloginscreen()
+				Sleep(100)
 			WEnd
 			ExitLoop
 		EndIf
