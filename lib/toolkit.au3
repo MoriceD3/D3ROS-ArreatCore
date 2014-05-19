@@ -2919,6 +2919,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 	WEnd
 
 	_log("TakeWpV3 : Too many tries or Disconnected", $LOG_LEVEL_ERROR)
+	$GameFailed = 2
 	Return False
 Endfunc ; ==> TakeWpAdventure
 
