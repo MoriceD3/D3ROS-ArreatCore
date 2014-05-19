@@ -624,32 +624,33 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 ;# DemonHunter_Vault            / acrobatie
 
 Global $DemonHunter_skill_Table[25][8] = [ _
-						[$DemonHunter_Bolas, "DemonHunter_BolaShot", 0, "attack&elite", "", "", "", ""], _
-						[$DemonHunter_Caltrops, "DemonHunter_Caltrops", 3000, "life&elite", 6, "discipline", 80, 50], _
-						[$DemonHunter_Chakram, "DemonHunter_Chakram", 0, "physical", 10, "hatred", "", ""], _
-						[$DemonHunter_ClusterArrow, "DemonHunter_ClusterArrow", 0, "attack", 25, "hatred", 100, 50], _
-						[$X1_DemonHunter_Companion, "DemonHunter_Companion", 30000, "buff", 0, "discipline", "", ""], _
-						[$DemonHunter_ElementalArrow, "DemonHunter_ElementalArrow", 0, "physical", 10, "hatred", "", ""], _
-						[$X1_DemonHunter_EntanglingShot, "DemonHunter_EntanglingShot", 0, "physical", "", "", "", ""], _
-						[$X1_DemonHunter_EvasiveFire, "DemonHunter_EvasiveFire", 0, "physical", "", "", "", ""], _
-						[$X1_DemonHunter_Vengeance, "X1_DemonHunter_Vengeance", 90000, "elite", "", "", "", ""], _
-						[$DemonHunter_EvasiveFire_Flip, "DemonHunter_EvasiveFireFlip", 3000, "life&attack", 4, "discipline", 80, 30], _
-						[$DemonHunter_FanOfKnives, "DemonHunter_FanOfKnives", 10000, "life&attack", 20, "hatred", 80, 10], _
-						[$DemonHunter_Grenades, "DemonHunter_Grenades" , 0, "attack", "", "", "", ""], _
-						[$DemonHunter_HungeringArrow, "DemonHunter_HungeringArrow", 0, "physical", "", "", "", ""], _
-						[$DemonHunter_Impale, "DemonHunter_Impale", 0, "elite", 20, "hatred", "", ""], _
-						[$DemonHunter_MarkedForDeath, "DemonHunter_MarkedForDeath", 0, "elite", 3, "discipline", "", ""], _
-						[$DemonHunter_Multishot, "DemonHunter_Multishot", 0, "attack",12, "hatred", "", 30], _
-						[$DemonHunter_Preparation, "DemonHunter_Preparation", 45000, "buff", "", "", "", ""], _
-						[$DemonHunter_RainOfVengeance, "DemonHunter_RainOfVengeance", 30000, "buff", "", "", "", 50], _
-						[$DemonHunter_RapidFire, "DemonHunter_RapidFire", 0, "elite", 26, "hatred", "", ""], _
-						[$DemonHunter_Sentry, "DemonHunter_Sentry", 6000, "life", 30, "hatred", 80, ""], _
-						[$DemonHunter_ShadowPower, "DemonHunter_ShadowPower", 5000, "life", 14, "discipline", 75, ""], _
-						[$DemonHunter_SmokeScreen, "DemonHunter_SmokeScreen", 3000, "life", 14, "discipline", 50, ""], _
-						[$DemonHunter_SpikeTrap, "DemonHunter_SpikeTrap", 5000, "attack&life", 30, "hatred", 90, 50], _
-						[$DemonHunter_Strafe, "DemonHunter_Strafe", 0, "physical", 40, "hatred",  "", ""], _
-						[$DemonHunter_Vault, "DemonHunter_Vault", 3000, "life", 8, "discipline", 85, ""] _
-						]
+[$DemonHunter_Bolas,            "DemonHunter_BolaShot",           0,    "physical", "",           "",  "", ""], _
+[$DemonHunter_Caltrops,         "DemonHunter_Caltrops",        3000,  "life&elite",  6, "discipline",  80, 50], _
+[$DemonHunter_Chakram,          "DemonHunter_Chakram",            0,    "physical", 10,     "hatred",  "", ""], _
+[$DemonHunter_ClusterArrow,     "DemonHunter_ClusterArrow",       0,      "attack", 25,     "hatred", 100, 50], _
+[$X1_DemonHunter_Companion,     "DemonHunter_Companion",      30000,        "buff",  0, "discipline",  "", ""], _
+[$DemonHunter_ElementalArrow,   "DemonHunter_ElementalArrow",     0,    "physical", 10,     "hatred",  "", ""], _
+[$X1_DemonHunter_EntanglingShot,"DemonHunter_EntanglingShot",     0,    "physical", "",           "",  "", ""], _
+[$X1_DemonHunter_EvasiveFire,   "DemonHunter_EvasiveFire",        0,    "physical", "",           "",  "", ""], _
+[$X1_DemonHunter_Vengeance,     "X1_DemonHunter_Vengeance",   90000,       "elite", "",           "",  "", ""], _
+[$DemonHunter_EvasiveFire_Flip, "DemonHunter_EvasiveFireFlip", 3000, "life&attack",  4, "discipline",  80, 30], _
+[$DemonHunter_FanOfKnives,      "DemonHunter_FanOfKnives",    10000, "life&attack", 20,     "hatred",  80, 10], _
+[$DemonHunter_Grenades,         "DemonHunter_Grenades",           0,      "attack", "",           "",  "", ""], _
+[$DemonHunter_HungeringArrow,   "DemonHunter_HungeringArrow",     0,    "physical", "",           "",  "", ""], _
+[$DemonHunter_Impale,           "DemonHunter_Impale",             0,       "elite", 20,     "hatred",  "", ""], _
+[$DemonHunter_MarkedForDeath,   "DemonHunter_MarkedForDeath",     0,       "elite",  3, "discipline",  "", ""], _
+[$DemonHunter_Multishot,        "DemonHunter_Multishot",          0,      "attack", 12,     "hatred",  "", 30], _
+[$DemonHunter_Preparation,      "DemonHunter_Preparation",    45000,        "buff", "",           "",  "", ""], _
+[$DemonHunter_RainOfVengeance,  "DemonHunter_RainOfVengeance",30000,        "buff", "",           "",  "", 50], _
+[$DemonHunter_RapidFire,        "DemonHunter_RapidFire",          0,       "elite", 26,     "hatred",  "", ""], _
+[$DemonHunter_Sentry,           "DemonHunter_Sentry",          6000,        "life", 30,     "hatred",  80, ""], _
+[$DemonHunter_ShadowPower,      "DemonHunter_ShadowPower",     5000,        "life", 14, "discipline",  75, ""], _
+[$DemonHunter_SmokeScreen,      "DemonHunter_SmokeScreen",     3000,        "life", 14, "discipline",  50, ""], _
+[$DemonHunter_SpikeTrap,        "DemonHunter_SpikeTrap",       5000, "attack&life", 30,     "hatred",  90, 50], _
+[$DemonHunter_Strafe,           "DemonHunter_Strafe",             0,    "physical", 40,     "hatred",  "", ""], _
+[$DemonHunter_Vault,            "DemonHunter_Vault",           3000,        "life",  8, "discipline",  85, ""] _
+]						
+						
 
 ;# skill_table_wizard
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
@@ -715,4 +716,4 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life|attack", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
-;[ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE]
+						
