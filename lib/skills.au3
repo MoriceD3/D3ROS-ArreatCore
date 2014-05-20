@@ -591,7 +591,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 						[$Barbarian_CallOfTheAncients,"Barbarian_CallOfTheAncients",120000,"attack&elite",0,"fury","",50], _
 						[$Barbarian_Overpower,"Barbarian_Overpower",12000,"attack","0","fury","",9], _
 						[$X1_Barbarian_WarCry_v2,"Barbarian_WarCry",20000,"buff_permanent","","","",""], _
-						[$Barbarian_WrathOfTheBerserker,"Barbarian_WrathOfTheBerserker",120000,"attack&elite",0,"fury","",40] _
+						[$Barbarian_WrathOfTheBerserker,"Barbarian_WrathOfTheBerserker",120000,"attack&elite",0,"fury","",50] _
 						]
 
 ;# skill_table_demonhunter
@@ -649,8 +649,8 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_SpikeTrap,        "DemonHunter_SpikeTrap",       5000, "attack&life", 30,     "hatred",  90, 50], _
 [$DemonHunter_Strafe,           "DemonHunter_Strafe",             0,    "physical", 40,     "hatred",  "", ""], _
 [$DemonHunter_Vault,            "DemonHunter_Vault",           3000,        "life",  8, "discipline",  85, ""] _
-]						
-						
+]
+
 
 ;# skill_table_wizard
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
@@ -716,4 +716,4 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life|attack", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
-						
+
