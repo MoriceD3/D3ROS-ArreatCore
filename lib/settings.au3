@@ -87,6 +87,7 @@ Global $KeyCloseWindows = "{SPACE}"
 Global $KeyInventory = "i"
 Global $KeyPotions = "q"
 Global $KeyPortal = "t"
+Global $KeyOpenMap = "m"
 Global $TakeShrines = False
 
 ;équipement spécial
@@ -215,6 +216,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$KeyInventory = IniRead($profilFile, "Key info", "Inventory", $KeyInventory)
 	$KeyPotions = IniRead($profilFile, "Key info", "Potions", $KeyPotions)
 	$KeyPortal = IniRead($profilFile, "Key info", "Portal", $KeyPortal)
+	$KeyOpenMap = IniRead($profilFile, "Key info", "OpenMap", $KeyOpenMap)
 	$Key1 = IniRead($profilFile, "Key info", "Key1", $Key1)
 	$Key2 = IniRead($profilFile, "Key info", "Key2", $Key2)
 	$Key3 = IniRead($profilFile, "Key info", "Key3", $Key3)

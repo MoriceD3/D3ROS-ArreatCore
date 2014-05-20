@@ -332,7 +332,7 @@ Func OldGetBountySequences($Table_BountyAct)
 	Sleep(1500)
 
 	While Not _checkWPopen() And Not _playerdead() And Not _checkdisconnect()
-		Send("M")
+		Send($KeyOpenMap)
 		Sleep(100)
 	WEnd
 
@@ -369,7 +369,7 @@ Func OldGetBountySequences($Table_BountyAct)
 		Next
 	Next
 
-	Send("M")
+	Send($KeyOpenMap)
 	Sleep(150)
 
 	If $SeqList = "" Then
@@ -499,7 +499,7 @@ Func TakeWPV2Old($WPNumber = 0, $Mode = 0)
 		_Log("Opening map for Campain mode", $LOG_LEVEL_VERBOSE)
 		Send($KeyCloseWindows)
 		Sleep(250)
-		Send("M")
+		Send($KeyOpenMap)
 		Sleep(1000)
 
 		Local $wptry = 0
@@ -509,7 +509,7 @@ Func TakeWPV2Old($WPNumber = 0, $Mode = 0)
 				$wptry += 1
 				Send($KeyCloseWindows)
 				Sleep(200)
-				Send("M")
+				Send($KeyOpenMap)
 				Sleep(1000)
 			EndIf
 			If $wptry > 6 Then
@@ -1006,7 +1006,7 @@ Func TakeWPV3($num)
 
 
 			While _checkWPopen() = False And _playerdead() = False And _checkdisconnect() = False
-				Send("M")
+				Send($KeyOpenMap)
 				sleep(10)
 			WEnd
 

@@ -267,7 +267,7 @@ Func CheckGameMode()
     _Log("What game mode you are", $LOG_LEVEL_DEBUG)
 
 	While Not _checkWPopen() And Not _checkdisconnect()
-		Send("M")
+		Send($KeyOpenMap)
 		Sleep(1000)
 	WEnd
 

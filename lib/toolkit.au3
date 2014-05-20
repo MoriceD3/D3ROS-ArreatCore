@@ -2806,7 +2806,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 		_Log("TakeWpV3 : Opening map (try : " & $try & ")", $LOG_LEVEL_VERBOSE)
 		Send($KeyCloseWindows)
 		Sleep(250)
-		Send("M")
+		Send($KeyOpenMap)
 		Sleep(1000)
 
 		Local $wptry = 0
@@ -2816,7 +2816,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 				$wptry += 1
 				Send($KeyCloseWindows)
 				Sleep(200)
-				Send("M")
+				Send($KeyOpenMap)
 				Sleep(1000)
 			EndIf
 			If $wptry > 6 Then
