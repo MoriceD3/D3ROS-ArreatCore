@@ -37,8 +37,17 @@ Anonymous69 :
 - Ajout de la fonction ifscenepresent dans les sequences
 
 Euclide : 
+
 - Version officielle 8.2x
 - Lecture mémoire des quetes
+
+Therippe :
+
+- Options BountyAndSequence et PauseAfterBounty
+
+ZeRick51
+
+- Correction gestion cooldown des sorts
 
 bilabou :
 

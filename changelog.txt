@@ -1,5 +1,19 @@
 Changelog : 
 
+- Version 1.8.0 : 21/05/2014
+
+- Amélioration gestion cooldown des sorts (ZeRick51)
+- Ajout des options PauseAfterBounty et BountyAndSequence (TheRippe) (Settings.ini)
+- Correction du bot en multi joueur
+- Ajout de AllIndestructibleObject et LegendaryPotion (MoriceD3) (SettingsHeroXX.ini)
+- Correction de bugs divers et filtre AtkSpeedBonus
+- Amélioration de la selection des quêtes
+- Mise à jour du skills.au3
+- Configuration de la touche ouvrir carte (Settings.ini)
+- Correction de plusieurs séquences
+- Passage en mode debug par défaut a True (Settings.ini) pour faciliter le support
+- Divers bug fix et optimisations
+
 - Version 1.7.6 : 15/05/2014
 
 - Fix bug detection fin de bounty dans certains cas
