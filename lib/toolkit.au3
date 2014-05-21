@@ -377,26 +377,27 @@ EndFunc   ;==>GetLevelAreaId
 ;;     Find which Act we are in
 ;;--------------------------------------------------------------------------------
 Func GetAct()
-	$actid = _MemoryRead($OfsMapActId, $d3, 'int')
+	;$actid = _MemoryRead($OfsMapActId, $d3, 'int') Can be bugged depending on last action on map ? TODO : Fix by opening map ?
+	$actid = GetLevelAreaId()
 	;set our vendor according to the act we are in as we know it.
 	Switch $actid
-		Case 0
+		Case 332339, 19947; 0
 			Global $RepairVendor = "UniqueVendor_miner_InTown"
 			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 1
-		Case 100
+		Case 168314, 55313 ; 100
 			Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
 			Global $PotionVendor = "UniqueVendor_Peddler_InTown"
 			$Act = 2
-		Case 200
+		Case 92945 ; 200
 			Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
 			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 3
-		Case 300
-			Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
-			Global $PotionVendor = "UniqueVendor_Collector_InTown"
-			$Act = 4
-		Case 400
+		;Case 92945 ; 300
+		;	Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
+		;	Global $PotionVendor = "UniqueVendor_Collector_InTown"
+		;	$Act = 4
+		Case 270011 ; 400
 			Global $RepairVendor = "X1_A5_UniqueVendor_InnKeeper" ; act 5
 			Global $PotionVendor = "X1_A5_UniqueVendor_InnKeeper"
 			$Act = 5
@@ -663,7 +664,7 @@ Func antiidle()
 	Endif
 
 	Send("{PRINTSCREEN}")
-	sleep(150)
+	Sleep(150)
 	Send($KeyCloseWindows)
 
 	ToolTip("Detection de stuff modifié !" & @CRLF & "Zone : " & $warnarea & @CRLF &  "Position : "  & $warnloc[0] & ", " & $warnloc[1] & ", " & $warnloc[2] & @CRLF & "Un screenshot a été pris, il se situe dans document/diablo 3" , 15, 15)
@@ -675,14 +676,14 @@ Func antiidle()
 
 	;idleing
 	While 1
-	MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
-	Sleep(Random(40000, 180000))
-	MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
-	Sleep(Random(40000, 180000))
-	MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
-	Sleep(Random(40000, 180000))
-	MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
-	Sleep(Random(40000, 180000))
+		MouseClick($MouseMoveClick, Random(100, 200), Random(100, 200), 1, 6)
+		Sleep(Random(40000, 180000))
+		MouseClick($MouseMoveClick, Random(600, 700), Random(100, 200), 1, 6)
+		Sleep(Random(40000, 180000))
+		MouseClick($MouseMoveClick, Random(600, 700), Random(400, 500), 1, 6)
+		Sleep(Random(40000, 180000))
+		MouseClick($MouseMoveClick, Random(100, 200), Random(400, 500), 1, 6)
+		Sleep(Random(40000, 180000))
 	Wend
 
 Endfunc
