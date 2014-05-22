@@ -178,7 +178,7 @@ Global $fichierstat = "stat_" & @YEAR & "_" & @MON & "_" & @MDAY & "-" & @HOUR &
 
 ; Listes interne
 Global $List_BanItemACDCheckList = "a1_|a3_|a2_|a4_|a5_|Lore_Book_Flippy|D3Arrow|Topaz_|Emeraude_|Rubis_|Amethyste_|Console_PowerGlobe|GoldCoin|GoldSmall|GoldMedium|GoldLarge|healthPotion_Console"
-Global $List_BanItemStartName    = "x1_Wizard_|ArcaneTorrent_Target|DH_|x1_DemonHunter|D3Arrow|barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Hireling_Enchantress|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_BloodContainer_A|ConductorProxyMaster|FallenChampion_ItemPassive"
+Global $List_BanItemStartName    = "TEMP_|x1_Wizard_|ArcaneTorrent_Target|DH_|x1_DemonHunter|D3Arrow|barbarian_|Demonhunter_|Monk_|WitchDoctor_|WD_|Hireling_Enchantress|Enchantress_|Scoundrel_|Templar_|Wizard_|monsterAffix_|Demonic_|Generic_|fallenShaman_fireBall_impact|demonFlyer_B_clickable_corpse_01|grenadier_proj_trail|x1_promoPet_fallenHound_skeletal|a3dun_crater_st_Demon_BloodContainer_A|ConductorProxyMaster|FallenChampion_ItemPassive"
 
 ; Tables de gestions des listes
 Global $Table_Coffre 		      = [0]
