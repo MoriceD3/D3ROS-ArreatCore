@@ -2,7 +2,6 @@ MonsterList=WitherMoth|WoodWraith|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A
 UsePath=false
 autobuff=True
 attackrange=40 
-revive=false
 TakeWP=6
 Sleep=500
 2155.41015625, 1814.61572265625, 0.9149449467659,1,25

@@ -3,7 +3,6 @@ MonsterList=x1_SpeedKill_Gluttony|Ghoul_|WitherMoth|WoodWraith|Beast_B|Goatman_M
 UsePath=false
 autobuff=True
 attackrange=40
-revive=false
 Sleep=500
 2155.71533203125, 1817.00427246094, 1.04378223419189,1,25
 2148.98754882813, 1801.96875, 0.100000381469727,1,25
