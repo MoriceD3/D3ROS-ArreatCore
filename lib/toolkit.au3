@@ -1951,7 +1951,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 	$itemDestination = CheckItem($item[0], $item[1])
 	$result = 0
 
-	If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And $takepot = True) Then
+	If $itemDestination == "Stash" Or $itemDestination == "Salvage" Or $itemDestination == "Sell" Or ($itemDestination == "Inventory" And ($takepot = True Or StringInStr($item[0], "healthPotion_Legendary", 2))) Then
 		; this loot is interesting
 		If IsArray($item_aff_verif) and $gestion_affixe_loot Then
 			If is_zone_safe($item[2],$item[3],$item[4],$item_aff_verif) Or Checkqual($item[0]) = 9 Then
@@ -5700,6 +5700,15 @@ Func GetActivePlayerSkill($index)
 	$Local_player = GetLocalPlayer()
 	If $local_player <> 0 Then
 		Return _MemoryRead($local_player + (0xBC + $index * 0x10), $d3, 'int')
+	Else
+		Return 0
+	EndIf
+EndFunc
+
+Func GetActivePlayerSkillRune($index)
+	$Local_player = GetLocalPlayer()
+	If $local_player <> 0 Then
+		Return _MemoryRead($local_player + (0xBC + $index * 0x10) + 0x4, $d3, 'int')
 	Else
 		Return 0
 	EndIf
