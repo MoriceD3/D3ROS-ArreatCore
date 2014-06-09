@@ -92,6 +92,7 @@ Func SelectGameType($SelectGameType, $auto)
 				 If $TypedeBot = 1 Then
 					SelectDifficultyMonsterPower()
 				 EndIf
+				 _log("Save And Close")
 				 ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
 				 Sleep(Random(600, 800, 1))
 				 Return
@@ -130,12 +131,14 @@ Func SelectGameType($SelectGameType, $auto)
 		   If IsQuestOpened() Then
 
 			  Sleep(Random(600, 800, 1))
+			  _log("Scroll The List Of Quests")
 			  For $i = 1 To Random(40, 41, 1) Step 1;balayer toutes les quêtes
 				 MouseWheel("up")
 				 Sleep(Random(100, 150, 1))
 			  Next
 
 			  ;selection d'une quete pour fermer les sous quetes
+			  _log("Close The Current Quests")
 			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
 			  Sleep(1000)
 			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
@@ -359,16 +362,19 @@ Func SelectGameType($SelectGameType, $auto)
 
 			  ;Bp choisir la quete
 			  Sleep(Random(300, 400, 1))
+			  _log("Validate Quest")
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton" , 663) ; Tap OK 'Choose a new quest'
 			  Sleep(Random(1000, 1500, 1))
 
 			  ; Bp validation de la quête
 			  If IsQuestChangeUiOpened() Then
-				 _log("Détection de changement quête", $LOG_LEVEL_DEBUG)
+				 _log("Detection Quests Change", $LOG_LEVEL_DEBUG)
 				 Sleep(Random(300, 400, 1))
-				 Send("{ENTER}")
+				 _log("Validate To Change Current Quests")
+				 ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList.OkButton", 1606)
 			  EndIf
 			  Sleep(Random(600, 800, 1))
+			  _log("Save And Close")
 			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809) ; tap sauvegarder et fermer
 			  Sleep(Random(800, 1000, 1))
 			  CheckWindowsClosed()
@@ -388,7 +394,7 @@ EndFunc   ;==>SelectGameType
 ;Selection de la quete en automatique
 Func SelectQuest()
 	If _checkdisconnect() Then
-	   _log("Disconnected In SelectQuest", $LOG_LEVEL_WARNING)
+	   _log("Disconnected In Select Quest", $LOG_LEVEL_WARNING)
 	   Return
 	EndIf
 	If ($Choix_Act_Run = -3) And ($Totalruns = 1) Then
@@ -549,10 +555,10 @@ Func SelectHero()
 	If IsMenuHeroSelectOpened() Then
 
 	   ;positionnement sur la scrollbar
-	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar")
+	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar", 779)
 	   Sleep(Random(600, 800, 1))
 
-	   ;Choix du heros
+	   _log("Scroll The List Of Heros")
 	   For $i = 1 To Random(13, 15, 1) Step 1
 		  MouseWheel("up")
 		  ;Valeur de test ok 100
@@ -642,7 +648,7 @@ Func SelectHero()
 	   EndSwitch
 	   Sleep(Random(600, 800, 1))
 
-	   ;Deplacement sur le bp choisir
+	   _log("Validate Hero")
 	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.SelectHeroButton", 1022)
 	   Sleep(Random(2000, 2500, 1)) ; temps mini de chargement du hero 2000ms
 	   CheckWindowsClosed()
@@ -712,6 +718,7 @@ Func SelectDifficultyMonsterPower()
 		  Sleep(Random(600, 800, 1))
 	   EndIf
 
+	   _log("Validate Difficulty")
 	   ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton" , 253); tap OK Difficulty
 	   Sleep(Random(1000, 1500, 1))
     Else
@@ -764,12 +771,12 @@ Func CheckWindowsClosed()
 	EndIf
 	If IsQuestChangeUiOpened() Then
 	   _log("Quest Change Ui Not Close --> Closed", $LOG_LEVEL_DEBUG)
-	   Send("{ESCAPE}")
+	   ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList.Cancel", 873)
 	   Sleep(2000)
 	EndIf
 	If IsQuestOpened() Then
 	   _log("Quest Menu Not Close --> Closed", $LOG_LEVEL_DEBUG)
-	   Send("{ESCAPE}")
+	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.ChangeQuest_CloseButton", 1098)
 	   Sleep(2000)
 	EndIf
 	If IsGameSettingsOpened() Then
@@ -780,7 +787,7 @@ Func CheckWindowsClosed()
 EndFunc ; ==> CheckCloseWindows
 
 Func IsQuestChangeUiOpened()
-    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 2022)
+    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList.Cancel", 1, 873)
 EndFunc   ;==>IsQuestChangeUiOpened OK
 
 Func IsGameSettingsOpened()
