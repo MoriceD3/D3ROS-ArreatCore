@@ -3111,11 +3111,6 @@ Func _leavegame()
 	EndIf
 EndFunc   ;==>_leavegame
 
-
-
-Global $VendorTabRepair = ""
-Global $VendorTabSell = 0
-
 ;;--------------------------------------------------------------------------------
 ;;      Repair()
 ;;--------------------------------------------------------------------------------
@@ -3145,10 +3140,12 @@ Func Repair()
 		EndIf
 	WEnd
 
+	Sleep(2000)
+
 	If Not $AllIndestructibleObject Then
 	   DefineVendorTab()
-	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair)
-	   Sleep(100)
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair, $BucketVendorTabRepair)
+	   Sleep(500)
 	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
 	   Sleep(100)
 	Else
@@ -3158,9 +3155,11 @@ EndFunc   ;==>Repair
 
 Func DefineVendorTab()
 	If fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.tab_4", 1, 1984) Then
+		$BucketVendorTabRepair = 550
 		$VendorTabRepair = 3
 		_log("Definition of Repair Tab to TAB 3", $LOG_LEVEL_DEBUG)
 	Else
+		$BucketVendorTabRepair = 623
 		$VendorTabRepair = 2
 		_log("Definition of Repair Tab to TAB 2", $LOG_LEVEL_DEBUG)
 	EndIf
@@ -4381,7 +4380,13 @@ Func StashAndRepair()
 					ClickOnStashTab(4)
 					$tabfull = 3
 				ElseIf $tabfull = 3 Then
+					Sleep(Random(50, 100))
+					Send($KeyCloseWindows)
+					Sleep(Random(50, 100))
+					_leavegame()
 					_log('Stash is full : Botting stopped', $LOG_LEVEL_ERROR)
+					WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+					MsgBox(0, "Stash Is Full", "Stash is full : Botting stopped")
 					Terminate()
 				EndIf
 				Sleep(5000)
@@ -4446,16 +4451,15 @@ Func StashAndRepair()
 			If Not $AllIndestructibleObject Then
 			   Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
 			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
-			   Sleep(100)
+			   Sleep(500)
 			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
 			   Sleep(100)
-			   $Repair = 1
 			   Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 			   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
 			Else
-			   $Repair = 1
 			   _log("Not Repair, All Indestructible Object Activate")
 			EndIf
+			$Repair = 1
 		EndIf
 
 
@@ -4514,7 +4518,7 @@ Func StashAndRepair()
 			_log("Start selling", $LOG_LEVEL_DEBUG)
 			Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
 			Sleep(1000)
-			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0")
+			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0", 810)
 			Sleep(2000)
 			CheckWindowD3Size()
 

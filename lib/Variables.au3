@@ -200,6 +200,10 @@ Global $Table_BountyAct		      = [0]
 Global $Table_SearchObject = False
 Global $SearchForObject    = False
 
+;VendorTapRepair
+Global $VendorTabRepair			= 0
+Global $BucketVendorTabRepair 	= 0
+
 ;statistique
 Global $FailedSequences		 = 0
 Global $TotalSequences		 = 0
