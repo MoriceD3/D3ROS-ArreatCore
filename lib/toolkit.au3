@@ -3000,22 +3000,27 @@ Func _logind3()
 	WinActivate("[CLASS:D3 Main Window Class]")
 
 	If _onloginscreen() Then
-	   If Not _checkdisconnect() Then
-		  _Log("Login", $LOG_LEVEL_VERBOSE)
-		  Sleep(1000)
-		  Send($d3pass)
-		  Sleep(2000)
-		  Send("{ENTER}")
-		  Sleep(Random(5000, 6000, 1))
+	   If $d3pass Then
+		  If Not _checkdisconnect() Then
+			 _log("Login", $LOG_LEVEL_VERBOSE)
+			 Sleep(1000)
+			 Send($d3pass)
+			 Sleep(2000)
+			 Send("{ENTER}")
+			 Sleep(Random(5000, 6000, 1))
 
-		  $Try_Logind3 += 1
+			 $Try_Logind3 += 1
+		  Else
+			 _log("Disconnected to server", $LOG_LEVEL_VERBOSE)
+			 Sleep(2000)
+			 Send("{ENTER}")
+			 Sleep(2000)
+			 Send("{ENTER}") ; enter, si jamais on a rentré le mot passe avant que la fenêtre apparaisse
+			 Sleep(2000)
+		  EndIf
 	   Else
-	      _Log("Disconnected to server", $LOG_LEVEL_VERBOSE)
-		  sleep(2000)
-		  Send("{ENTER}")
-		  sleep(2000)
-		  Send("{ENTER}") ; enter, si jamais on a rentré le mot passe avant que la fenêtre apparaisse
-		  sleep(2000)
+		  _log("Login : Stopped Bot Because Not Password", $LOG_LEVEL_VERBOSE)
+		  Terminate()
 	   EndIf
 	EndIf
 EndFunc   ;==>_logind3
