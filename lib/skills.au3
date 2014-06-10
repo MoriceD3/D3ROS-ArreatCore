@@ -421,7 +421,7 @@ Global $Monk_skill_Table[27][8] = [ _
 						[$Monk_MysticAlly_Pet_Weapon_Melee_Instant, "Monk_MysticAlly_Pet_Weapon_Melee_Instant", "", "buff", 25, "spirit", "", ""], _
 						[$Monk_Serenity, "Monk_Serenity", 20000, "life", "", "spirit", 35, ""], _
 						[$Monk_SevenSidedStrike, "Monk_SevenSidedStrike", 30000, "attack&elite", 50, "spirit", "", 20], _
-						[$Monk_SweepingWind, "Monk_SweepingWind", 2000, "buff&attack", 75, "spirit", "", 30], _
+						[$Monk_SweepingWind, "Monk_SweepingWind", 6000, "buff&attack", 75, "spirit", "", 30], _
 						[$Monk_TempestRush, "Monk_TempestRush", 2000, "move", 25, "spirit", "", ""], _
 						[$Monk_WaveOfLight, "Monk_WaveOfLight", 2000, "attack", 75, "spirit", "", 15], _
 						[$Monk_WayOfTheHundredFists, "WayOfTheHundredFists", "", "physical", "", "", "", ""], _
