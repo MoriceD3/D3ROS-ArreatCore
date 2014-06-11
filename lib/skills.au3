@@ -716,4 +716,3 @@ Global $Wizard_skill_Table[29][8] = [ _
 						[$Wizard_WaveOfForce, "Wizard_WaveOfForce", 12000, "life|attack", 25, "arcane", 35, ""], _
 						[$X1_Wizard_Wormhole, "Wizard_BlackHole", 12000, "attack", 20, "arcane", "", 45] _
 						]
-
