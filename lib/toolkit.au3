@@ -4619,12 +4619,15 @@ Func LoadingSNOExtended()
 
 	$list = IndexSNO($gameBalance)
 
+	;_ArrayDisplay($list)
 	$armorOffs = 0
 	$weaponOffs = 0
 	$otherOffs = 0
+	$legarmorOffs = 0
+	$legweaponOffs = 0
+	$legotherOffs = 0
 
 	For $j = 0 To UBound($list) - 1
-
 		If ($list[$j][1] = 19750) Then
 			$armorOffs = $list[$j][0]
 		EndIf
@@ -4646,12 +4649,30 @@ Func LoadingSNOExtended()
 		EndIf
 	Next
 
-	Global $armorItems = GetLevelsAdvanced($armorOffs)
-	Global $weaponItems = GetLevelsAdvanced($weaponOffs)
-	Global $otherItems = GetLevelsAdvanced($otherOffs)
-	Global $legarmorItems = GetLevelsAdvanced($legarmorOffs)
-	Global $legweaponItems = GetLevelsAdvanced($legweaponOffs)
-	Global $legotherItems = GetLevelsAdvanced($legotherOffs)
+	If ($armorOffs = 0) Then
+		_Log("Problem indexing Armor offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$armorItems = GetLevelsAdvanced($armorOffs)
+	If ($weaponOffs = 0) Then
+		_Log("Problem indexing Weapons offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$weaponItems = GetLevelsAdvanced($weaponOffs)
+	If ($otherOffs = 0) Then
+		_Log("Problem indexing Item offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$otherItems = GetLevelsAdvanced($otherOffs)
+	If ($legarmorOffs = 0) Then
+		_Log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$legarmorItems = GetLevelsAdvanced($legarmorOffs)
+	If ($legweaponOffs = 0) Then
+		_Log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$legweaponItems = GetLevelsAdvanced($legweaponOffs)
+	If ($legotherOffs = 0) Then
+		_Log("Problem indexing Legendaty Item offsets" , $LOG_LEVEL_ERROR)
+	EndIf
+	$legotherItems = GetLevelsAdvanced($legotherOffs)
 
 	Global $allSNOitems = $armorItems
 	__ArrayConcatenate($allSNOitems, $weaponItems)

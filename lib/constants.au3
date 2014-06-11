@@ -22,7 +22,7 @@ Global $_GizmoNameStringListID = 0x0000CB23 ;We use this to get local Names on G
 
 Global $localPlayerStructSize = 0xD148 ; 2.0.4 : 0xD138
 
-Global $SnoGroupsByCode = 0x01CDD6A8
+Global $SnoGroupsByCode = 0x01CE36C8 ; 2.0.5 :0x01CDD6A8
 Global $SnoGroupId_Actor = 1
 Global $SnoGroupId_GameBalance = 20
 Global $SnoGroupId_Monster = 25
@@ -32,7 +32,7 @@ Global $SnoGroupId_StringList = 42
 Global $gameBalance = $SnoGroupsByCode + $SnoGroupId_GameBalance * 4 ; 2.0.4 : 0x1CEF758 ; 2.0.3 0x1CD8320 ;0x1CD62F0 ;0x1cd7908 ;0x18E0198 ;0x18DF198 ;0x18A5550 ;0x0189E4D8 ;0x1884F98
 Global $SNOscene = $SnoGroupsByCode + $SnoGroupId_Scene * 4
 
-Global $OfsLevelAreaId = 0x01C3B400 ; 2.0.4 : 0x1C4D498 ; 2.0.3 : 0x1C36260 ;0x1C34250
+Global $OfsLevelAreaId = 0x01C41420 ; 2.0.5 : 0x01C3B400 ; 2.0.4 : 0x1C4D498 ; 2.0.3 : 0x1C36260 ;0x1C34250
 Global $OfsMapActId = 0x01AF9628
 
 Global $ofs_MonsterDef                                  = 0x18EC4C0 ; 0x18CBE70 ;1.0.6 0x15DBE00 ;0x015DCE00 ;0x15DBE00
@@ -71,7 +71,7 @@ Global $ofs_LocalActor_atribGUID                        = 0x120
 Global $ofs_LocalActor_StrucSize                        = 0x2F8 ;0x2D0 ; 0x0 0x0
 
 ;//OBJECT MANAGER
-Global $ofs_objectmanager                               = 0x01CDD7F4 ; 2.0.4 : 0x1CEF854 ; 2.0.3 : 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
+Global $ofs_objectmanager                               = 0x01CE3814 ; 2.0.5 : 0x01CDD7F4 ; 2.0.4 : 0x1CEF854 ; 2.0.3 : 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
 Global $ofs__ObjmanagerActorOffsetA                     = 0x910 ; 2.0.3 : 0x920 ;0x8C8 ;0x8b0 ;2.0
 Global $ofs__ObjmanagerActorCount                       = 0x108
 Global $ofs__ObjmanagerActorOffsetB                     = 0x120 ;0x148 ;0x148
@@ -1541,7 +1541,6 @@ Global $HealthPerSpirit[2] = [$UNKNOW_VALUE, 1]
 Global $GuidStruct =  "int;char[128];byte[4];ptr;byte[40];float;float;float;byte[4];float;float;float;byte[260];int;byte[88];int;byte[44];int;byte[488]"
 Global $TableSizeGuidStruct = 13
 
-
 ; ACD STRUCT
 ; id_acd -> 1
 ; name -> 2
@@ -1553,3 +1552,10 @@ Global $TableSizeGuidStruct = 13
 ; RadiusDefault -> 11
 ; IdAttrib -> 13
 Global $ACDStruct = "ptr;char[128];byte[8];ptr;ptr;byte[28];int;ptr;int;byte[68];float;byte[28];ptr;byte[468]"
+
+Global $ActorStructSize = 1100
+Global $ActorStruct = "int;char[128];int;int;int;int;float;float;float;float;" & _ ; 1 Id, 2 Name, 3 SceneId, 4 ActId, 5 ActorSnoId, 6 ?, 7 ?, 8 ?, 9 ?, 10 ?
+						"float;float;float;float;" & _ ; 11 WorldX, 12 WorldY, 13 WorldZ, 14 Radius
+						"float;float;float;float;" & _ ; 15 CollisionX, 16 CollisionY, 17 CollisionZ, 18 CollisionRadius
+						"float;float;float;float;" & _ ; 19 BottomX, 20 BottomY, 21 BottomZ, 22 BottomRadius
+						"int;int;int;int;byte[872]"  ; 23 ?, 24 ?, 25 WorldId, 26 SceneNavMeshId
