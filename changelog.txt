@@ -1,5 +1,12 @@
 Changelog : 
 
+- Version 1.9.0 : 11/06/2014
+
+- Support Diablo 2.0.6
+- Migration vers Auto-It 3.3.12.0 (Version nécessaire pour lancement par .au3 !)
+- Support des persos 13 à 15 (Version deluxe / Collector)
+- Divers bug fixes
+
 - Version 1.8.0 : 21/05/2014
 
 - Amélioration gestion cooldown des sorts (ZeRick51)

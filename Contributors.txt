@@ -41,6 +41,10 @@ Euclide :
 - Version officielle 8.2x
 - Lecture mémoire des quetes
 
+rpingut :
+
+- Mise à jours des compétences (stats.au3)
+
 Therippe :
 
 - Options BountyAndSequence et PauseAfterBounty
