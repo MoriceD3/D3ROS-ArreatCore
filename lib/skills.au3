@@ -399,34 +399,34 @@ Global $Monk_LethalDecoy_Taunt = 0x1AFEF
 ;# Epiphany                                     / Epiphanie
 
 Global $Monk_skill_Table[27][8] = [ _
-						[$Monk_BlindingFlash, "Monk_BlindingFlash", 15000, "attack&elite", "", "spirit", "", ""], _
-						[$Monk_BreathOfHeaven, "Monk_BreathOfHeaven", 15000, "buff|life", "", "spirit", 60, ""], _
-						[$Monk_CripplingWave, "Monk_CripplingWave", "", "physical", "", "", "", ""], _
-						[$Monk_CycloneStrike, "Monk_CycloneStrike", 2000, "attack", 50, "spirit", "", 20], _
-						[$X1_Monk_DashingStrike, "Monk_DashingStrike", 6000, "attack", "", "spirit", "", 10], _
-						[$Monk_DeadlyReach, "Monk_DeadlyReach", "", "physical", "", "", "", ""], _
-						[$Monk_ExplodingPalm, "Monk_ExplodingPalm", 2000, "attack&elite", 40, "spirit", "", 10], _
-						[$Monk_FistsofThunder, "Monk_FistsofThunder", "", "physical", "", "", "", ""], _
-						[$X1_Monk_InnerSanctuary, "Monk_InnerSanctuary", 20000, "life", "", "spirit", 40, ""], _
-						[$Monk_LashingTailKick, "Monk_LashingTailKick", 2000, "attack", 30, "spirit", "", 10], _
-						[$X1_Monk_MantraOfConviction_v2, "Monk_MantraOfConviction", 30000, "buff&elite", 50, "spirit", "", ""], _
-						[$X1_Monk_MantraOfEvasion_v2, "Monk_MantraOfEvasion", 30000, "buff", 50, "spirit", "", ""], _
-						[$X1_Monk_MantraOfHealing_v2, "Monk_MantraOfHealing", 30000, "buff", 50, "spirit", "", ""], _
-						[$X1_Monk_MantraOfRetribution_v2, "Monk_MantraOfRetribution", 30000, "buff", 50, "spirit", "", ""], _
-						[$X1_Monk_MysticAlly_v2, "Monk_MysticAlly", 30000, "buff", "", "spirit", "", ""], _
-						[$Monk_MysticAlly_Pet_RuneA_Kick, "Monk_MysticAlly_Pet_RuneA_Kick", "", "buff", 25, "spirit", "", ""], _
-						[$Monk_MysticAlly_Pet_RuneB_WaveAttack, "Monk_MysticAlly_Pet_RuneB_WaveAttack", "", "buff", 25, "spirit", "", ""], _
-						[$Monk_MysticAlly_Pet_RuneC_GroundPunch, "Monk_MysticAlly_Pet_RuneC_GroundPunch", "", "buff", 25, "spirit", "", ""], _
-						[$Monk_MysticAlly_Pet_RuneD_AOEAttack, "Monk_MysticAlly_Pet_RuneD_AOEAttack", "", "buff", 25, "spirit", "", ""], _
-						[$Monk_MysticAlly_Pet_Weapon_Melee_Instant, "Monk_MysticAlly_Pet_Weapon_Melee_Instant", "", "buff", 25, "spirit", "", ""], _
-						[$Monk_Serenity, "Monk_Serenity", 20000, "life", "", "spirit", 35, ""], _
-						[$Monk_SevenSidedStrike, "Monk_SevenSidedStrike", 30000, "attack&elite", 50, "spirit", "", 20], _
-						[$Monk_SweepingWind, "Monk_SweepingWind", 6000, "buff&attack", 75, "spirit", "", 30], _
-						[$Monk_TempestRush, "Monk_TempestRush", 2000, "move", 25, "spirit", "", ""], _
-						[$Monk_WaveOfLight, "Monk_WaveOfLight", 2000, "attack", 75, "spirit", "", 15], _
-						[$Monk_WayOfTheHundredFists, "WayOfTheHundredFists", "", "physical", "", "", "", ""], _
-						[$X1_Monk_Epiphany, "Epiphany", 60000, "attack&elite", 0, "spirit",  "", ""] _
-						]
+[$Monk_BlindingFlash,                       "Monk_BlindingFlash",                    15000, "attack&elite", "", "spirit", "", ""], _
+[$Monk_BreathOfHeaven,                      "Monk_BreathOfHeaven",                   15000,    "buff|life", "", "spirit", 60, ""], _
+[$Monk_CripplingWave,                       "Monk_CripplingWave",                       "",     "physical", "",       "", "", ""], _
+[$Monk_CycloneStrike,                       "Monk_CycloneStrike",                     2000,       "attack", 50, "spirit", "", 20], _
+[$X1_Monk_DashingStrike,                    "Monk_DashingStrike",                     6000,       "attack", "", "spirit", "", 10], _
+[$Monk_DeadlyReach,                         "Monk_DeadlyReach",                         "",     "physical", "",       "", "", ""], _
+[$Monk_ExplodingPalm,                       "Monk_ExplodingPalm",                     2000, "attack&elite", 40, "spirit", "", 10], _
+[$Monk_FistsofThunder,                      "Monk_FistsofThunder",                      "",     "physical", "",       "", "", ""], _
+[$X1_Monk_InnerSanctuary,                   "Monk_InnerSanctuary",                   20000,         "life", "", "spirit", 40, ""], _
+[$Monk_LashingTailKick,                     "Monk_LashingTailKick",                   2000,       "attack", 30, "spirit", "", 10], _
+[$X1_Monk_MantraOfConviction_v2,            "Monk_MantraOfConviction",                6000,   "buff&elite", 50, "spirit", "", ""], _
+[$X1_Monk_MantraOfEvasion_v2,               "Monk_MantraOfEvasion",                   6000,         "buff", 50, "spirit", "", ""], _
+[$X1_Monk_MantraOfHealing_v2,               "Monk_MantraOfHealing",                   6000,         "buff", 50, "spirit", "", ""], _
+[$X1_Monk_MantraOfRetribution_v2,           "Monk_MantraOfRetribution",               6000,         "buff", 50, "spirit", "", ""], _
+[$X1_Monk_MysticAlly_v2,                    "Monk_MysticAlly",                       30000,         "buff", "", "spirit", "", ""], _
+[$Monk_MysticAlly_Pet_RuneA_Kick,           "Monk_MysticAlly_Pet_RuneA_Kick",           "",         "buff", 25, "spirit", "", ""], _
+[$Monk_MysticAlly_Pet_RuneB_WaveAttack,     "Monk_MysticAlly_Pet_RuneB_WaveAttack",     "",         "buff", 25, "spirit", "", ""], _
+[$Monk_MysticAlly_Pet_RuneC_GroundPunch,    "Monk_MysticAlly_Pet_RuneC_GroundPunch",    "",         "buff", 25, "spirit", "", ""], _
+[$Monk_MysticAlly_Pet_RuneD_AOEAttack,      "Monk_MysticAlly_Pet_RuneD_AOEAttack",      "",         "buff", 25, "spirit", "", ""], _
+[$Monk_MysticAlly_Pet_Weapon_Melee_Instant, "Monk_MysticAlly_Pet_Weapon_Melee_Instant", "",         "buff", 25, "spirit", "", ""], _
+[$Monk_Serenity,                            "Monk_Serenity",                         20000,         "life", "", "spirit", 35, ""], _
+[$Monk_SevenSidedStrike,                    "Monk_SevenSidedStrike",                 30000, "attack&elite", 50, "spirit", "", 20], _
+[$Monk_SweepingWind,                        "Monk_SweepingWind",                      2000,  "buff&attack", 75, "spirit", "", 30], _
+[$Monk_TempestRush,                         "Monk_TempestRush",                       2000,         "move", 25, "spirit", "", ""], _
+[$Monk_WaveOfLight,                         "Monk_WaveOfLight",                       2000,       "attack", 75, "spirit", "", 15], _
+[$Monk_WayOfTheHundredFists,                "WayOfTheHundredFists",                     "",     "physical", "",       "", "", ""], _
+[$X1_Monk_Epiphany,                         "Epiphany",                              60000, "attack&elite",  0, "spirit", "", ""] _
+]
 
 
 ;# skill_table_crusader
@@ -518,7 +518,7 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_AcidCloud, "Witchdoctor_AcidCloud", 1500, "attack", 175, "mana", "", 45], _
 						[$Witchdoctor_BigBadVoodoo, "Witchdoctor_BigBadVoodoo", 120000, "buff", 0, "mana", "", ""], _
 						[$Witchdoctor_CorpseSpider, "Witchdoctor_CorpseSpider", 0, "physical", 0, "mana", "", 45], _
-						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "buff", 0, "mana", "", ""], _
+						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "attack&elite", 0, "mana", "", ""], _
 						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 2000, "attack", 300, "mana", "", 10], _
 						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 0, "mana", "", ""], _
@@ -533,7 +533,7 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Sacrifice, "Witchdoctor_Sacrifice", 0, "attack&elite", 0, "mana", "", 10], _
 						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 15000, "attack", 0, "mana", "", 16], _
-                        [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 100, "mana", "", 45], _
+                                                [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 100, "mana", "", 45], _
 						[$Witchdoctor_SpiritWalk, "Witchdoctor_SpiritWalk", 15000, "buff_permanent", 0, "mana", 80, ""], _
 						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 45000, "move", 0, "mana", "", ""], _
 						[$Witchdoctor_WallOfZombies, "Witchdoctor_WallOfZombies", 8000, "attack&elite", 0, "mana", "", 45], _
