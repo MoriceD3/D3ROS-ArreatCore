@@ -63,11 +63,11 @@ Func StatsDisplay()
 
         ;Xp nécessaire pour passer un niveau de paragon
 
-
+		Local $ExpNextLevelCurrent = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo) + GetAttributeSelf($Atrib_Alt_Experience_Next_Hi) * 4294967296
         If $Totalruns = 1 Then
 
 			$NiveauParagon = GetAttributeSelf($Atrib_Alt_Level)
-			$ExperienceNextLevel = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
+			$ExperienceNextLevel = $ExpNextLevelCurrent
 			$Expencours = $level[$NiveauParagon + 1] - $ExperienceNextLevel
 			$Xp_Run = 0
 			$Xp_Total = 0
@@ -80,10 +80,10 @@ Func StatsDisplay()
         Else
 			;calcul de l'xp du run
 			If $NiveauParagon = GetAttributeSelf($Atrib_Alt_Level) Then; verification de level up (égalité => pas de level up
-				  $Xp_Run = ($level[GetAttributeSelf($Atrib_Alt_Level) + 1] - GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)) - $Expencours;experience run n - experience run n-1
+				  $Xp_Run = ($level[GetAttributeSelf($Atrib_Alt_Level) + 1] - $ExpNextLevelCurrent) - $Expencours;experience run n - experience run n-1
 			EndIf
 
-			$Expencours = $level[GetAttributeSelf($Atrib_Alt_Level) + 1] - GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
+			$Expencours = $level[GetAttributeSelf($Atrib_Alt_Level) + 1] - $ExpNextLevelCurrent
 
 			If $NiveauParagon <> GetAttributeSelf($Atrib_Alt_Level) Then
 				  $Xp_Run = $ExperienceNextLevel + $Expencours
@@ -96,7 +96,7 @@ Func StatsDisplay()
 			$Xp_Moy_HrsPerte = ($Xp_Moy_Hrsgame - $Xp_Moy_Hrs);on calcule la perte due aux pauses
 			$Xp_Moy_HrsPerte_Ratio = ($Xp_Moy_HrsPerte / $Xp_Moy_Hrsgame * 100);ratio de la perte xp/heure due aux pauses
 			$NiveauParagon = GetAttributeSelf($Atrib_Alt_Level)
-			$ExperienceNextLevel = GetAttributeSelf($Atrib_Alt_Experience_Next_Lo)
+			$ExperienceNextLevel = $ExpNextLevelCurrent
 
 			;calcul temps avant prochain niveau
 			$Xp_Moy_Sec = $Xp_Total * (1000 / $dif_timer_stat)
