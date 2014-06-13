@@ -2411,8 +2411,13 @@ Func CheckItem($_GUID, $_NAME, $_MODE = 0)
 	_log("CheckItem -> " & $_NAME, $LOG_LEVEL_VERBOSE)
 
 	If IsItemInTable($Table_Potions, $_NAME) Then
-		_log("CheckItem : Potion", $LOG_LEVEL_VERBOSE)
-		Return "Inventory"
+		If $_MODE = 0 And StringInStr($_NAME, "Legendary", 2) Then
+			_log("CheckItem : Legendary Potion", $LOG_LEVEL_VERBOSE)
+			Return "Stash"
+		Else
+			_log("CheckItem : Potion", $LOG_LEVEL_VERBOSE)
+			Return "Inventory"
+		EndIf
 	ElseIf IsItemInTable($Table_grablist, $_NAME) Then
 		_log("CheckItem : In grablist", $LOG_LEVEL_VERBOSE)
 		Return "Stash"
