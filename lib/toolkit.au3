@@ -4526,7 +4526,7 @@ Func StashAndRepair()
 				_log("Trashing backpack : " & $items[$ToTrash[$i]][0] & "/" & $items[$ToTrash[$i]][1])
 				InventoryMove($items[$ToTrash[$i]][0], $items[$ToTrash[$i]][1])
 				Sleep(Random(100, 500))
-				$ItemToSell = $ItemToSell + 1
+				$ItemToSold += 1
 				MouseClick('Right')
 				Sleep(Random(100, 200))
 			Next
@@ -4534,7 +4534,7 @@ Func StashAndRepair()
 				_log("Selling backpack : " & $items[$ToSell[$i]][0] & "/" & $items[$ToSell[$i]][1])
 				InventoryMove($items[$ToSell[$i]][0], $items[$ToSell[$i]][1])
 				Sleep(Random(100, 500))
-				$ItemToSell = $ItemToSell + 1
+				$ItemToSold += 1
 				MouseClick('Right')
 				Sleep(Random(100, 200))
 			Next

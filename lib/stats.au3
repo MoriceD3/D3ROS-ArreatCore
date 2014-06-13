@@ -149,7 +149,7 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Gold Moyen/Heure : " & Format_Number(Ceiling($GOLDMOYbyH)) & @CRLF
 		;$DebugMessage = $DebugMessage & "Gold Moyen/Heure Jeu : " & Format_Number(Ceiling($GOLDMOYbyHgame)) & @CRLF ;====> gold de temps de jeu
 		$DebugMessage = $DebugMessage & "Perte Moyenne/Heure : " & Format_Number(Ceiling($GOLDMOYbyH - $GOLDMOYbyHgame)) & "   (" & Round($LossGoldMoyH) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSell & "  /  " & Format_Number(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Nombre d'Objets Vendus :  " & $ItemToSold & "  /  " & Format_Number(Ceiling($GoldBySale)) & "   (" & Round($GoldBySaleRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Gold Obtenu par Collecte  :    " & Format_Number(Ceiling($GOLDInthepocket - $GoldBySale + $GoldByRepaire)) & "   (" & Round($GoldByColectRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "Nombre de Réparations : " & $RepairORsell & " / - " & Format_Number(Ceiling($GoldByRepaire)) & "   (- " & Round($GoldByRepaireRatio) & "%)" & @CRLF
 		$DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
