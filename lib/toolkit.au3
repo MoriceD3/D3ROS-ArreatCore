@@ -112,11 +112,26 @@ Func ClickUI($name, $bucket = -1, $click = 1)
 		$Point2[3] = 0
 	EndIf
 
-	If $click = 0 Then
-		MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
-	Else
-		MouseClick("left", $Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2)
+	Local $xMin = Int($Point2[0] + $Point2[2] * 0.3)
+	Local $xMax = Int($Point2[0] + $Point2[2] * 0.7)
+	Local $yMin = Int($Point2[1] + $Point2[3] * 0.3)
+	Local $yMax = Int($Point2[1] + $Point2[3] * 0.7)
+
+	Local $x = $Point2[0] + $Point2[2] / 2
+	Local $y = $Point2[1] + $Point2[3] / 2
+	If $xMin < $xMax Then
+		$x = Random($xMin, $xMax, 1)
 	EndIf
+	If $yMin < $yMax Then
+		$y = Random($yMin, $yMax, 1)
+	EndIf
+
+	If $click = 0 Then
+		MouseMove($x, $y)
+	Else
+		MouseClick("left", $x, $y)
+	EndIf
+
 EndFunc
 
 Func GetPositionUI($ofs)
@@ -2475,6 +2490,10 @@ Func InventoryMove($col = 0, $row = 0);pacht 8.2e
 
 	$XCoordinate = $FirstCaseX + $col * $SizeCaseX
 	$YCoordinate = $FirstCaseY + $row * $SizeCaseY
+	
+	; use inaccurate click
+	$XCoordinate = Random($XCoordinate - ($SizeCaseX*0.3), $XCoordinate + ($SizeCaseX*0.3), 1)
+	$YCoordinate = Random($YCoordinate - ($SizeCaseY*0.3), $YCoordinate + ($SizeCaseY*0.3), 1)
 
 	MouseMove($XCoordinate, $YCoordinate, 2)
 
