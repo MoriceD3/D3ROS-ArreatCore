@@ -117,10 +117,9 @@ Global $range_rack 	 = 40
 
 ; MoveTo
 Global Const $MOVETO_SMITH 		   = 1
-Global Const $MOVETO_POTION_VENDOR = 2
-Global Const $MOVETO_REPAIR_VENDOR = 3
-Global Const $MOVETO_BOOKOFCAIN    = 4
-Global Const $MOVETO_PORTAL	       = 5
+Global Const $MOVETO_REPAIR_VENDOR = 2
+Global Const $MOVETO_BOOKOFCAIN    = 3
+Global Const $MOVETO_PORTAL	       = 4
 
 ; global pour prendre des pause
 Global $BreakCounter 	  = 0
@@ -170,6 +169,10 @@ Global $Paused 			     = False
 
 ; Ne pas grab lors d'une attaque quand inventaire est full
 Global $Inventory_Is_Full = 0
+
+;Stashandrepair
+Global $Repair_To_Salvage 		= 0
+Global $Position_Repair_Vendor 	= 0
 
 ; Variables pour log & debug
 Global $DebugMessage

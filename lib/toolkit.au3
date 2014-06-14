@@ -398,23 +398,18 @@ Func GetAct()
 	Switch $actid
 		Case 332339, 19947; 0
 			Global $RepairVendor = "UniqueVendor_miner_InTown"
-			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 1
 		Case 168314, 55313 ; 100
 			Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
-			Global $PotionVendor = "UniqueVendor_Peddler_InTown"
 			$Act = 2
 		Case 92945 ; 200
 			Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 3
-			Global $PotionVendor = "UniqueVendor_Collector_InTown"
 			$Act = 3
 		;Case 92945 ; 300
 		;	Global $RepairVendor = "UniqueVendor_Collector_InTown" ; act 4
-		;	Global $PotionVendor = "UniqueVendor_Collector_InTown"
 		;	$Act = 4
 		Case 270011 ; 400
 			Global $RepairVendor = "X1_A5_UniqueVendor_InnKeeper" ; act 5
-			Global $PotionVendor = "X1_A5_UniqueVendor_InnKeeper"
 			$Act = 5
 	EndSwitch
 	_log("Our Current Act is (" & $actid & ") : " & $Act & " ---> So our vendor is : " & $RepairVendor, $LOG_LEVEL_WARNING)
@@ -4319,9 +4314,9 @@ Func StashAndRepair()
 
 	getAct()
 
-	Local $Repair = 0
-	Local $Position_Repair_Vendor = 0
+	$Position_Repair_Vendor = 0
 	$Execute_StashAndRepair = True
+	$Repair_To_Salvage = 0
 	$FailOpen_BookOfCain = 0
 	$SkippedMove = 0
 
@@ -4479,7 +4474,7 @@ Func StashAndRepair()
 			Else
 			   _log("Not Repair, All Indestructible Object Activate")
 			EndIf
-			$Repair = 1
+			$Repair_To_Salvage = 1
 		EndIf
 
 
@@ -4518,12 +4513,7 @@ Func StashAndRepair()
 
 	EndIf ; fin recyclage
 
-	Local $GoldBeforeBuyPotion = GetGold();on mesure l'or avant l' achats de potion
-	BuyPotion()
-	Local $GoldAfterBuyPotion = GetGold();on mesure l'or apres
-	$GoldByRepaire += $GoldBeforeBuyPotion - $GoldAfterBuyPotion ;on compte le cout des potion inclus da la stast GoldByRepaire
-
-	If Not $Repair Then
+	If Not $Repair_To_Salvage Then
 
 		Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation et achats de potion
 		Repair()
@@ -4575,13 +4565,20 @@ Func StashAndRepair()
 			EndIf
 			;****************************************************************
 		EndIf
-
-		MoveTo($MOVETO_REPAIR_VENDOR)
 	EndIf
 
 	Sleep(Random(100, 200))
 	Send($KeyCloseWindows)
 	Sleep(Random(100, 200))
+
+	Local $GoldBeforeBuyPotion = GetGold();on mesure l'or avant l' achats de potion
+	BuyPotion()
+	Local $GoldAfterBuyPotion = GetGold();on mesure l'or apres
+	$GoldByRepaire += $GoldBeforeBuyPotion - $GoldAfterBuyPotion ;on compte le cout des potion inclus da la stast GoldByRepaire
+
+	If Not $Repair_To_Salvage Then
+	   MoveTo($MOVETO_REPAIR_VENDOR)
+	EndIf
 
 	If $Position_Repair_Vendor Then
 	   MoveTo($MOVETO_PORTAL)
@@ -5405,35 +5402,6 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 							 Sleep(Random(100, 200))
 					EndSwitch
 			EndSwitch
-		Case $MOVETO_POTION_VENDOR ; Potion_Vendor
-			Switch $Act
-				Case 1
-					Switch $ModePlaying
-						 Case $PLAYING_MODE_STORY
-							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
-							 Sleep(300)
-							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
-							 Sleep(300)
-							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
-							 Sleep(300)
-							 MoveToPos(3013.36865234375, 2797.88452148438, 24.0453281402588, 0, 60)
-						 Case $PLAYING_MODE_ADVENTURE
-							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
-							 Sleep(300)
-							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
-							 Sleep(300)
-							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
-							 Sleep(300)
-							 MoveToPos(441.150238037109, 515.829345703125, 24.0453224182129, 0, 60)
-					EndSwitch
-				Case 2 to 5
-					Switch $ModePlaying
-						 Case $PLAYING_MODE_STORY
-							 ;do nothing act 2, 3, 4 and 5
-						 Case $PLAYING_MODE_ADVENTURE
-							 ;do nothing act 2, 3, 4 and 5
-					EndSwitch
-			EndSwitch
 		Case $MOVETO_REPAIR_VENDOR
 			Switch $Act
 				 Case 1
@@ -5548,38 +5516,43 @@ Func BuyPotion()
 
 		If $potinstock <= ($PotionStock + 10) Then
 
-		  MoveTo($MOVETO_POTION_VENDOR) ; on se positionne
+		  If Not $Position_Repair_Vendor Then
+			 MoveTo($MOVETO_REPAIR_VENDOR)
+			 $Position_Repair_Vendor = 1
+			 $Repair_To_Salvage = 0
+		  EndIf
 
-		  InteractByActorName($PotionVendor)
+		  InteractByActorName($RepairVendor)
 		  Sleep(700)
 
 		  Local $vendortry = 0
-		  While _checkVendoropen() = False ; si la fenêtre n'y est pas
-			   If $vendortry <= 4 Then ; on essaye 5 fois
+		  While _checkVendoropen() = False
+			   If $vendortry <= 4 Then
 				  _Log('Fail to open vendor', $LOG_LEVEL_WARNING)
 				  $vendortry += 1
-				  InteractByActorName($PotionVendor)
+				  InteractByActorName($RepairVendor)
 			   Else
-				  _Log('Failed to open Vendor after 4 try', $LOG_LEVEL_ERROR)
-				  MoveTo($MOVETO_POTION_VENDOR) ; on se repositionne
-				  $GameFailed = 1
-				  Return False  ; si pas fenêtre on sort de la fonction
+				  Send("{PRINTSCREEN}")
+				  Sleep(200)
+				  _log('Failed to open Vendor after 4 try', $LOG_LEVEL_ERROR)
+				  WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+				  MsgBox(0, "Impossible d'ouvrir le vendeur :", "SVP, veuillez reporter ce problème sur le forum. Erreur : v001 ")
+				  Terminate()
+				  ExitLoop
 			   EndIf
 		  WEnd
 
 		  _Log('Achat de ' & $NbPotionBuy & ' potions')
 
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2") ; potion tap
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2", 623)
 		  Sleep(200)
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0"); potion Button
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0", 452, 0)
 		  Sleep(200)
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0"); potion Button
+		  Send("{SHIFTDOWN}")
 		  Sleep(200)
-		  Send("{SHIFTDOWN}") ; pour acheter en paquet 5
-		  Sleep(100)
 
 		  Local $Click = 0
-		  While $Click <> $ClickPotion ; tant qu'on n'a pas atteint le nombre de clic
+		  While $Click <> $ClickPotion
 			   MouseClick('right')
 			   Sleep(Random(150, 200))
 			   $Click += 1
@@ -5588,17 +5561,24 @@ Func BuyPotion()
 		  Sleep(200)
 		  Send("{SHIFTUP}")
 		  Sleep(100)
-		  Send($KeyCloseWindows); ferme l'inventaire
+		  Send($KeyCloseWindows)
 		  Sleep(500)
 
-		  MoveTo($MOVETO_POTION_VENDOR) ; on se repositionne
+		  ;****************************************************************
+		  If NOT Verif_Attrib_GlobalStuff() Then
+			 _log("CHANGEMENT DE STUFF ON TOURNE EN ROND (Stash and Repair - Stash)!!!!!", $LOG_LEVEL_ERROR)
+			 antiidle()
+		  EndIf
+		  ;****************************************************************
+		  Sleep(Random(100, 200))
+		  Send($KeyCloseWindows)
+		  Sleep(Random(100, 200))
 	   Else
 		  _Log('Vous avez assez potion')
 	   EndIf
     Else
-	   _Log('Fonction BuyPotion désactivée')
+	   _Log('Fonction BuyPotion Désactivée')
     EndIf
-
 EndFunc    ;==>BuyPotion
 
 Func VerifAct($num)
