@@ -2490,7 +2490,7 @@ Func InventoryMove($col = 0, $row = 0);pacht 8.2e
 
 	$XCoordinate = $FirstCaseX + $col * $SizeCaseX
 	$YCoordinate = $FirstCaseY + $row * $SizeCaseY
-	
+
 	; use inaccurate click
 	$XCoordinate = Random($XCoordinate - ($SizeCaseX*0.3), $XCoordinate + ($SizeCaseX*0.3), 1)
 	$YCoordinate = Random($YCoordinate - ($SizeCaseY*0.3), $YCoordinate + ($SizeCaseY*0.3), 1)
@@ -4320,6 +4320,7 @@ Func StashAndRepair()
 	getAct()
 
 	Local $Repair = 0
+	Local $Position_Repair_Vendor = 0
 	$Execute_StashAndRepair = True
 	$FailOpen_BookOfCain = 0
 	$SkippedMove = 0
@@ -4529,6 +4530,8 @@ Func StashAndRepair()
 		Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 		$GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation et potion
 
+		$Position_Repair_Vendor = 1
+
 		;Trash
 		$ToTrash = _ArrayFindAll($items, "Trash", 0, 0, 0, 1, 2)
 		$ToSell = _ArrayFindAll($items, "Sell", 0, 0, 0, 1, 2)
@@ -4580,7 +4583,9 @@ Func StashAndRepair()
 	Send($KeyCloseWindows)
 	Sleep(Random(100, 200))
 
-	MoveTo($MOVETO_PORTAL)
+	If $Position_Repair_Vendor Then
+	   MoveTo($MOVETO_PORTAL)
+	EndIf
 
 	$Execute_StashAndRepair = False
 
@@ -4776,8 +4781,6 @@ Func SafePortBack()
 	$Curentarea = GetLevelAreaId()
 	_log('cur area :' & $Curentarea)
 	;Go to center according to act
-
-	MoveTo($MOVETO_PORTAL)
 
 	Local $HearthPortalTry = 0
 	Local $NewAreaOk = 0
