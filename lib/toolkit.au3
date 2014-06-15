@@ -84,6 +84,44 @@ Func FindActor($name, $maxRange = 400)
 	Return False
 EndFunc   ;==>FindActor
 
+Func CheckActorNumber($name, $num, $maxRange = 400)
+	If _ingame() Then
+		While Not offsetlist()
+			Sleep(10)
+		WEnd
+	Else
+		offsetlist()
+	EndIF
+
+	Local $OldActorName[$num]
+	Local $ActorNum = 0
+	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
+
+	startIterateObjectsList($index, $offset, $count)
+	While iterateObjectsList($index, $offset, $count, $item)
+		If StringInStr($item[1], $name, 2) And $item[9] < $maxRange Then
+			Local $SameAsOld = False
+			If $ActorNum > 0 Then
+				For $i = 0 To $ActorNum - 1
+					If Not StringCompare($OldActorName[$i], $item[1]) Then
+						$SameAsOld = True
+						Exitloop
+					EndIf
+				Next
+			EndIf
+
+			If Not $SameAsOld Then
+				$OldActorName[$ActorNum] = $item[1]
+				$ActorNum = $ActorNum + 1
+
+				If $ActorNum >= $num Then Return True
+			EndIf
+		EndIf
+	WEnd
+
+	Return False
+EndFunc   ;==>CheckActorNumber
+
 Func ClickUI($name, $bucket = -1, $click = 1)
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
@@ -3745,6 +3783,38 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							If launch_spell($i) Then
 								$buff_table[10] = TimerInit()
 							EndIf
+						Case $SPELL_TYPE_COUNT1 To $SPELL_TYPE_COUNT7
+							Local $buff_num = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
+
+							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
+								Local $CheckName = 0
+								Local $CheckRange = 400
+								Switch $buff_table[9]
+									Case $Witchdoctor_Gargantuan
+										$CheckName = "WD_Gargantuan_"
+									Case $Witchdoctor_SummonZombieDog
+										$CheckName = "WD_ZombieDogRune_"
+									Case $Witchdoctor_FetishArmy
+										$CheckName = "Fetish_Melee_"
+									Case $DemonHunter_Sentry
+										$CheckName = "DH_sentry_"
+										$CheckRange = 60
+									Case Else
+										$CheckName = 0
+								EndSwitch
+
+								If $CheckName Then
+									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
+										If launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
+									EndIf
+								Else
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
+								EndIf
+							EndIf
 					EndSwitch
 				Case 1 ; attack
 					Switch $buff_table[3]
@@ -3895,6 +3965,70 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 						Case $SPELL_TYPE_CHANNELING
 							; See in unused  Removed_GestSpellcast!
 							; TODO : Handle this
+						Case $SPELL_TYPE_ATTACK_AND_COUNT1 To $SPELL_TYPE_ATTACK_AND_COUNT7
+							Local $buff_num = $buff_table[3] - $SPELL_TYPE_ATTACK_AND_COUNT1 + 1
+
+							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
+								Local $CheckName = 0
+								Local $CheckRange = 400
+								Switch $buff_table[9]
+									Case $Witchdoctor_Gargantuan
+										$CheckName = "WD_Gargantuan_"
+									Case $Witchdoctor_SummonZombieDog
+										$CheckName = "WD_ZombieDogRune_"
+									Case $Witchdoctor_FetishArmy
+										$CheckName = "Fetish_Melee_"
+									Case $DemonHunter_Sentry
+										$CheckName = "DH_sentry_"
+										$CheckRange = 60
+									Case Else
+										$CheckName = 0
+								EndSwitch
+								
+								If $CheckName Then
+									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
+										If launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
+									EndIf
+								Else
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
+								EndIf
+							EndIf
+						Case $SPELL_TYPE_COUNT1 To $SPELL_TYPE_COUNT7
+							Local $buff_num = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
+
+							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
+								Local $CheckName = 0
+								Local $CheckRange = 400
+								Switch $buff_table[9]
+									Case $Witchdoctor_Gargantuan
+										$CheckName = "WD_Gargantuan_"
+									Case $Witchdoctor_SummonZombieDog
+										$CheckName = "WD_ZombieDogRune_"
+									Case $Witchdoctor_FetishArmy
+										$CheckName = "Fetish_Melee_"
+									Case $DemonHunter_Sentry
+										$CheckName = "DH_sentry_"
+										$CheckRange = 60
+									Case Else
+										$CheckName = 0
+								EndSwitch
+								
+								If $CheckName Then
+									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
+										If launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
+									EndIf
+								Else
+									If launch_spell($i) Then
+										$buff_table[10] = TimerInit()
+									EndIf
+								EndIf
+							EndIf
 					Endswitch
 				Case 2 ; grab
 					Switch $buff_table[3]
@@ -4103,6 +4237,34 @@ Func GestSpellInit()
 				$type = $SPELL_TYPE_ZONE_AND_BUFF
 			Case $buff_table[3] = "move"
 				$type = $SPELL_TYPE_MOVE
+			Case $buff_table[3] = "count1"
+				$type = $SPELL_TYPE_COUNT1
+			Case $buff_table[3] = "count2"
+				$type = $SPELL_TYPE_COUNT2
+			Case $buff_table[3] = "count3"
+				$type = $SPELL_TYPE_COUNT3
+			Case $buff_table[3] = "count4"
+				$type = $SPELL_TYPE_COUNT4
+			Case $buff_table[3] = "count5"
+				$type = $SPELL_TYPE_COUNT5
+			Case $buff_table[3] = "count6"
+				$type = $SPELL_TYPE_COUNT6
+			Case $buff_table[3] = "count7"
+				$type = $SPELL_TYPE_COUNT7
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count1", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT1
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count2", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT2
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count3", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT3
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count4", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT4
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count5", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT5
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count6", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT6
+			Case StringInStr($buff_table[3], "attack", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "count7", 2)
+				$type = $SPELL_TYPE_ATTACK_AND_COUNT7
 			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "&", 2) And StringInStr($buff_table[3], "attack", 2)
 				$type = $SPELL_TYPE_LIFE_AND_ATTACK
 			Case StringInStr($buff_table[3], "life", 2) And StringInStr($buff_table[3], "|", 2) And StringInStr($buff_table[3], "attack", 2)

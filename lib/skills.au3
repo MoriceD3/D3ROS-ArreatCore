@@ -521,7 +521,7 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_FetishArmy, "Witchdoctor_FetishArmy", 120000, "attack&elite", 0, "mana", "", ""], _
 						[$Witchdoctor_Firebats, "Witchdoctor_Firebats", 2000, "attack", 300, "mana", "", 10], _
 						[$Witchdoctor_Firebomb, "Witchdoctor_Firebomb", 0, "physical", 0, "mana", "", 45], _
-						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 60000, "move", 0, "mana", "", ""], _
+						[$Witchdoctor_Gargantuan, "Witchdoctor_Gargantuan", 2000, "count1", 0, "mana", "", ""], _
 						[$Witchdoctor_GraspOfTheDead, "Witchdoctor_GraspOfTheDead", 8000, "attack", 150, "mana", "", 10], _
 						[$Witchdoctor_Haunt, "Witchdoctor_Haunt", 10000, "attack", 50, "mana", "", 10], _
 						[$Witchdoctor_Hex, "Witchdoctor_Hex", 15000, "buff", 0, "mana", "", ""], _
@@ -533,9 +533,9 @@ Global $WitchDoctor_skill_Table[23][8] =	[ _
 						[$Witchdoctor_PoisonDart, "Witchdoctor_PoisonDart", 0, "physical", 0, "mana", "", 45], _
 						[$Witchdoctor_Sacrifice, "Witchdoctor_Sacrifice", 0, "attack&elite", 0, "mana", "", 10], _
 						[$Witchdoctor_SoulHarvest, "Witchdoctor_SoulHarvest", 15000, "attack", 0, "mana", "", 16], _
-                                                [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 100, "mana", "", 45], _
+                        [$Witchdoctor_SpiritBarrage, "Witchdoctor_SpiritBarrage", 20000, "buff_permanent", 100, "mana", "", 45], _
 						[$Witchdoctor_SpiritWalk, "Witchdoctor_SpiritWalk", 15000, "buff_permanent", 0, "mana", 80, ""], _
-						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 45000, "move", 0, "mana", "", ""], _
+						[$Witchdoctor_SummonZombieDog, "Witchdoctor_SummonZombieDog", 2000, "count3", 0, "mana", "", ""], _
 						[$Witchdoctor_WallOfZombies, "Witchdoctor_WallOfZombies", 8000, "attack&elite", 0, "mana", "", 45], _
 						[$Witchdoctor_ZombieCharger, "Witchdoctor_ZombieCharger", 2000, "attack&elite", 150, "mana", "", 20] _
 						]
@@ -643,7 +643,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_Preparation,      "DemonHunter_Preparation",    45000,        "buff", "",           "",  "", ""], _
 [$DemonHunter_RainOfVengeance,  "DemonHunter_RainOfVengeance",30000,        "buff", "",           "",  "", 50], _
 [$DemonHunter_RapidFire,        "DemonHunter_RapidFire",          0,       "elite", 26,     "hatred",  "", ""], _
-[$DemonHunter_Sentry,           "DemonHunter_Sentry",          6000,        "life", 30,     "hatred",  80, ""], _
+[$DemonHunter_Sentry,           "DemonHunter_Sentry",          2000,"attack&count3",30,     "hatred",  80, ""], _
 [$DemonHunter_ShadowPower,      "DemonHunter_ShadowPower",     5000,        "life", 14, "discipline",  75, ""], _
 [$DemonHunter_SmokeScreen,      "DemonHunter_SmokeScreen",     3000,        "life", 14, "discipline",  50, ""], _
 [$DemonHunter_SpikeTrap,        "DemonHunter_SpikeTrap",       5000, "attack&life", 30,     "hatred",  90, 50], _

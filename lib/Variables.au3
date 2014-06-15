@@ -91,6 +91,20 @@ Global Const $SPELL_TYPE_ELITE_AND_BUFF   = 20
 Global Const $SPELL_TYPE_ELITE_OR_BUFF    = 21
 Global Const $SPELL_TYPE_PERMANENT_BUFF   = 22
 Global Const $SPELL_TYPE_CHANNELING	      = 23
+Global Const $SPELL_TYPE_COUNT1              = 101
+Global Const $SPELL_TYPE_COUNT2              = 102
+Global Const $SPELL_TYPE_COUNT3              = 103
+Global Const $SPELL_TYPE_COUNT4              = 104
+Global Const $SPELL_TYPE_COUNT5              = 105
+Global Const $SPELL_TYPE_COUNT6              = 106
+Global Const $SPELL_TYPE_COUNT7              = 107
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT1   = 108
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT2   = 109
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT3   = 110
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT4   = 111
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT5   = 112
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT6   = 113
+Global Const $SPELL_TYPE_ATTACK_AND_COUNT7   = 114
 
 ; Item Type
 Global Const $ITEM_TYPE_MOB		= 1
