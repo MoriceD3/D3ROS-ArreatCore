@@ -570,6 +570,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 [$X1_Barbarian_Avalanche_v2,    "Barbarian_Avalanche",           30000,  "attack&elite",  0,"fury","",30], _
 [$Barbarian_Bash,               "Barbarian_Bash",                    0,      "physical",  0,"fury","",""], _
 [$Barbarian_Cleave,             "Barbarian_Cleave",                  0,      "physical",  0,"fury","",""], _
+[$Barbarian_HammerOfTheAncients,"Barbarian_HammerOfTheAncients",     0,        "attack", 20,"fury","",""], _
 [$Barbarian_GroundStomp,        "Barbarian_GroundStomp"  ,       12000,      "physical",  0,"fury","",14], _
 [$Barbarian_Rend,               "Barbarian_Rend",                 4000,        "attack", 20,"fury","",12], _
 [$Barbarian_Leap,               "Barbarian_Leap",                10000,      "physical",  0,"fury","", 8], _
@@ -642,7 +643,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_RapidFire,        "DemonHunter_RapidFire",          0,       "elite", 26,     "hatred",  "", ""], _
 [$DemonHunter_Sentry,           "DemonHunter_Sentry",          6000,        "life", 30,     "hatred",  80, ""], _
 [$DemonHunter_ShadowPower,      "DemonHunter_ShadowPower",     5000,        "life", 14, "discipline",  75, ""], _
-[$DemonHunter_SmokeScreen,      "DemonHunter_SmokeScreen",     3000,        "life", 14, "discipline",  50, ""], _
+[$DemonHunter_SmokeScreen,      "DemonHunter_SmokeScreen",     2000,        "life", 14, "discipline",  50, ""], _
 [$DemonHunter_SpikeTrap,        "DemonHunter_SpikeTrap",       5000, "attack&life", 30,     "hatred",  90, 50], _
 [$DemonHunter_Strafe,           "DemonHunter_Strafe",             0,    "physical", 40,     "hatred",  "", ""], _
 [$DemonHunter_Vault,            "DemonHunter_Vault",           3000,        "life",  8, "discipline",  85, ""] _
