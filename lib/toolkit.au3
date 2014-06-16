@@ -2793,7 +2793,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 		Local $compt_wait = 0
 
 		Local $Curentarea = GetLevelAreaId()
-		If $Curentarea = GetLevelAreaForWP($WPNumber, $Mode) Then
+		If ArrivedTargetArea($Curentarea, $WPNumber, $Mode) Then
 			_Log("TakeWpV3 : New area found : " & $Curentarea, $LOG_LEVEL_DEBUG)
 			
 			Sleep(500)
@@ -2891,7 +2891,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 
 			Local $WPMaxWait = 20
 			If $Totalruns <= 2 Then $WPMaxWait = 40 ; First Run may take more time, especially on slower PC
-			While $Curentarea <> GetLevelAreaForWP($WPNumber, $Mode) And $compt_wait < $WPMaxWait
+			While Not ArrivedTargetArea($Curentarea, $WPNumber, $Mode) And $compt_wait < $WPMaxWait
 				_Log("TakeWpV3 : We may TP successfully, wating Area Change. Attempt -> " & $compt_wait)
 				$compt_wait += 1
 				sleep(500)
@@ -5708,57 +5708,33 @@ Func GetActivePlayerSkillRune($index)
 	EndIf
 EndFunc
 
-Func GetLevelAreaForWP($WP, $Mode = 0)
+Func ArrivedTargetArea($Curentarea, $WP, $Mode = 0)
 	If $Mode = 1 Then ;in adventure mode
-		If $WP >= 0 And $WP < UBound($LevaAreaForWP_ADV) Then
-			Return $LevaAreaForWP_ADV[$WP]
+		If $WP < 0 Or $WP >= UBound($LevaAreaForWP_ADV) Then
+			_log("Critial Error!!  Can not find the corresponding ADV Level Area", $LOG_LEVEL_ERROR)
+			Return False
+		EndIf
+		
+		If $Curentarea = $LevaAreaForWP_ADV[$WP] Then
+			Return True
 		Else
-			_log("Critial Error!!  Can not find the corresponding Level Area", $LOG_LEVEL_ERROR)
-			Return 0
+			Return False
 		EndIf
 	Else ;in campain mode
-		Switch $Act
-			Case 1
-				If $WP >= 0 And $WP < UBound($LevaAreaForWP_CampainAct1) Then
-					Return $LevaAreaForWP_CampainAct1[$WP]
-				Else
-					_log("Critial Error!!  Can not find the corresponding Act1 Level Area", $LOG_LEVEL_ERROR)
-					Return 0
-				EndIf
-			Case 2
-				If $WP >= 0 And $WP < UBound($LevaAreaForWP_CampainAct2) Then
-					Return $LevaAreaForWP_CampainAct2[$WP]
-				Else
-					_log("Critial Error!!  Can not find the corresponding Act2 Level Area", $LOG_LEVEL_ERROR)
-					Return 0
-				EndIf
-			Case 3
-				If $WP >= 0 And $WP < UBound($LevaAreaForWP_CampainAct3) Then
-					Return $LevaAreaForWP_CampainAct3[$WP]
-				Else
-					_log("Critial Error!!  Can not find the corresponding Act3 Level Area", $LOG_LEVEL_ERROR)
-					Return 0
-				EndIf
-			Case 4
-				If $WP >= 0 And $WP < UBound($LevaAreaForWP_CampainAct4) Then
-					Return $LevaAreaForWP_CampainAct4[$WP]
-				Else
-					_log("Critial Error!!  Can not find the corresponding Act4 Level Area", $LOG_LEVEL_ERROR)
-					Return 0
-				EndIf
-			Case 5
-				If $WP >= 0 And $WP < UBound($LevaAreaForWP_CampainAct5) Then
-					Return $LevaAreaForWP_CampainAct5[$WP]
-				Else
-					_log("Critial Error!!  Can not find the corresponding Act5 Level Area", $LOG_LEVEL_ERROR)
-					Return 0
-				EndIf
-			Case Else
-				_log("Critial Error!!  Can not find the corresponding Level Area", $LOG_LEVEL_ERROR)
-				Return 0
-		EndSwitch
+		If $WP < UBound($LevaAreaForWP_CampainAct1) And $Curentarea = $LevaAreaForWP_CampainAct1[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct2) And $Curentarea = $LevaAreaForWP_CampainAct2[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct3) And $Curentarea = $LevaAreaForWP_CampainAct3[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct4) And $Curentarea = $LevaAreaForWP_CampainAct4[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct5) And $Curentarea = $LevaAreaForWP_CampainAct5[$WP] Then
+			Return True
+		Else
+			Return False
+		EndIf
 	EndIf
-	
 EndFunc
 
 Func WaitTpBarLoading($SendKeyPortal)
