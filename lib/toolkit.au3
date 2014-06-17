@@ -84,44 +84,6 @@ Func FindActor($name, $maxRange = 400)
 	Return False
 EndFunc   ;==>FindActor
 
-Func CheckActorNumber($name, $num, $maxRange = 400)
-	If _ingame() Then
-		While Not offsetlist()
-			Sleep(10)
-		WEnd
-	Else
-		offsetlist()
-	EndIF
-
-	Local $OldActorName[$num]
-	Local $ActorNum = 0
-	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
-
-	startIterateObjectsList($index, $offset, $count)
-	While iterateObjectsList($index, $offset, $count, $item)
-		If StringInStr($item[1], $name, 2) And $item[9] < $maxRange Then
-			Local $SameAsOld = False
-			If $ActorNum > 0 Then
-				For $i = 0 To $ActorNum - 1
-					If Not StringCompare($OldActorName[$i], $item[1]) Then
-						$SameAsOld = True
-						Exitloop
-					EndIf
-				Next
-			EndIf
-
-			If Not $SameAsOld Then
-				$OldActorName[$ActorNum] = $item[1]
-				$ActorNum = $ActorNum + 1
-
-				If $ActorNum >= $num Then Return True
-			EndIf
-		EndIf
-	WEnd
-
-	Return False
-EndFunc   ;==>CheckActorNumber
-
 Func ClickUI($name, $bucket = -1, $click = 1)
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
@@ -1559,6 +1521,7 @@ Func IterateFilterAttackV4($IgnoreList)
 	EndIf
 
 	$CurrentLoc = GetCurrentPos()
+	ResetPetCount()
 
 	For $i = 0 To $count
 
@@ -1788,6 +1751,8 @@ EndFunc   ;==>Is_Loot
 Func Is_Interact(ByRef $item, $IgnoreList)
 	Select
 		Case (($item[0] = 0xFFFFFFFF) Or ($item[0] = "")) ; Mauvais Item
+			Return False
+		Case CountPets($Item)
 			Return False
 		Case ($item[9] > $g_range And $item[9] > $a_range) ; Trop loin
 			Return False
@@ -3784,36 +3749,31 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								$buff_table[10] = TimerInit()
 							EndIf
 						Case $SPELL_TYPE_COUNT1 To $SPELL_TYPE_COUNT7
-							Local $buff_num = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
+							Local $PetExpect = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
 
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
-								Local $CheckName = 0
-								Local $CheckRange = 400
 								Switch $buff_table[9]
 									Case $Witchdoctor_Gargantuan
-										$CheckName = "WD_Gargantuan_"
+										If $PetExpect > $Count_WD_Gargantuan And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_SummonZombieDog
-										$CheckName = "WD_ZombieDogRune_"
+										If $PetExpect > $Count_WD_ZombieDogRune And launch_spell($i)Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_FetishArmy
-										$CheckName = "Fetish_Melee_"
+										If $PetExpect > $Count_WD_Fetish_Melee And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $DemonHunter_Sentry
-										$CheckName = "DH_sentry_"
-										$CheckRange = 60
+										If $PetExpect > $Count_DH_sentry And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case Else
-										$CheckName = 0
-								EndSwitch
-
-								If $CheckName Then
-									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
 										If launch_spell($i) Then
 											$buff_table[10] = TimerInit()
 										EndIf
-									EndIf
-								Else
-									If launch_spell($i) Then
-										$buff_table[10] = TimerInit()
-									EndIf
-								EndIf
+								EndSwitch
 							EndIf
 					EndSwitch
 				Case 1 ; attack
@@ -3966,68 +3926,58 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							; See in unused  Removed_GestSpellcast!
 							; TODO : Handle this
 						Case $SPELL_TYPE_ATTACK_AND_COUNT1 To $SPELL_TYPE_ATTACK_AND_COUNT7
-							Local $buff_num = $buff_table[3] - $SPELL_TYPE_ATTACK_AND_COUNT1 + 1
+							Local $PetExpect = $buff_table[3] - $SPELL_TYPE_ATTACK_AND_COUNT1 + 1
 
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
-								Local $CheckName = 0
-								Local $CheckRange = 400
 								Switch $buff_table[9]
 									Case $Witchdoctor_Gargantuan
-										$CheckName = "WD_Gargantuan_"
+										If $PetExpect > $Count_WD_Gargantuan And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_SummonZombieDog
-										$CheckName = "WD_ZombieDogRune_"
+										If $PetExpect > $Count_WD_ZombieDogRune And launch_spell($i)Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_FetishArmy
-										$CheckName = "Fetish_Melee_"
+										If $PetExpect > $Count_WD_Fetish_Melee And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $DemonHunter_Sentry
-										$CheckName = "DH_sentry_"
-										$CheckRange = 60
+										If $PetExpect > $Count_DH_sentry And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case Else
-										$CheckName = 0
-								EndSwitch
-								
-								If $CheckName Then
-									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
 										If launch_spell($i) Then
 											$buff_table[10] = TimerInit()
 										EndIf
-									EndIf
-								Else
-									If launch_spell($i) Then
-										$buff_table[10] = TimerInit()
-									EndIf
-								EndIf
+								EndSwitch
 							EndIf
 						Case $SPELL_TYPE_COUNT1 To $SPELL_TYPE_COUNT7
-							Local $buff_num = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
+							Local $PetExpect = $buff_table[3] - $SPELL_TYPE_COUNT1 + 1
 
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
-								Local $CheckName = 0
-								Local $CheckRange = 400
 								Switch $buff_table[9]
 									Case $Witchdoctor_Gargantuan
-										$CheckName = "WD_Gargantuan_"
+										If $PetExpect > $Count_WD_Gargantuan And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_SummonZombieDog
-										$CheckName = "WD_ZombieDogRune_"
+										If $PetExpect > $Count_WD_ZombieDogRune And launch_spell($i)Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $Witchdoctor_FetishArmy
-										$CheckName = "Fetish_Melee_"
+										If $PetExpect > $Count_WD_Fetish_Melee And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case $DemonHunter_Sentry
-										$CheckName = "DH_sentry_"
-										$CheckRange = 60
+										If $PetExpect > $Count_DH_sentry And launch_spell($i) Then
+											$buff_table[10] = TimerInit()
+										EndIf
 									Case Else
-										$CheckName = 0
-								EndSwitch
-								
-								If $CheckName Then
-									If Not CheckActorNumber($CheckName, $buff_num, $CheckRange) Then
 										If launch_spell($i) Then
 											$buff_table[10] = TimerInit()
 										EndIf
-									EndIf
-								Else
-									If launch_spell($i) Then
-										$buff_table[10] = TimerInit()
-									EndIf
-								EndIf
+								EndSwitch
 							EndIf
 					Endswitch
 				Case 2 ; grab
@@ -5904,4 +5854,54 @@ Func GetActivePlayerSkillRune($index)
 	Else
 		Return 0
 	EndIf
+EndFunc
+
+Func ResetPetCount()
+	ReDim $PetActorName[1]
+	$Count_WD_Gargantuan = 0
+	$Count_WD_ZombieDogRune = 0
+	$Count_WD_Fetish_Melee = 0
+	$Count_DH_sentry = 0
+EndFunc
+
+Func CountPets(ByRef $item)	
+	Local $IsPet = True
+	If StringInStr($item[1], "WD_Gargantuan_", 2) Then 
+		If IsNewPetActor($item[1]) Then
+			$Count_WD_Gargantuan += 1
+		EndIf
+	ElseIf StringInStr($item[1], "WD_ZombieDogRune_", 2) Then 
+		If IsNewPetActor($item[1]) Then
+			$Count_WD_ZombieDogRune += 1
+		EndIf
+	ElseIf StringInStr($item[1], "Fetish_Melee_", 2) Then
+		If IsNewPetActor($item[1]) Then
+			$Count_WD_Fetish_Melee += 1
+		EndIf
+	ElseIf StringInStr($item[1], "DH_sentry_", 2) Then
+		If $item[9] <= 60 And IsNewPetActor($item[1]) Then
+			$Count_DH_sentry += 1
+		EndIf
+	Else
+		$IsPet = False
+	EndIf
+
+	Return $IsPet
+EndFunc
+
+Func IsNewPetActor($PetName)
+	Local $Count = Ubound($PetActorName) - 1
+	If $Count > 0 Then
+		For $i = 0 To $Count - 1
+			If Not StringCompare($PetActorName[$i], $PetName) Then
+				_log("$$$ " & $PetName)
+				Return False
+			EndIf
+		Next
+	EndIf
+
+	$PetActorName[$Count] = $PetName
+	ReDim $PetActorName[Ubound($PetActorName) + 1]
+	
+	Return True
 EndFunc

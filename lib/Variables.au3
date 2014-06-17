@@ -267,3 +267,10 @@ Global $games 				 = 1
 Global $gamecounter  	     = 0
 Global $CoffreTaken 		 = 0
 Global $disconnectcount 	 = 0
+
+; Pets Count
+Global $PetActorName[1]
+Global $Count_WD_Gargantuan = 0
+Global $Count_WD_ZombieDogRune = 0
+Global $Count_WD_Fetish_Melee = 0
+Global $Count_DH_sentry = 0
