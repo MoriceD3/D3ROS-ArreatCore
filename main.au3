@@ -70,6 +70,8 @@ TraySetIcon($icon)
 #include "lib\Affix.au3"
 ;Automatisation des séquences
 #include "lib\GestionMenu.au3"
+;Gestion des pauses
+#include "lib\GestionPause.au3"
 ; TChat
 #include "lib\GestionChat.au3"
 #include "lib\dev_tools.au3"
@@ -87,6 +89,7 @@ HotKeySet("{F5}", "StashAndRepairTerminate")
 offsetlist()
 LoadingSNOExtended()
 InitSettings()
+InitPauses()
 
 ; Vérification présence de la fenêtre
 CheckWindowD3()

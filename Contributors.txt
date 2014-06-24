@@ -14,6 +14,7 @@ Moriced3 :
 - Amélioration Func _logind3
 - buffinit avant prendre WP et portBack
 - Possibilité de ne pas identifier les légendaire
+- Refonte du GestionPause.au3,pour avoir la possibilité de désactivé certaine pause, et ajout d'un arrêt de bot a une heure précise, avec possibilité de reprendre la session.
 
 Anonymous69 :
 
@@ -70,6 +71,7 @@ rabbit2000 :
 - Automatisation des acts 1,2,3 en mode manuel, semi-auto, auto et tuer les boss boucle en boucle =====> 
 - Gestion des différents perso et de grablist dans les settings
 - Ajout de la fonction PartieSolo pour jouer avec le bot en team
+- Gestion des pauses a des heures précise
 
 gmsMath et RqideN : 
 - Fonction PauseToSurviveHC

@@ -50,7 +50,7 @@ Func StatsDisplay()
 			$GoldByColectRatio = (($GOLDInthepocket - $GoldBySale + $GoldByRepaire) / $GOLDInthepocket * 100);ratio de l'or collecté
 			$GoldByRepaireRatio = ($GoldByRepaire / $GOLDInthepocket * 100);ratio du coût des réparation
 			$dif_timer_stat = TimerDiff($begin_timer_stat);temps total
-			$dif_timer_stat_pause = ($tempsPauseGame + $tempsPauserepas);calcule du temps de pause (game + repas)=total pause
+			$dif_timer_stat_pause = $tempsPauseGame;calcule du temps de pause (game + repas)=total pause
 			$dif_timer_stat_game = ($dif_timer_stat - $dif_timer_stat_pause);calcule (temps totale - temps total pause)=Temps de jeu
 			$dif_timer_stat_game_Ratio = ($dif_timer_stat_game / $dif_timer_stat * 100);ratio temps total jeu
 			$dif_timer_stat_pause_Ratio = ($dif_timer_stat_pause / $dif_timer_stat * 100);ration temps de pause total
@@ -157,7 +157,7 @@ Func StatsDisplay()
 		$DebugMessage = $DebugMessage & "Durée Moyenne/Run : " & $timer_stat_run_moyen & @CRLF
 		$DebugMessage = $DebugMessage & "Temps Total De Bot:   " & $timer_stat_total & @CRLF
 		$DebugMessage = $DebugMessage & "Temps Total En Jeu :   " & formatTime($dif_timer_stat_game) & " (" & Round($dif_timer_stat_game_Ratio) & "%)" & @CRLF
-		$DebugMessage = $DebugMessage & "Pauses Effectuées : " & ($BreakTimeCounter + $PauseRepasCounter) & "  /  " & formatTime($dif_timer_stat_pause) & " (" & Round($dif_timer_stat_pause_Ratio) & "%)" & @CRLF
+		$DebugMessage = $DebugMessage & "Pauses Effectuées : " & $BreakTimeCounter & "  /  " & formatTime($dif_timer_stat_pause) & " (" & Round($dif_timer_stat_pause_Ratio) & "%)" & @CRLF
 		;stats XP
         $DebugMessage = $DebugMessage & "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" & @CRLF
         $DebugMessage = $DebugMessage & "                                 INFOS XP" & @CRLF

@@ -2972,7 +2972,6 @@ Func _resumegame()
 			sleep(500)
 		WEnd
 	Else
-		_log("Resume Game")
 		Sleep(Random(500, 1000, 1))
 		If $Try_ResumeGame > 8 Then
 			Local $wait_aftertoomanytry = Random(($Try_ResumeGame * 2) * 60000, ($Try_ResumeGame * 2) * 120000, 1)
@@ -2980,15 +2979,11 @@ Func _resumegame()
 			Sleep($wait_aftertoomanytry)
 		EndIf
 
-		If $Try_ResumeGame = 0 And $BreakCounter >= ($Breakafterxxgames + Random(-2, 2, 1)) And $TakeABreak Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
-		   Local $wait_BreakTimeafterxxgames = (($BreakTime * 1000) + Random(60000, 180000, 1))
-		   _Log("Break Time after xx games -> Sleep " & (formatTime($wait_BreakTimeafterxxgames)))
-		   Sleep($wait_BreakTimeafterxxgames)
-		   $BreakCounter = 0;on remet le compteur a 0
-		   $BreakTimeCounter += 1;on compte les pause effectuer
-		   $tempsPauseGame += $wait_BreakTimeafterxxgames;  compte le temps de pause
+		If $Try_ResumeGame = 0 And $TakeABreak Then;$TryResumeGame = 0 car on veut pas faire une pause en plein jeu
+		   PausePlanifier()
 		EndIf
 
+		_log("Resume Game")
 		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
 		$Try_ResumeGame += 1
 	EndIf

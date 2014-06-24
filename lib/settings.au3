@@ -37,11 +37,19 @@ Global $ItemToKeep[10] = [False, False, False, False, False, False, False, False
 Global $ItemToSalvage[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $ItemToSell[10] = [False, False, False, False, False, False, False, False, False, False]
 Global $UnknownItemAction = "Sell"
-; fonction pause x games
-Global $BreakTime = 360
-Global $Breakafterxxgames = Round(Random(4, 8))
+; gestion des pauses
 Global $TakeABreak = False
-;Global $PauseRepas = False
+Global $PausePetitDejeuner = False
+Global $PauseDejeuner = False
+Global $PauseGouter = False
+Global $PauseDiner 	= False
+Global $PauseCollation = False
+Global $StopBotting = False
+Global $RestartsBotting = False
+Global $TempsPauseRepas	= 20
+Global $Breakafterxxgames = False
+Global $BreakTime = 360
+
 Global $tab_grablist[1][2]
 Global $PartieSolo = True
 
@@ -366,13 +374,19 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "Unidentified", $Unidentified)
 	$Unidentified = Trim(StringLower($Dummy)) == "true"
 
-	; fonction pause x games
-	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
-	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
+	; Gestion des pause
 	$Dummy = IniRead($profilFile, "Run info", "TakeABreak", $TakeABreak)
 	$TakeABreak = Trim(StringLower($Dummy)) == "true"
-	;$Dummy = IniRead($profilFile, "Run info", "PauseRepas", $PauseRepas)
-	;$PauseRepas = Trim(StringLower($Dummy)) == "true"
+	$PausePetitDejeuner = IniRead($profilFile, "Run info", "PausePetitDejeuner", $PausePetitDejeuner)
+	$PauseDejeuner = IniRead($profilFile, "Run info", "PauseDejeuner", $PauseDejeuner)
+	$PauseGouter = IniRead($profilFile, "Run info", "PauseGouter", $PauseGouter)
+	$PauseDiner = IniRead($profilFile, "Run info", "PauseDiner", $PauseDiner)
+	$PauseCollation = IniRead($profilFile, "Run info", "PauseCollation", $PauseCollation)
+	$TempsPauseRepas = IniRead($profilFile, "Run info", "TempsPauseRepas", $TempsPauseRepas)
+	$StopBotting = IniRead($profilFile, "Run info", "StopBotting", $StopBotting)
+	$RestartsBotting = IniRead($profilFile, "Run info", "RestartsBotting", $RestartsBotting)
+	$BreakTime = IniRead($profilFile, "Run info", "BreakTime", $BreakTime)
+	$Breakafterxxgames = IniRead($profilFile, "Run info", "Breakafterxxgames", $Breakafterxxgames)
 
 	;choix du type de bot
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)

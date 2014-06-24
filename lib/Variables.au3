@@ -121,12 +121,16 @@ Global Const $MOVETO_REPAIR_VENDOR = 2
 Global Const $MOVETO_BOOKOFCAIN    = 3
 Global Const $MOVETO_PORTAL	       = 4
 
-; global pour prendre des pause
-Global $BreakCounter 	  = 0
-Global $BreakTimeCounter  = 0
-Global $PauseRepasCounter = 0
-Global $tempsPauseGame 	  = 0
-Global $tempsPauserepas   = 0
+; gerer les pauses
+Global $BreakCounter 	  		= 0
+Global $BreakTimeCounter  		= 0
+Global $tempsPauseGame 	  		= 0
+Global $ExecuteStopBotting 		= 0
+Global $ExecuteCollation 		= 0
+Global $ExecuteDejeuner 		= 0
+Global $ExecuteDiner			= 0
+Global $ExecuteGouter			= 0
+Global $ExecutePetitDejeuner 	= 0
 
 ; fonction en execution
 Global $Execute_TownPortalnew 	= False
