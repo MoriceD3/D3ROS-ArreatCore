@@ -64,7 +64,7 @@ Func SelectGameType($SelectGameType, $auto)
 	If $TypedeBot <> 2 And _inmenu() Then
 		Sleep(Random(700, 800, 1))
 		_log("Game Settings", $LOG_LEVEL_DEBUG)
-		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu", 270) ; tap paramètre de la partie
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270) ; tap paramètre de la partie
 		Sleep(Random(700, 800, 1))
 
 		Local $Waiting_Time = 0
@@ -555,7 +555,7 @@ Func SelectHero()
 	If IsMenuHeroSelectOpened() Then
 
 	   ;positionnement sur la scrollbar
-	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar", 779)
+	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar.up", 606)
 	   Sleep(Random(600, 800, 1))
 
 	   _log("Scroll The List Of Heros")
@@ -569,81 +569,81 @@ Func SelectHero()
 
 	   Switch $Heros
 			Case 1
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed36")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed36", 1109)
 			   _log("Select Hero 1")
 			Case 2
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed37")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed37", 1100)
 			   _log("Select Hero 2")
 			Case 3
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed38")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed38", 1464)
 			   _log("Select Hero 3")
 			Case 4
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed39")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed39", 1889)
 			   _log("Select Hero 4")
 			Case 5
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40", 821)
 			   _log("Select Hero 5")
 			Case 6
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41", 1264)
 			   _log("Select Hero 6")
 			Case 7
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42", 1458)
 			   _log("Select Hero 7")
 			Case 8
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40", 821)
 			   _log("Select Hero 8")
 			Case 9
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41", 1264)
 			   _log("Select Hero 9")
 			Case 10
 			   For $i = 1 To 5 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42", 1458)
 			   _log("Select Hero 10")
 			Case 11
 			   For $i = 1 To 9 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41", 1264)
 			   _log("Select Hero 11")
 			Case 12
 			   For $i = 1 To 9 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42", 1458)
 			   _log("Select Hero 12")
 			Case 13
 			   For $i = 1 To 13 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed40", 821)
 			   _log("Select Hero 13")
 			Case 14
 			   For $i = 1 To 13 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed41", 1264)
 			   _log("Select Hero 14")
 			Case 15
 			   For $i = 1 To 13 Step 1
 				  MouseWheel("down")
 				  Sleep(Random(100, 150, 1))
 			   Next
-			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42")
+			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed42", 1458)
 			   _log("Select Hero 15")
 	   EndSwitch
 	   Sleep(Random(600, 800, 1))
