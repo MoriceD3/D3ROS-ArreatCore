@@ -12,14 +12,14 @@ Global $_MyCharType 		  = 0
 Global $hotkeycheck 		  = False
 Global $ZoneCheckTimer 		  = 0
 
-; Variables pour la gestion des quêtes
+; Variables pour la gestion des quetes
 Global $ActiveQuest			  = -1
 Global $BountyQuestIDs		  = ""
 
 ; Variable contenant le stuff actuel
 Global $allSNOitems
 
-; Variables pour la gestion de la fenêtre Diablo
+; Variables pour la gestion de la fenetre Diablo
 Global $SizeWindows = 0
 Global $PointFinal[4] = [0,0,0,0]
 Global $AspectChange
@@ -33,7 +33,7 @@ Global $Byte_NoItem_Identify[2]
 ;Variables gestion grablist
 Global $GrabListTab, $List_grablist
 
-; Variable globale pour Automatisation des séquences
+; Variable globale pour Automatisation des sequences
 Global $Choix_Act_Run,$SequenceFileAct1,$SequenceFileAct2,$SequenceFileAct3,$SequenceFileAct3PtSauve
 Global $Sequence_Aleatoire,$Nombre_de_Run,$NombreRun_Encour,$Act_Encour,$fileLog,$numLigneFichier
 Global $NombreMiniAct1,$NombreMiniAct2,$NombreMiniAct3,$NombreMaxiAct1,$NombreMaxiAct2,$NombreMaxiAct3,$NombreDeRun
@@ -44,8 +44,17 @@ Global $SequenceFileAct333,$SequenceFileAct362,$SequenceFileAct373,$SequenceFile
 Global $SequenceFileAct411,$SequenceFileAct442
 Global $SequenceFileAdventure
 
-;Gestion des Skills suivant les Héros, de la difficulté et de la puissance des monstres
-Global $Heros,$difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
+; Variable globale pour Automatisation
+Global $difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
+
+; Variable globale pour Automatisation Heros
+Global $TabHeros 						= 1
+Global $FirstPass_SetNewHeros 			= 1
+Global $NbTabHeros 						= 0
+Global $CheckChangeHeros 				= 1
+Global $RunCounter_BeforeChangeHeros 	= 0
+Global $NewHeros 						= 0
+Global $FirstConfigModeOk 				= 0
 
 ; check ui error
 Global Const $MODE_INVENTORY_FULL 		= 0

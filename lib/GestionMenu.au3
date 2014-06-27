@@ -24,7 +24,7 @@ Func SelectGameType($SelectGameType, $auto)
 			Case 2
 				$File_Sequence = $SequenceFileAct2
 			Case 3
-				$File_Sequence = $SequenceFileAct3PtSauve
+			    $File_Sequence = $SequenceFileAct3PtSauve
 			Case 222
 				$File_Sequence = $SequenceFileAct222
 			Case 232
@@ -54,9 +54,18 @@ Func SelectGameType($SelectGameType, $auto)
 	   $Waiting_Time += 1
 	WEnd
 
-	;Selection du Heros
-	If ($Totalruns = 1) And ($TypedeBot = 1) Then
-		SelectHero()
+	CheckWindowsClosed()
+	;Selection du Heros en auto
+	If ($TypedeBot = 1) Then
+	   If ($Totalruns = 1) Or $NewHeros Then
+		  If $NewHeros Then
+			 Sleep(Random(3000, 3500, 1))
+		  EndIf
+		  SelectHero()
+		  If ($SelectGameType <> -1 And $SelectGameType < 4) And $FirstConfigModeOk Then
+			 Return
+		  EndIf
+	   EndIf
 	EndIf
 
 	Sleep(Random(1500, 2000, 1))
@@ -64,7 +73,7 @@ Func SelectGameType($SelectGameType, $auto)
 	If $TypedeBot <> 2 And _inmenu() Then
 		Sleep(Random(700, 800, 1))
 		_log("Game Settings", $LOG_LEVEL_DEBUG)
-		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270) ; tap paramètre de la partie
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
 		Sleep(Random(700, 800, 1))
 
 		Local $Waiting_Time = 0
@@ -74,7 +83,7 @@ Func SelectGameType($SelectGameType, $auto)
 		WEnd
 
 		If IsGameSettingsOpened() Then
-		   If ($Totalruns = 1) Then
+		   If ($Totalruns = 1) Or ($NewHeros And Not $FirstConfigModeOk) Then
 			  _log("Passage de la partie en mode privé", $LOG_LEVEL_DEBUG)
 			  ClickUi("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.AdventureModeContent.PrivateGameButton" , 1647)
 			  Sleep(Random(600, 800, 1))
@@ -107,7 +116,7 @@ Func SelectGameType($SelectGameType, $auto)
 
 		  ;Selection -> CHANGER DE QUETE
 		   _log("Choose a New Quest", $LOG_LEVEL_DEBUG)
-		   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton" , 954); tap changer
+		   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeQuestButton" , 954)
 		   Sleep(Random(700, 800, 1))
 
 		   Local $Waiting_Time = 0
@@ -360,13 +369,11 @@ Func SelectGameType($SelectGameType, $auto)
 
 			  EndSwitch
 
-			  ;Bp choisir la quete
 			  Sleep(Random(300, 400, 1))
 			  _log("Validate Quest")
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton" , 663) ; Tap OK 'Choose a new quest'
+			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.SelectQuestButton" , 663)
 			  Sleep(Random(1000, 1500, 1))
 
-			  ; Bp validation de la quête
 			  If IsQuestChangeUiOpened() Then
 				 _log("Detection Quests Change", $LOG_LEVEL_DEBUG)
 				 Sleep(Random(300, 400, 1))
@@ -375,7 +382,7 @@ Func SelectGameType($SelectGameType, $auto)
 			  EndIf
 			  Sleep(Random(600, 800, 1))
 			  _log("Save And Close")
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809) ; tap sauvegarder et fermer
+			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
 			  Sleep(Random(800, 1000, 1))
 			  CheckWindowsClosed()
 		   Else
@@ -391,61 +398,74 @@ Func SelectGameType($SelectGameType, $auto)
 	EndIf
 EndFunc   ;==>SelectGameType
 
-;Selection de la quete en automatique
 Func SelectQuest()
-	If _checkdisconnect() Then
-	   _log("Disconnected In Select Quest", $LOG_LEVEL_WARNING)
+	If _checkdisconnect() Or _onloginscreen() Then
 	   Return
 	EndIf
-	If ($Choix_Act_Run = -3) And ($Totalruns = 1) Then
-		SelectGameType(-3, True)
+	If $CheckChangeHeros Then
+	   SetNewHeros()
 	EndIf
-	If ($Choix_Act_Run = -2) And ($Totalruns = 1) Then
-		SelectGameType(-2, True)
+	If ($Choix_Act_Run = -3) And (($Totalruns = 1) Or $NewHeros) Then
+	   SelectGameType(-3, True)
 	EndIf
-	If ($Choix_Act_Run = 1) And ($Totalruns = 1) Then
-		SelectGameType(1, True)
+	If ($Choix_Act_Run = -2) And (($Totalruns = 1) Or $NewHeros) Then
+	   SelectGameType(-2, True)
 	EndIf
-	If ($Choix_Act_Run = 2) And ($Totalruns = 1) Then
-		SelectGameType(2, True)
+	If ($Choix_Act_Run = 1) And (($Totalruns = 1) Or $NewHeros) Then
+	   SelectGameType(1, True)
+	EndIf
+	If ($Choix_Act_Run = 2) And (($Totalruns = 1) Or $NewHeros) Then
+	   SelectGameType(2, True)
 	EndIf
 	If ($Choix_Act_Run = 3) Then
-		If ($Totalruns = 1) Then
-			SelectGameType(3, True)
-		EndIf
-		If ($Totalruns = 2) Then
-			$File_Sequence = $SequenceFileAct3
-		EndIf
+	   If ($Totalruns = 1) Then
+		  SelectGameType(3, True)
+	   EndIf
+	   If (($Totalruns = 2) And Not $CheckChangeHeros) Then
+		  $File_Sequence = $SequenceFileAct3
+	   EndIf
+	   If $CheckChangeHeros Then
+		  If $NewHeros Then
+			 If Not $FirstConfigModeOk Then
+				SelectGameType(3, True)
+			 Else
+				SelectGameType(3, False)
+			 EndIf
+		  EndIf
+		  If $RunCounter_BeforeChangeHeros = 1 Then
+			 $File_Sequence = $SequenceFileAct3
+		  EndIf
+	   EndIf
 	EndIf
 	If ($Choix_Act_Run = 222) Then
-		SelectGameType(222, True)
+	   SelectGameType(222, True)
 	EndIf
 	If ($Choix_Act_Run = 232) Then
-		SelectGameType(232, True)
+	   SelectGameType(232, True)
 	EndIf
 	If ($Choix_Act_Run = 283) Then
-		SelectGameType(283, True)
+	   SelectGameType(283, True)
 	EndIf
 	If ($Choix_Act_Run = 299) Then
-		SelectGameType(299, True)
+	   SelectGameType(299, True)
 	EndIf
 	If ($Choix_Act_Run = 333) Then
-		SelectGameType(333, True)
+	   SelectGameType(333, True)
 	EndIf
 	If ($Choix_Act_Run = 362) Then
-		SelectGameType(362, True)
+	   SelectGameType(362, True)
 	EndIf
 	If ($Choix_Act_Run = 373) Then
-		SelectGameType(373, True)
+	   SelectGameType(373, True)
 	EndIf
 	If ($Choix_Act_Run = 374) Then
-		SelectGameType(374, True)
+	   SelectGameType(374, True)
 	EndIf
 	If ($Choix_Act_Run = 411) Then
-		SelectGameType(411, True)
+	   SelectGameType(411, True)
     EndIf
 	If ($Choix_Act_Run = 442) Then
-		SelectGameType(442, True)
+	   SelectGameType(442, True)
 	EndIf
 
 	;Selection de la quete en automatique et enchainement des actes
@@ -541,7 +561,6 @@ EndFunc   ;==>SelectQuest
 
 Func SelectHero()
 
-	; bonton Changer de heros
 	_log("Switch Hero", $LOG_LEVEL_DEBUG)
 	ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Slot1.LayoutRoot.SwitchHero", 1223)
 	Sleep(Random(600, 800, 1))
@@ -554,20 +573,18 @@ Func SelectHero()
 
 	If IsMenuHeroSelectOpened() Then
 
-	   ;positionnement sur la scrollbar
 	   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.HeroSelectList.HeroList._scrollbar.up", 606)
 	   Sleep(Random(600, 800, 1))
 
 	   _log("Scroll The List Of Heros")
 	   For $i = 1 To Random(13, 15, 1) Step 1
 		  MouseWheel("up")
-		  ;Valeur de test ok 100
 		  Sleep(Random(100, 150, 1))
 	   Next
 
 	   Sleep(Random(500, 750, 1))
 
-	   Switch $Heros
+	   Switch $ListOfHeros[$TabHeros]
 			Case 1
 			   ClickUI("Root.NormalLayer.BattleNetHeroSelect_main.LayoutRoot.d3StackPanel.unnamed36", 1109)
 			   _log("Select Hero 1")
@@ -653,14 +670,17 @@ Func SelectHero()
 	   Sleep(Random(2000, 2500, 1)) ; temps mini de chargement du hero 2000ms
 	   CheckWindowsClosed()
     Else
-	   _log("Hero Menu No Opened, Retry SelectHero", $LOG_LEVEL_DEBUG)
-	   SelectHero()
+	   If Not _checkdisconnect() Then
+		  _log("Hero Menu No Opened, Retry SelectHero", $LOG_LEVEL_DEBUG)
+		  SelectHero()
+	   Else
+		  Return
+	   EndIf
     EndIf
 EndFunc   ;==>SelectHero
 
 Func SelectDifficultyMonsterPower()
 
-	;Selection de la difficulté
 	_log("Change Difficulty", $LOG_LEVEL_DEBUG)
 	If  $Choix_Act_Run > -2 Then
 	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeContent.ChangeDifficultyButton" , 269)
@@ -722,13 +742,61 @@ Func SelectDifficultyMonsterPower()
 	   ClickUI("Root.TopLayer.BattleNetGameDifficulty_main.LayoutRoot.OverlayContainer.PlayGameButton" , 253); tap OK Difficulty
 	   Sleep(Random(1000, 1500, 1))
     Else
-	   _log("Game Difficulty No Opened, Retry Select Difficulty And MonsterPower", $LOG_LEVEL_DEBUG)
-	   SelectDifficultyMonsterPower()
+	   If Not _checkdisconnect() Then
+		  _log("Game Difficulty No Opened, Retry Select Difficulty And MonsterPower", $LOG_LEVEL_DEBUG)
+		  SelectDifficultyMonsterPower()
+	   Else
+		  Return
+	   EndIf
     EndIf
 EndFunc   ;==>SelectDifficultyMonsterPower
 
-Func ClickUIMode($mode, $x, $y, $name, $bucket = -1)
+Func SetNewHeros()
 
+	If Not $NbTabHeros Then
+	   For $i = 1 To UBound($ListOfHeros) - 1
+		  $NbTabHeros += 1
+	   Next
+
+	   If $NbTabHeros = 1 Then
+		  $CheckChangeHeros = 0
+	   EndIf
+	   If $CheckChangeHeros Then
+		  If ($TypedeBot <> 1) Then
+			 WinSetOnTop("Diablo III", "", 0)
+			 MsgBox(0, "ERREUR", "Vous devez etre en TypedeBot = 1 pour un changement de perso !")
+			 Terminate()
+		  EndIf
+		  If ($Choix_Act_Run = -1) Then ;TODO a retirer une fois gerer
+			 WinSetOnTop("Diablo III", "", 0)
+			 MsgBox(0, "ERREUR", "Le Mode Choix_Act_Run = -1 n'est pas gerer pour l'instant,pour un changement de perso !")
+			 Terminate()
+		  EndIf
+	   EndIf
+	   Return
+	EndIf
+
+	If $CheckChangeHeros And $FirstPass_SetNewHeros Then
+
+	   $RunCounter_BeforeChangeHeros += 1
+	   $FirstPass_SetNewHeros = 0
+
+	   If $RunCounter_BeforeChangeHeros >= ($NbRunChangeHeros + (Random(2, 4, 1))) Then
+		  $TabHeros += 1
+		  If $TabHeros > $NbTabHeros Then
+			 $FirstConfigModeOk = 1
+			 $TabHeros = 1
+		  EndIf
+
+		  _log("New Heros " & $ListOfHeros[$TabHeros], $LOG_LEVEL_DEBUG)
+		  InitSettingsHeros()
+		  $RunCounter_BeforeChangeHeros = 0
+		  $NewHeros = 1
+	   EndIf
+	EndIf
+EndFunc  ;==> SetNewHeros
+
+Func ClickUIMode($mode, $x, $y, $name, $bucket = -1)
 	If $bucket = -1 Then ;no bucket given slow method
 		$result = GetOfsUI($name, 1)
 	Else ;bucket given, fast method
@@ -744,7 +812,7 @@ Func ClickUIMode($mode, $x, $y, $name, $bucket = -1)
 
 	While $Point[0] = 0 AND $Point[1] = 0
 		$Point = GetPositionUI($result)
-		sleep(500)
+		sleep(250)
 	WEnd
 
 	Dim $Point2 = GetUIRectangle($Point[0] + $x, $Point[1] + $y, $Point[2] + $x, $Point[3] + $y)

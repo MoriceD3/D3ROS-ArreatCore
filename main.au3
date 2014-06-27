@@ -89,6 +89,7 @@ HotKeySet("{F5}", "StashAndRepairTerminate")
 offsetlist()
 LoadingSNOExtended()
 InitSettings()
+InitSettingsHeros()
 InitPauses()
 
 ; Vérification présence de la fenêtre

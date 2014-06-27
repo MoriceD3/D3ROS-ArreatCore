@@ -49,6 +49,9 @@ Global $RestartsBotting = False
 Global $TempsPauseRepas	= 20
 Global $Breakafterxxgames = False
 Global $BreakTime = 360
+;Automatisation Heros
+Global $ListOfHeros[1]
+Global $NbRunChangeHeros = 2
 
 Global $tab_grablist[1][2]
 Global $PartieSolo = True
@@ -205,6 +208,11 @@ Func InitSettings($configFile = "settings/settings.ini", $grabListPath = "grabli
 	Init_grablistFile($grabListPath)
 	Init_GrabListTab()
 Endfunc
+
+Func InitSettingsHeros()
+	_Log("Init settingsHero" & $ListOfHeros[$TabHeros], $LOG_LEVEL_DEBUG)
+	InitSkillHeros("settings/settingsHero" & $ListOfHeros[$TabHeros] & ".ini")
+EndFunc
 
 Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
@@ -411,10 +419,9 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "Devmode", $Devmode)
 	$Devmode = Trim(StringLower($Dummy)) == "true"
 
-	;Fonction Iniatialisation du Skill suivant le Héros
-	$Heros = IniRead($profilFile, "Run info", "Heros", $Heros)
-
-	InitSkillHeros("settings/settingsHero" & $Heros & ".ini")
+	$Dummy = IniRead($profilFile, "Run info", "ListHeros", "")
+	$ListOfHeros = StringSplit($Dummy, "|")
+	$NbRunChangeHeros = IniRead($profilFile, "Run info", "NbRunChangeHeros", $NbRunChangeHeros)
 
 	;Chargement des tables
 	LoadTableFromString($Table_Coffre, $List_Coffre)

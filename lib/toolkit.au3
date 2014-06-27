@@ -911,7 +911,7 @@ Func LocateMyToon()
 	If _ingame() Then
 		While $count_locatemytoon <= 100
 			$idarea = GetLevelAreaId()
-			if $idarea <> -1 Then
+			If $idarea <> -1 Then
 				_log("Looking for local player", $LOG_LEVEL_VERBOSE)
 
 				$_Myoffset = "0x" & Hex(GetPlayerOffset(), 8) ; pour convertir valeur
@@ -941,8 +941,12 @@ Func LocateMyToon()
 						If $hotkeycheck Then
 							If Verif_Attrib_GlobalStuff() Then
 								_log("Acd Ofs : " & $ACD, $LOG_LEVEL_DEBUG)
-								return True
+								Return True
 							Else
+								If $NewHeros Then ; ;git randomheros test
+								   _log("CHANGEMENT DE HEROS,A NEW Load_Attrib_GlobalStuff REQUIRES", $LOG_LEVEL_ERROR)
+								   Return True
+								EndIf
 								_log("CHANGEMENT DE STUFF ON TOURNE EN ROND (locatemytoon)!!!!!", $LOG_LEVEL_ERROR)
 								antiidle()
 							EndIf

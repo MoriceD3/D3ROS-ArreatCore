@@ -12,7 +12,7 @@ Func _dorun()
         Return False
     EndIf
 
-	If $Totalruns = 1 And Not $PartieSolo Then 
+	If $Totalruns = 1 And Not $PartieSolo Then
 		SetConfigPartieSolo(); TChat configuration du settings
 	EndIf
 
@@ -26,28 +26,32 @@ Func _dorun()
 	$SkippedMove = 0
 	$PortBack = False
 
-	
 
-	If Not $hotkeycheck Then
-		CheckHotkeys()
-		CheckGameMode()
+
+	If Not $hotkeycheck Or $NewHeros Then
+		If Not $hotkeycheck Then
+		   CheckHotkeys()
+		   CheckGameMode()
+		   Send($KeyPortal)
+		   Sleep(500)
+		   Detect_Str_full_inventory()
+		   CheckAndDefineSize()
+		EndIf
+
 		Auto_spell_init()
 		GestSpellInit()
 		Load_Attrib_GlobalStuff()
-
 		$maxhp = GetAttribute($_MyGuid, $Atrib_Hitpoints_Max_Total) ; dirty placement
 		_log("Max HP : " & $maxhp, $LOG_LEVEL_VERBOSE)
 		$pickupRadius = GetAttributeSelf($Atrib_Gold_PickUp_Radius)
 		GetMaxResource($_MyGuid, $namecharacter)
-		Send($KeyPortal)
-		Sleep(500)
-		Detect_Str_full_inventory()
-		CheckAndDefineSize()
+
+		$NewHeros = 0
 	Else
 		Sleep(1500)
 	EndIf
 
-	If Not $PartieSolo Then 
+	If Not $PartieSolo Then
 		WriteMe($WRITE_ME_WELCOME) ; TChat
 	EndIf
 
@@ -70,7 +74,7 @@ Func _dorun()
 	sequence($File_Sequence)
 	_log("End Run. Gamefailed : " & $GameFailed, $LOG_LEVEL_VERBOSE)
 	Return True
-EndFunc   ;==>_dorun
+ EndFunc   ;==>_dorun
 
 Func _botting()
 	_log("Start Botting", $LOG_LEVEL_VERBOSE)
@@ -85,7 +89,7 @@ Func _botting()
 		If _onloginscreen() Then
 			_log("LOGIN", $LOG_LEVEL_WARNING)
 			_logind3()
-			
+
 			Local $WaitingTime = 0
 			While _onloginscreen() And $WaitingTime < 155
 			   Sleep(500)
@@ -97,10 +101,19 @@ Func _botting()
 		If $Choix_Act_Run <> 0 And Not _onloginscreen() Then
 			If _ingame() = true and $TypedeBot < 2 Then ;si en jeu lors du lancement auto
 				WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
-				MsgBox(0, "ERREUR", "Vous devez être dans le menu pour lancer un run en auto !")
+				MsgBox(0, "ERREUR", "Vous devez etre dans le menu pour lancer un run en auto !")
 				Terminate()
 			EndIf
 			SelectQuest()
+			If _checkdisconnect() Then
+				_log("Disconnected dc5", $LOG_LEVEL_WARNING)
+				ReConnect()
+				While Not (_onloginscreen() Or _inmenu())
+					Sleep(Random(10000, 15000))
+				WEnd
+				ContinueLoop
+			EndIf
+			$FirstPass_SetNewHeros = 1
 		EndIf
 
 		If _inmenu() And Not _onloginscreen() Then
@@ -285,7 +298,7 @@ Func CheckGameMode()
 	WEnd
 	Sleep(500)
 EndFunc
- 
+
 ;;--------------------------------------------------------------------------------
 ;;     Check KeyTo avoid sell of equiped stuff
 ;;--------------------------------------------------------------------------------
