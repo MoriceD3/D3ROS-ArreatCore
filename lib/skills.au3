@@ -408,7 +408,7 @@ Global $Monk_skill_Table[27][8] = [ _
 [$Monk_ExplodingPalm,                       "Monk_ExplodingPalm",                     2000, "attack&elite", 40, "spirit", "", 10], _
 [$Monk_FistsofThunder,                      "Monk_FistsofThunder",                       0,     "physical",  0,       "", "", ""], _
 [$X1_Monk_InnerSanctuary,                   "Monk_InnerSanctuary",                   20000,         "life",  0, "spirit", 40, ""], _
-[$Monk_LashingTailKick,                     "Monk_LashingTailKick",                   2000,       "attack", 30, "spirit", "", 10], _
+[$Monk_LashingTailKick,                     "Monk_LashingTailKick",                   2000,       "attack", 30, "spirit", "", ""], _
 [$X1_Monk_MantraOfConviction_v2,            "Monk_MantraOfConviction",                6000,   "buff&elite", 50, "spirit", "", ""], _
 [$X1_Monk_MantraOfEvasion_v2,               "Monk_MantraOfEvasion",                   6000,         "buff", 50, "spirit", "", ""], _
 [$X1_Monk_MantraOfHealing_v2,               "Monk_MantraOfHealing",                   6000,         "buff", 50, "spirit", "", ""], _
@@ -483,7 +483,7 @@ Global $Crusader_skill_Table[24][8] = [ _
 [$X1_Crusader_HeavensFury3,     "Crusader_HeavensFury3",    20000,   "attack",  0, "wrath", 100, 45], _
 [$X1_Crusader_Bombardment,      "Crusader_Bombardment",     60000,    "elite",  0,      "", 100, 45] _
 ]
- 
+
 
 ;# skill_table_witchdoctor
 ;# EN                          / FR
