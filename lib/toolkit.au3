@@ -1987,7 +1987,7 @@ Func handle_Loot(ByRef $item, ByRef $IgnoreList, ByRef $test_iterateallobjectsli
 		EndIf
 	Else
 		If Not IsItemInTable($Table_Monster, $item[1]) Then
-			_log("Ban Item -> " & $item[1] & " Reason : not in Table_Monster (With affix)", $LOG_LEVEL_DEBUG)
+			_log("Ban Item -> " & $item[1] & " Reason : not in Table_Monster", $LOG_LEVEL_DEBUG)
 			BanActor($item[1])
 		EndIf
 	EndIf
