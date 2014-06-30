@@ -1186,22 +1186,48 @@ Func InteractWithPortal($NamePortal)
 	Local $Curentarea = GetLevelAreaId()
 	Local $Newarea = $Curentarea
 	Local $PortalTry = 0
+	Local $FirstCome = 0
+	Local $AreaWait = 20
 
 	While $PortalTry < 5
-		_Log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
-		InteractByActorName($NamePortal)
+		If Not _checkBossJoinParty() And Not _checkBossEnter() Then
+		   InteractByActorName($NamePortal)
+		   If Not $PortalTry Then
+			  Sleep(500)
+			  InteractByActorName($NamePortal)
+		   EndIf
+		    _log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
+		EndIf
+		If _checkBossJoinParty() Then
+		   ClickUi("Root.NormalLayer.boss_join_party_main.stack.wrapper.Accept", 300)
+		   Sleep(500)
+	    EndIf
+		If _checkBossEnter() Then
+		   ClickUi("Root.NormalLayer.boss_enter_main.stack.wrapper.Accept", 204)
+		   Sleep(500)
+		   $FirstCome = 1
+		EndIf
 
+		If $FirstCome Then $AreaWait = 80
 		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry <= 20
-			$Newarea = GetLevelAreaId()
-			Sleep(250)
-			$areatry += 1
+		While $Newarea = $Curentarea And $areatry <= $AreaWait
+			If Not _checkBossWarningMessage() Then
+			   $Newarea = GetLevelAreaId()
+			   Sleep(250)
+			   $areatry += 1
+			Else
+			   _log("Player Declined The Event", $LOG_LEVEL_DEBUG)
+			   ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
+			   Sleep(1000)
+			   ContinueLoop
+			EndIf
 		WEnd
 
 		If $Newarea <> $Curentarea Then
 			ExitLoop
 		Else
 			$PortalTry += 1
+			$AreaWait = 20
 		EndIf
 	WEnd
 

@@ -384,6 +384,18 @@ Func _checkQuestRewardOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.questreward_dialog", 1, 1612)
 EndFunc ;==>_checkQuestRewardOpen OK
 
+Func _checkBossJoinParty()
+    Return fastcheckuiitemvisible("Root.NormalLayer.boss_join_party_main.warning", 1, 1364)
+EndFunc   ;==> _checkBossJoinParty OK
+
+Func _checkBossEnter()
+    Return fastcheckuiitemvisible("Root.NormalLayer.boss_enter_main.warning", 1, 820)
+EndFunc   ;==> _checkBossEnter OK
+
+Func _checkBossWarningMessage()
+    Return fastcheckuiitemvisible("Root.TopLayer.confirmation.subdlg.stack.message", 1, 720)
+EndFunc   ;==>_checkBossWarningMessage OK
+
 Func GetLevelAreaId()
 	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
 EndFunc   ;==>GetLevelAreaId
