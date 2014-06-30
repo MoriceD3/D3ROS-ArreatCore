@@ -54,6 +54,20 @@ Func SelectGameType($SelectGameType, $auto)
 	   $Waiting_Time += 1
 	WEnd
 
+	If $Follower Then
+	   Return
+	Else
+	   While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
+			If Not _checkdisconnect() Then
+			   _log("Wait Other Follower")
+			   sleep(1000)
+			Else
+			   Return
+			EndIf
+	   WEnd
+    EndIf
+
+
 	CheckWindowsClosed()
 	;Selection du Heros en auto
 	If ($TypedeBot = 1) Then
