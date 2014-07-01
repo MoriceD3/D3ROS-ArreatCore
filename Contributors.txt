@@ -15,6 +15,8 @@ Moriced3 :
 - buffinit avant prendre WP et portBack
 - Possibilité de ne pas identifier les légendaire
 - Refonte du GestionPause.au3,pour avoir la possibilité de désactivé certaine pause, et ajout d'un arrêt de bot a une heure précise, avec possibilité de reprendre la session.
+- Changement de personnage durant la session de bot, voir plusieurs même.
+- Création de la fonction InteractWithPortal et de son amélioration qui gère le multi player pour les boss.(click les fenêtre)
 
 Anonymous69 :
 
@@ -44,7 +46,7 @@ Euclide :
 
 rpingut :
 
-- Mise à jours des compétences (stats.au3)
+- Mise à jours des compétences (Skills.au3)
 
 Therippe :
 
@@ -75,3 +77,12 @@ rabbit2000 :
 
 gmsMath et RqideN : 
 - Fonction PauseToSurviveHC
+
+Lentice :
+
+- Random clickUI()
+- Fix XP stast
+
+plopingo :
+
+- Correction de plusieurs séquences
