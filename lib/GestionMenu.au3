@@ -777,9 +777,8 @@ Func SetNewHeros()
 	   EndIf
 	   If $CheckChangeHeros Then
 		  If ($TypedeBot <> 1) Then
-			 WinSetOnTop("Diablo III", "", 0)
-			 MsgBox(0, "ERREUR", "Vous devez etre en TypedeBot = 1 pour un changement de perso !")
-			 Terminate()
+			 _log("Passage En Type De Bot 1", $LOG_LEVEL_DEBUG)
+			 $TypedeBot = 1
 		  EndIf
 		  If ($Choix_Act_Run = -1) Then ;TODO a retirer une fois gerer
 			 WinSetOnTop("Diablo III", "", 0)
