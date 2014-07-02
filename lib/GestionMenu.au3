@@ -57,7 +57,7 @@ Func SelectGameType($SelectGameType, $auto)
 	If $Follower Then
 	   Return
 	Else
-	   While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
+	   While _inmenu() And Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
 			If Not _checkdisconnect() Then
 			   _log("Wait Other Follower")
 			   sleep(1000)
