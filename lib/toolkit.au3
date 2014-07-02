@@ -2879,7 +2879,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 
 		  	If Not _intown() Then
 				_Log("TakeWpV3 : Not in town -> Enclenchement fastCheckui de la barre de loading")
-				If WaitTpBarLoading(0) = False And Not _intown() Then ; si pas de detection de la barre de TP
+				If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
 					$CurrentLoc = getcurrentpos()
 					MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
 					_Log("TakeWpV3 : On se deplace, pas de detection de la barre de TP")
@@ -5193,7 +5193,7 @@ Func _TownPortalnew($mode=0)
 			   EndIf
 			EndIf
 
-			If WaitTpBarLoading(1) = False And Not _intown() Then ; si pas de detection de la barre de TP
+			If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
 				$CurrentLoc = getcurrentpos()
 				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
 				_Log("_TownPortalnew : On se deplace, pas de detection de la barre de TP")
@@ -5737,63 +5737,41 @@ Func ArrivedTargetArea($Curentarea, $WP, $Mode = 0)
 	EndIf
 EndFunc
 
-Func WaitTpBarLoading($SendKeyPortal)
+Func WaitTpBarLoading()
 	_Log("WaitTpBarLoading()")
-	
+
 	Local $TpOnGoing = False
 	Local $TpTimer = TimerInit()
-	Local $SendKeyPortalTimer = TimerInit()
 	Local $TpBarExistTimer = 0
-	Local $OrigMousePos = MouseGetPos()
-	Local $IsMouseMoved = False
-	
+
 	While TimerDiff($TpTimer) < 5000
-		Local $CurrentMousePos = MouseGetPos()
-		If Abs($CurrentMousePos[0] - $OrigMousePos[0]) > 2 Or Abs($CurrentMousePos[1] - $OrigMousePos[1]) > 2 Then
-			_log("Mouse Moved during TP", $LOG_LEVEL_WARNING)
-			$IsMouseMoved = True
-		EndIF
 
 		Local $TpBar = fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-		If $TpOnGoing = False And $TpBar Then
-			$TpOnGoing = True
-			$TpBarExistTimer = TimerInit()
-		EndIf
-		
-		If $TpOnGoing = False And TimerDiff($TpTimer) > 2000 Then
-			_log("Fail!! TP Processing Bar do not appear", $LOG_LEVEL_ERROR)
-			Return False ;TP Fail
-		EndIf
-		
-		If $TpOnGoing Then
-			If $IsMouseMoved Then
-				If $TpBar Then
-					$IsMouseMoved = False
-					$OrigMousePos = MouseGetPos()
-				Else
-					_log("Fail!! Mouse Moved and TP is broken", $LOG_LEVEL_WARNING)
-					Return False ;TP Fail
-				EndIf
+		If $TpOnGoing = False Then
+			If $TpBar Then
+				$TpOnGoing = True
+				$TpBarExistTimer = TimerInit()
+			ElseIf TimerDiff($TpTimer) > 2000 Then
+				_log("Fail!! TP Processing Bar do not appear in 2 sec", $LOG_LEVEL_ERROR)
+				Return False ;TP Fail
 			EndIf
-			
-			If TimerDiff($TpBarExistTimer) > 3700 Then
-				Return True ;TP Success
-			ElseIf $TpBar = False Then
-				_log("Fail!! TP Bar Disappear")
+		Else ;$TpOnGoing = true
+			If $TpBar Then ;it's still there
+				If TimerDiff($TpBarExistTimer) > 3700 Then
+					_log("TpBar Load finished", $LOG_LEVEL_VERBOSE)
+					Return True ;TP Success
+				EndIf
+			Else
+				_log("Fail!! TP Bar Disappear", $LOG_LEVEL_WARNING)
 				Return False ;TP Fail
 			EndIf
 		EndIf
-		
-		If $SendKeyPortal And $SendKeyPortalTimer > Random(400, 600, 1) Then
-			Send($KeyPortal)
-			$SendKeyPortalTimer = TimerInit()
-		EndIf
-		
+
 		Attack()
-			
+
 		Sleep(1)
 	WEnd
-	
+
 	_log("Fail!! Unknown fail for TP", $LOG_LEVEL_ERROR)
 	Return False ;TP Fail
 EndFunc
