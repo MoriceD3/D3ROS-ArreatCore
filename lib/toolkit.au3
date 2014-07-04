@@ -2818,14 +2818,12 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 	WEnd
 
 	While $try < 10 And Not _checkdisconnect()
-		Local $TPtimer = 0
-		Local $compt_while = 0
 		Local $compt_wait = 0
 
 		Local $Curentarea = GetLevelAreaId()
 		If ArrivedTargetArea($Curentarea, $WPNumber, $Mode) Then
 			_Log("TakeWpV3 : New area found : " & $Curentarea, $LOG_LEVEL_DEBUG)
-			
+
 			Sleep(500)
 			While Not offsetlist()
 				Sleep(40)
@@ -2835,7 +2833,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 			_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
 			Return True
 		EndIf
-		
+
 		$try += 1
 
 		Attack()
@@ -5174,18 +5172,15 @@ Func _TownPortalnew($mode=0)
 	Local $compt = 0
 
 	While Not _intown() And _ingame() And Not _checkdisconnect()
-		
+
 		If $OrigArea <> GetLevelAreaId() Then
 			_Log("_TownPortalnew :  Changement d'area, on quite la boucle")
 			ExitLoop
 		EndIf
-		
+
 		$Execute_TownPortalnew = True
 
 		Local $try = 0
-		Local $TPtimer = 0
-		Local $compt_while = 0
-		Local $Attacktimer = 0
 
 		$compt += 1
 
@@ -5727,7 +5722,7 @@ Func ArrivedTargetArea($Curentarea, $WP, $Mode = 0)
 			_log("Critial Error!!  Can not find the corresponding ADV Level Area", $LOG_LEVEL_ERROR)
 			Return False
 		EndIf
-		
+
 		If $Curentarea = $LevaAreaForWP_ADV[$WP] Then
 			Return True
 		Else
@@ -5780,6 +5775,8 @@ Func WaitTpBarLoading()
 			EndIf
 		EndIf
 
+		checkForPotion()
+		checkForGlobes()
 		Attack()
 
 		Sleep(1)
