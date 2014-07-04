@@ -82,6 +82,7 @@ Lentice :
 
 - Random clickUI()
 - Fix XP stast
+- Fix TakewpV3 et _TownPortalnew, Func ajouter ( WaitTpBarLoading et ArrivedTargetArea )
 
 plopingo :
 
