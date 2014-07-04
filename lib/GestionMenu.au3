@@ -162,9 +162,9 @@ Func SelectGameType($SelectGameType, $auto)
 
 			  ;selection d'une quete pour fermer les sous quetes
 			  _log("Close The Current Quests")
-			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 			  Sleep(1000)
-			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+			  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 			  Sleep(1000)
 
 			  Switch $SelectGameType
@@ -174,7 +174,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 10")
 					  Sleep(Random(600, 800, 1))
 
@@ -182,7 +182,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 1")
 
 				   Case 2;selection de la quête 8.3
@@ -191,7 +191,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 8")
 					  Sleep(Random(600, 800, 1))
 
@@ -199,7 +199,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 3;selection de la quête 7.3
@@ -208,7 +208,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 7")
 					  Sleep(Random(600, 800, 1))
 
@@ -216,7 +216,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 222;Act 2 quête 2 sous quête 2 --> Tuer Lieutenent Vachem
@@ -225,7 +225,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 2")
 					  Sleep(Random(600, 800, 1))
 
@@ -233,7 +233,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 2")
 
 				   Case 232;Act 2 quête 3 sous quête 2 --> Tuer Maghda
@@ -242,7 +242,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -20, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 3")
 					  Sleep(Random(600, 800, 1))
 
@@ -250,7 +250,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -40, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -40, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 2")
 
 				   Case 283;Act 2 quête 8 sous quête 3 --> Tuer Zoltun Kulle
@@ -259,7 +259,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 8")
 					  Sleep(Random(600, 800, 1))
 
@@ -267,7 +267,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 299;Act 2 quête 10 sous quête 1 --> Tuer Belial
@@ -276,11 +276,11 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 10")
 					  Sleep(Random(600, 800, 1))
 
-					  ClickUIMode(0, 0, 50, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 50, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 1")
 
 				   Case 333 ; Act 3 quête 3 sous quête 3 --> tuez Ghom
@@ -289,7 +289,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, -10, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 3")
 					  Sleep(Random(600, 800, 1))
 
@@ -297,7 +297,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 362 ; Act 3 quête 6 sous quête 2 --> Tuez le briseur de siège
@@ -306,15 +306,15 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 6")
 					  Sleep(Random(600, 800, 1))
 
-					  For $i = 1 To 1 Step 1
+					  For $i = 1 To 2 Step 1
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, -17, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed62")
+					  ClickUIMode(0, 0, -30, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 2")
 
 				   Case 373 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam
@@ -323,7 +323,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 7")
 					  Sleep(Random(600, 800, 1))
 
@@ -331,7 +331,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 374 ; Act 3 quête 7 sous quête 3 --> Terrasez Asmodam, Iskatu et Rakanoth
@@ -340,7 +340,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 0, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 7")
 					  Sleep(Random(600, 800, 1))
 
@@ -348,7 +348,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 5, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 3")
 
 				   Case 411 ; Act 4 quête 1 sous quête 1 --> Terrasez Iskatu et Rakanoth
@@ -357,11 +357,11 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 45, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 1")
 					  Sleep(Random(600, 800, 1))
 
-					  ClickUIMode(0, 0, 90, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 90, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 1")
 
 				   Case 442 ; Act 4 quête 4 sous quête 2 --> Terrasez Diablo
@@ -370,7 +370,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 215, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 215, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Quest 4")
 					  Sleep(Random(600, 800, 1))
 
@@ -378,7 +378,7 @@ Func SelectGameType($SelectGameType, $auto)
 						 MouseWheel("down")
 						 Sleep(Random(100, 150, 1))
 					  Next
-					  ClickUIMode(0, 0, 200, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61")
+					  ClickUIMode(0, 0, 200, "Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.unnamed61", 810)
 					  _log("Select Sub Quest 2")
 
 			  EndSwitch
