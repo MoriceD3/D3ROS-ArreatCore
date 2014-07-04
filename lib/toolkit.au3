@@ -2803,8 +2803,6 @@ EndFunc
 
 Func TakeWpV3($WPNumber = 0, $Mode = 0)
 	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
-	Local $Curentarea = GetLevelAreaId()
-    Local $Newarea = $Curentarea
     Local $try = 0
 
 	If Not $PartieSolo Then
@@ -2819,11 +2817,25 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 		Sleep(40)
 	WEnd
 
-	While $try < 10 And $Newarea = $Curentarea And Not _checkdisconnect()
+	While $try < 10 And Not _checkdisconnect()
 		Local $TPtimer = 0
 		Local $compt_while = 0
 		Local $compt_wait = 0
 
+		Local $Curentarea = GetLevelAreaId()
+		If ArrivedTargetArea($Curentarea, $WPNumber, $Mode) Then
+			_Log("TakeWpV3 : New area found : " & $Curentarea, $LOG_LEVEL_DEBUG)
+			
+			Sleep(500)
+			While Not offsetlist()
+				Sleep(40)
+			WEnd
+			Sleep(1000)
+			$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
+			_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
+			Return True
+		EndIf
+		
 		$try += 1
 
 		Attack()
@@ -2897,52 +2909,24 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 
 		  	If Not _intown() Then
 				_Log("TakeWpV3 : Not in town -> Enclenchement fastCheckui de la barre de loading")
-				Sleep(400)
-				While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-					If $compt_while = 0 Then
-				 		_log("TakeWpV3 : Enclenchement du timer")
-						$TPtimer = TimerInit()
-					EndIf
-					$compt_while += 1
-
-					checkForPotion()
-					checkForGlobes()
-
-					Attack()
-					Sleep(300)
-				WEnd
-
-				If $compt_while = 0 Then
+				If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
 					$CurrentLoc = getcurrentpos()
 					MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
 					_Log("TakeWpV3 : On se deplace, pas de detection de la barre de TP")
-					ContinueLoop
-				ElseIf TimerDiff($TPtimer) < 3300 Then
-					_Log("TakeWpV3 : Barre de TP pas assez visible, TP surement failed on retry")
 					ContinueLoop
 				EndIf
 			EndIf
 
 			Sleep(1000)
 
-			While GetLevelAreaId() = $Curentarea And $compt_wait < 20
-				_Log("TakeWpV3 : On a peut etre reussi a tp, vérification si nouvelle area, tentative -> " & $compt_wait)
+			Local $WPMaxWait = 20
+			If $Totalruns <= 2 Then $WPMaxWait = 40 ; First Run may take more time, especially on slower PC
+			While Not ArrivedTargetArea($Curentarea, $WPNumber, $Mode) And $compt_wait < $WPMaxWait
+				_Log("TakeWpV3 : We may TP successfully, wating Area Change. Attempt -> " & $compt_wait)
 				$compt_wait += 1
 				sleep(500)
+				$Curentarea = GetLevelAreaId()
 			WEnd
-
-			$Newarea = GetLevelAreaId()
-			If $Newarea <> $Curentarea Then
-				_Log("TakeWpV3 : New area found : " & $Newarea, $LOG_LEVEL_DEBUG)
-				Sleep(500)
-				While Not offsetlist()
-					Sleep(40)
-				WEnd
-				Sleep(1000)
-				$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
-				_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
- 				Return True
-			EndIf
 		Else
 	    	_Log("TakeWpV3 : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
 			Return False
@@ -5186,10 +5170,16 @@ Func _TownPortalnew($mode=0)
 	   Return False
 	EndIf
 
+	Local $OrigArea = GetLevelAreaId()
 	Local $compt = 0
 
 	While Not _intown() And _ingame() And Not _checkdisconnect()
-
+		
+		If $OrigArea <> GetLevelAreaId() Then
+			_Log("_TownPortalnew :  Changement d'area, on quite la boucle")
+			ExitLoop
+		EndIf
+		
 		$Execute_TownPortalnew = True
 
 		Local $try = 0
@@ -5233,48 +5223,22 @@ Func _TownPortalnew($mode=0)
 			   EndIf
 			EndIf
 
-			$Current_area = GetLevelAreaId()
-
-			_Log("_TownPortalnew : enclenchement fastCheckui de la barre de loading")
-			While fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
-			   If $compt_while = 0 Then
-				  _Log("_TownPortalnew : enclenchement du timer")
-				  $TPtimer = TimerInit()
-			   EndIf
-			   $compt_while += 1
-
-			   checkForPotion()
-			   checkForGlobes()
-
-			   $Attacktimer = TimerInit()
-			   Attack()
-			   Sleep(100)
-			   TimerDiff($Attacktimer)
-			WEnd
-
-			If Not $compt_while And Not _intown() Then ; si pas de detection de la barre de TP
-			    $CurrentLoc = getcurrentpos()
+			If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
+				$CurrentLoc = getcurrentpos()
 				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
 				_Log("_TownPortalnew : On se deplace, pas de detection de la barre de TP")
-			Else
-			    _Log("_TownPortalnew : compare time to tp -> " & (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) & "> 3700 ") ; valeur test de 3600 a 4000
+				ContinueLoop
 			EndIf
 
-			If (TimerDiff($TPtimer) - TimerDiff($Attacktimer)) > 3700 And $compt_while > 0 Then
-				While Not _intown() And $try < 7
-					 _Log("_TownPortalnew : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
-					 $try += 1
-					 Sleep(1000)
-				WEnd
-			EndIf
+			Local $MaxTry = 7
+			If $Totalruns = 1 Then $MaxTry = 15
+			While Not _intown() And $try < $MaxTry
+				_Log("_TownPortalnew : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
+				$try += 1
+				Sleep(1000)
+			WEnd
 
 			Sleep(500)
-
-			If $Current_area <> GetLevelAreaId() Then
-				_Log("_TownPortalnew :  Changement d'area, on quite la boucle")
-				ExitLoop
-			EndIf
-
 		Else
 			_Log("_TownPortalnew : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
 			$Inventory_Is_Full = 0
@@ -5755,4 +5719,72 @@ Func GetActivePlayerSkillRune($index)
 	Else
 		Return 0
 	EndIf
+EndFunc
+
+Func ArrivedTargetArea($Curentarea, $WP, $Mode = 0)
+	If $Mode = 1 Then ;in adventure mode
+		If $WP < 0 Or $WP >= UBound($LevaAreaForWP_ADV) Then
+			_log("Critial Error!!  Can not find the corresponding ADV Level Area", $LOG_LEVEL_ERROR)
+			Return False
+		EndIf
+		
+		If $Curentarea = $LevaAreaForWP_ADV[$WP] Then
+			Return True
+		Else
+			Return False
+		EndIf
+	Else ;in campain mode
+		If $WP < UBound($LevaAreaForWP_CampainAct1) And $Curentarea = $LevaAreaForWP_CampainAct1[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct2) And $Curentarea = $LevaAreaForWP_CampainAct2[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct3) And $Curentarea = $LevaAreaForWP_CampainAct3[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct4) And $Curentarea = $LevaAreaForWP_CampainAct4[$WP] Then
+			Return True
+		ElseIf $WP < UBound($LevaAreaForWP_CampainAct5) And $Curentarea = $LevaAreaForWP_CampainAct5[$WP] Then
+			Return True
+		Else
+			Return False
+		EndIf
+	EndIf
+EndFunc
+
+Func WaitTpBarLoading()
+	_Log("WaitTpBarLoading()")
+
+	Local $TpOnGoing = False
+	Local $TpTimer = TimerInit()
+	Local $TpBarExistTimer = 0
+
+	While TimerDiff($TpTimer) < 5000
+
+		Local $TpBar = fastcheckuiitemvisible("Root.NormalLayer.game_dialog_backgroundScreen.loopinganimmeter", 1, 1068)
+		If $TpOnGoing = False Then
+			If $TpBar Then
+				$TpOnGoing = True
+				$TpBarExistTimer = TimerInit()
+			ElseIf TimerDiff($TpTimer) > 2000 Then
+				_log("Fail!! TP Processing Bar do not appear in 2 sec", $LOG_LEVEL_ERROR)
+				Return False ;TP Fail
+			EndIf
+		Else ;$TpOnGoing = true
+			If $TpBar Then ;it's still there
+				If TimerDiff($TpBarExistTimer) > 3700 Then
+					_log("TpBar Load finished", $LOG_LEVEL_VERBOSE)
+					Return True ;TP Success
+				EndIf
+			Else
+				_log("Fail!! TP Bar Disappear", $LOG_LEVEL_WARNING)
+				Return False ;TP Fail
+			EndIf
+		EndIf
+
+		Attack()
+
+		Sleep(1)
+	WEnd
+
+	_log("Fail!! Unknown fail for TP", $LOG_LEVEL_ERROR)
+	Return False ;TP Fail
 EndFunc
