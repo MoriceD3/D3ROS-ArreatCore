@@ -776,6 +776,10 @@ Func SetNewHeros()
 		  $CheckChangeHeros = 0
 	   EndIf
 	   If $CheckChangeHeros Then
+		  If $Follower Then
+			 _log("Pas Changement De Perso Follower Active", $LOG_LEVEL_DEBUG)
+			 $CheckChangeHeros = 0
+		  EndIf
 		  If ($TypedeBot <> 1) Then
 			 _log("Passage En Type De Bot 1", $LOG_LEVEL_DEBUG)
 			 $TypedeBot = 1
