@@ -1312,9 +1312,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 		; TODO : Add a no move no hit taken lower timeout !
 		If TimerDiff($TimeOut) > 75000 Then
 			_log("MoveToPos Timed out ! ! ! ", $LOG_LEVEL_WARNING)
-			If _checkdisconnect() Then
 				$GameFailed = 1
-			EndIf
 			ExitLoop
 		EndIf
 	WEnd
