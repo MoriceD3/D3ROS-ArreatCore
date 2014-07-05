@@ -49,7 +49,7 @@ Func SelectGameType($SelectGameType, $auto)
 	EndIf
 
 	Local $Waiting_Time = 0
-	While Not _inmenu() And $TypedeBot <> 2 And $Waiting_Time < 50
+	While Not _inmenu() And $Waiting_Time < 50
 	   Sleep(1000)
 	   $Waiting_Time += 1
 	WEnd
