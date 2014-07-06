@@ -210,7 +210,7 @@ Func InitSettings($configFile = "settings/settings.ini", $grabListPath = "grabli
 Endfunc
 
 Func InitSettingsHeros()
-	_Log("Init settingsHero" & $ListOfHeros[$TabHeros], $LOG_LEVEL_DEBUG)
+	_Log("Init settingsHero" & $ListOfHeros[$TabHeros])
 	InitSkillHeros("settings/settingsHero" & $ListOfHeros[$TabHeros] & ".ini")
 EndFunc
 
