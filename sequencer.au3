@@ -2,7 +2,7 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=lib\ico\ico-sequencer.ico
 #AutoIt3Wrapper_Compression=0
-#AutoIt3Wrapper_Res_Fileversion=1.6.0.0
+#AutoIt3Wrapper_Res_Fileversion=1.7.0.0
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -69,6 +69,7 @@ TraySetIcon($icon)
 #include "lib\stats.au3"
 #include "lib\Affix.au3"
 #include "lib\GestionMenu.au3"
+#include "lib\GestionPause.au3"
 #include "lib\GestionChat.au3"
 #include "lib\dev_tools.au3"
 #include "lib\sequencer_tools.au3"

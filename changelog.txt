@@ -1,5 +1,22 @@
 Changelog : 
 
+- Version 2.0.0 : 05/07/2014
+
+- Divers bug fixes 
+- Fix MoveToPos Timed out
+- Amélioration func InteractWithPortal() , voit et click sur les fenêtre des boss ( MoriceD3 )
+- Possibilité de 1 ou plusieurs changement de perso durant la session de bot ( MoriceD3 )
+- Fix divers GestionMenu.au3 et revue les possibilités de déconnexion 
+- Meilleur gestion des pauses  ( MoriceD3 , rabbit2000 )
+- Correction de plusieurs séquences  (plopingo)
+- Mise à jour du skills.au3  (rpingut)
+- Mise en forme des fichier settings.ini et settingsHeroxx.ini
+- Update Func BuyPotion
+- Fix MoveToPortal Stashandrepair()
+- Divers fix statistique 
+- Fixe _TownPortalnew() et TakeWpV3() (Lentice)
+- Random clickUI  (Lentice)
+
 - Version 1.9.0 : 11/06/2014
 
 - Support Diablo 2.0.6
