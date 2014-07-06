@@ -1,6 +1,6 @@
 Changelog : 
 
-- Version 2.0.0 : 05/07/2014
+- Version 1.10.0 : 05/07/2014
 
 - Divers bug fixes 
 - Fix MoveToPos Timed out
