@@ -409,7 +409,7 @@ Func GetAct()
 	;set our vendor according to the act we are in as we know it.
 	Switch $actid
 		Case 332339, 19947; 0
-			Global $RepairVendor = "UniqueVendor_miner_InTown"
+			Global $RepairVendor = "UniqueVendor_Miner_InTown"
 			$Act = 1
 		Case 168314, 55313 ; 100
 			Global $RepairVendor = "UniqueVendor_Peddler_InTown" ; act 2 fillette
