@@ -4568,12 +4568,13 @@ Func StashAndRepair()
 	Local $GoldAfterBuyPotion = GetGold();on mesure l'or apres
 	$GoldByRepaire += $GoldBeforeBuyPotion - $GoldAfterBuyPotion ;on compte le cout des potion inclus da la stast GoldByRepaire
 
-	If Not $Repair_To_Salvage Then
-	   MoveTo($MOVETO_REPAIR_VENDOR)
-	EndIf
-
-	If $Position_Repair_Vendor Then
-	   MoveTo($MOVETO_PORTAL)
+	If $Execute_TpRepairAndBack Then
+		If Not $Repair_To_Salvage Then
+			MoveTo($MOVETO_REPAIR_VENDOR)
+		EndIf
+		If $Position_Repair_Vendor Then
+			MoveTo($MOVETO_PORTAL)
+		EndIf
 	EndIf
 
 	$Execute_StashAndRepair = False
