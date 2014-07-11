@@ -553,7 +553,6 @@ Func sequence($sequence_list)
 		Local $old_TakeShrines = $TakeShrines
 		Local $old_Attackrange = $a_range
 		Local $old_Table_SpecialMonster = $Table_SpecialMonster
-		Local $old_Table_BanMonster = $Table_BanMonster
 		Local $old_Table_Decor = $Table_Decor
 		Local $old_Table_Coffre = $Table_Coffre
 		Local $old_Table_Rack = $Table_Rack
@@ -650,6 +649,10 @@ Func sequence($sequence_list)
 						$noblocline = 0
 						$line = ""
 					EndIf
+					If $BanlistChange Then
+						$Table_BanMonster = $old_Table_BanMonster
+						$BanlistChange = 0
+					EndIf
 				ElseIf StringInStr($line, "takewpadv=", 2) Then; TakeWP detected
 					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
 					If $autobuff Then ; Buff avant de prendre le WP
@@ -678,6 +681,10 @@ Func sequence($sequence_list)
 						$array_sequence[UBound($array_sequence) - 1][2] = $table_wp
 						$noblocline = 0
 						$line = ""
+					EndIf
+					If $BanlistChange Then
+						$Table_BanMonster = $old_Table_BanMonster
+						$BanlistChange = 0
 					EndIf
 				ElseIf StringInStr($line, "_townportal()", 2) Then; _townportal() detected
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
@@ -725,6 +732,10 @@ Func sequence($sequence_list)
 					Else
 						$end_sequence = True
 						$line = ""
+					EndIf
+					If $BanlistChange Then
+						$Table_BanMonster = $old_Table_BanMonster
+						$BanlistChange = 0
 					EndIf
 				ElseIf StringInStr(StringLeft($line,14), "loadsequence=", 2) Then
 					If SendSequence($array_sequence) Then
@@ -888,6 +899,8 @@ Func sequence($sequence_list)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "decorlist=", 2) Then; Decorlist detected
+					$old_Table_BanMonster = $Table_BanMonster
+					$BanlistChange = 1
 					$line = StringReplace($line, "decorlist=", "", 0, 2)
 					_log("Enclenchement d'un Decorlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					DecorList($line)
@@ -1144,7 +1157,6 @@ Func sequence($sequence_list)
 		$TakeShrines = $old_TakeShrines
 		$a_range = $old_Attackrange
 		$Table_SpecialMonster = $old_Table_SpecialMonster
-		$Table_BanMonster = $old_Table_BanMonster
 		$Table_Decor = $old_Table_Decor
 		$Table_Coffre = $old_Table_Coffre
 		$Table_Rack = $old_Table_Rack

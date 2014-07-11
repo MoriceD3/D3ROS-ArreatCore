@@ -212,6 +212,10 @@ Global $Table_Potions 		      = [0]
 Global $Table_Grablist 		      = [0]
 Global $Table_BountyAct		      = [0]
 
+;Reset Table BanMonster
+Global $BanlistChange		 = 0
+Global $old_Table_BanMonster
+
 ; Table et paramètre de recherche d'objet durant une séquence
 Global $Table_SearchObject = False
 Global $SearchForObject    = False
@@ -283,7 +287,7 @@ Global $LevaAreaForWP_ADV[56] = [ _
 	109540, 270011, 261758, 338946, 263493, _
 	258142, 283553, 283567, 271234, 360494, _
 	338602]
-	
+
 Global $LevaAreaForWP_CampainAct1[16] = [ _
 	19947, 91133, 19938, 87907, 19787, _
 	0, 72712, 19952, 61573, 19953, _
