@@ -635,6 +635,10 @@ Func sequence($sequence_list)
 							$array_sequence = ArrayInit($array_sequence)
 							_log("Enclenchement d'un TakeWP(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							TakeWPV3($table_wp, 0)
+							If $BanlistChange Then
+								$Table_BanMonster = $old_Table_BanMonster
+								$BanlistChange = 0
+							EndIf
 							$line = ""
 						Else
 							$end_sequence = True
@@ -648,10 +652,6 @@ Func sequence($sequence_list)
 						$array_sequence[UBound($array_sequence) - 1][2] = $table_wp
 						$noblocline = 0
 						$line = ""
-					EndIf
-					If $BanlistChange Then
-						$Table_BanMonster = $old_Table_BanMonster
-						$BanlistChange = 0
 					EndIf
 				ElseIf StringInStr($line, "takewpadv=", 2) Then; TakeWP detected
 					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
@@ -668,6 +668,10 @@ Func sequence($sequence_list)
 							_log("Enclenchement d'un TakeWPAdv(" & $table_wp & ") line : " & $i + 1, $LOG_LEVEL_DEBUG)
 							TakeWPV3($table_wp, 1)
 							GetActiveQuest()
+							If $BanlistChange Then
+								$Table_BanMonster = $old_Table_BanMonster
+								$BanlistChange = 0
+							EndIf
 							$line = ""
 						Else
 							$end_sequence = True
@@ -681,10 +685,6 @@ Func sequence($sequence_list)
 						$array_sequence[UBound($array_sequence) - 1][2] = $table_wp
 						$noblocline = 0
 						$line = ""
-					EndIf
-					If $BanlistChange Then
-						$Table_BanMonster = $old_Table_BanMonster
-						$BanlistChange = 0
 					EndIf
 				ElseIf StringInStr($line, "_townportal()", 2) Then; _townportal() detected
 					If $noblocline = 0 Then ;Pas de Detection precedente de nobloc() on met donc dans l'array la cmd suivante
@@ -728,14 +728,14 @@ Func sequence($sequence_list)
 						Sleep(500)
 						buffinit() ; on Buff avant de prendre le portal
 						SafePortStart()
+						If $BanlistChange Then
+							$Table_BanMonster = $old_Table_BanMonster
+							$BanlistChange = 0
+						EndIf
 						$line = ""
 					Else
 						$end_sequence = True
 						$line = ""
-					EndIf
-					If $BanlistChange Then
-						$Table_BanMonster = $old_Table_BanMonster
-						$BanlistChange = 0
 					EndIf
 				ElseIf StringInStr(StringLeft($line,14), "loadsequence=", 2) Then
 					If SendSequence($array_sequence) Then
@@ -893,14 +893,14 @@ Func sequence($sequence_list)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "BanList=", 2) Then; BanList detected
+					$old_Table_BanMonster = $Table_BanMonster
+					$BanlistChange = 1
 					$line = StringReplace($line, "banlist=", "", 0, 2)
 					_log("Enclenchement d'un Banlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					BanList($line)
 					$line = ""
 					$definition = 1
 				ElseIf StringInStr($line, "decorlist=", 2) Then; Decorlist detected
-					$old_Table_BanMonster = $Table_BanMonster
-					$BanlistChange = 1
 					$line = StringReplace($line, "decorlist=", "", 0, 2)
 					_log("Enclenchement d'un Decorlist() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 					DecorList($line)
