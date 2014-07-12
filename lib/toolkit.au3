@@ -3695,7 +3695,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 
 		$source = GetResource($_MyGuid, $buff_table[5])
 
-		If $buff_table[0] And ($source > $buff_table[4] / $MaximumSource Or $buff_table[5] = "") And (TimerDiff($buff_table[10]) > $buff_table[2] or $buff_table[2] = "") Then ;skill Activé
+		If $buff_table[0] And ($source >= $buff_table[4] / $MaximumSource) And (TimerDiff($buff_table[10]) > $buff_table[2] Or $buff_table[2] = 0) Then ;skill Activé
 			Switch $action_spell
    				Case 0 ; movetopos
     				Switch $buff_table[3]
@@ -3759,7 +3759,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
 								EndIf
-							 EndIf
+							EndIf
 						Case $SPELL_TYPE_ATTACK
 							If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
 								If launch_spell($i) Then
@@ -3773,7 +3773,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
 								EndIf
-							 Endif
+							Endif
 						Case $SPELL_TYPE_BUFF
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
 								If launch_spell($i) Then
@@ -3820,13 +3820,13 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							If GetLifep() <= $buff_table[7] / 100 Or ($Distance <= $buff_table[8] Or $buff_table[8] = "") Then
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
-								 EndIf
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_MOVE_OR_ATTACK
 							If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
-								 EndIf
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_LIFE_OR_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False Or GetLifep() <= $buff_table[7] / 100 Then
@@ -3838,7 +3838,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							If GetLifep() <= $buff_table[7] / 100 Then
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
-								 EndIf
+								EndIf
 							 EndIf
 						Case $SPELL_TYPE_LIFE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False And GetLifep() <= $buff_table[7] / 100 Then
@@ -3880,7 +3880,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							If ($Distance <= $buff_table[8] Or $buff_table[8] = "") And $elite > 0 Then
 								If launch_spell($i) Then
 									$buff_table[10] = TimerInit()
-								 EndIf
+								EndIf
 							EndIf
 						Case $SPELL_TYPE_ELITE_AND_BUFF
 							If IsBuffActive($_MyGuid, $buff_table[9]) = False And $elite > 0 Then
@@ -3913,7 +3913,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 						Case $SPELL_TYPE_PERMANENT_BUFF
 							If launch_spell($i) Then
 								$buff_table[10] = TimerInit()
- 								EndIf
+							EndIf
 						Case $SPELL_TYPE_MOVE
 							If Not IsBuffActive($_MyGuid, $buff_table[9]) Then
 								$timer_buff = TimerInit()
@@ -3932,14 +3932,14 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 							EndIf
 					EndSwitch
 				Case 3 ; attack decor
-					If ($buff_table[5] = "" Or $buff_table[4] = "" Or $buff_table[4] = 0) Then
+					If ($buff_table[5] = "" Or $buff_table[4] = 0 Or $buff_table[4] = "") Then
 						Switch $buff_table[3]
 							Case $SPELL_TYPE_LIFE
 								If GetLifep() <= $buff_table[7] / 100 Then
 									If launch_spell($i) Then
 										$buff_table[10] = TimerInit()
 									EndIf
-								 EndIf
+								EndIf
 							Case $SPELL_TYPE_ATTACK
 								If $Distance <= $buff_table[8] Or $buff_table[8] = "" Then
 									If launch_spell($i) Then
@@ -3977,7 +3977,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 									If launch_spell($i) Then
 										$buff_table[10] = TimerInit()
  									EndIf
-								 EndIf
+								EndIf
 							Case $SPELL_TYPE_LIFE_AND_BUFF
 								If IsBuffActive($_MyGuid, $buff_table[9]) = False And GetLifep() <= $buff_table[7] / 100 Then
 									If launch_spell($i) Then
@@ -4013,7 +4013,7 @@ Func GestSpellcast($Distance, $action_spell, $elite, $Guid = 0, $Offset = 0)
 									If launch_spell($i) Then
 										$buff_table[10] = TimerInit()
 									EndIf
-								 EndIf
+								EndIf
 							Case $SPELL_TYPE_CHANNELING
 								; See in unused  Removed_GestSpellcast!
 								; TODO : Handle this
