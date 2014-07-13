@@ -1,8 +1,8 @@
-TakeWPAdv=27
+TTakeWPAdv=27
 monsterlist=x1_SpeedKill_Gluttony|Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_
 BanList=demonFlyer_A_swoop
 Autobuff=True
-attackrange=35 
+attackrange=10
 usepath=false
 Sleep=500
 offsetlist()
@@ -13,6 +13,7 @@ InteractWithPortal=g_Portal_ArchTall_Blue
 Sleep=1500
 offsetlist()
 endsave()
+attackrange=35
 usepath=false
 2701.80493164063, 2672.36450195313, 25.1031150817871,1,25
 2712.23974609375,2675.0849609375, 25.1031131744385,1,25
