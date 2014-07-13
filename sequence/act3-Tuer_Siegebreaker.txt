@@ -1,3 +1,4 @@
+TakeWP=5
 MonsterList=Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni|SiegebreakerDemon
 DecorList=barricade
 BanList=a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan
@@ -5,7 +6,6 @@ UsePath=false
 AutoBuff=True
 attackrange=45
 revive=false
-TakeWP=5
 917.76123046875, 584.584777832031, 0.100004427134991,1,25
 926.858032226563, 599.291015625, 0.254416018724442,1,25
 940.572509765625, 617.347534179688, 0.254415899515152,1,25

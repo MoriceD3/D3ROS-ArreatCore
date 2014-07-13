@@ -1,12 +1,11 @@
+TakeWP=1
 MonsterList=angelDemonImpact_angelTrail|coreEliteDemon_podRocket|spire_AngelCorpse_Barrel_A|angelDemonImpact_angelTrail_thicker|crowd_commonAngel_falling|demonAttack_battle|shadowVermin_A_1000MonsterFight|TerrorDemon_A_Unique_1000Monster
-BanList=
 AutoBuff=True
 usepath=false
 revive=false
 sleep=500
 _Townportal()
 Sleep=1000
-TakeWP=1
 sleep=500
 355.404510498047, 715.53271484375, -14.7000007629395,1,25
 356.774627685547, 691.826538085938, -14.7000007629395,1,25

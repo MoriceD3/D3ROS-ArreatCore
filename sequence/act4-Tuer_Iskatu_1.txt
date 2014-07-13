@@ -1,5 +1,4 @@
 MonsterList=angelDemonImpact_angelTrail|coreEliteDemon_podRocket|spire_AngelCorpse_Barrel_A|angelDemonImpact_angelTrail_thicker|crowd_commonAngel_falling|demonAttack_battle|shadowVermin_A_1000MonsterFight|TerrorDemon_A_Unique_1000Monster
-BanList=
 AutoBuff=True
 usepath=false
 revive=false

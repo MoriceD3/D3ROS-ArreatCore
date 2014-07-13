@@ -1,9 +1,9 @@
+TakeWP=7
 MonsterList=angelDemonImpact_angelTrail|coreEliteDemon_podRocket|spire_AngelCorpse_Barrel_A|angelDemonImpact_angelTrail_thicker|crowd_commonAngel_falling|demonAttack_battle|Diablo
 BanList=a4dunSpire_Diablo_Cover01|a4dun_DIablo_Arena_Health_Well|a4dun_diablo_bone_gate|a4dun_Diablo_Bone_Prison_Untargetable|a4dun_Diablo_Bone_Prison|a4dun_Diablo_Bone_Prison_Black|diablo_corruption_sphereExplode|Boss_Portal_Diablo|Diablo_Arena_Cracks2|MarkerLocation|Start_Location_0|AngelWings_common_model
 AutoBuff=True
 usepath=false
 revive=false
-TakeWP=7
 sleep=500
 256.522705078125, 326.300354003906, 0.100000008940697,1,25
 264.250762939453, 321.338104248047, 0.0999999940395355,1,25

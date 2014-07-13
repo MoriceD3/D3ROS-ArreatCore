@@ -1,9 +1,10 @@
+TakeWP=1
 monsterlist = Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|sandWasp|TriuneCultist|SandShark|Lacuni|Ghoul_|Uber|GoatMutant_Ranged_A|GoatMutant_Melee_A|fastMummy_C|demonFlyer|WoodWraith|TriuneVessel_|snakeMan_
 BanList=demonFlyer_A_swoop
 autobuff=true
 attackrange=35 
 usepath=false
-TakeWP=1
+sleep=500
 offsetlist()
 4259.19677734375, 4248.77490234375, -24.9000015258789,1,25
 4250.82763671875, 4233.8955078125, -24.5676422119141,1,25

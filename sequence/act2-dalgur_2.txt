@@ -1,7 +1,7 @@
+TakeWP=5
 MonsterList=Ghost_C_Event|snakeMan_Caster_B|FallenGrunt_A|snakeMan_Melee_B|FallenLunatic_A|sandWasp_A|FallenChampion_A|SandShark_A|Goblin|Uber|SandShark_B|SandShark_|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|caOut_StingingWinds_Barricade_A|LacuniFemale_A|DuneDervish_B|FallenLunatic_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|FallenLunatic_C|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|FallenShaman_|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Barrel_|DuneDervish|DuneDervish_B_Unique_Uber|Skeleton_C|Corpulent_C|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|Skeleton_
 AutoBuff=True
-attackrange=45 
-TakeWP=5
+attackrange=45
 Sleep=500
 4226.1484375, 4393.927734375, 94.420295715332,1,25
 4224.0107421875, 4410.78125, 94.5414810180664,1,25

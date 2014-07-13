@@ -1,9 +1,10 @@
+TakeWP=3
 MonsterList=Ghost_C_Event|snakeMan_Caster_B|FallenGrunt_A|FallenLunatic_A|sandWasp_A|FallenChampion_A|SandShark_A|Goblin|Uber|SandShark_B|SandShark_|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|caOut_StingingWinds_Barricade_A|LacuniFemale_A|DuneDervish_B|FallenLunatic_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Melee_B|FallenLunatic_C|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|FallenShaman_|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Barrel_|DuneDervish|DuneDervish_B_Unique_Uber|Skeleton_C|Corpulent_C|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|Skeleton_
 BanList=
 AutoBuff=True
 usepath=false
 revive=false
-TakeWP=3
+sleep=500
 1412.39636230469, 294.7314453125, 174.448226928711,1,25
 1410.18005371094, 289.856140136719, 174.297576904297,1,25
 1403.64929199219, 283.304351806641, 173.500701904297,1,25

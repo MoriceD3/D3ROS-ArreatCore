@@ -1,10 +1,10 @@
+TakeWP=9
 MonsterList=FallenGrunt_A|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|TriuneSummoner_C|caOut_StingingWinds_Barricade_A|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|CaOut_Oasis_Barrel_Breakable_A|DuneDervish|TriuneVesselActivated_C|Triune_Berserker_B|ZoltunKulle|sandMonster_A_Eternal_Guardian_ZoltBoss
 banlist=ZoltunKulle_EnergyTwister
 AutoBuff=True
 attackrange=55
 revive=false
 UsePath=false
-TakeWP=9
 sleep=500
 784.354553222656, 673.209655761719, 0.100002862513065,1,25
 773.247741699219, 676.565979003906, 0.100002855062485,1,25

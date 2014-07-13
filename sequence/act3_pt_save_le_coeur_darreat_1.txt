@@ -1,7 +1,7 @@
+TakeWP=10
 MonsterList=Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|soulRipper_|Lacuni
 AutoBuff=True
 attackrange=45 
-TakeWP=10
 sleep=500
 1151.70166015625, 704.105529785156, 0.100000008940697,1,25
 1146.23779296875, 722.739440917969, 0.100000120699406,1,25

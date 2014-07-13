@@ -1,9 +1,9 @@
+TakeWP=6
 MonsterList=WitherMoth|WoodWraith|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scavenger|zombie|Corpulent|Skeleton|QuillDemon|FleshPitFlyer|Succubus|Scorpion|azmodanBodyguard|succubus|ThousandPounder|FallenGrunt|FallenChampion|FallenHound|FallenShaman|GoatMutant|demonFlyer_B|demonTrooper_|creepMob|Brickhouse_A|Brickhouse_B|Triune_|TriuneVesselActivated_|TriuneVessel|Triune_Summonable_|TriuneSummoner_A|ConductorProxyMaster|goblin|sandWasp|TriuneCultist|SandShark|Lacuni|Uber|Ghoul|Cultist|CultistMelee|Goatman_Shaman_A|Goatman_Shaman_B|Goatman_Shaman|Goatman_S|WoodWraith_A_01|WoodWraith_A_02|WoodWraith_A_03|graveRobber_
 autobuff=True
 attackrange=40 
 usepath=false
-TakeWP=6
-Sleep=500
+sleep=500
 2167.71069335938, 1830.89221191406, 2.03051090240479,1,25
 2178.443359375, 1837.27587890625, 0.100001990795136,1,25
 2193.35400390625, 1843.15966796875, 0.100000321865082,1,25
