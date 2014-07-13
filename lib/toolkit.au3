@@ -3152,7 +3152,7 @@ Func Repair()
 	   DefineVendorTab()
 	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair, $BucketVendorTabRepair)
 	   Sleep(500)
-	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped")
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped", 124)
 	   Sleep(100)
 	Else
 	   _log("Not Repair, All Indestructible Object Activate")
@@ -4457,9 +4457,9 @@ Func StashAndRepair()
 		If $ToTrash = -1 And $ToSell = -1 Then ; si pas items a aller vendre on répare au forgeron
 			If Not $AllIndestructibleObject Then
 			   Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
-			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3")
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3", 1224)
 			   Sleep(500)
-			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped")
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped", 1237)
 			   Sleep(100)
 			   Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 			   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
@@ -4470,9 +4470,9 @@ Func StashAndRepair()
 		EndIf
 
 
-		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2")
+		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2", 393)
 		Sleep(100)
-		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button")
+		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button", 629)
 
 		CheckWindowD3Size()
 
@@ -5516,7 +5516,7 @@ Func BuyPotion()
 
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2", 623)
 		  Sleep(200)
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0", 452, 0)
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 1139, 0)
 		  Sleep(200)
 		  Send("{SHIFTDOWN}")
 		  Sleep(200)
