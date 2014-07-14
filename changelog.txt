@@ -1,5 +1,13 @@
 Changelog : 
 
+- Version 1.10.5 : 13/07/2014
+
+- Reset de la banlist après exécution des func Takewp et TakewpAdv. (Corrige les cas d'attaque des corps ban ,de portal et autre.)
+- Fix Func GestSpellcast (les sort n'étais pas lancer si pas de ressource et que le cout du sort étais 0, corrige les cas d'inactivité du bot en combat)
+- Ajout CheckTapSellerOpen ( vérifie si l'onglet de vente est bien ouvert, si non on passe a l'onglet 2 )
+- Fix Skills.au3 (Mise a jour des clases)
+- Fix divers
+
 - Version 1.10.0 : 05/07/2014
 
 - Divers bug fixes 
