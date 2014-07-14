@@ -323,6 +323,10 @@ Func _inmenu()
 	EndIf
 EndFunc   ;==>_inmenu OK
 
+Func _checkTapSellerOpen()
+	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 1, 1139)
+EndFunc ;==>_checkTapSellerOpen OK
+
 Func _checkdisconnect()
     Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 2022)
 EndFunc   ;==>_checkdisconnect OK
@@ -4524,6 +4528,27 @@ Func StashAndRepair()
 			Sleep(1000)
 			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0", 810)
 			Sleep(2000)
+
+			Local $OpenTapSellerTry = 0
+			While _checkTapSellerOpen() = False
+				If $OpenTapSellerTry < 1 Then
+					_log("Fail to open Tap 1 seller", $LOG_LEVEL_DEBUG)
+					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0", 810)
+				Else
+					_log("Try to open Tap 2 seller", $LOG_LEVEL_DEBUG)
+					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_1", 468)
+				EndIf
+				Sleep(2000)
+				$OpenTapSellerTry += 1
+
+				If $OpenTapSellerTry > 3 Then
+					_log('Failed to open tap sell after 4 try', $LOG_LEVEL_ERROR)
+					WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
+					MsgBox(0, "Impossible d'ouvrir les onglets de vente :", "SVP, veuillez reporter ce problème sur le forum. Erreur : v001 ")
+					Terminate()
+				EndIf
+			WEnd
+
 			CheckWindowD3Size()
 
 			For $i = 0 To UBound($ToTrash) - 1
