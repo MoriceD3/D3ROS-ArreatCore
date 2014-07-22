@@ -597,7 +597,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 ;# DemonHunter_BolaShot         / Bolas
 ;# DemonHunter_Caltrops         / Chausse trappe
 ;# DemonHunter_Chakram          / Chakram
-;# DemonHunter_ClusterArrow     / Tir multiple
+;# DemonHunter_ClusterArrow     / Fleche a fragmentation
 ;# DemonHunter_Companion        / Compagnon
 ;# DemonHunter_ElementalArrow   / Fleche des elements
 ;# DemonHunter_EntanglingShot   / Tir constricteur
@@ -609,7 +609,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 ;# DemonHunter_HungeringArrow   / Fleche vorace
 ;# DemonHunter_Impale           / Empaleur
 ;# DemonHunter_MarkedForDeath   / Marque de la mort
-;# DemonHunter_Multishot        / rafale
+;# DemonHunter_Multishot        / Tir multiple
 ;# DemonHunter_Preparation      / Preparation
 ;# DemonHunter_RainOfVengeance  / Pluie de vangeance
 ;# DemonHunter_RapidFire        / Tir rapide
@@ -617,7 +617,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 ;# DemonHunter_ShadowPower      / Puissance de l ombre
 ;# DemonHunter_SmokeScreen      / Ecran de fumee
 ;# DemonHunter_SpikeTrap        / Piege a pointes
-;# DemonHunter_Strafe           / Fleche a fragmentation
+;# DemonHunter_Strafe           / Rafale
 ;# DemonHunter_Vault            / acrobatie
 
 ;# ID, NOM DU SPELL, DELAY, TYPE, ENERGY NEEDED, TYPE ENERGY, TRIGGER HP, TRIGGER DISTANCE
