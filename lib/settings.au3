@@ -54,7 +54,7 @@ Global $ListOfHeros[1]
 Global $NbRunChangeHeros = 2
 
 Global $tab_grablist[1][2]
-Global $PartieSolo = True
+Global $ActivateChat = False
 
 Global $profilFile = "settings/settings.ini"
 Global $Follower = False
@@ -398,8 +398,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 
 	;choix du type de bot
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
-	$Dummy = IniRead($profilFile, "Run info", "PartieSolo", $PartieSolo)
-	$PartieSolo = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($profilFile, "Run info", "ActivateChat", $ActivateChat)
+	$ActivateChat = Trim(StringLower($Dummy)) == "true"
 
 	$Dummy = IniRead($profilFile, "Run info", "NoBountyFailbackToAdventure", $NoBountyFailbackToAdventure)
 	$NoBountyFailbackToAdventure = Trim(StringLower($Dummy)) == "true"

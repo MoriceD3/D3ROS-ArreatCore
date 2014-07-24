@@ -7,7 +7,6 @@
 Func SetConfigPartieSolo();reconfiguration du settings.ini
    	_Log("Partie en équipe, configuration du settings.ini")
 	$TakeABreak = False
-	$PauseRepas = False
 	$ResLife = 100
 EndFunc   ;==>SetConfigPartieSolo
 
@@ -23,8 +22,6 @@ Func WriteMe($situation)
 	Local $Tp = 5000
 	Local $NewRun = 2000
 	Local $TaweWp = 5000
-	Local $StartNewGame = 10000
-	Local $BreakMenu = 10000
 
 	Switch $situation
 		Case $WRITE_ME_RESTART_GAME	;dans le menu pour recommencer un run
@@ -36,7 +33,6 @@ Func WriteMe($situation)
 				Case 3
 					WriteInChat("Tu es prêt ? Je relance")
 			EndSwitch
-			Sleep($StartNewGame)
 
 		Case $WRITE_ME_WELCOME ;en jeu, début du run
 			Switch Random(1, 5, 1)
@@ -73,7 +69,7 @@ Func WriteMe($situation)
 					WriteInChat("Je quitte")
 			EndSwitch
 			Sleep(1000)
-			
+
 		Case $WRITE_ME_INVENTORY_FULL ;inventaire plein ou besoin de réparation
 			Switch Random(1, 3, 1)
 				Case 1
@@ -151,7 +147,5 @@ Func WriteMe($situation)
 				Case 3
 					WriteInChat("C'est long xD")
  			EndSwitch
-			Sleep($BreakMenu)
-
 	EndSwitch
 EndFunc   ;==>WriteMe

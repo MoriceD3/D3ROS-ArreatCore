@@ -12,7 +12,7 @@ Func _dorun()
         Return False
     EndIf
 
-	If $Totalruns = 1 And Not $PartieSolo Then
+	If $Totalruns = 1 And $ActivateChat Then
 		SetConfigPartieSolo(); TChat configuration du settings
 	EndIf
 
@@ -51,7 +51,7 @@ Func _dorun()
 		Sleep(1500)
 	EndIf
 
-	If Not $PartieSolo Then
+	If $ActivateChat Then
 		WriteMe($WRITE_ME_WELCOME) ; TChat
 	EndIf
 
@@ -117,7 +117,7 @@ Func _botting()
 		EndIf
 
 		If _inmenu() And Not _onloginscreen() Then
-			If Not $PartieSolo And $Totalruns > 1 Then
+			If $ActivateChat And $Totalruns > 1 Then
 			    WriteMe($WRITE_ME_TAKE_BREAK_MENU) ; TChat
 				WriteMe($WRITE_ME_RESTART_GAME) ; TChat
 			EndIf

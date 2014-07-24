@@ -874,7 +874,7 @@ Func FilterBackpack()
 			$itemDestination = CheckItem($__ACDACTOR[$i][0], $__ACDACTOR[$i][1], 1) ;on recupere ici ce que l'on doit faire de l'objet (stash/inventaire/trash)
 
 			If ($quality >= 9 And $itemDestination = "Stash") Then
-				If Not $PartieSolo Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
+				If $ActivateChat Then WriteMe($WRITE_ME_HAVE_LEGENDARY) ; TChat
 				$nbLegs += 1 ; on definit les legendaire et on compte les legs id au coffre
 			ElseIf ($quality >= 6 And $itemDestination = "Stash") Then
 				$nbRares += 1 ; on definit les rares
@@ -2807,10 +2807,6 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
     Local $try = 0
 
-	If Not $PartieSolo Then
-		WriteMe($WRITE_ME_TP) ; TChat
-	EndIf
-
 	If _playerdead() Then
 	   Return False
 	EndIf
@@ -3073,7 +3069,7 @@ Func _leavegame()
 	Local $Try_Leave = 0
 
 	If _ingame() Then
-		If Not $PartieSolo Then WriteMe($WRITE_ME_QUIT) ; TChat
+		If $ActivateChat Then WriteMe($WRITE_ME_QUIT) ; TChat
 
 		_log("Leave Game", $LOG_LEVEL_VERBOSE)
 
@@ -4264,7 +4260,7 @@ EndFunc   ;==>NeedRepair
 
 Func TpRepairAndBack()
 
-    If Not $PartieSolo Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
+    If $ActivateChat Then WriteMe($WRITE_ME_INVENTORY_FULL) ; TChat
 
 	While Not _intown()
 		If Not _TownPortalnew() Then
@@ -4277,7 +4273,7 @@ Func TpRepairAndBack()
 
 	If $PortBack Then
 
-		If Not $PartieSolo Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
+		If $ActivateChat Then WriteMe($WRITE_ME_BACK_REPAIR) ; TChat
 		SafePortBack()
 
 		While Not offsetlist()
@@ -4319,7 +4315,7 @@ Func StashAndRepair()
 	$RepairORsell += 1
 	$item_to_stash = 0
 
-	If Not $PartieSolo Then WriteMe($WRITE_ME_SALE) ; TChat
+	If $ActivateChat Then WriteMe($WRITE_ME_SALE) ; TChat
 
 	While _checkInventoryopen() = False
 		Send($KeyInventory)
@@ -5187,7 +5183,7 @@ EndFunc ; ==> CheckZoneBeforeTP()
 
 Func _TownPortalnew($mode=0)
 
-	If Not $PartieSolo Then WriteMe($WRITE_ME_TP) ; TChat
+	If $ActivateChat Then WriteMe($WRITE_ME_TP) ; TChat
 
 	If _playerdead() Then
 	   Return False

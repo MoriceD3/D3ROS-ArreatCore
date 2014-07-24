@@ -240,7 +240,7 @@ Func revive(ByRef $path)
 		$Res_compt = $Res_compt + 1
 		_log("You are dead, max : " & $rdn_die_t - $nb_die_t & " more death allowed", $LOG_LEVEL_WARNING)
 
-		If Not $PartieSolo Then WriteMe($WRITE_ME_DEATH) ; TChat
+		If $ActivateChat Then WriteMe($WRITE_ME_DEATH) ; TChat
 
 		If $nb_die_t <= $rdn_die_t AND NOT _checkRepair() Then
 			Sleep(Random(5000, 6000))
@@ -622,7 +622,7 @@ Func sequence($sequence_list)
 			If Not Comment($line) And Not $line = "" Then
 				;***************************************CMD BLOQUANTE*****************************************
 				If StringInStr($line, "takewp=", 2) Then; TakeWP detected
-					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
+					If $ActivateChat Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
@@ -654,7 +654,7 @@ Func sequence($sequence_list)
 						$line = ""
 					EndIf
 				ElseIf StringInStr($line, "takewpadv=", 2) Then; TakeWP detected
-					If Not $PartieSolo Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
+					If $ActivateChat Then WriteMe($WRITE_ME_TAKE_WP) ; TChat
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
