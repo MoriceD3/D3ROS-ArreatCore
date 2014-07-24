@@ -2956,11 +2956,19 @@ Func _resumegame()
 		$menu_rdy = 1
 	EndIf
 
-	If Not $Follower Then
-		While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
-			_log("Wait Other Follower")
-			sleep(500)
-		WEnd
+	If $MultiPlayer And Not $Follower And Not IsGameSettingsOpened() Then
+		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
+		sleep(150)
+		If Not IsGameSettingsOpened() Then
+			If fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270) Then
+				Return
+			Else
+				While Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270) And Not _checkdisconnect()
+					_log("Wait Other Follower")
+					sleep(500)
+				WEnd
+			EndIf
+		EndIf
 	EndIf
 
 	If $Follower Then
@@ -2981,7 +2989,11 @@ Func _resumegame()
 		EndIf
 
 		_log("Resume Game")
-		ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
+		If IsGameSettingsOpened() Then
+			ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.PlayGame", 582)
+		Else
+			ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
+		EndIf
 		$Try_ResumeGame += 1
 	EndIf
 
@@ -5806,3 +5818,9 @@ Func WaitTpBarLoading()
 	_log("Fail!! Unknown fail for TP", $LOG_LEVEL_ERROR)
 	Return False ;TP Fail
 EndFunc
+
+Func SetConfigMultiPlayer();reconfiguration du settings.ini
+   	_Log("Partie en équipe, configuration du settings.ini")
+	$TakeABreak = False
+	$ResLife = 100
+EndFunc   ;==>SetConfigMultiPlayer

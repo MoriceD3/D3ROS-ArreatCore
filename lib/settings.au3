@@ -55,6 +55,7 @@ Global $NbRunChangeHeros = 2
 
 Global $tab_grablist[1][2]
 Global $ActivateChat = False
+Global $MultiPlayer  = False
 
 Global $profilFile = "settings/settings.ini"
 Global $Follower = False
@@ -400,6 +401,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$TypedeBot = IniRead($profilFile, "Run info", "TypeDeBot", $TypedeBot)
 	$Dummy = IniRead($profilFile, "Run info", "ActivateChat", $ActivateChat)
 	$ActivateChat = Trim(StringLower($Dummy)) == "true"
+	$Dummy = IniRead($profilFile, "Run info", "MultiPlayer", $MultiPlayer)
+	$MultiPlayer = Trim(StringLower($Dummy)) == "true"
 
 	$Dummy = IniRead($profilFile, "Run info", "NoBountyFailbackToAdventure", $NoBountyFailbackToAdventure)
 	$NoBountyFailbackToAdventure = Trim(StringLower($Dummy)) == "true"

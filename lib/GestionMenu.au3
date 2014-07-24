@@ -395,9 +395,11 @@ Func SelectGameType($SelectGameType, $auto)
 				 ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList.OkButton", 1606)
 			  EndIf
 			  Sleep(Random(600, 800, 1))
-			  _log("Save And Close")
-			  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
-			  Sleep(Random(800, 1000, 1))
+			  If Not $MultiPlayer Then
+				  _log("Save And Close")
+				  ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.SaveAndClose", 809)
+				  Sleep(Random(800, 1000, 1))
+			  EndIf
 			  CheckWindowsClosed()
 		   Else
 			  _log("Quest Menu No Opened, Back To Menu", $LOG_LEVEL_DEBUG)
@@ -864,7 +866,7 @@ Func CheckWindowsClosed()
 	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.ChangeQuest.ChangeQuest_CloseButton", 1098)
 	   Sleep(2000)
 	EndIf
-	If IsGameSettingsOpened() Then
+	If IsGameSettingsOpened() And Not $MultiPlayer Then
 	   _log("Game Settings Not Close --> Closed", $LOG_LEVEL_DEBUG)
 	   ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.OverlayContainer.PageHeader.CloseButton" , 1355)
 	   Sleep(500)

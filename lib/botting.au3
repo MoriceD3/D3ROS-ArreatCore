@@ -12,8 +12,8 @@ Func _dorun()
         Return False
     EndIf
 
-	If $Totalruns = 1 And $ActivateChat Then
-		SetConfigPartieSolo(); TChat configuration du settings
+	If $Totalruns = 1 And $MultiPlayer Then
+		SetConfigMultiPlayer()
 	EndIf
 
 	If $GameFailed = 0 Then

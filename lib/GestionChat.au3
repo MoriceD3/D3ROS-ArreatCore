@@ -4,12 +4,6 @@
 	Extension permettant de gérer l'intervention du bot via le tchat
 #ce ----------------------------------------------------------------------------
 
-Func SetConfigPartieSolo();reconfiguration du settings.ini
-   	_Log("Partie en équipe, configuration du settings.ini")
-	$TakeABreak = False
-	$ResLife = 100
-EndFunc   ;==>SetConfigPartieSolo
-
 Func WriteInChat($str)
 	_Log("--------------------> TCHAT : " & $str & @CRLF)
 	Send("{ENTER}") ;validation de la fenêtre de tchat sur le groupe
