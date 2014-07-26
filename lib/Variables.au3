@@ -294,9 +294,9 @@ Global $LevaAreaForWP_CampainAct1[16] = [ _
 	119870, 93632, 19941, 100854, 19775, _
 	19776]
 
-Global $LevaAreaForWP_CampainAct2[9] = [ _
+Global $LevaAreaForWP_CampainAct2[10] = [ _
 	168314, 19791, 19838, 63666, 19835, _
-    175367, 57425, 57425, 53834]
+    175367, 57425, 57425, 53834, 19800]
 
 Global $LevaAreaForWP_CampainAct3[11] = [ _
 	92945, 93173, 75436, 136448, 155048, _
