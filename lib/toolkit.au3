@@ -5378,7 +5378,7 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 		Sleep(150)
 	EndIf
 
-	Switch $BeforeInteract
+	Switch $BeforeInteract ; TODO check all range
 		Case $MOVETO_SMITH ; Smith
 			Switch $Act
 			    Case 1
@@ -5476,13 +5476,13 @@ Func MoveTo($BeforeInteract) ; placer notre perso au point voulu dans chaque act
 				 Case 3 To 4; act 3-4
 					Switch $ModePlaying
 						 Case $PLAYING_MODE_STORY
-							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
 						 Case $PLAYING_MODE_ADVENTURE
-							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 60)
-							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 60)
-							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 60)
+							 MoveToPos(427.152893066406, 345.048858642578, 0.10000141710043, 0, 25)
+							 MoveToPos(400.490386962891, 380.362884521484, 0.332595944404602, 0, 25)
+							 MoveToPos(390.630401611328, 399.380554199219, 0.55376011133194, 0, 25)
 					EndSwitch
 				Case 5 ; act 5
 					Switch $ModePlaying
