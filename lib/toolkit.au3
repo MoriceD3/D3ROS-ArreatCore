@@ -2017,7 +2017,7 @@ Func Attack()
 		Return
 	EndIf
 
-	If _checkdisconnect() Or _playerdead() Or ($GameFailed And Not $Execute_TownPortalnew) Then
+	If _checkdisconnect() Or _playerdead() Or ($GameFailed = 1 And Not $Execute_TownPortalnew) Then
 		$GameFailed = 1
 		_log("Attack : Return because _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
 		Return
@@ -2040,7 +2040,7 @@ Func Attack()
 			ExitLoop
 		EndIf
 
-		If _checkdisconnect() Or _playerdead() Or ($GameFailed And Not $Execute_TownPortalnew) Then
+		If _checkdisconnect() Or _playerdead() Or ($GameFailed = 1 And Not $Execute_TownPortalnew) Then
 			$GameFailed = 1
 			_log("Attack : Return because _playerdead or gamefailed or disconnect", $LOG_LEVEL_WARNING)
 			ExitLoop
