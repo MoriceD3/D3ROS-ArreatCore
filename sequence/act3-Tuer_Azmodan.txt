@@ -3,7 +3,6 @@ MonsterList=Ghoul_|Beast_B|Goatman_M|Goatman_R|WitherMoth|Beast_A|Goblin|Scaveng
 banlist=Azmodan_BSS_soul|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan_Blocker|a3dun_crater_st_Demon_ChainPylon_Fire_Azmodan|Boss_Portal_Azmodan
 AutoBuff=True
 attackrange=45
-revive=false
 sleep=500
 1151.70166015625, 704.105529785156, 0.100000008940697,1,25
 1146.23779296875, 722.739440917969, 0.100000120699406,1,25
@@ -55,13 +54,13 @@ sleep=500
 325.437225341797, 721.043273925781, 0.1000000461936,1,25
 294.680358886719, 720.404174804688, -0.791764259338379,1,25
 268.918212890625, 718.829833984375, -5.54678726196289,1,25
+endsave()
 242.719833374023, 717.662780761719, -14.9846477508545,1,25
 214.342926025391, 720.735534667969, -31.5130805969238,1,25
 181.943405151367, 723.930114746094, -47.8554992675781,1,25
-endsave()
+offsetlist()
 InteractWithPortal=Boss_Portal_Azmodan
 sleep=1000
-endsave()
 offsetlist()
 usepath=false
 specialml=Azmodan
@@ -82,8 +81,7 @@ sleep=2500
 closewindows()
 sleep=500
 closeconfirm()
-sleep=3200
-endsave()
+sleep=1000
 442.030639648438, 429.476470947266, 0.290551841259003,1,25
 448.414093017578, 418.462341308594, 0.290555566549301,1,25
 436.368530273438, 419.535095214844, 0.255117654800415,1,25
@@ -110,7 +108,5 @@ closewindows()
 sleep=500
 closeconfirm()
 sleep=1000
-endsave()
-sleep=500
 _townportal()
 sleep=500

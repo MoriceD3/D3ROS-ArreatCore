@@ -1,7 +1,6 @@
 MonsterList=FallenGrunt_A|FallenHound_B|FallenHound_A|FallenHound_c|FallenHound_D|sandWasp_A|FallenChampion_A|SandShark_A|sandWasp_B|Triune_Summonable_C|TriuneCultist_C|TriuneCultist_D|TriuneVessel_C|Triune_Summonable_D|Triune_Berserker_C|Triune_Berserker_B|TriuneSummoner_C|Barricade|LacuniFemale_A|DuneDervish_B|FallenGrunt_B|Bloodhawk_A|snakeMan_Melee_A|snakeMan_Caster_A|FallenChampion_B|DuneDervish_A|FallenShaman_B|Khamsin_snakeman_melee|electricEel_A|FallenShaman_A_Unique_MiniPools|Goblin|uber_|Uber|DuneDervish|TriuneVesselActivated_C|TriuneCultist_C|TriuneCultist_D|Maghda
 banlist=Lore_BelialMaghdaMissive2|Boss_Portal_Maghda
 AutoBuff=True
-revive=false
 attackrange=40
 1394.80212402344, 1116.14111328125, 184.49137878418,1,25
 1423.94067382813, 1163.82885742188, 184.491546630859,1,25
@@ -84,19 +83,16 @@ endsave()
 956.510864257813, 1268.99523925781, 197.255889892578,1,25
 937.226013183594, 1265.81774902344, 197.255889892578,1,25
 921.317260742188, 1253.88073730469, 196.870666503906,1,25
+endsave()
+attackrange=65
 909.919494628906, 1235.74304199219, 196.870666503906,1,25
 892.298034667969, 1213.17736816406, 196.870666503906,1,25
-endsave()
-sleep=500
+offsetlist()
 InteractWithPortal=Boss_Portal_Maghda
 sleep=1000
-endsave()
 UsePath=false
-attackrange=65
 offsetlist()
 specialml=Maghda
-attackrange=65
-usepath=false
 269.5625, 199.048904418945, 0.100000001490116,1,25
 261.53369140625, 199.309280395508, 0.100000001490116,1,25
 250.382369995117, 199.670928955078, 0.100000001490116,1,25
@@ -106,7 +102,7 @@ sleep=2500
 closewindows()
 sleep=500
 closeconfirm()
-sleep=3200
+sleep=2500
 186.95491027832, 205.054122924805, 0.100000001490116,1,25
 198.849090576172, 208.047790527344, 0.100000001490116,1,25
 206.888595581055, 200.976303100586, 0.100000001490116,1,25
@@ -128,5 +124,3 @@ sleep=3200
 193.295791625977, 207.409378051758, 0.0999999940395355,1,25
 _townportal()
 sleep=2000
-endsave()
-sleep=500
