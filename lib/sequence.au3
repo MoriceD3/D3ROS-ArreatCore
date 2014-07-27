@@ -603,6 +603,7 @@ Func sequence($sequence_list)
 				_log("Game failed exiting sequence()", $LOG_LEVEL_WARNING)
 				If $GameFailed = 2 Then
 					_log("Game failure maybe recoverable, continuing to next sequence.", $LOG_LEVEL_WARNING)
+					_log("Name sequence failed : " & $load_file, $LOG_LEVEL_WARNING)
 					$GameFailed = 0
 				EndIf
 				ExitLoop
