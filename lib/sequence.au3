@@ -1199,31 +1199,29 @@ Func InteractWithPortal($NamePortal)
 	Local $Curentarea = GetLevelAreaId()
 	Local $Newarea = $Curentarea
 	Local $PortalTry = 0
-	Local $FirstCome = 0
 	Local $AreaWait = 20
 
 	While $PortalTry < 5
-		If Not _checkBossJoinParty() And Not _checkBossEnter() Then
-		   InteractByActorName($NamePortal)
-		   If Not $PortalTry Then
-			  Sleep(500)
-			  InteractByActorName($NamePortal)
-		   EndIf
-		    _log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
-		EndIf
-		If _checkBossJoinParty() Then
-		   ClickUi("Root.NormalLayer.boss_join_party_main.stack.wrapper.Accept", 300)
-		   Sleep(500)
-	    EndIf
-		If _checkBossEnter() Then
-		   ClickUi("Root.NormalLayer.boss_enter_main.stack.wrapper.Accept", 204)
-		   Sleep(500)
-		   $FirstCome = 1
+		If GetLevelAreaId() = $Curentarea Then
+			If Not _checkBossJoinParty() And Not _checkBossEnter() Then
+				InteractByActorName($NamePortal, 30)
+				_log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
+			Else
+				If _checkBossJoinParty() Then
+					ClickUi("Root.NormalLayer.boss_join_party_main.stack.wrapper.Accept", 300)
+					Sleep(500)
+				EndIf
+				If _checkBossEnter() Then
+					ClickUi("Root.NormalLayer.boss_enter_main.stack.wrapper.Accept", 204)
+					Sleep(500)
+					$AreaWait = 240
+				EndIf
+			EndIf
 		EndIf
 
-		If $FirstCome Then $AreaWait = 80
 		Local $areatry = 0
-		While $Newarea = $Curentarea And $areatry <= $AreaWait
+		While $Newarea = $Curentarea And $areatry < $AreaWait
+			If _checkBossEnter() Or _checkBossJoinParty() Then ExitLoop
 			If Not _checkBossWarningMessage() Then
 			   $Newarea = GetLevelAreaId()
 			   Sleep(250)
