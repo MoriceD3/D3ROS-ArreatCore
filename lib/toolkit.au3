@@ -959,7 +959,7 @@ Func LocateMyToon()
 								_log("Acd Ofs : " & $ACD, $LOG_LEVEL_DEBUG)
 								Return True
 							Else
-								If $NewHeros Then ; ;git randomheros test
+								If $NewHeros Then
 								   _log("CHANGEMENT DE HEROS,A NEW Load_Attrib_GlobalStuff REQUIRES", $LOG_LEVEL_ERROR)
 								   Return True
 								EndIf
@@ -2804,7 +2804,7 @@ Func GetBucketForWP($WPNumber)
 EndFunc
 
 Func TakeWpV3($WPNumber = 0, $Mode = 0)
-	_Log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
+	_log("TakeWpV3 : " & $WPNumber, $LOG_LEVEL_VERBOSE)
     Local $try = 0
 
 	If _playerdead() Then
@@ -2820,7 +2820,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 
 		Local $Curentarea = GetLevelAreaId()
 		If ArrivedTargetArea($Curentarea, $WPNumber, $Mode) Then
-			_Log("TakeWpV3 : New area found : " & $Curentarea, $LOG_LEVEL_DEBUG)
+			_log("TakeWpV3 : New area found : " & $Curentarea, $LOG_LEVEL_DEBUG)
 
 			Sleep(500)
 			While Not offsetlist()
@@ -2829,7 +2829,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 			Sleep(1000)
 			Send($KeyCloseWindows)
 			$SkippedMove = 0 ;reset our skipped move count cuz we should be in brand new area
-			_Log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
+			_log("TakeWpV3 : Success", $LOG_LEVEL_VERBOSE)
 			Return True
 		EndIf
 
@@ -2843,7 +2843,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 
 		CheckZoneBeforeTP()
 
-		_Log("TakeWpV3 : Opening map (try : " & $try & ")", $LOG_LEVEL_VERBOSE)
+		_log("TakeWpV3 : Opening map (try : " & $try & ")", $LOG_LEVEL_VERBOSE)
 		Send($KeyCloseWindows)
 		Sleep(250)
 		Send($KeyOpenMap)
@@ -2892,7 +2892,7 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 						$NameUI = "Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry " & $WPNumber & ".LayoutRoot.Name"
 					EndIf
 				EndIf
-				_Log("TakeWpV3 : clicking wp UI")
+				_log("TakeWpV3 : clicking wp UI")
 				If ($BucketUI = 0) Then
 					ClickUI($NameUI)
 				Else
@@ -2905,11 +2905,11 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 			EndIf
 
 		  	If Not _intown() Then
-				_Log("TakeWpV3 : Not in town -> Enclenchement fastCheckui de la barre de loading")
+				_log("TakeWpV3 : Not in town -> Enclenchement fastCheckui de la barre de loading")
 				If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
 					$CurrentLoc = getcurrentpos()
 					MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
-					_Log("TakeWpV3 : On se deplace, pas de detection de la barre de TP")
+					_log("TakeWpV3 : On se deplace, pas de detection de la barre de TP")
 					ContinueLoop
 				EndIf
 			EndIf
@@ -2919,13 +2919,13 @@ Func TakeWpV3($WPNumber = 0, $Mode = 0)
 			Local $WPMaxWait = 20
 			If $Totalruns <= 2 Then $WPMaxWait = 40 ; First Run may take more time, especially on slower PC
 			While Not ArrivedTargetArea($Curentarea, $WPNumber, $Mode) And $compt_wait < $WPMaxWait
-				_Log("TakeWpV3 : We may TP successfully, wating Area Change. Attempt -> " & $compt_wait)
+				_log("TakeWpV3 : We may TP successfully, wating Area Change. Attempt -> " & $compt_wait)
 				$compt_wait += 1
 				sleep(500)
 				$Curentarea = GetLevelAreaId()
 			WEnd
 		Else
-	    	_Log("TakeWpV3 : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
+	    	_log("TakeWpV3 : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
 			Return False
 		EndIf
 	WEnd
@@ -3087,7 +3087,7 @@ Func _leavegame()
 
 		While Not $EscMenu_OK And $Try_Send_Esc < 11
 		   If Not _checkdisconnect() Then
-			  _Log("try --> " & $Try_Send_Esc + 1 & " Escape Menu")
+			  _log("try --> " & $Try_Send_Esc + 1 & " Escape Menu")
 			  Sleep(500)
 			  Send($KeyCloseWindows) ; to make sure everything is closed
 			  sleep(500)
@@ -4697,27 +4697,27 @@ Func LoadingSNOExtended()
 	Next
 
 	If ($armorOffs = 0) Then
-		_Log("Problem indexing Armor offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Armor offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$armorItems = GetLevelsAdvanced($armorOffs)
 	If ($weaponOffs = 0) Then
-		_Log("Problem indexing Weapons offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Weapons offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$weaponItems = GetLevelsAdvanced($weaponOffs)
 	If ($otherOffs = 0) Then
-		_Log("Problem indexing Item offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Item offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$otherItems = GetLevelsAdvanced($otherOffs)
 	If ($legarmorOffs = 0) Then
-		_Log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$legarmorItems = GetLevelsAdvanced($legarmorOffs)
 	If ($legweaponOffs = 0) Then
-		_Log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Legendary Armor offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$legweaponItems = GetLevelsAdvanced($legweaponOffs)
 	If ($legotherOffs = 0) Then
-		_Log("Problem indexing Legendaty Item offsets" , $LOG_LEVEL_ERROR)
+		_log("Problem indexing Legendaty Item offsets" , $LOG_LEVEL_ERROR)
 	EndIf
 	$legotherItems = GetLevelsAdvanced($legotherOffs)
 
@@ -4809,7 +4809,7 @@ Func SafePortBack()
 	Local $NewAreaOk = 0
 
 	While $NewAreaOk = 0 And $HearthPortalTry < 5
-		_Log("try n°" & $HearthPortalTry + 1 & " hearthPortal")
+		_log("try n°" & $HearthPortalTry + 1 & " hearthPortal")
 		InteractByActorName('hearthPortal')
 		$Newarea = GetLevelAreaId()
 
@@ -4835,7 +4835,7 @@ Func SafePortBack()
 		WEnd
 
 		If TimerDiff($hTimer) >= 30000 Then
-			_Log('Fail to use OffsetList - SafePortBack')
+			_log('Fail to use OffsetList - SafePortBack')
 		EndIf
 	Else
 		_log('We failed to teleport back', $LOG_LEVEL_ERROR)
@@ -5177,7 +5177,7 @@ Func CheckZoneBeforeTP()
 
 	Dim $Item_Affix_Verify = IterateFilterAffixV2()
 	If IsArray($Item_Affix_Verify) Then
-	   _Log("Affix détecté, on vérifie si l'on est trop pres avant de TP", $LOG_LEVEL_DEBUG)
+	   _log("Affix détecté, on vérifie si l'on est trop pres avant de TP", $LOG_LEVEL_DEBUG)
 
 	   Local $CurrentLoc = getcurrentpos()
 	   While Not is_zone_safe($CurrentLoc[0], $CurrentLoc[1], $CurrentLoc[2], $Item_Affix_Verify) and $try < 15 ; try < 15 si jamais on bloque dans la map
@@ -5188,7 +5188,7 @@ Func CheckZoneBeforeTP()
 		  $try += 1
 	   WEnd
     Else
-	   _Log("La zone est sure, on peut TP", $LOG_LEVEL_DEBUG)
+	   _log("La zone est sure, on peut TP", $LOG_LEVEL_DEBUG)
     EndIf
 
 EndFunc ; ==> CheckZoneBeforeTP()
@@ -5207,7 +5207,7 @@ Func _TownPortalnew($mode=0)
 	While Not _intown() And _ingame() And Not _checkdisconnect()
 
 		If $OrigArea <> GetLevelAreaId() Then
-			_Log("_TownPortalnew :  Changement d'area, on quite la boucle")
+			_log("_TownPortalnew :  Changement d'area, on quite la boucle")
 			ExitLoop
 		EndIf
 
@@ -5217,10 +5217,10 @@ Func _TownPortalnew($mode=0)
 
 		$compt += 1
 
-		_Log("_TownPortalnew : Tour de boucle IsInTown Mode : " & $mode & " -- tentative de TP " & $compt)
+		_log("_TownPortalnew : Tour de boucle IsInTown Mode : " & $mode & " -- tentative de TP " & $compt)
 
 		If $mode <> 0 And $compt > $mode Then
-			_Log("_TownPortalnew : Too Much TP try !!!", $LOG_LEVEL_ERROR)
+			_log("_TownPortalnew : Too Much TP try !!!", $LOG_LEVEL_ERROR)
 			ExitLoop
 		EndIf
 
@@ -5228,7 +5228,7 @@ Func _TownPortalnew($mode=0)
 		   $Inventory_Is_Full = 1
 		EndIf
 
-		_Log("_TownPortalnew : Enclenche attack during TownPortalnew")
+		_log("_TownPortalnew : Enclenche attack during TownPortalnew")
 	    Attack()
 		Sleep(100)
 
@@ -5236,14 +5236,14 @@ Func _TownPortalnew($mode=0)
 
 			CheckZoneBeforeTP()
 
-			_Log("_TownPortalnew : on enclenche le TP")
+			_log("_TownPortalnew : on enclenche le TP")
 			Sleep(250)
 			Send($KeyPortal)
 			Sleep(250)
 
 			If Detect_UI_error($MODE_BOSS_TP_DENIED) AND NOT _intown() Then
 			   If ($Choix_Act_Run < 100 And $Choix_Act_Run > -2) Then
-				  _Log('_TownPortalnew : Detection Asmo room', $LOG_LEVEL_WARNING)
+				  _log('_TownPortalnew : Detection Asmo room', $LOG_LEVEL_WARNING)
 				  $Execute_TownPortalnew = False
 				  Return False
 			   Else
@@ -5254,21 +5254,21 @@ Func _TownPortalnew($mode=0)
 			If WaitTpBarLoading() = False And Not _intown() Then ; si pas de detection de la barre de TP
 				$CurrentLoc = getcurrentpos()
 				MoveToPos($CurrentLoc[0] + 5, $CurrentLoc[1] + 5, $CurrentLoc[2], 0, 6)
-				_Log("_TownPortalnew : On se deplace, pas de detection de la barre de TP")
+				_log("_TownPortalnew : On se deplace, pas de detection de la barre de TP")
 				ContinueLoop
 			EndIf
 
 			Local $MaxTry = 7
 			If $Totalruns = 1 Then $MaxTry = 15
 			While Not _intown() And $try < $MaxTry
-				_Log("_TownPortalnew : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
+				_log("_TownPortalnew : on a peut etre reussi a tp, on reste inerte pendant 6sec voir si on arrive en ville, tentative -> " & $try)
 				$try += 1
 				Sleep(1000)
 			WEnd
 
 			Sleep(500)
 		Else
-			_Log("_TownPortalnew : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
+			_log("_TownPortalnew : Vous etes morts lors d'une tentative de teleport !!!", $LOG_LEVEL_WARNING)
 			$Inventory_Is_Full = 0
 			$Execute_TownPortalnew = False
 			Return False
@@ -5278,7 +5278,7 @@ Func _TownPortalnew($mode=0)
 	WEnd
 
 	If _checkdisconnect() Then
-	   _Log("_TownPortalnew : Vous avez ete disconnecter", $LOG_LEVEL_WARNING)
+	   _log("_TownPortalnew : Vous avez ete disconnecter", $LOG_LEVEL_WARNING)
 	   $Inventory_Is_Full = 0
 	   $Execute_TownPortalnew = False
 	   Return False
@@ -5290,7 +5290,7 @@ Func _TownPortalnew($mode=0)
 	WEnd
 
 	If TimerDiff($hTimer) >= 30000 Then
-		_Log('_TownPortalnew : Fail to use offselList', $LOG_LEVEL_ERROR)
+		_log('_TownPortalnew : Fail to use offselList', $LOG_LEVEL_ERROR)
 		$Inventory_Is_Full = 0
 		$Execute_TownPortalnew = False
 		Return False
@@ -5300,7 +5300,7 @@ Func _TownPortalnew($mode=0)
 	   $PortBack = True
 	EndIf
 
-	_Log("_TownPortalnew : On a renvoyer true, quite bien la fonction")
+	_log("_TownPortalnew : On a renvoyer true, quite bien la fonction")
 
 	$Inventory_Is_Full = 0
 	$Execute_TownPortalnew = False
@@ -5357,7 +5357,7 @@ Func Take_BookOfCain()
 			If Not _checkdisconnect() Then
 				InteractByActorName("All_Book_Of_Cain")
 			Else
-				_Log("Failed to open Book Of Cain", $LOG_LEVEL_ERROR)
+				_log("Failed to open Book Of Cain", $LOG_LEVEL_ERROR)
 				$FailOpen_BookOfCain = 1
 				Return False
 			EndIf
@@ -5531,7 +5531,7 @@ Func BuyPotion()
 		  Local $vendortry = 0
 		  While _checkVendoropen() = False
 			   If $vendortry <= 4 Then
-				  _Log('Fail to open vendor', $LOG_LEVEL_WARNING)
+				  _log('Fail to open vendor', $LOG_LEVEL_WARNING)
 				  $vendortry += 1
 				  InteractByActorName($RepairVendor)
 			   Else
@@ -5545,7 +5545,7 @@ Func BuyPotion()
 			   EndIf
 		  WEnd
 
-		  _Log('Achat de ' & $NbPotionBuy & ' potions')
+		  _log('Achat de ' & $NbPotionBuy & ' potions')
 
 		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2", 623)
 		  Sleep(200)
@@ -5577,10 +5577,10 @@ Func BuyPotion()
 		  Send($KeyCloseWindows)
 		  Sleep(Random(100, 200))
 	   Else
-		  _Log('Vous avez assez potion')
+		  _log('Vous avez assez potion')
 	   EndIf
     Else
-	   _Log('Fonction BuyPotion Désactivée')
+	   _log('Fonction BuyPotion Désactivée')
     EndIf
 EndFunc    ;==>BuyPotion
 
@@ -5779,7 +5779,7 @@ Func ArrivedTargetArea($Curentarea, $WP, $Mode = 0)
 EndFunc
 
 Func WaitTpBarLoading()
-	_Log("WaitTpBarLoading()")
+	_log("WaitTpBarLoading()")
 
 	Local $TpOnGoing = False
 	Local $TpTimer = TimerInit()
@@ -5820,7 +5820,7 @@ Func WaitTpBarLoading()
 EndFunc
 
 Func SetConfigMultiPlayer();reconfiguration du settings.ini
-   	_Log("Partie en équipe, configuration du settings.ini")
+   	_log("Partie en équipe, configuration du settings.ini")
 	$TakeABreak = False
 	$ResLife = 100
 EndFunc   ;==>SetConfigMultiPlayer

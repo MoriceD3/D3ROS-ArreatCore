@@ -4,7 +4,7 @@ Func _dorun()
 	_log("*** Starting new run", $LOG_LEVEL_VERBOSE)
 
 	Local $hTimer = TimerInit()
-	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
+	While Not offsetlist() And TimerDiff($hTimer) < 60000
 		Sleep(40)
 	WEnd
 
@@ -25,8 +25,6 @@ Func _dorun()
 	$GameFailed = 0
 	$SkippedMove = 0
 	$PortBack = False
-
-
 
 	If Not $hotkeycheck Or $NewHeros Then
 		If Not $hotkeycheck Then
@@ -54,7 +52,6 @@ Func _dorun()
 	If $ActivateChat Then
 		WriteMe($WRITE_ME_WELCOME) ; TChat
 	EndIf
-
 
 	GetAct()
 	StatsDisplay()
@@ -244,15 +241,15 @@ Func CheckAndDefineSize()
 EndFunc
 
 Func Checkclickable($coord)
-	if $coord[1] <= $PointFinal[0] Then
+	If $coord[1] <= $PointFinal[0] Then
 		$coord[1] = $PointFinal[0] + 1
-	Elseif $coord[1] >= ($PointFinal[0] + $PointFinal[3]) Then
+	ElseIf $coord[1] >= ($PointFinal[0] + $PointFinal[3]) Then
 		$coord[1] =  ($PointFinal[0] + $PointFinal[3]) - 1
 	EndIF
 
-	if $coord[0] <= $PointFinal[1] Then
+	If $coord[0] <= $PointFinal[1] Then
 		$coord[0] = $PointFinal[1] + 1
-	Elseif $coord[0] >= ($PointFinal[1] + $PointFinal[2]) Then
+	ElseIf $coord[0] >= ($PointFinal[1] + $PointFinal[2]) Then
 		$coord[0] = ($PointFinal[1] + $PointFinal[2]) - 1
 	EndIF
 
@@ -277,7 +274,7 @@ Func ClickInventory($c, $l)
 EndFunc
 
 Func CheckGameMode()
-    _Log("What game mode you are", $LOG_LEVEL_DEBUG)
+    _log("What game mode you are", $LOG_LEVEL_DEBUG)
 
 	While Not _checkWPopen() And Not _checkdisconnect()
 		Send($KeyOpenMap)
@@ -286,10 +283,10 @@ Func CheckGameMode()
 
 	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.BountyOverlay.Rewards.BagReward", 1, 85) Then
 	   $ModePlaying = $PLAYING_MODE_ADVENTURE
-	   _Log("Adventure Mode", $LOG_LEVEL_VERBOSE)
+	   _log("Adventure Mode", $LOG_LEVEL_VERBOSE)
 	Else
 	   $ModePlaying = $PLAYING_MODE_STORY
-	   _Log("Story Mode", $LOG_LEVEL_VERBOSE)
+	   _log("Story Mode", $LOG_LEVEL_VERBOSE)
 	EndIf
 
 	While _checkWPopen() And Not _checkdisconnect()
@@ -307,7 +304,7 @@ Func CheckHotkeys()
 	Sleep(2000)
 	Send($KeyInventory)
 	Sleep(500)
-	If _checkInventoryopen() = False Then
+	If Not _checkInventoryopen() Then
 		WinSetOnTop("Diablo III", "", 0)
 		MsgBox(0, "Mauvais Hotkey", "La touche pour ouvrir l'inventaire doit être : " & $KeyInventory & @CRLF)
 		Terminate()
@@ -315,7 +312,7 @@ Func CheckHotkeys()
 	Sleep(185)
 	Send($KeyCloseWindows) ; make sure we close everything
 	Sleep(250)
-	If _checkInventoryopen() = True Then
+	If _checkInventoryopen() Then
 		WinSetOnTop("Diablo III", "", 0)
 		MsgBox(0, "Mauvais Hotkey", "La touche pour fermer les fenêtres doit être : " & $KeyCloseWindows & @CRLF)
 		Terminate()
