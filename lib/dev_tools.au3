@@ -23,7 +23,7 @@ Global $debugToolsHandle
 Func ShowDebugTools()
 	$debugToolsHandle = GUICreate("Debug tools", 200, 400, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
 	If $debugToolsHandle = 0 Then
-		_Log("Problem starting debug tools", $LOG_LEVEL_ERROR)
+		_log("Problem starting debug tools", $LOG_LEVEL_ERROR)
 		Return
 	EndIf
 	GUISetOnEvent($GUI_EVENT_CLOSE, "On_DebugTools_Close")
@@ -40,7 +40,7 @@ Func ShowDebugTools()
 
     GUICtrlCreateLabel("Les résultats sont sauvés dans debug_tools.txt", 10, 340, 180, 30)
 	GUISetState()
-EndFunc
+EndFunc ;==> ShowDebugTools
 
 Func _logDebugTools($line)
   $file = FileOpen(@ScriptDir & "\debug_tools.txt", 1)
@@ -51,30 +51,30 @@ Func _logDebugTools($line)
      FileWrite($file, $line & @CRLF)
   EndIf
   FileClose($file)
-EndFunc
+EndFunc ;==> _logDebugTools
 
-Func DebugListBounties() 
+Func DebugListBounties()
 	ListBounties()
-EndFunc
+EndFunc ;==> DebugListBounties
 
 Func DebugMarkPos()
 	$currentloc = GetCurrentPos()
 	$markpos = $currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ", 1, 25"
 	_logDebugTools($markpos)
 	_log($markpos , $LOG_LEVEL_DEBUG)
-EndFunc
+EndFunc ;==> DebugMarkPos
 
 Func DebugMonsterListing()
 	MonsterListing(True)
-EndFunc
+EndFunc ;==> DebugMonsterListing
 
 Func DebugUi()
 	ListUI(1, True)
-EndFunc
+EndFunc ;==> DebugUi
 
 Func On_DebugTools_Close()
 	GUIDelete($debugToolsHandle)
-EndFunc
+EndFunc ;==> On_DebugTools_Close
 
 ;;--------------------------------------------------------------------------------
 ;;	Func listquest
@@ -90,55 +90,52 @@ EndFunc
 ;; !! This is just a Demo function !!
 ;;--------------------------------------------------------------------------------
 Func Listquest()
-$arealist = FileRead("lib\area.txt")
+	$arealist = FileRead("lib\area.txt")
 
-$QuestMan_A=0x8b8
-$QuestMan_B=0x1c
+	$QuestMan_A=0x8b8
+	$QuestMan_B=0x1c
 
-$_itrQuestManA     = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
-$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
+	$_itrQuestManA = _MemoryRead($_itrObjectManagerA + $QuestMan_A, $d3, 'ptr')
+	$_Curr_Quest_Ofs = _MemoryRead($_itrQuestManA + $QuestMan_B, $d3, 'ptr')
 
-while $_Curr_Quest_Ofs <> 0
+	While $_Curr_Quest_Ofs <> 0
 
-_log("Current Quest Ofs : " & $_Curr_Quest_Ofs)
+		_log("Current Quest Ofs : " & $_Curr_Quest_Ofs)
+		$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
+		_log("Quest ID : " & hex($Quest_ID))
+		$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
 
-	$Quest_ID = _MemoryRead($_Curr_Quest_Ofs , $d3, 'int')
-_log("Quest ID : " & hex($Quest_ID))
-	$Quest_Area_ID = _MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int')
-
-If $Quest_Area_ID > 0 Then
-	Local $pattern = "([\w'-]{5,80})\t\W\t" & $Quest_Area_ID
-	$asResult = StringRegExp($arealist, $pattern, 1)
-
-	 If not @error Then
-	_log("This Quest is in map : "  & $asResult[0])
-Else
-	_log("!!!! That Area Need to be determinated in the .txt file !!!!!!")
-	EndIf
-Endif
-
-_log("Quest Area id : " & $Quest_Area_ID)
-	$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
-_log("Quest State : " & $Quest_State)
-	$Quest_Step = _MemoryRead($_Curr_Quest_Ofs + 0x18 , $d3, 'int')
-_log("Quest Step : " & $Quest_Step)
-
-_log("=================================")
-$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
-Wend
-
+		If $Quest_Area_ID > 0 Then
+			Local $pattern = "([\w'-]{5,80})\t\W\t" & $Quest_Area_ID
+			$asResult = StringRegExp($arealist, $pattern, 1)
+			If not @error Then
+				_log("This Quest is in map : "  & $asResult[0])
+			Else
+			_log("!!!! That Area Need to be determinated in the .txt file !!!!!!")
+			EndIf
+		Endif
+		_log("Quest Area id : " & $Quest_Area_ID)
+		$Quest_State = _MemoryRead($_Curr_Quest_Ofs + 0x14 , $d3, 'int')
+		_log("Quest State : " & $Quest_State)
+		$Quest_Step = _MemoryRead($_Curr_Quest_Ofs + 0x18 , $d3, 'int')
+		_log("Quest Step : " & $Quest_Step)
+		_log("=================================")
+		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
+	Wend
 Endfunc ;==> Listquest
+
 Func GizmoType($Guid)
 	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x180, $d3, 'int')
-EndFunc   ;==>DetectElite
+EndFunc   ;==> GizmoType
 
 Func ActorType($Guid)
 	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x184, $d3, 'int')
-EndFunc   ;==>DetectElite
+EndFunc   ;==> ActorType
 
 Func ActorName($Guid)
 	Return _MemoryRead(GetACDOffsetByACDGUID($Guid) + 0x4, $d3, 'char[128]')
-EndFunc   ;==>DetectElite
+EndFunc   ;==> ActorName
+
 Func GetFullItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, ByRef $offset, $position, $CurrentPosition = False)
  	$FullGuidStruct =  "int;char[128];int;int;int;int;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;int;int;int;int;byte[240];int;byte[88];int;byte[44];int;byte[488]"
 
@@ -150,12 +147,11 @@ Func GetFullItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, By
 ; 5 snoId
 ; 6 7 8 9 10 unused
 ; 11 12 13 world pos
-; 14 world radius 
+; 14 world radius
 ; 15 16 17 collision pos
-; 18 collision radius 
+; 18 collision radius
 ; 19 20 21 bottom pos
-; 22 bottom radius 
-
+; 22 bottom radius
 
 	If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
 		;If @Error > 0 Then Return False
@@ -194,29 +190,29 @@ Func GetFullItemFromObjectsList(ByRef $item, ByRef $iterateObjectsListStruct, By
 	EndIf
 
 	;If $item[9] < 50 Then
-	;	_Log("Item : " & $item[1] & " Pos collision : " & $item[2] & " / " & $item[3] & " / " & $item[4] & " - " &  DllStructGetData($iterateObjectsStruct, 18) )
-	;	_Log("Item : " & $item[1] & " Pos bottom : " & $item[10] & " / " & $item[11] & " / " & $item[12] & " - " &  DllStructGetData($iterateObjectsStruct, 22) )
+	;	_log("Item : " & $item[1] & " Pos collision : " & $item[2] & " / " & $item[3] & " / " & $item[4] & " - " &  DllStructGetData($iterateObjectsStruct, 18) )
+	;	_log("Item : " & $item[1] & " Pos bottom : " & $item[10] & " / " & $item[11] & " / " & $item[12] & " - " &  DllStructGetData($iterateObjectsStruct, 22) )
 	;EndIf
 
 	Return True
-EndFunc
+EndFunc ;==> GetFullItemFromObjectsList
 
 Func GetCurrentPosCollision()
 	Dim $return[4]
 
 	Local $PosPlayerStruct = DllStructCreate("byte[180];float;float;float;float")
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $_Myoffset, 'ptr', DllStructGetPtr($PosPlayerStruct), 'int', DllStructGetSize($PosPlayerStruct), 'int', '')
-	
+
 	$return[0] = DllStructGetData($PosPlayerStruct, 2) ; X Head
 	$return[1] = DllStructGetData($PosPlayerStruct, 3) ; Y Head
 	$return[2] = DllStructGetData($PosPlayerStruct, 4) ; Z Head
 	$return[3] = DllStructGetData($PosPlayerStruct, 5) ; Radius
 	Return $return
-EndFunc  ;==>GetCurrentPos
+EndFunc  ;==>GetCurrentPosCollision
+
 Func IterateObjectListTest()
  	$GuidStruct =  "int;char[128];int;int;int;int;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;float;int;int;int;int;byte[240];int;byte[88];int;byte[44];int;byte[488]"
  	$TableSizeGuidStruct = 13
-
 
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct]
 	startIterateObjectsList($index, $offset, $count)
@@ -230,7 +226,7 @@ Func IterateObjectListTest()
 
 	$CurrentLoc = GetCurrentPos()
 
-	for $i=0 to $count
+	For $i = 0 To $count
 		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
 
 		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
@@ -240,7 +236,7 @@ Func IterateObjectListTest()
 			;_log("Positions : " & DllStructGetData($iterateObjectsStruct, 19) & " / " & DllStructGetData($iterateObjectsStruct, 20) & " / " & DllStructGetData($iterateObjectsStruct, 21) & " / " & DllStructGetData($iterateObjectsStruct, 22) & " / ")
 			_log(Hex(DllStructGetData($iterateObjectsStruct, 3)) & " / " & Hex(DllStructGetData($iterateObjectsStruct, 24) & " / ") & " / " & Hex(DllStructGetData($iterateObjectsStruct, 25)) & " / " & Hex(DllStructGetData($iterateObjectsStruct, 26) & " / "))
 
-			_log("Info : "  & ActorName(DllStructGetData($iterateObjectsStruct, 4)) & " / " & GizmoType(DllStructGetData($iterateObjectsStruct, 4)) & " / " & ActorType(DllStructGetData($iterateObjectsStruct, 4)) )
+			_log("Info : "  & ActorName(DllStructGetData($iterateObjectsStruct, 4)) & " / " & GizmoType(DllStructGetData($iterateObjectsStruct, 4)) & " / " & ActorType(DllStructGetData($iterateObjectsStruct, 4)))
 			;$item[0] = DllStructGetData($iterateObjectsStruct, 4) ; Guid
 			;$item[1] = DllStructGetData($iterateObjectsStruct, 2) ; Name
 			;$item[2] = DllStructGetData($iterateObjectsStruct, 6) ; x Head
@@ -274,7 +270,7 @@ Func IterateObjectListTest()
 
 	;return $item_buff_2D
 
-EndFunc
+EndFunc ;==>IterateObjectListTest
 
 
 Func IterateObjectListV2()
@@ -287,11 +283,11 @@ Func IterateObjectListV2()
 	$iterateObjectsListStruct = ArrayStruct($GuidStruct, $count + 1)
 	DllCall($d3[0], 'int', 'ReadProcessMemory', 'int', $d3[1], 'int', $offset, 'ptr', DllStructGetPtr($iterateObjectsListStruct), 'int', DllStructGetSize($iterateObjectsListStruct), 'int', '')
 
-	dim $item[$TableSizeGuidStruct]
+	Dim $item[$TableSizeGuidStruct]
 
 	$CurrentLoc = GetCurrentPos()
 
-	for $i=0 to $count
+	For $i = 0 To $count
 		$iterateObjectsStruct = GetElement($iterateObjectsListStruct, $i, $GuidStruct)
 
 		If DllStructGetData($iterateObjectsStruct, 4) <> 0xFFFFFFFF Then
@@ -303,7 +299,7 @@ Func IterateObjectListV2()
 			$item[5] = DllStructGetData($iterateObjectsStruct, 18) ; data 1
 			$item[6] = DllStructGetData($iterateObjectsStruct, 16) ; data 2
 			$item[7] = DllStructGetData($iterateObjectsStruct, 14) ; data 3
-			$item[8] = $offset + $i*DllStructGetSize($iterateObjectsStruct)
+			$item[8] = $offset + $i * DllStructGetSize($iterateObjectsStruct)
 
 			$Item[10] = DllStructGetData($iterateObjectsStruct, 10) ; z Foot
 			$Item[11] = DllStructGetData($iterateObjectsStruct, 11) ; z Foot
@@ -325,13 +321,13 @@ Func IterateObjectListV2()
 
 	$iterateObjectsListStruct = ""
 
-	return $item_buff_2D
+	Return $item_buff_2D
 
-EndFunc
+EndFunc ;==>IterateObjectListV2
 
 Func ListBounties()
 	Local $hTimer = TimerInit()
-	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
+	While Not offsetlist() And TimerDiff($hTimer) < 60000
 		Sleep(40)
 	WEnd
 
@@ -355,13 +351,13 @@ Func ListBounties()
 		Local $pattern = $Quest_ID & "#[\d\w]*#(\d)#([\w_]*)#(.*)"
 		$asResult = StringRegExp($snoSequencelist, $pattern, 1)
 		If Not @error Then
-			_Log("Bounty known : " & $Quest_ID & " -> " & $asResult[1] & " in act " & $asResult[0] & " with sequence : " & $asResult[2])
+			_log("Bounty known : " & $Quest_ID & " -> " & $asResult[1] & " in act " & $asResult[0] & " with sequence : " & $asResult[2])
 		Else
 			_log("Bounty not known : " & $Quest_ID & " (" & Hex($Quest_ID) & ")" ,$LOG_LEVEL_ERROR)
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 	Wend
-Endfunc ;==> GetBountySequences
+Endfunc ;==> ListBounties
 
 Func IsBountyKnown($bountyName)
 	$file = FileOpen("sequence/_bounty_sequences.txt", 0)
@@ -370,17 +366,17 @@ Func IsBountyKnown($bountyName)
 		$line = FileReadLine($file)
 		If @error = -1 Then
 			ExitLoop
-		 EndIf
+		EndIf
 		If StringInStr($line, $bountyName, 2) Then
 			Return True
 		EndIf
 	WEnd
 	FileClose($file)
 	Return $Result
-EndFunc
+EndFunc ;==> IsBountyKnown
 
 
-Func List_Bounties($debug = False) 
+Func List_Bounties($debug = False)
 
 	If WinExists("[CLASS:D3 Main Window Class]") Then
 		WinActivate("[CLASS:D3 Main Window Class]")
@@ -407,7 +403,7 @@ Func List_Bounties($debug = False)
 				$bounty = $temp[0]
 				$bounty = StringReplace($bounty, "Bounty: ", "")
 				$bounty = StringReplace($bounty, "Prime : ", "") ; Attention le premier espace n'est pas un espace mais 0xC2
-				$bounty = $Table_BountyAct[$i] & "#" & $bounty 
+				$bounty = $Table_BountyAct[$i] & "#" & $bounty
 				If IsBountyKnown($bounty) = False Then
 					ConsoleWrite($bounty & "#None" & @CRLF)
 					If $debug Then
@@ -420,7 +416,7 @@ Func List_Bounties($debug = False)
 	_log("End ")
 	Send("M")
 	Sleep(150)
-EndFunc
+EndFunc ;==> List_Bounties
 
 Func ListUi($Visible = 0 , $debug = False)
 	$UiPtr1 = _memoryread($ofs_objectmanager, $d3, "ptr")
@@ -448,7 +444,7 @@ Func ListUi($Visible = 0 , $debug = False)
 		WEnd
 		$BuckitOfs = $BuckitOfs + 0x4
 	Next
-EndFunc
+EndFunc ;==> ListUi
 
 Func MarkPos()
 	$currentloc = GetCurrentPos()
@@ -637,7 +633,7 @@ MouseMove($Point2[0] + $Point2[2] / 2, $Point2[1] + $Point2[3] / 2, 1)
 
 ;list_bounties()
 
-;ShowDebugTools() 
+;ShowDebugTools()
 ;$items = FilterBackpack()
 ;_ArrayDisplay($items)
 ;consoleLog("Disconnect : " & _checkDisconnect())
@@ -719,6 +715,7 @@ Func IterateObjectList($_displayInfo = 0)
 	;_log("Mesure iterOBJ :" & $difmesureobj) ;FOR DEBUGGING;;;;;;;;;;;;
 	Return $OBJ
 EndFunc   ;==>IterateObjectList
+
 ;;================================================================================
 ; Function:			IterateLocalActor
 ; Note(s):			Iterates through all the local actors.
