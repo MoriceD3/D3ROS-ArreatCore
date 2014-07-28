@@ -61,7 +61,7 @@ Func DebugMarkPos()
 	$currentloc = GetCurrentPos()
 	$markpos = $currentloc[0] & ", " & $currentloc[1] & ", " & $currentloc[2] & ", 1, 25"
 	_logDebugTools($markpos)
-	_log($markpos , $LOG_LEVEL_DEBUG)
+	ConsoleWrite($markpos & @CRLF)
 EndFunc ;==> DebugMarkPos
 
 Func DebugMonsterListing()
