@@ -6,10 +6,6 @@
 
 #ce ----------------------------------------------------------------------------
 
-;--------------------------------------------------------------
-; Choix de l'acte
-;-------------------------------------------------------------
-
 Func SelectGameType($SelectGameType, $auto)
 
 	;Automatisation des sequences sur enchainement de run
@@ -60,13 +56,12 @@ Func SelectGameType($SelectGameType, $auto)
 	   While _inmenu() And Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton", 270)
 			If Not _checkdisconnect() Then
 			   _log("Wait Other Follower")
-			   sleep(1000)
+			   Sleep(1000)
 			Else
 			   Return
 			EndIf
 	   WEnd
     EndIf
-
 
 	CheckWindowsClosed()
 	;Selection du Heros en auto
@@ -829,9 +824,9 @@ Func ClickUIMode($mode, $x, $y, $name, $bucket = -1)
 
 	Dim $Point = GetPositionUI($result)
 
-	While $Point[0] = 0 AND $Point[1] = 0
+	While $Point[0] = 0 And $Point[1] = 0
 		$Point = GetPositionUI($result)
-		sleep(250)
+		Sleep(250)
 	WEnd
 
 	Dim $Point2 = GetUIRectangle($Point[0] + $x, $Point[1] + $y, $Point[2] + $x, $Point[3] + $y)
@@ -875,7 +870,7 @@ EndFunc ; ==> CheckCloseWindows
 
 Func IsQuestChangeUiOpened()
     Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList.Cancel", 1, 873)
-EndFunc   ;==>IsQuestChangeUiOpened OK
+EndFunc   ;==>IsQuestChangeUiOpened
 
 Func IsGameSettingsOpened()
     Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.StoryModeButton", 1, 199)

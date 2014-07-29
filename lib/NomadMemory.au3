@@ -44,31 +44,31 @@
 ;==================================================================================
 Func _MemoryOpen($iv_Pid, $iv_DesiredAccess = 0x1F0FFF, $iv_InheritHandle = 1)
 
-        If Not ProcessExists($iv_Pid) Then
-                SetError(1)
-        Return 0
-        EndIf
+	If Not ProcessExists($iv_Pid) Then
+		SetError(1)
+		Return 0
+	EndIf
 
-        Local $ah_Handle[2] = [DllOpen('kernel32.dll')]
+	Local $ah_Handle[2] = [DllOpen('kernel32.dll')]
 
-        If @Error Then
-        SetError(2)
-        Return 0
-    EndIf
+	If @Error Then
+		SetError(2)
+		Return 0
+	EndIf
 
-        Local $av_OpenProcess = DllCall($ah_Handle[0], 'int', 'OpenProcess', 'int', $iv_DesiredAccess, 'int', $iv_InheritHandle, 'int', $iv_Pid)
+	Local $av_OpenProcess = DllCall($ah_Handle[0], 'int', 'OpenProcess', 'int', $iv_DesiredAccess, 'int', $iv_InheritHandle, 'int', $iv_Pid)
 
-        If @Error Then
-        DllClose($ah_Handle[0])
-        SetError(3)
-        Return 0
-    EndIf
+	If @Error Then
+		DllClose($ah_Handle[0])
+		SetError(3)
+		Return 0
+	EndIf
 
-        $ah_Handle[1] = $av_OpenProcess[0]
+	$ah_Handle[1] = $av_OpenProcess[0]
 
-        Return $ah_Handle
+	Return $ah_Handle
 
-EndFunc
+EndFunc ;==> _MemoryOpen
 
 ;==================================================================================
 ; Function:                     _MemoryRead($iv_Address, $ah_Handle[, $sv_Type])
@@ -100,30 +100,29 @@ EndFunc
 ;==================================================================================
 Func _MemoryRead($iv_Address, $ah_Handle, $sv_Type = 'dword')
 
-        If Not IsArray($ah_Handle) Then
-                SetError(1)
-        Return 0
-        EndIf
+	If Not IsArray($ah_Handle) Then
+		SetError(1)
+		Return 0
+	EndIf
 
-        Local $v_Buffer = DllStructCreate($sv_Type)
+	Local $v_Buffer = DllStructCreate($sv_Type)
 
-        If @Error Then
-                SetError(@Error + 1)
-                Return 0
-        EndIf
+	If @Error Then
+		SetError(@Error + 1)
+		Return 0
+	EndIf
 
-        DllCall($ah_Handle[0], 'int', 'ReadProcessMemory', 'int', $ah_Handle[1], 'int', $iv_Address, 'ptr', DllStructGetPtr($v_Buffer), 'int', DllStructGetSize($v_Buffer), 'int', '')
+	DllCall($ah_Handle[0], 'int', 'ReadProcessMemory', 'int', $ah_Handle[1], 'int', $iv_Address, 'ptr', DllStructGetPtr($v_Buffer), 'int', DllStructGetSize($v_Buffer), 'int', '')
 
-        If Not @Error Then
-                Local $v_Value = DllStructGetData($v_Buffer, 1)
-                Return $v_Value
-        Else
-                SetError(6)
-        Return 0
-        EndIf
+	If Not @Error Then
+		Local $v_Value = DllStructGetData($v_Buffer, 1)
+		Return $v_Value
+	Else
+		SetError(6)
+		Return 0
+	EndIf
 
-EndFunc
-
+EndFunc ;==> _MemoryRead
 
 ;==================================================================================
 ; Function:                     _MemoryClose($ah_Handle)
@@ -140,22 +139,23 @@ EndFunc
 ;==================================================================================
 Func _MemoryClose($ah_Handle)
 
-        If Not IsArray($ah_Handle) Then
-                SetError(1)
-        Return 0
-        EndIf
+	If Not IsArray($ah_Handle) Then
+		SetError(1)
+		Return 0
+	EndIf
 
-        DllCall($ah_Handle[0], 'int', 'CloseHandle', 'int', $ah_Handle[1])
-        If Not @Error Then
-                DllClose($ah_Handle[0])
-                Return 1
-        Else
-                DllClose($ah_Handle[0])
-                SetError(2)
-        Return 0
-        EndIf
+	DllCall($ah_Handle[0], 'int', 'CloseHandle', 'int', $ah_Handle[1])
 
-EndFunc
+	If Not @Error Then
+		DllClose($ah_Handle[0])
+		Return 1
+	Else
+		DllClose($ah_Handle[0])
+		SetError(2)
+		Return 0
+	EndIf
+
+EndFunc ;==> _MemoryClose
 
 ;==================================================================================
 ; Function:                     SetPrivilege( $privilege, $bEnable )
@@ -166,7 +166,6 @@ EndFunc
 ; Notes(s):
 ; http://www.autoitscript.com/forum/index.php?s=&showtopic=31248&view=findpost&p=223999
 ;==================================================================================
-
 Func SetPrivilege( $privilege, $bEnable )
 
     Const $TOKEN_ADJUST_PRIVILEGES = 0x0020
@@ -218,6 +217,6 @@ Func SetPrivilege( $privilege, $bEnable )
     $SP_auxret = DLLCall("kernel32.dll","int","CloseHandle","hwnd",$hToken)
     If Not $ret[0] And Not $SP_auxret[0] Then Return 0
     return $ret[0]
-EndFunc   ;==>SetPrivilege
+EndFunc  ;==> SetPrivilege
 
 #endregion

@@ -15,7 +15,7 @@ Func Initiate_GDIpicture($width, $height)
 
 	$hImage = _GDIPlus_BitmapCreateFromScan0($width+1, $height+1)
 	$hGraphic = _GDIPlus_ImageGetGraphicsContext($hImage)
-EndFunc
+EndFunc ;==> Initiate_GDIpicture
 
 Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 
@@ -25,7 +25,7 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 			_GDIPlus_GraphicsDrawRect($hGraphic, $x, $y, $sizex, $sizey, $color_rec)
 			_GDIPlus_PenDispose($color_rec)
 		EndIf
-		if $num <> 0  AND StringLower($DrawArrow) = "true" Then
+		If $num <> 0  And StringLower($DrawArrow) = "true" Then
 			$temp = StringSplit($count,"|",2)
 			If $temp[0] = 1 Then
 				$color_rec = _GDIPlus_PenCreate($ArrowColor, 1)
@@ -43,7 +43,6 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 					_GDIPlus_GraphicsDrawString($hGraphic, $Temp[1], $x, $y)
 				EndIf
 			EndIf
-
 		EndIF
 		_log("dessine une pos")
 	ElseIf $type = 11 Then
@@ -57,7 +56,7 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 	ElseIf $type = 12 Then
 		$color_rec = _GDIPlus_BrushCreateSolid(0xFF237C9E)
 		_GDIPlus_GraphicsFillEllipse ($hGraphic, $x - $sizex / 2, $y - $sizey / 2, $sizex, $sizey, $color_rec)
-		
+
 		_GDIPlus_BrushDispose($color_rec)
 		$temp = StringSplit($count,"|",2)
 		If $temp[1] = -1 Then
@@ -94,14 +93,13 @@ Func Draw_Nav($x, $y, $type, $sizex, $sizey, $num=0, $count="L")
 		_GDIPlus_PenDispose($color_rec)
 	EndIf
 
-
-EndFunc
+EndFunc ;==> Draw_Nav
 
 Func Save_GDIpicture()
 	$area = GetLevelAreaId()
 	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $PictureScene & ".png")
 
-;_arraydisplay($Table_mtp)
+	;_arraydisplay($Table_mtp)
 	If $count_mtp > 0 Then
 		for $i=0 to Ubound($Table_mtp) - 1
 			Draw_Nav($Table_mtp[$i][1] - $buff_MeshMinY, $Table_mtp[$i][0] - $buff_MeshMinX, 2, 2, 2, $i, $Table_mtp[$i][3] & "|-1")
@@ -117,7 +115,7 @@ Func Save_GDIpicture()
 	#ce
 
 	_GDIPlus_ImageSaveToFile($hImage, @ScriptDir & "\sequencer\" & $area & $Picturemtp & ".png")
-EndFunc
+EndFunc ;==> Save_GDIpicture
 
 
 ;Func _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight, $iStride = 0, $iPixelFormat = 0x0026200A, $pScan0 = 0)

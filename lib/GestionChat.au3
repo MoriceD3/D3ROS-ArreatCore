@@ -5,7 +5,7 @@
 #ce ----------------------------------------------------------------------------
 
 Func WriteInChat($str)
-	_Log("--------------------> TCHAT : " & $str & @CRLF)
+	_log("-----> TCHAT : " & $str & @CRLF)
 	Send("{ENTER}") ;validation de la fenêtre de tchat sur le groupe
 	Send('' & $str & '');Ecriture du message
 	Send("{ENTER}") ;Envoie du message et sort de la fenêtre du tchat
