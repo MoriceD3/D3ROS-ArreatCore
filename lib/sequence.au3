@@ -25,13 +25,13 @@ Func GetActiveQuest()
 			; Check AreaId to trash started unfinished quest
 			; Will need refresh until we actually get to the area since bounty may fit under multiple ones
 			If (_MemoryRead($_Curr_Quest_Ofs + 0x8 , $d3, 'int') == GetLevelAreaId()) Then
-				_Log("Active questID : " & $Quest_ID)
+				_log("Active questID : " & $Quest_ID)
 				$ActiveQuest = $Quest_ID
 			EndIf
 		EndIf
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 	Wend
-EndFunc
+EndFunc ;==> GetActiveQuest
 
 Func IsQuestFinished($QuestId)
 	If $QuestId = -1 Then
@@ -56,7 +56,7 @@ Func IsQuestFinished($QuestId)
 		$_Curr_Quest_Ofs = _MemoryRead( $_Curr_Quest_Ofs + 0x168, $d3, 'ptr')
 	Wend
 	Return False
-EndFunc
+EndFunc ;==> IsQuestFinished
 
 Func GetBountySequences($Table_BountyAct)
 	If Not IsArray($Table_BountyAct) Then
@@ -67,7 +67,7 @@ Func GetBountySequences($Table_BountyAct)
 	EndIf
 
 	Local $hTimer = TimerInit()
-	While Not offsetlist() And TimerDiff($hTimer) < 60000 ; 60secondes
+	While Not offsetlist() And TimerDiff($hTimer) < 60000
 		Sleep(40)
 	WEnd
 
@@ -194,7 +194,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			GetActiveQuest()
 		ElseIf $arr_sequence[$index][1] = "_townportal" Then
 			_log("Start : TownPortal", $LOG_LEVEL_DEBUG)
-			if Not _TownPortalnew() Then
+			If Not _TownPortalnew() Then
 				$GameFailed = 2
 				Return False
 			EndIf
@@ -242,10 +242,10 @@ Func revive(ByRef $path)
 
 		If $ActivateChat Then WriteMe($WRITE_ME_DEATH) ; TChat
 
-		If $nb_die_t <= $rdn_die_t AND NOT _checkRepair() Then
+		If $nb_die_t <= $rdn_die_t And Not _checkRepair() Then
 			Sleep(Random(5000, 6000))
-			if NOT _checkRepair() Then
-				if fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
+			If Not _checkRepair() Then
+				If fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
 					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
 					_log("Res At Corp and buffinit", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(8000, 8500))
@@ -263,7 +263,7 @@ Func revive(ByRef $path)
 			_log("You have reached the max number of revive : " & $rdn_die_t & " Or your stuff is destroyed", $LOG_LEVEL_WARNING)
 			Sleep(Random(5000, 6000))
 			ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_in_town", 496)
-			sleep(4000)
+			Sleep(4000)
 			Return 3
 		EndIf
 	EndIf
@@ -515,7 +515,7 @@ Func LookForObjects()
 	$SearchCount = UBound($Table_SearchObject) - 1
 	For $i = 0 To $count
 		If GetItemFromObjectsList($item, $iterateObjectsListStruct, $offset, $i, $CurrentLoc) Then
-			For $z = 0 to $SearchCount
+			For $z = 0 To $SearchCount
 				If $item[9] > $Table_SearchObject[$z][1] Then
 					ContinueLoop
 				EndIf
@@ -536,8 +536,8 @@ Func sequence($sequence_list)
 	Local $load_file = ""
 	Local $end_game = False
 
-	;	if( StringInStr($File_Sequence, "|", 2) ) Then
-	;		ReDim $filetoarray[UBound( StringSplit($File_Sequence, "|", 2) )]
+	;	If (StringInStr($File_Sequence, "|", 2)) Then
+	;		ReDim $filetoarray[UBound(StringSplit($File_Sequence, "|", 2))]
 	;		$filetoarray = StringSplit($File_Sequence, "|", 2)
 	;	Else
 	;		$filetoarray[1] = $File_Sequence
@@ -627,7 +627,7 @@ Func sequence($sequence_list)
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
-					   _Log("Enclenchement auto du buffinit() takewp", $LOG_LEVEL_DEBUG)
+					   _log("Enclenchement auto du buffinit() takewp", $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = StringReplace($line, "takewp=", "", 0, 2)
 					$table_wp = $line
@@ -659,7 +659,7 @@ Func sequence($sequence_list)
 					If $autobuff Then ; Buff avant de prendre le WP
 					   Sleep(500)
 					   buffinit()
-					   _Log("Enclenchement auto du buffinit() takewpadv", $LOG_LEVEL_DEBUG)
+					   _log("Enclenchement auto du buffinit() takewpadv", $LOG_LEVEL_DEBUG)
 					EndIf
 					$line = StringReplace($line, "takewpadv=", "", 0, 2)
 					$table_wp = $line
@@ -1172,7 +1172,7 @@ Func InteractWithDoor($NameDoor, $dist = 30)
 	Local $index, $offset, $count, $item[$TableSizeGuidStruct], $foundobject = 0
 	Local $maxtry = 0
 	startIterateObjectsList($index, $offset, $count)
-	If _playerdead() = False Then
+	If Not _playerdead() Then
 		While iterateObjectsList($index, $offset, $count, $item)
 			If StringInStr($item[1], $NameDoor, 2) And $item[9] < $dist Then
 				_log("InteractWithDoor : " & $item[1] & " distance -> " & $item[9], $LOG_LEVEL_VERBOSE)

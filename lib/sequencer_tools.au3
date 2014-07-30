@@ -43,10 +43,14 @@ Global $recordObjectButton = 0
 Global $recordImportantButton = 0
 Global $DrawSceneButton = 0
 
+Global $hImage
+Global $hGraphic
+Global $attackRange = 50
+
 Func ShowSequencerTools()
 	$SequencerToolsHandle = GUICreate("Sequencer tools", 300, 620, Default, Default, $WS_BORDER, $WS_EX_TOPMOST)
 	If $SequencerToolsHandle = 0 Then
-		_Log("Problem starting debug tools", $LOG_LEVEL_ERROR)
+		_log("Problem starting debug tools", $LOG_LEVEL_ERROR)
 		Return
 	EndIf
 	GUISetOnEvent($GUI_EVENT_CLOSE, "On_SequencerTools_Close")
@@ -79,12 +83,12 @@ Func ShowSequencerTools()
     GUICtrlSetState($DrawSceneButton, $GUI_DISABLE)
 
 	GUISetState()
-EndFunc
+EndFunc   ;==>ShowSequencerTools
 
 Func On_SequencerTools_Close()
 	GUIDelete($SequencerToolsHandle)
 	Terminate()
-EndFunc
+EndFunc   ;==>On_SequencerTools_Close
 
 Func tri_flag()
 	Dim $table_Walkable[1][8]
@@ -93,7 +97,7 @@ Func tri_flag()
 	Local $count_Unwalkable = 0
 
 	For $i = 0 To Ubound($NavCell_Table_Totale) - 1
-			if $NavCell_Table_Totale[$i][6] = 1 Then ;walkable
+			If $NavCell_Table_Totale[$i][6] = 1 Then ;walkable
 				$count_walkable += 1
 				Redim $table_Walkable[$Count_Walkable][10]
 				$table_Walkable[$count_walkable-1][0] = $NavCell_Table_Totale[$i][0]
@@ -118,7 +122,7 @@ Func tri_flag()
 			EndIf
 		Next
 
-	For $i = 0 to Ubound($table_Walkable) - 1
+	For $i = 0 To Ubound($table_Walkable) - 1
 		$NavCell_Table_Totale[$i][0] = $table_Walkable[$i][0]
 		$NavCell_Table_Totale[$i][1] = $table_Walkable[$i][1]
 		$NavCell_Table_Totale[$i][2] = $table_Walkable[$i][2]
@@ -141,11 +145,7 @@ Func tri_flag()
 	Next
 
 	Return $NavCell_Table_Totale
-EndFunc
-
-Global $hImage
-Global $hGraphic
-Global $attackRange = 50
+EndFunc   ;==>tri_flag
 
 Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 
@@ -159,7 +159,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 
 	Local $count_position = 0
 
-	For $z = 1 to $filescount - 1
+	For $z = 1 To $filescount - 1
 		_log("Loading file : " & $datafiles[$z])
 		$temp = IniRead($datafiles[$z], "SceneInfo", "AreaId", -1)
 		If $area <> -1 And $area <> $temp Then
@@ -189,7 +189,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 
 	Initiate_GDIpicture($Buff_MeshMaxY - $Buff_MeshMinY, $Buff_MeshMaxX - $Buff_MeshMinX)
 
-	For $z = 1 to $filescount - 1
+	For $z = 1 To $filescount - 1
 
 		Local $count_scene = 0
 		Local $count_navcell = 0
@@ -294,12 +294,12 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 			$line = FileReadLine($file)
 			If @error = -1 Then
 				ExitLoop
-			 EndIf
-			 $numLine += 1
-			 If StringInStr($line , "attackrange=", 2) Then
-			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
-			 ElseIf StringInStr($line , "sleep=", 2) Then
-			 	If $count_mtp > 0 Then
+			EndIf
+			$numLine += 1
+			If StringInStr($line , "attackrange=", 2) Then
+				$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			ElseIf StringInStr($line , "sleep=", 2) Then
+				If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
 					$table_event[$count_event - 1][0] = $table_mtp[$count_mtp - 1][0]
@@ -309,7 +309,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = -1
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
+			ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -320,7 +320,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
+			ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -331,7 +331,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithActor=", 2) Then
+			ElseIf StringInStr($line , "InteractWithActor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -342,9 +342,9 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 Else
-				 $temp = StringSplit($line, ",", 2)
-				 If UBound($temp) = 5 Then
+			Else
+				$temp = StringSplit($line, ",", 2)
+				If UBound($temp) = 5 Then
 					$count_mtp += 1
 					Redim $table_mtp[$count_mtp][6]
 					$table_mtp[$count_mtp - 1][0] = $temp[0]
@@ -353,8 +353,8 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 					$table_mtp[$count_mtp - 1][3] = $temp[3]
 					$table_mtp[$count_mtp - 1][4] = $temp[4]
 					$table_mtp[$count_mtp - 1][5] = $numLine
-				 EndIf
-			 EndIf
+				EndIf
+			EndIf
 		WEnd
 		FileClose($file)
 
@@ -371,13 +371,13 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 	EndIf
 
 	If $count_position > 0 Then
-		For $i = 0 to $count_position - 1
+		For $i = 0 To $count_position - 1
 			Draw_Nav($Table_position[$i][1] - $buff_MeshMinY, $Table_position[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, $Table_position[$i][3])
 		Next
 	EndIF
 
 	If $count_event > 0 And $DrawEvents Then
-		For $i = 0 to $count_event - 1
+		For $i = 0 To $count_event - 1
 			Draw_Nav($table_event[$i][1] - $buff_MeshMinY, $table_event[$i][0] - $buff_MeshMinX, 12, 8, 8, $i, $table_event[$i][3] & "|" & $table_event[$i][5])
 		Next
 	EndIF
@@ -392,7 +392,7 @@ Func Draw_MultipleMapData($datafiles, $sequenceFile = False)
 
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafiles[1], ".ini", "_consolidated_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
 
-EndFunc
+EndFunc   ;==>Draw_MultipleMapData
 
 Func Draw_MapData($datafile, $sequenceFile = False)
 	$area = IniRead($datafile, "SceneInfo", "AreaId", -1)
@@ -404,7 +404,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 	$Buff_MeshMaxY = IniRead($datafile, "SceneInfo", "MeshMaxY", -1)
 	$positionCount = IniRead($datafile, "SceneInfo", "PositionCount", 0)
 
-	If $area = -1 Or $meshSize = -1 or $navSize = -1 Then
+	If $area = -1 Or $meshSize = -1 Or $navSize = -1 Then
 		_log("Invalid mapData file ! ", $LOG_LEVEL_ERROR)
 	EndIf
 
@@ -503,11 +503,11 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 			$line = FileReadLine($file)
 			If @error = -1 Then
 				ExitLoop
-			 EndIf
-			 $numLine += 1
-			 If StringInStr($line , "attackrange=", 2) Then
-			 	$attackRange = Trim(StringReplace($line, "attackrange=", ""))
-			 ElseIf StringInStr($line , "sleep=", 2) Then
+			EndIf
+			$numLine += 1
+			If StringInStr($line , "attackrange=", 2) Then
+				$attackRange = Trim(StringReplace($line, "attackrange=", ""))
+			ElseIf StringInStr($line , "sleep=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -518,7 +518,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = -1
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
+			ElseIf StringInStr($line , "InteractWithDoor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -529,7 +529,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
+			ElseIf StringInStr($line , "InteractWithPortal=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -540,7 +540,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 ElseIf StringInStr($line , "InteractWithActor=", 2) Then
+			ElseIf StringInStr($line , "InteractWithActor=", 2) Then
 			 	If $count_mtp > 0 Then
 					$count_event += 1
 					Redim $table_event[$count_event][6]
@@ -551,9 +551,9 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_event[$count_event - 1][4] = ""
 					$table_event[$count_event - 1][5] = 0
 			 	EndIf
-			 Else
-				 $temp = StringSplit($line, ",", 2)
-				 If UBound($temp) = 5 Then
+			Else
+				$temp = StringSplit($line, ",", 2)
+				If UBound($temp) = 5 Then
 					$count_mtp += 1
 					Redim $table_mtp[$count_mtp][6]
 					$table_mtp[$count_mtp - 1][0] = $temp[0]
@@ -562,8 +562,8 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 					$table_mtp[$count_mtp - 1][3] = $temp[3]
 					$table_mtp[$count_mtp - 1][4] = $temp[4]
 					$table_mtp[$count_mtp - 1][5] = $numLine
-				 EndIf
-			 EndIf
+				EndIf
+			EndIf
 		WEnd
 		FileClose($file)
 
@@ -580,13 +580,13 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 	EndIf
 
 	If $count_position > 0 Then
-		For $i = 0 to $count_position - 1
+		For $i = 0 To $count_position - 1
 			Draw_Nav($Table_position[$i][1] - $buff_MeshMinY, $Table_position[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, $Table_position[$i][3])
 		Next
 	EndIF
 
 	If $count_event > 0 And $DrawEvents Then
-		For $i = 0 to $count_event - 1
+		For $i = 0 To $count_event - 1
 			Draw_Nav($table_event[$i][1] - $buff_MeshMinY, $table_event[$i][0] - $buff_MeshMinX, 12, 8, 8, $i, $table_event[$i][3] & "|" & $table_event[$i][5])
 		Next
 	EndIF
@@ -601,7 +601,7 @@ Func Draw_MapData($datafile, $sequenceFile = False)
 
 	_GDIPlus_ImageSaveToFile($hImage, StringReplace($datafile, ".ini", "_" & @MON &  @MDAY & @HOUR & @MIN & @SEC & "_withmesh.png"))
 
-EndFunc
+EndFunc   ;==>Draw_MapData
 
 Func Draw_Scene()
 	$area = GetLevelAreaId()
@@ -622,7 +622,7 @@ Func Draw_Scene()
 	EndIf
 
 	If $count_Important > 0 Then
-		For $i = 0 to Ubound($Table_Important) - 1
+		For $i = 0 To Ubound($Table_Important) - 1
 			IniWrite($iniFile, "Positions", "Position" & $i, $Table_Important[$i][3] & "," & $Table_Important[$i][0] & "," & $Table_Important[$i][1] & "," & $Table_Important[$i][2])
 		Next
 	EndIF
@@ -680,7 +680,7 @@ Func Draw_Scene()
 	EndIf
 	#ce
 	If $count_Important > 0 Then
-		For $i = 0 to Ubound($Table_Important) - 1
+		For $i = 0 To Ubound($Table_Important) - 1
 			Draw_Nav($Table_Important[$i][1] - $buff_MeshMinY, $Table_Important[$i][0] - $buff_MeshMinX, 11, 8, 8, $i, "P" & $i)
 		Next
 	EndIF
@@ -690,7 +690,7 @@ Func Draw_Scene()
 	_log("Map succefully drawn and saved")
 	WinSetOnTop("[CLASS:D3 Main Window Class]", "", 0)
 	Exit 0
-EndFunc
+EndFunc   ;==>Draw_Scene
 
 Func Sequencer_IterateObj()
 	If $recordObjectButton <> 0 Then
@@ -717,26 +717,26 @@ Func Sequencer_IterateObj()
 		While iterateObjectsList($index, $offset, $count, $item)
 			If StringRegExp($item[1], $rules_name) = 1 Then ;patern declaration ilvl
 				$name_item = StringRegExp($item[1], $rules_name, 2)
-				$exist = false
+				$exist = False
 				For $i = 0 To Ubound($Iterate_Objet) - 1
 					If StringInStr($Iterate_Objet[$i], $name_item[1], 2) Then
 					;if $Iterate_Objet[$i] = $name_item[1] Then
-						$exist = true
+						$exist = True
 						ExitLoop
 					EndIf
 				Next
 
 				If $exist = False And $name_item[1] <> "" Then
 					$count_table = Ubound($Iterate_Objet)
-					ReDim $Iterate_Objet[$count_table+1]
-					$Iterate_Objet[$count_table-1] = $name_item[1]
+					ReDim $Iterate_Objet[$count_table + 1]
+					$Iterate_Objet[$count_table - 1] = $name_item[1]
 					FileWriteLine($file, $name_item[1])
 				EndIf
 			EndIf
 		WEnd
 		FileClose($file)
 	WEnd
-EndFunc
+EndFunc   ;==>Sequencer_IterateObj
 
 Func SequencerMarkImportant()
 	$currentloc = GetCurrentPos()
@@ -903,7 +903,7 @@ Func Read_Scene()
 					$Buff_MeshMaxY = $Scene_table_totale[$nb_totale_scene_record][6]
 				EndIf
 				$nb_totale_scene_record += 1
-				$New_scene_record = true
+				$New_scene_record = True
 			EndIf
 		Next
 		;################################################################################################
@@ -915,8 +915,8 @@ Func Read_Scene()
 			Dim $list_sno_scene = IndexSNO($SNOscene, 0)
 			;############################## ITERATION DU SNO ###########################################
 			$Size = Ubound($list_sno_scene) - 1
-			For $i = 1 to $Size
-				$correlation = false
+			For $i = 1 To $Size
+				$correlation = False
 				$current_obj_scene = 0
 
 				For $x = 0 To Ubound($Scene_table_totale) - 1
@@ -941,7 +941,7 @@ Func Read_Scene()
 					If $CountNavCell <> 0 Then
 						If $first_iteration_NavCell Then
 							$depart_count = Ubound($NavCell_Table_Totale) - 1
-							$first_iteration_NavCell = false
+							$first_iteration_NavCell = False
 						Else
 							$depart_count = Ubound($NavCell_Table_Totale)
 						EndIf
@@ -985,4 +985,4 @@ Func Read_Scene()
 		EndIf
 		Sleep(50)
 	WEnd
-EndFunc
+EndFunc   ;==>Read_Scene
