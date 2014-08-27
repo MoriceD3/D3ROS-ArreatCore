@@ -408,7 +408,7 @@ Global $Monk_skill_Table[27][8] = [ _
 [$Monk_ExplodingPalm,                       "Monk_ExplodingPalm",                     2000, "attack&elite", 40, "spirit", "", 10], _
 [$Monk_FistsofThunder,                      "Monk_FistsofThunder",                       0,     "physical",  0,       "", "", ""], _
 [$X1_Monk_InnerSanctuary,                   "Monk_InnerSanctuary",                   20000,         "life",  0, "spirit", 40, ""], _
-[$Monk_LashingTailKick,                     "Monk_LashingTailKick",                   2000,       "attack", 30, "spirit", "", ""], _
+[$Monk_LashingTailKick,                     "Monk_LashingTailKick",                   2000,       "attack", 50, "spirit", "", ""], _
 [$X1_Monk_MantraOfConviction_v2,            "Monk_MantraOfConviction",                6000,   "buff&elite", 50, "spirit", "", ""], _
 [$X1_Monk_MantraOfEvasion_v2,               "Monk_MantraOfEvasion",                   6000,         "buff", 50, "spirit", "", ""], _
 [$X1_Monk_MantraOfHealing_v2,               "Monk_MantraOfHealing",                   6000,         "buff", 50, "spirit", "", ""], _
@@ -422,7 +422,7 @@ Global $Monk_skill_Table[27][8] = [ _
 [$Monk_Serenity,                            "Monk_Serenity",                         20000,         "life",  0, "spirit", 35, ""], _
 [$Monk_SevenSidedStrike,                    "Monk_SevenSidedStrike",                 30000, "attack&elite", 50, "spirit", "", 20], _
 [$Monk_SweepingWind,                        "Monk_SweepingWind",                      6000,  "buff&attack", 75, "spirit", "", 30], _
-[$Monk_TempestRush,                         "Monk_TempestRush",                       2000,         "move", 25, "spirit", "", ""], _
+[$Monk_TempestRush,                         "Monk_TempestRush",                       2000,         "move", 30, "spirit", "", ""], _
 [$Monk_WaveOfLight,                         "Monk_WaveOfLight",                       2000,       "attack", 75, "spirit", "", 15], _
 [$Monk_WayOfTheHundredFists,                "WayOfTheHundredFists",                      0,     "physical",  0,       "", "", ""], _
 [$X1_Monk_Epiphany,                         "Epiphany",                              60000, "attack&elite",  0, "spirit", "", ""] _
@@ -464,7 +464,7 @@ Global $Crusader_skill_Table[24][8] = [ _
 [$X1_Crusader_ShieldGlare,      "Crusader_ShieldGlare",     12000,       "attack",  0, "wrath",  "", 20], _
 [$X1_Crusader_SweepAttack,      "Crusader_SweepAttack",         0,       "attack", 20, "wrath",  "", 15], _
 [$X1_Crusader_IronSkin,         "Crusader_IronSkin",        30000, "attack&elite",  0, "wrath",  "", ""], _
-[$X1_Crusader_Provoke,          "Crusader_Provoke",         20000,       "attack",  0, "wrath",  "", 10], _
+[$X1_Crusader_Provoke,          "Crusader_Provoke",         20000,       "attack", 30, "wrath",  "", 10], _
 [$X1_Crusader_Smite,            "Crusader_Smite",               0,     "physical",  0,      "",  "", 15], _
 [$X1_Crusader_BlessedHammer,    "Crusader_BlessedHammer",       0,       "attack", 10, "wrath",  "", 30], _
 [$X1_Crusader_SteedCharge,      "Crusader_SteedCharge",     16000,         "move",  0, "wrath",  "", ""], _
@@ -571,7 +571,7 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 [$Barbarian_Bash,               "Barbarian_Bash",                    0,      "physical",  0,     "", "", ""], _
 [$Barbarian_Cleave,             "Barbarian_Cleave",                  0,      "physical",  0,     "", "", ""], _
 [$Barbarian_HammerOfTheAncients,"Barbarian_HammerOfTheAncients",     0,        "attack", 20, "fury", "", ""], _
-[$Barbarian_GroundStomp,        "Barbarian_GroundStomp"  ,       12000,      "physical",  0,     "", "", ""], _
+[$Barbarian_GroundStomp,        "Barbarian_GroundStomp"  ,       12000,      "physical", 15,     "", "", ""], _
 [$Barbarian_Rend,               "Barbarian_Rend",                 4000,        "attack", 20, "fury", "", 12], _
 [$Barbarian_Leap,               "Barbarian_Leap",                10000,      "physical",  0,     "", "", ""], _
 [$X1_Barbarian_AncientSpear,    "Barbarian_AncientSpear"  ,          0,        "attack", 25, "fury", "", 50], _
@@ -580,8 +580,8 @@ Global $Barbarian_Skill_Table[23][8] = [ _
 [$Barbarian_Revenge,            "Barbarian_Revenge",                 0,   "life|attack",  0, "fury", 80, 15], _
 [$X1_Barbarian_WeaponThrow,     "Barbarian_WeaponThrow",             0,      "physical",  0,     "", "", ""], _
 [$Barbarian_Sprint,             "Barbarian_Sprint",               3000,          "move", 20, "fury", "", ""], _
-[$Barbarian_ThreateningShout,   "Barbarian_ThreateningShout",    15000,        "attack",  0, "fury", "", 25], _
-[$Barbarian_Earthquake,         "Barbarian_Earthquake",          60000,  "attack&elite", 50, "fury", "", 18], _
+[$Barbarian_ThreateningShout,   "Barbarian_ThreateningShout",    10000,        "attack",  0, "fury", "", 25], _
+[$Barbarian_Earthquake,         "Barbarian_Earthquake",          60000,  "attack&elite", 25, "fury", "", 18], _
 [$Barbarian_Whirlwind,          "Barbarian_Whirlwind",               0,        "attack", 10, "fury", "", 30], _
 [$Barbarian_FuriousCharge,      "Barbarian_FuriousCharge",       10000,        "attack",  0, "fury", "", ""], _
 [$Barbarian_IgnorePain,         "Barbarian_IgnorePain",          30000,          "life",  0, "fury", 60, ""], _
@@ -625,7 +625,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_Bolas,            "DemonHunter_BolaShot",           0,    "physical",  0,           "",  "", ""], _
 [$DemonHunter_Caltrops,         "DemonHunter_Caltrops",        3000,  "life&elite",  6, "discipline",  80, 50], _
 [$DemonHunter_Chakram,          "DemonHunter_Chakram",            0,      "attack", 10,     "hatred",  "", ""], _
-[$DemonHunter_ClusterArrow,     "DemonHunter_ClusterArrow",       0,      "attack", 25,     "hatred",  "", 50], _
+[$DemonHunter_ClusterArrow,     "DemonHunter_ClusterArrow",       0,      "attack", 40,     "hatred",  "", 50], _
 [$X1_DemonHunter_Companion,     "DemonHunter_Companion",      30000,        "buff",  0, "discipline",  "", ""], _
 [$DemonHunter_ElementalArrow,   "DemonHunter_ElementalArrow",     0,      "attack", 10,     "hatred",  "", ""], _
 [$X1_DemonHunter_EntanglingShot,"DemonHunter_EntanglingShot",     0,    "physical",  0,           "",  "", ""], _
@@ -637,7 +637,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_HungeringArrow,   "DemonHunter_HungeringArrow",     0,    "physical",  0,           "",  "", ""], _
 [$DemonHunter_Impale,           "DemonHunter_Impale",             0,       "elite", 20,     "hatred",  "", ""], _
 [$DemonHunter_MarkedForDeath,   "DemonHunter_MarkedForDeath",     0,       "elite",  3, "discipline",  "", ""], _
-[$DemonHunter_Multishot,        "DemonHunter_Multishot",          0,      "attack", 12,     "hatred",  "", 30], _
+[$DemonHunter_Multishot,        "DemonHunter_Multishot",          0,      "attack", 25,     "hatred",  "", 30], _
 [$DemonHunter_Preparation,      "DemonHunter_Preparation",    45000,        "buff",  0, "discipline",  "", ""], _
 [$DemonHunter_RainOfVengeance,  "DemonHunter_RainOfVengeance",30000,        "buff",  0, "discipline",  "", ""], _
 [$DemonHunter_RapidFire,        "DemonHunter_RapidFire",          0,       "elite", 26,     "hatred",  "", ""], _
@@ -645,7 +645,7 @@ Global $DemonHunter_skill_Table[25][8] = [ _
 [$DemonHunter_ShadowPower,      "DemonHunter_ShadowPower",     5000,        "life", 14, "discipline",  75, ""], _
 [$DemonHunter_SmokeScreen,      "DemonHunter_SmokeScreen",     2000,        "life", 14, "discipline",  50, ""], _
 [$DemonHunter_SpikeTrap,        "DemonHunter_SpikeTrap",       5000, "attack&life", 30,     "hatred",  90, 50], _
-[$DemonHunter_Strafe,           "DemonHunter_Strafe",             0,      "attack", 40,     "hatred",  "", ""], _
+[$DemonHunter_Strafe,           "DemonHunter_Strafe",             0,      "attack", 12,     "hatred",  "", ""], _
 [$DemonHunter_Vault,            "DemonHunter_Vault",           3000,        "life",  8, "discipline",  85, ""] _
 ]
 
@@ -692,10 +692,10 @@ Global $Wizard_skill_Table[29][8] = [ _
 [$Wizard_SpectralBlade,             "Wizard_SpectralBlade",                0,    "physical",  0,       "",  "", ""], _
 [$Wizard_ArcaneOrb,                 "Wizard_ArcaneOrb",                    0,      "attack", 30, "arcane",  "", 45], _
 [$Wizard_ArcaneTorrent,             "Wizard_ArcaneTorrent",                0,      "attack", 16, "arcane",  "", 45], _
-[$Wizard_Archon,                    "Wizard_Archon",                       0,       "elite",  0, "arcane",  "", ""], _
+[$Wizard_Archon,                    "Wizard_Archon",                  120000,       "elite",  0, "arcane",  "", ""], _
 [$Wizard_Archon_DisintegrationWave, "Wizard_Archon_DisintegrationWave",    0,      "attack", 18, "arcane",  "", 45], _
 [$Wizard_Archon_SlowTime,           "Wizard_Archon_SlowTime",          15000,        "life",  0, "arcane",  60, ""], _
-[$Wizard_Archon_Teleport,           "Wizard_Archon_Teleport",          15000,        "life",  0, "arcane",  35, ""], _
+[$Wizard_Archon_Teleport,           "Wizard_Archon_Teleport",          11000,        "life",  0, "arcane",  35, ""], _
 [$Wizard_Disintegrate,              "Wizard_Disintegrate",                 0,      "attack", 18, "arcane",  "", 45], _
 [$Wizard_Electrocute,               "Wizard_Electrocute",                  0,    "physical",  0,       "",  "", ""], _
 [$Wizard_EnergyTwister,             "Wizard_EnergyTwister",             6000,      "attack", 35, "arcane",  "", 20], _
@@ -714,3 +714,4 @@ Global $Wizard_skill_Table[29][8] = [ _
 [$Wizard_WaveOfForce,               "Wizard_WaveOfForce",              12000, "life|attack", 25, "arcane",  35, ""], _
 [$X1_Wizard_Wormhole,               "Wizard_BlackHole",                12000,      "attack", 20, "arcane",  "", 45] _
 ]
+
