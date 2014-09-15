@@ -136,10 +136,10 @@ EndFunc
 
 Func GetPositionUI($ofs)
 	Dim $point[4]
-	$point[0] = _MemoryRead($ofs + 0x4D8, $d3, "float")
-	$point[1] = _MemoryRead($ofs + 0x4DC, $d3, "float")
-	$point[2] = _MemoryRead($ofs + 0x4E0, $d3, "float")
-	$point[3] = _MemoryRead($ofs + 0x4E4, $d3, "float")
+	$point[0] = _MemoryRead($ofs + 0x490, $d3, "float")
+	$point[1] = _MemoryRead($ofs + 0x494, $d3, "float")
+	$point[2] = _MemoryRead($ofs + 0x498, $d3, "float")
+	$point[3] = _MemoryRead($ofs + 0x49c, $d3, "float")
 
 	;_log("GetPositionUI (" & $ofs & ") x : " & $point[0] & " - y : " & $point[1] & " - r : " & $point[2] & " - b : " & $point[3])
 	Return $point
@@ -312,36 +312,36 @@ Func _playerdead()
 		$DeathCountToggle = False
 	EndIf
 	Return $return
-EndFunc   ;==>_playerdead OK
+EndFunc ;==>_playerdead Ok
 
 Func _inmenu()
-	;Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1, 1929)
+	;Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1, 8073)
 	If GameState() = 5 Then
 		Return True
 	Else
 		Return False
 	EndIf
-EndFunc   ;==>_inmenu OK
+EndFunc ;==>_inmenu Ok
 
 Func _checkTapSellerOpen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 1, 1139)
-EndFunc ;==>_checkTapSellerOpen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 1, 3187)
+EndFunc ;==>_checkTapSellerOpen Ok
 
 Func _checkdisconnect()
-    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 2022)
-EndFunc   ;==>_checkdisconnect OK
+    Return fastcheckuiitemvisible("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 1, 4070)
+EndFunc ;==>_checkdisconnect Ok
 
 Func _checkRepair()
-	Return fastcheckuiitemvisible("Root.NormalLayer.DurabilityIndicator", 1, 895)
-EndFunc   ;==>_checkRepair OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.DurabilityIndicator", 1, 7039)
+EndFunc ;==>_checkRepair Ok
 
 Func _onloginscreen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetLogin_main.LayoutRoot.LoginContainer.unnamed30", 1, 51)
-EndFunc   ;==>_onloginscreen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetLogin_main.LayoutRoot.LoginContainer.unnamed30", 1, 6195)
+EndFunc ;==>_onloginscreen OK
 
 Func _escmenu()
 	Return fastcheckuiitemvisible("Root.NormalLayer.gamemenu_dialog.gamemenu_bkgrnd.ButtonStackContainer.button_leaveGame", 1, 1644)
-EndFunc   ;==>_escmenu OK
+EndFunc ;==>_escmenu Ok
 
 Func _ingame()
 	;Return fastcheckuiitemvisible("Root.NormalLayer.minimap_dialog_backgroundScreen.minimap_dialog_pve", 1, 1403)
@@ -350,55 +350,55 @@ Func _ingame()
 	Else
 		Return False
 	EndIf
-EndFunc   ;==>_ingame OK
+EndFunc ;==>_ingame Ok
 
 Func _checkSalvageopen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button", 1, 629)
-EndFunc   ;==>_checkSalvageopen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_all_wrapper.salvage_button", 1, 6450)
+EndFunc   ;==>_checkSalvageopen Ok
 
 Func _checkWPopen()
-    Return fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot", 1, 2033)
-EndFunc   ;==>_checkWPopen OK
+    Return fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot", 1, 4081)
+EndFunc ;==>_checkWPopen Ok
 
 Func _checkVendoropen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.gold_label", 1, 165)
-EndFunc   ;==>_checkVendoropen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.shop_dialog_mainPage.gold_label", 1, 4261)
+EndFunc ;==>_checkVendoropen Ok
 
 Func _checkStashopen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.stash_dialog_mainPage", 1, 327)
-EndFunc   ;==>_checkStashopen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.stash_dialog_mainPage", 1, 6471)
+EndFunc ;==>_checkStashopen Ok
 
 Func _checkBannerOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.BattleNetProfileBannerCustomization_main.LayoutRoot.OverlayContainer.PageHeader", 1, 1697)
-EndFunc ;==>_checkBannerOpen OK
+EndFunc ;==>_checkBannerOpen Ok
 
 Func _checkParagonOpen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.Paragon_main.LayoutRoot", 1, 377)
-EndFunc ;==>_checkParagonOpen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.Paragon_main.LayoutRoot", 1, 6521)
+EndFunc ;==>_checkParagonOpen Ok
 
 Func _checkInventoryopen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 1813)
-EndFunc   ;==>_checkInventoryopen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.inventory_dialog_mainPage", 1, 3861)
+EndFunc ;==>_checkInventoryopen Ok
 
 Func _checkBountyRewardOpen()
-	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 1969)
-EndFunc ;==>_checkBountyRewardOpen OK
+	Return fastcheckuiitemvisible("Root.NormalLayer.BountyReward_main.LayoutRoot", 1, 8113)
+EndFunc ;==>_checkBountyRewardOpen Ok
 
 Func _checkQuestRewardOpen()
 	Return fastcheckuiitemvisible("Root.NormalLayer.questreward_dialog", 1, 1612)
-EndFunc ;==>_checkQuestRewardOpen OK
+EndFunc ;==>_checkQuestRewardOpen Ok
 
 Func _checkBossJoinParty()
-    Return fastcheckuiitemvisible("Root.NormalLayer.boss_join_party_main.warning", 1, 1364)
-EndFunc   ;==> _checkBossJoinParty OK
+    Return fastcheckuiitemvisible("Root.NormalLayer.boss_join_party_main.warning", 1, 5460)
+EndFunc ;==> _checkBossJoinParty Ok
 
 Func _checkBossEnter()
-    Return fastcheckuiitemvisible("Root.NormalLayer.boss_enter_main.warning", 1, 820)
-EndFunc   ;==> _checkBossEnter OK
+    Return fastcheckuiitemvisible("Root.NormalLayer.boss_enter_main.warning", 1, 6964)
+EndFunc ;==> _checkBossEnter Ok
 
 Func _checkBossWarningMessage()
-    Return fastcheckuiitemvisible("Root.TopLayer.confirmation.subdlg.stack.message", 1, 720)
-EndFunc   ;==>_checkBossWarningMessage OK
+    Return fastcheckuiitemvisible("Root.TopLayer.confirmation.subdlg.stack.message", 1, 4816)
+EndFunc ;==>_checkBossWarningMessage Ok
 
 Func GetLevelAreaId()
 	Return _MemoryRead(_MemoryRead($OfsLevelAreaId, $d3, "int") + 0x44, $d3, "int")
@@ -1229,7 +1229,7 @@ Func MoveToPos($_x, $_y, $_z, $_a, $m_range)
 	EndIf
 
 	If _checkQuestRewardOpen() Then
-		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 7751)
 	EndIf
 
 	Local $toggletry = 0
@@ -2051,7 +2051,7 @@ Func Attack()
 		EndIf
 
 		If _checkQuestRewardOpen() Then
-			ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+			ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 7751)
 		EndIf
 
 		If $LastResult = 2 And $test_iterateallobjectslist[0][1] = $OldActor And UBound($test_iterateallobjectslist) > 1 Then
@@ -2158,7 +2158,7 @@ Func Attack()
 	EndIf
 
 	If _checkQuestRewardOpen() Then
-		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 1607)
+		ClickUI("Root.NormalLayer.questreward_dialog.button_exit", 7751)
 	EndIf
 
 EndFunc   ;==>Attack
@@ -2648,117 +2648,117 @@ Func GetBucketForWPAdv($num)
 	$bucket = ""
 	Switch $num
 		Case 0
-			$bucket = "1363"
+			$bucket = "7507"
 		Case 1
-			$bucket = "378"
+			$bucket = "4474"
 		Case 2
-			$bucket = "995"
+			$bucket = "3043"
 		Case 3
-			$bucket = "1450"
+			$bucket = "5546"
 		Case 4
 			$bucket = "61"
 		Case 5
 			$bucket = "1562"
 		Case 6
-			$bucket = "265"
+			$bucket = "4361"
 		Case 7
-			$bucket = "1581"
+			$bucket = "7725"
 		Case 8
-			$bucket = "597"
+			$bucket = "4693"
 		Case 9
-			$bucket = "1310"
+			$bucket = "5406"
 		Case 10
-			$bucket = "883"
+			$bucket = "4979"
 		Case 11
-			$bucket = "612"
+			$bucket = "6756"
 		Case 12
-			$bucket = "980"
+			$bucket = "6870"
 		Case 13
-			$bucket = "49"
+			$bucket = "6193"
 		Case 14
-			$bucket = "1808"
+			$bucket = "3856"
 		Case 15
-			$bucket = "441"
+			$bucket = "2489"
 		Case 16
-			$bucket = "4"
+			$bucket = "2052"
 		Case 17
-			$bucket = "1538"
+			$bucket = "6538"
 		Case 18
-			$bucket = "1472" ;home act2
+			$bucket = "5568" ;home act2
 		Case 19
-			$bucket = "536"
+			$bucket = "6680"
 		Case 20
-			$bucket = "667"
+			$bucket = "7528"
 		Case 21
-			$bucket = "1766"
+			$bucket = "7910"
 		Case 22
-			$bucket = "689"
+			$bucket = "4880"
 		Case 23
-			$bucket = "501"
+			$bucket = "4597"
 		Case 24
-			$bucket = "1249"
+			$bucket = "3297"
 		Case 25
 			$bucket = "28"
 		Case 26
 			$bucket = "421" ; HOME Act 3
 		Case 27
-			$bucket = "1745"
+			$bucket = "3793"
 		Case 28
-			$bucket = "539"
+			$bucket = "6683"
 		Case 29
-			$bucket = "1711"
+			$bucket = "7855"
 		Case 30
-			$bucket = "898"
+			$bucket = "1310"
 		Case 31
-			$bucket = "1317"
+			$bucket = "5413"
 		Case 32
-			$bucket = "945"
+			$bucket = "5041"
 		Case 33
-			$bucket = "364"
+			$bucket = "4997"
 		Case 34
-			$bucket = "923"
+			$bucket = "5019"
 		Case 35
-			$bucket = "503"
+			$bucket = "2551"
 		Case 36
 			$bucket = "631"
 		Case 37
-			$bucket = "613"
+			$bucket = "2661"
 		Case 38
-			$bucket = "1477"
+			$bucket = "6405"
 		Case 39
-			$bucket = "565" ;Home Act 4
+			$bucket = "6709" ;Home Act 4
 		Case 40
-			$bucket = "1664"
+			$bucket = "7808"
 		Case 41
-			$bucket = "1697"
+			$bucket = "7841"
 		Case 42
-			$bucket = "431"
+			$bucket = "6575"
 		Case 43
-			$bucket = "1045"
+			$bucket = "7189"
 		Case 44
-			$bucket = "1185"
+			$bucket = "3207"
 		Case 45
-			$bucket = "61"
+			$bucket = "2109"
 		Case 46
-			$bucket = "1113" ;Home act 5
+			$bucket = "3161" ;Home act 5
 		Case 47
 			$bucket = "369"
 		Case 48
-			$bucket = "850"
+			$bucket = "6994"
 		Case 49
-			$bucket = "1062"
+			$bucket = "5158"
 		Case 50
-			$bucket = "162"
+			$bucket = "4258"
 		Case 51
-			$bucket = "348"
+			$bucket = "4444"
 		Case 52
-			$bucket = "785"
+			$bucket = "5699"
 		Case 53
-			$bucket = "192"
+			$bucket = "2240"
 		Case 54
-			$bucket = "820"
+			$bucket = "1671"
 		Case 55
-			$bucket = "1"
+			$bucket = "4097"
 	EndSwitch
 	;_log("GetBucketForWPAdv : " & $num & " -> " & $bucket, $LOG_LEVEL_DEBUG)
 	Return $bucket
@@ -2769,35 +2769,35 @@ Func GetBucketForWP($WPNumber)
 		Case 0
 			Return 212
 		Case 1
-			Return 305
+			Return 6449
 		Case 2
 			Return 1540
 		Case 3
-			Return 375
+			Return 4471
 		Case 4
 			Return 646
 		Case 5
-			Return 302
+			Return 2350
 		Case 6
 			Return 579
 		Case 7
-			Return 1898
+			Return 8042
 		Case 8
 			Return 176
 		Case 9
-			Return 502
+			Return 6646
 		Case 10
 			Return 1270
 		Case 11
 			Return 1509
 		Case 12
-			Return 1578
+			Return 5674
 		Case 13
-			Return 404
+			Return 2452
 		Case 14
-			Return 246
+			Return 4342
 		Case 15
-			Return 373
+			Return 6517
 		Case Else
 			Return 0
 	EndSwitch
@@ -2939,7 +2939,7 @@ Endfunc ; ==> TakeWpAdventure
 ;;      _resumegame()
 ;;--------------------------------------------------------------------------------
 Func _resumegame()
-	If Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929) Then
+	If Not fastcheckuiitemactived("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 8073) Then
 		Sleep(500)
 		Return
 	EndIf
@@ -2992,7 +2992,7 @@ Func _resumegame()
 		If IsGameSettingsOpened() Then
 			ClickUI("Root.NormalLayer.BattleNetGameSettings_main.LayoutRoot.PlayGame", 582)
 		Else
-			ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 1929)
+			ClickUI("Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.PlayGameButton", 8073)
 		EndIf
 		$Try_ResumeGame += 1
 	EndIf
@@ -3049,7 +3049,7 @@ Func ReConnect()
 
    Local $Try_Connect = 0
    While _checkdisconnect() And $Try_Connect < 3
-	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022)
+	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 4070)
 	  sleep(1000)
 	  $Try_Connect += 1
    WEnd
@@ -3062,7 +3062,7 @@ Func ReConnect()
 
    Local $Try_Connect = 0
    While _checkdisconnect() And $Try_Connect < 3
-	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 2022)
+	  ClickUI("Root.TopLayer.BattleNetModalNotifications_main.ModalNotification.Buttons.ButtonList", 4070)
 	  sleep(1000)
 	  $Try_Connect += 1
    WEnd
@@ -3161,10 +3161,11 @@ Func Repair()
 	Sleep(2000)
 
 	If Not $AllIndestructibleObject Then
-	   DefineVendorTab()
-	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair, $BucketVendorTabRepair)
+	   ;DefineVendorTab()
+	   ;ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_" & $VendorTabRepair, $BucketVendorTabRepair)
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_3.blinker", 7052)
 	   Sleep(500)
-	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped", 124)
+	   ClickUI("Root.NormalLayer.shop_dialog_mainPage.repair_dialog.RepairEquipped", 4220)
 	   Sleep(100)
 	Else
 	   _log("Not Repair, All Indestructible Object Activate")
@@ -3177,7 +3178,7 @@ Func DefineVendorTab()
 		$VendorTabRepair = 3
 		_log("Definition of Repair Tab to TAB 3", $LOG_LEVEL_DEBUG)
 	Else
-		$BucketVendorTabRepair = 623
+		$BucketVendorTabRepair = 2671
 		$VendorTabRepair = 2
 		_log("Definition of Repair Tab to TAB 2", $LOG_LEVEL_DEBUG)
 	EndIf
@@ -4298,17 +4299,19 @@ Func TpRepairAndBack()
 EndFunc
 
 Func ClickOnStashTab($num)
-	if $num > 4 OR $num < 2 Then
+	If $num > 5 Or $num < 2 Then
 		_log("ERROR Impossible to open this tab from stash", $LOG_LEVEL_ERROR)
-		return false
+		Return False
 	Endif
 
-	if $num = 2 Then
-		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_2", 218)
-	elseif $num = 3 Then
+	If $num = 2 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_2", 6362)
+	ElseIf $num = 3 Then
 		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_3", 344)
-	elseif $num = 4 Then
-		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_4", 1054)
+	ElseIf $num = 4 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_4", 3102)
+	ElseIf $num = 5 Then
+		ClickUI("Root.NormalLayer.stash_dialog_mainPage.tab_5", 7619)
 	EndIf
 EndFunc
 
@@ -4399,6 +4402,9 @@ Func StashAndRepair()
 					ClickOnStashTab(4)
 					$tabfull = 3
 				ElseIf $tabfull = 3 Then
+					ClickOnStashTab(5)
+					$tabfull = 4
+				ElseIf $tabfull = 4 Then
 					Sleep(Random(50, 100))
 					Send($KeyCloseWindows)
 					Sleep(Random(50, 100))
@@ -4469,9 +4475,9 @@ Func StashAndRepair()
 		If $ToTrash = -1 And $ToSell = -1 Then ; si pas items a aller vendre on répare au forgeron
 			If Not $AllIndestructibleObject Then
 			   Local $GoldBeforeRepaire = GetGold();on mesure l'or avant la reparation
-			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3", 1224)
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_3.blinker", 8046)
 			   Sleep(500)
-			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped", 1237)
+			   ClickUI("Root.NormalLayer.vendor_dialog_mainPage.repair_dialog.RepairEquipped", 5333)
 			   Sleep(100)
 			   Local $GoldAfterRepaire = GetGold();on mesure l'or apres
 			   $GoldByRepaire += $GoldBeforeRepaire - $GoldAfterRepaire;on compte le cout de la reparation
@@ -4482,9 +4488,9 @@ Func StashAndRepair()
 		EndIf
 
 
-		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2", 393)
+		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.tab_2.blinker", 5999)
 		Sleep(100)
-		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button", 629)
+		ClickUI("Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_all_wrapper.salvage_button", 6450)
 
 		CheckWindowD3Size()
 
@@ -4534,17 +4540,17 @@ Func StashAndRepair()
 			_log("Start selling", $LOG_LEVEL_DEBUG)
 			Local $GoldBeforeSell = GetGold();on mesure l'or avant la vente d'objets
 			Sleep(1000)
-			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0", 810)
+			ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0.blinker", 8067)
 			Sleep(2000)
 
 			Local $OpenTapSellerTry = 0
 			While _checkTapSellerOpen() = False
 				If $OpenTapSellerTry < 1 Then
 					_log("Fail to open Tap 1 seller", $LOG_LEVEL_DEBUG)
-					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0", 810)
+					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_0.blinker", 8067)
 				Else
 					_log("Try to open Tap 2 seller", $LOG_LEVEL_DEBUG)
-					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_1", 468)
+					ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_1.blinker", 7444)
 				EndIf
 				Sleep(2000)
 				$OpenTapSellerTry += 1
@@ -5547,9 +5553,9 @@ Func BuyPotion()
 
 		  _log('Achat de ' & $NbPotionBuy & ' potions')
 
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2", 623)
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.tab_2.blinker", 4517)
 		  Sleep(200)
-		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 1139, 0)
+		  ClickUI("Root.NormalLayer.shop_dialog_mainPage.shop_item_region.item 0 0.icon", 3187, 0)
 		  Sleep(200)
 		  Send("{SHIFTDOWN}")
 		  Sleep(200)
@@ -5598,36 +5604,36 @@ EndFunc
 Func SwitchAct($num)
 	Switch $num
 		Case 1
-			$bucket = 725
+			$bucket = 6869
 		Case 2
-			$bucket = 407
+			$bucket = 6551
 		Case 3
-			$bucket = 844
+			$bucket = 4940
 		Case 4
 			$bucket = 817
 		Case 5
 			$bucket = 1713
 	EndSwitch
-	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.Zoom.ZoomOut", 942)
+	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.Zoom.ZoomOut", 7086)
 	Sleep(500)
 	ClickUI("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.WorldMap.Act" & $num & "Open.LayoutRoot.Name", $bucket)
 	Sleep(500)
 EndFunc
 
 Func GetNumActByWPUI()
-	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Interest", 1, 1363) Then
+	If fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 0.LayoutRoot.Interest", 1, 7507) Then
 		_log("Act1 Detected")
 		Return 1
-	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 18.LayoutRoot.Interest", 1, 1472) Then
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 18.LayoutRoot.Interest", 1, 5568) Then
 		_log("Act2 Detected")
 		Return 2
 	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 26.LayoutRoot.Interest", 1, 421) Then
 		_log("Act3 Detected")
 		Return 3
-	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 39.LayoutRoot.Interest", 1, 565) Then
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 39.LayoutRoot.Interest", 1, 6709) Then
 		_log("Act4 Detected")
 		Return 4
-	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 46.LayoutRoot.Interest", 1, 1113) Then
+	ElseIf fastcheckuiitemvisible("Root.NormalLayer.WaypointMap_main.LayoutRoot.OverlayContainer.POI.entry 46.LayoutRoot.Interest", 1, 3161) Then
 		_log("Act5 Detected")
 		Return 5
 	EndIf

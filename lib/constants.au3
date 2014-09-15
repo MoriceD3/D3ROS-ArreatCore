@@ -4,14 +4,14 @@
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #endregion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-Global $Ofs_UI_A = 0x984 ; 2.0.3 : 0x994
+Global $Ofs_UI_A = 0x99C ; 2.0.6 : 0x984 ; 2.0.3 : 0x994
 Global $Ofs_UI_B = 0x0
 Global $Ofs_UI_C = 0x10
 Global $Ofs_UI_D = 0x0
 
 Global $Ofs_UI_nPtr = 0x10
-Global $Ofs_UI_Visible = 0x24
-Global $Ofs_UI_Name = 0x38
+Global $Ofs_UI_Visible = 0x14
+Global $Ofs_UI_Name = 0x28
 Global $Ofs_UI_Text = 0xa58
 
 
@@ -71,7 +71,7 @@ Global $ofs_LocalActor_atribGUID                        = 0x120
 Global $ofs_LocalActor_StrucSize                        = 0x2F8 ;0x2D0 ; 0x0 0x0
 
 ;//OBJECT MANAGER
-Global $ofs_objectmanager                               = 0x01CE3814 ; 2.0.5 : 0x01CDD7F4 ; 2.0.4 : 0x1CEF854 ; 2.0.3 : 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
+Global $ofs_objectmanager                               = 0x01C51184 ; 2.0.6 : 0x01CE3814 ; 2.0.5 : 0x01CDD7F4 ; 2.0.4 : 0x1CEF854 ; 2.0.3 : 0x1CD841C;0x1CD63EC ;0x1cd7a04;0x18CE394;0x018CD394 ;0x18939C4 ;0x1873414 ;0x0186FA3C ;0x1543B9C ;0x15A0BEC ;0x015A1BEC;0x15A0BEC
 Global $ofs__ObjmanagerActorOffsetA                     = 0x910 ; 2.0.3 : 0x920 ;0x8C8 ;0x8b0 ;2.0
 Global $ofs__ObjmanagerActorCount                       = 0x108
 Global $ofs__ObjmanagerActorOffsetB                     = 0x120 ;0x148 ;0x148

@@ -325,9 +325,8 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 	$Dummy = IniRead($profilFile, "Run info", "Follower", $Follower)
 	$Follower = Trim(StringLower($Dummy)) == "true"
 
-	;Selection de la difficulte et du pm des monstres
+	;Selection de la difficulte
 	$difficulte = IniRead($profilFile, "Run info", "difficulte", $difficulte)
-	$PuisMonstre = IniRead($profilFile, "Run info", "PuisMonstre", $PuisMonstre)
 
 	;Selection du type de graliste pour le mode arma
 	$TypeDeGrabList = IniRead($profilFile, "Run info", "TypeDeGrabList", $TypeDeGrabList)
@@ -344,7 +343,7 @@ Func loadConfigs($profilFile = "settings/settings.ini", $creation = 0)
 					$grabListFile = IniRead($profilFile, "Run info", "grablistExpert", $grabListFile)
 				Case 4
 					$grabListFile = IniRead($profilFile, "Run info", "grablistCalvaire", $grabListFile)
-				Case 5
+				Case 5 To 10
 					$grabListFile = IniRead($profilFile, "Run info", "grabListTourment", $grabListFile)
 			EndSwitch
 		Case 2 ; Grablist XP

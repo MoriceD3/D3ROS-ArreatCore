@@ -45,7 +45,7 @@ Global $SequenceFileAct411,$SequenceFileAct442
 Global $SequenceFileAdventure
 
 ; Variable globale pour Automatisation
-Global $difficulte,$PuisMonstre,$TypedeBot,$TypeDeGrabList
+Global $difficulte,$TypedeBot,$TypeDeGrabList
 
 ; Variable globale pour Automatisation Heros
 Global $TabHeros 						= 1

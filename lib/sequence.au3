@@ -183,7 +183,7 @@ Func TraitementSequence(ByRef $arr_sequence, $index, $mvtp = 0)
 			Send($KeyCloseWindows)
 		ElseIf $arr_sequence[$index][1] = "closeconfirm" Then
 			_log("Close Confirm", $LOG_LEVEL_DEBUG)
-			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
+			ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 6110)
 		ElseIf $arr_sequence[$index][1] = "takewp" Then
 			_log("Start : TakeWP", $LOG_LEVEL_DEBUG)
 			TakeWPV3($arr_sequence[$index][2], 0)
@@ -245,14 +245,14 @@ Func revive(ByRef $path)
 		If $nb_die_t <= $rdn_die_t And Not _checkRepair() Then
 			Sleep(Random(5000, 6000))
 			If Not _checkRepair() Then
-				If fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139) Then
-					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 139)
+				If fastcheckuiitemactived("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 4235) Then
+					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_corpse", 4235)
 					_log("Res At Corp and buffinit", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(8000, 8500))
 					buffinit()
 					Return 1
 				Else ;On ne peut pas revive sur le corp
-					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint", 820)
+					ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint", 4916)
 					_log("Res At Last CheckPoint", $LOG_LEVEL_VERBOSE)
 					Sleep(Random(750, 1000))
 					bloc_sequence($path, 1)
@@ -262,13 +262,13 @@ Func revive(ByRef $path)
 		Else
 			_log("You have reached the max number of revive : " & $rdn_die_t & " Or your stuff is destroyed", $LOG_LEVEL_WARNING)
 			Sleep(Random(5000, 6000))
-			ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_in_town", 496)
+			ClickUI("Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_in_town", 4592)
 			Sleep(4000)
 			Return 3
 		EndIf
 	EndIf
 	Return 0
-EndFunc   ;==>revive
+EndFunc   ;==>revive Ok
 
 Func reverse_arr(ByRef $arr_MTP)
 	_log("Taille de l'array reverse : " & UBound($arr_MTP))
@@ -1103,7 +1103,7 @@ Func sequence($sequence_list)
 						EndIf
 					ElseIf StringInStr($line, "closeconfirm()", 2) Then ;closcloseconfirmwindows detected
 						If $sequence_save = 0 Then
-							ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
+							ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 6110)
 							_log("Enclenchement d'un closeconfirm() line : " & $i + 1, $LOG_LEVEL_DEBUG)
 						Else
 							_log("Mise en array d'un closeconfirm() line : " & $i + 1, $LOG_LEVEL_DEBUG)
@@ -1208,11 +1208,11 @@ Func InteractWithPortal($NamePortal)
 				_log("Try n°" & $PortalTry + 1 & " Portal", $LOG_LEVEL_DEBUG)
 			Else
 				If _checkBossJoinParty() Then
-					ClickUi("Root.NormalLayer.boss_join_party_main.stack.wrapper.Accept", 300)
+					ClickUi("Root.NormalLayer.boss_join_party_main.stack.wrapper.Accept", 4396)
 					Sleep(500)
 				EndIf
 				If _checkBossEnter() Then
-					ClickUi("Root.NormalLayer.boss_enter_main.stack.wrapper.Accept", 204)
+					ClickUi("Root.NormalLayer.boss_enter_main.stack.wrapper.Accept", 4300)
 					Sleep(500)
 					$AreaWait = 240
 				EndIf
@@ -1228,7 +1228,7 @@ Func InteractWithPortal($NamePortal)
 			   $areatry += 1
 			Else
 			   _log("Player Declined The Event", $LOG_LEVEL_DEBUG)
-			   ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 2014)
+			   ClickUI("Root.TopLayer.confirmation.subdlg.stack.wrap.button_ok", 6110)
 			   Sleep(1000)
 			   ContinueLoop
 			EndIf
